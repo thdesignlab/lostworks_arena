@@ -79,9 +79,9 @@ public class PhotonManager : MonoBehaviour {
                 networkCanvas.SetActive(true);
 
                 //フィールド取得
-                messageText = networkCanvas.transform.FindChild("Panel/Message").GetComponent<Text>();
-                roomNameIF = networkCanvas.transform.FindChild("Panel/Room/Name").GetComponent<InputField>();
-                roomStatusText = networkCanvas.transform.FindChild("Panel/RoomStatus").GetComponent<Text>();
+                messageText = networkCanvas.transform.FindChild("Title/Message").GetComponent<Text>();
+                roomNameIF = networkCanvas.transform.FindChild("Title/Room/Name").GetComponent<InputField>();
+                roomStatusText = networkCanvas.transform.FindChild("Title/RoomStatus").GetComponent<Text>();
 
                 //初期値設定
                 PlayerPrefs.SetString("playerName", PhotonNetwork.playerName);
