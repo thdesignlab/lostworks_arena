@@ -251,18 +251,33 @@ public abstract class BaseMoveController : Photon.MonoBehaviour
         MoveWorld(moveDirection, speed, limit);
     }
 
-    protected void MoveWorld(Vector3 worldVector, float speed, float limit = 0, bool isOutForce = true)
+    protected void MoveWorld(Vector3 worldVector, float speed, float limit = 0, bool isOutForce = true, bool isSendRPC = true)
     {
-        //Debug.Log("MoveWorld");
         Vector3 moveDirection = worldVector.normalized * speed;
-        if (limit > 0)
+        if (photonView.isMine)
         {
-            StartCoroutine(Boost(moveDirection, limit, isOutForce));
+            if (limit > 0)
+            {
+                StartCoroutine(Boost(moveDirection, limit, isOutForce));
+            }
+            else
+            {
+                MoveProcess(moveDirection * Time.deltaTime);
+            }
         }
         else
         {
-            MoveProcess(moveDirection * Time.deltaTime);
+            if (isSendRPC)
+            {
+                object[] args = new object[] { worldVector, speed, limit, isOutForce };
+                photonView.RPC("MoveWorldRPC", PhotonTargets.Others, args);
+            }
         }
+    }
+    [PunRPC]
+    protected void MoveWorldRPC(Vector3 worldVector, float speed, float limit = 0, bool isOutForce = true)
+    {
+        MoveWorld(worldVector, speed, limit, isOutForce, false);
     }
 
     //対象にRigidBodyがあり、IsKinematicがONの場合のみ

@@ -16,6 +16,8 @@ public class EnergyBulletController : MoveOfCharacter
     protected bool isHit = false;
 
     protected Transform targetTran;
+    private float totalDamage = 0;
+    private int sendMinDamage = 5;
 
     protected override void Awake()
     {
@@ -68,6 +70,26 @@ public class EnergyBulletController : MoveOfCharacter
             {
                 //プレイヤー
                 hitObj.GetComponent<PlayerStatus>().AddDamage(damage);
+            }
+        }
+    }
+
+    //継続ダメージ処理
+    protected void AddSlipDamage(GameObject hitObj, int dmg = 0)
+    {
+        //ダメージ処理は所有者のみ行う
+        if (photonView.isMine)
+        {
+            if (dmg == 0) dmg = damage;
+
+            if (hitObj.transform == targetTran)
+            {
+                totalDamage += damage * Time.deltaTime;
+                if (totalDamage >= sendMinDamage)
+                {
+                    hitObj.GetComponent<PlayerStatus>().AddDamage((int)damage);
+                    totalDamage = damage % 1;
+                }
             }
         }
     }

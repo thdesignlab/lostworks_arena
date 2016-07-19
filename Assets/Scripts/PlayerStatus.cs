@@ -421,7 +421,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
         SetHp(maxHp);
     }
 
-    //SP回復量
+    //SP回復量(自分専用)
     public void AccelerateRecoverSp(float rate, float limit, GameObject effect = null)
     {
         StartCoroutine(CheckAccelerateRecoverSp(rate, limit, effect));
@@ -437,64 +437,99 @@ public class PlayerStatus : Photon.MonoBehaviour {
 
     //移動速度アップ・ダウン(重ね掛け不可)
     private float nowSpeedRate = 1;
-    public bool AccelerateRunSpeed(float rate, float limit, GameObject effect = null)
+    public bool AccelerateRunSpeed(float rate, float limit, GameObject effect = null, bool isSendRpc = true)
     {
         if (rate == 0)
         {
-            InterfareMove(limit, effect);
+            InterfareMove(limit, effect, isSendRpc);
             return true;
         }
 
-        if (nowSpeedRate != 1)
+        if (photonView.isMine)
         {
-            //既に別の効果が適用中
-            return false;
+            if (nowSpeedRate != 1)
+            {
+                //既に別の効果が適用中
+                return false;
+            }
+            StartCoroutine(CheckAccelerateRunSpeed(rate, limit, effect));
         }
-        StartCoroutine(CheckAccelerateRunSpeed(rate, limit, effect));
+        else
+        {
+            if (isSendRpc)
+            {
+                object[] args = new object[] { rate, limit, effect };
+                photonView.RPC("AccelerateRunSpeedRPC", PhotonTargets.Others, args);
+            }
+        }
         return true;
     }
+
+    [PunRPC]
+    public void AccelerateRunSpeedRPC(float rate, float limit, GameObject effect = null)
+    {
+        AccelerateRunSpeed(rate, limit, effect, false);
+    }
+
     IEnumerator CheckAccelerateRunSpeed(float rate, float limit, GameObject effect = null)
     {
         nowSpeedRate = rate;
         runSpeed *= rate;
         jumpSpeed *= rate;
         boostSpeed *= rate;
-        boostTurnSpeed *= rate;
         if (effect != null) effect.SetActive(true);
+
         yield return new WaitForSeconds(limit);
+
         if (effect != null) effect.SetActive(false);
         if (interfareMoveTime <= 0)
         {
             runSpeed = defaultRunSpeed;
             jumpSpeed = defaultJumpSpeed;
             boostSpeed = defaultBoostSpeed;
-            boostTurnSpeed = defaultBoostTurnSpeed;
         }
         nowSpeedRate = 1;
     }
 
     //移動制限
     private float interfareMoveTime = 0;
-    public void InterfareMove(float limit, GameObject effect = null)
+    public void InterfareMove(float limit, GameObject effect = null, bool isSendRpc = true)
     {
-        if (interfareMoveTime > 0)
+        if (photonView.isMine)
         {
-            if (interfareMoveTime < limit)
+            if (interfareMoveTime > 0)
             {
-                //残り時間上書き
-                interfareMoveTime = limit;
+                if (interfareMoveTime < limit)
+                {
+                    //残り時間上書き
+                    interfareMoveTime = limit;
+                }
+                return;
             }
-            return;
+            StartCoroutine(CheckInterfareMove(limit, effect));
         }
-        StartCoroutine(CheckInterfareMove(limit, effect));
+        else
+        {
+            if (isSendRpc)
+            {
+                object[] args = new object[] { limit, effect };
+                photonView.RPC("InterfareMoveRPC", PhotonTargets.Others, args);
+            }
+        }
     }
+
+    [PunRPC]
+    public void InterfareMoveRPC(float limit, GameObject effect = null)
+    {
+        InterfareMove(limit, effect, false);
+    }
+
     IEnumerator CheckInterfareMove(float limit, GameObject effect = null)
     {
         interfareMoveTime = limit;
         runSpeed = 0;
         jumpSpeed = 0;
         boostSpeed = 0;
-        boostTurnSpeed = turnSpeed * 2;
         if (effect != null) effect.SetActive(true);
         for (;;)
         {
@@ -511,10 +546,29 @@ public class PlayerStatus : Photon.MonoBehaviour {
         runSpeed = defaultRunSpeed * nowSpeedRate;
         jumpSpeed = defaultJumpSpeed * nowSpeedRate;
         boostSpeed = defaultBoostSpeed * nowSpeedRate;
-        boostTurnSpeed = defaultBoostTurnSpeed;
     }
 
-    //無敵時間延長
+    //回転制限(自分専用)
+    private bool isInterfareTurn = false;
+    public void InterfareTurn(float rate, float limit)
+    {
+        StartCoroutine(CheckInterfareTurn(rate, limit));
+    }
+
+    IEnumerator CheckInterfareTurn(float rate, float limit)
+    {
+        isInterfareTurn = true;
+        boostTurnSpeed = turnSpeed * rate;
+        if (rate < 1) turnSpeed *= rate;
+
+        yield return new WaitForSeconds(limit);
+
+        boostTurnSpeed = defaultBoostTurnSpeed;
+        turnSpeed = defaultTurnSpeed;
+        isInterfareTurn = true;
+    }
+
+    //無敵時間延長(自分専用)
     public void AvoidBurst(float rate, float limit, GameObject effect = null)
     {
         StartCoroutine(CheckAvoidBurst(rate, limit, effect));

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class PlayerSetting : Photon.MonoBehaviour
 {
@@ -23,7 +24,9 @@ public class PlayerSetting : Photon.MonoBehaviour
     private int customizeTime = 15;
     private int leftCustomizeTime = 0;
 
-    void Awake ()
+    private Dictionary<int, int> weaponMap = new Dictionary<int, int>();
+
+    void Awake()
     {
         myTran = transform;
         gameCtrl = GameObject.Find("GameController").GetComponent<GameController>();
@@ -61,6 +64,8 @@ public class PlayerSetting : Photon.MonoBehaviour
             //ターゲットを登録
             gameCtrl.SetTarget(myTran);
             gameCtrl.ResetGame();
+            SetWeaponParent();
+            SetCustomStatus();
             StartCoroutine(CustomizeCountDown());
         }
     }
@@ -113,14 +118,16 @@ public class PlayerSetting : Photon.MonoBehaviour
             PhotonNetwork.Destroy(child.gameObject);
         }
 
-        GameObject ob = PhotonNetwork.Instantiate(WEAPON_FOLDER+weapon.name, parts.position, parts.rotation, 0);
+        GameObject ob = PhotonNetwork.Instantiate(WEAPON_FOLDER + weapon.name, parts.position, parts.rotation, 0);
 
         //装備をPartsの子に設定
         int partsViewId = PhotonView.Get(parts.gameObject).viewID;
         int weaponViewId = PhotonView.Get(ob).viewID;
+        if (!isNpc) weaponMap[partsViewId] = weaponViewId;
         //Debug.Log(partsViewId.ToString()+" : "+ weaponViewId.ToString());
-        object[] args = new object[] { partsViewId, weaponViewId };
-        photonView.RPC("SetParentRPC", PhotonTargets.All, args);
+        //object[] args = new object[] { partsViewId, weaponViewId };
+        //photonView.RPC("SetParentRPC", PhotonTargets.All, args);
+        ob.transform.parent = parts.transform;
 
         //装備再セット
         StartCoroutine(SetWeapon(parts));
@@ -129,10 +136,13 @@ public class PlayerSetting : Photon.MonoBehaviour
     [PunRPC]
     private void SetParentRPC(int parentViewId, int childViewId)
     {
+        //Debug.Log("SetParentRPC: " + myTran.name + ": " + parentViewId.ToString() + " >> " + childViewId.ToString());
+
         PhotonView parent = PhotonView.Find(parentViewId);
         PhotonView child = PhotonView.Find(childViewId);
         if (parent == null || child == null) return;
         child.gameObject.transform.parent = parent.gameObject.transform;
+        child.gameObject.transform.localPosition = Vector3.zero;
     }
 
     IEnumerator SetWeapon(Transform parts)
@@ -161,6 +171,20 @@ public class PlayerSetting : Photon.MonoBehaviour
             }
         }
     }
+    private void SetWeaponParent()
+    {
+        photonView.RPC("SetWeaponParentRPC", PhotonTargets.All);
+    }
+    [PunRPC]
+    private void SetWeaponParentRPC()
+    {
+        //Debug.Log("[SetWeaponParent]"+myTran.name+": "+weaponMap.Count.ToString());
+        foreach (int key in weaponMap.Keys)
+        {
+            object[] args = new object[] { key, weaponMap[key] };
+            photonView.RPC("SetParentRPC", PhotonTargets.All, args);
+        }
+    }
 
     public void CustomEnd()
     {
@@ -181,4 +205,17 @@ public class PlayerSetting : Photon.MonoBehaviour
     {
         return leftCustomizeTime;
     }
+    private void SetCustomStatus()
+    {
+        photonView.RPC("SetCustomStatusRPC", PhotonTargets.All);
+    }
+    [PunRPC]
+    private void SetCustomStatusRPC()
+    {
+        if (isCustomEnd)
+        {
+            photonView.RPC("CustomEndRPC", PhotonTargets.Others);
+        }
+    }
+
 }

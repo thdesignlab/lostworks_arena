@@ -6,7 +6,7 @@ public class NpcController : MoveOfCharacter
     [SerializeField]
     private int level = 2;
     private float[] hpRateArray = new float[] { 1, 1.5f, 2 };
-    private float[] invincibleTimeArray = new float[] { 1, 1, 2 };
+    private float[] invincibleTimeArray = new float[] { 1, 1, 1.5f };
     private float[] atackIntervalArray = new float[] { 0, 3, 1 };
     private float[] boostIntervalArray = new float[] { 0, 3, 1 };
     private float[] searchRangeArray = new float[] { 0, 3, 5 };
@@ -79,6 +79,7 @@ public class NpcController : MoveOfCharacter
             if (quickTurnTime >= 3)
             {
                 QuickTarget(targetTran);
+                quickTurnTime = 0;
             }
             else
             {

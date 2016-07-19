@@ -55,35 +55,36 @@ public class ObjectController : Photon.MonoBehaviour {
         }
     }
 
-    public void DestoryObject(float delay = 0)
+    public void DestoryObject(float delay = 0, bool isSendRpc = true)
     {
-        object[] args = new object[] {delay};
         if (!photonView) return;
-        photonView.RPC("DestroyObjectRPC", PhotonTargets.All, args);
-    }
-
-    [PunRPC]
-    private void DestroyObjectRPC(float delay)
-    {
         if (photonView.isMine)
         {
-            if (effectSpawn != null)
-            {
-                PhotonNetwork.Instantiate(EFFECT_FOLDER+effectSpawn.name, myTran.position, Quaternion.identity, effectSpawnGroupId);
-            }
             if (delay > 0)
             {
                 StartCoroutine(DelayDestroy(delay));
             }
             else
             {
-                if (photonView != null)
-                {
-                    PhotonNetwork.Destroy(gameObject);
-                }
+                PhotonNetwork.Destroy(gameObject);
+            }
+        }
+        else
+        {
+            if (isSendRpc)
+            {
+                object[] args = new object[] { delay };
+                photonView.RPC("DestroyObjectRPC", PhotonTargets.All, args);
             }
         }
     }
+
+    [PunRPC]
+    private void DestroyObjectRPC(float delay)
+    {
+        DestoryObject(delay, false);
+    }
+
     IEnumerator DelayDestroy(float delay)
     {
         yield return new WaitForSeconds(delay);
