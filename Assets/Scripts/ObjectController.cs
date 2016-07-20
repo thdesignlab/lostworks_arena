@@ -13,8 +13,6 @@ public class ObjectController : Photon.MonoBehaviour {
 
     private Transform myTran;
 
-    const string EFFECT_FOLDER = "Effect/";
-
     void Start()
     {
         myTran = transform;
@@ -66,7 +64,7 @@ public class ObjectController : Photon.MonoBehaviour {
             }
             else
             {
-                PhotonNetwork.Destroy(gameObject);
+                DestroyProccess();
             }
         }
         else
@@ -74,7 +72,7 @@ public class ObjectController : Photon.MonoBehaviour {
             if (isSendRpc)
             {
                 object[] args = new object[] { delay };
-                photonView.RPC("DestroyObjectRPC", PhotonTargets.All, args);
+                photonView.RPC("DestroyObjectRPC", PhotonTargets.Others, args);
             }
         }
     }
@@ -89,6 +87,15 @@ public class ObjectController : Photon.MonoBehaviour {
     {
         yield return new WaitForSeconds(delay);
         if (photonView == null) yield break;
+        DestroyProccess();
+    }
+
+    private void DestroyProccess()
+    {
+        if (effectSpawn != null)
+        {
+            PhotonNetwork.Instantiate(Common.Func.GetResourceEffect(effectSpawn.name), myTran.position, myTran.rotation, effectSpawnGroupId);
+        }
         PhotonNetwork.Destroy(gameObject);
     }
 }

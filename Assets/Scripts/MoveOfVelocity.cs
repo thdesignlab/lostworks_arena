@@ -7,7 +7,6 @@ public class MoveOfVelocity : BaseMoveController
     protected override void Awake()
     {
         base.Awake();
-        base.myRigidbody = GetComponent<Rigidbody>();
         base.myRigidbody.isKinematic = false;
         base.myRigidbody.freezeRotation = true;
 
@@ -104,6 +103,12 @@ public class MoveOfVelocity : BaseMoveController
     {
         //base.isPreserveSpeed = false;
         base.myRigidbody.velocity += v;
+
+        //同期処理
+        if (photonView.isMine && base.ptv != null)
+        {
+            base.ptv.SetSynchronizedValues(speed: base.myRigidbody.velocity, turnSpeed: 0);
+        }
     }
 
     protected void SetSpeed(float sp)
@@ -137,5 +142,24 @@ public class MoveOfVelocity : BaseMoveController
             base.myRigidbody.velocity = new Vector3(v.x, base.myRigidbody.velocity.y, v.z);
             yield return null;
         }
+    }
+
+    public override Vector3 GetVelocityVector(Transform tran = null)
+    {
+        Vector3 velocity = Vector3.zero;
+        if (tran == null)
+        {
+            velocity = base.myRigidbody.velocity;
+        }
+        else
+        {
+            BaseMoveController ctrl = tran.GetComponent<BaseMoveController>();
+            if (ctrl != null)
+            {
+                velocity = ctrl.GetVelocityVector();
+            }
+        }
+
+        return velocity;
     }
 }

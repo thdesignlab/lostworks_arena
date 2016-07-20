@@ -53,6 +53,13 @@ public class MoveOfCharacter : BaseMoveController
                 //Transform.positionによる移動
                 base.myTran.position += moveVector;
             }
+
+            //同期処理
+            if (photonView.isMine && base.ptv != null)
+            {
+                base.ptv.SetSynchronizedValues(speed: moveVector / Time.deltaTime , turnSpeed: 0);
+            }
+
             moveVector = Vector3.zero;
             yield return null;
         }
@@ -113,5 +120,31 @@ public class MoveOfCharacter : BaseMoveController
             MoveProcess(v);
             yield return null;
         }
+    }
+
+    public override Vector3 GetVelocityVector(Transform tran = null)
+    {
+        Vector3 velocity = Vector3.zero;
+        if (tran == null)
+        {
+            if (charaCtrl != null)
+            {
+                velocity = charaCtrl.velocity;
+            }
+            else
+            {
+                velocity = base.GetVelocityVector();
+            }
+        }
+        else
+        {
+            BaseMoveController ctrl = tran.GetComponent<BaseMoveController>();
+            if (ctrl != null)
+            {
+                velocity = ctrl.GetVelocityVector();
+            }
+        }
+
+        return velocity;
     }
 }

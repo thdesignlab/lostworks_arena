@@ -28,8 +28,10 @@ public class EnergyBulletController : MoveOfCharacter
         ownerId = photonView.ownerId;
     }
 
-    protected virtual void Update()
+    protected override void Update()
     {
+        base.Update();
+
         //稼働時間
         activeTime += Time.deltaTime;
         if (activeTime >= 10) base.DestoryObject();

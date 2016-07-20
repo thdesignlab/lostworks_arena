@@ -5,6 +5,7 @@ public abstract class BaseMoveController : Photon.MonoBehaviour
 {
     protected Transform myTran;
     protected Rigidbody myRigidbody;
+    protected PhotonTransformView ptv;
 
     [SerializeField]
     protected bool isCheckGrounded = false;
@@ -38,6 +39,7 @@ public abstract class BaseMoveController : Photon.MonoBehaviour
     {
         myTran = transform;
         myRigidbody = GetComponent<Rigidbody>();
+        ptv = GetComponent<PhotonTransformView>();
     }
 
     protected virtual void Start()
@@ -47,6 +49,11 @@ public abstract class BaseMoveController : Photon.MonoBehaviour
 
         //移動中判定
         StartCoroutine(CheckMooving());
+    }
+
+    protected virtual void Update()
+    {
+        return;
     }
 
     //地面接地判定
@@ -187,7 +194,7 @@ public abstract class BaseMoveController : Photon.MonoBehaviour
         return targetMoveVector;
     }
 
-    public Vector3 GetVelocityVector(Transform tran = null)
+    public virtual Vector3 GetVelocityVector(Transform tran = null)
     {
         Vector3 velocity = Vector3.zero;
         if (tran == null)
@@ -209,7 +216,7 @@ public abstract class BaseMoveController : Photon.MonoBehaviour
         return velocity;
     }
 
-    public float GetVelocity(Transform tran = null)
+    public virtual float GetVelocity(Transform tran = null)
     {
         float v = 0;
         if (tran == null)
@@ -248,7 +255,7 @@ public abstract class BaseMoveController : Photon.MonoBehaviour
     {
         //Debug.Log("Move");
         Vector3 moveDirection = myTran.TransformDirection(vector).normalized;
-        MoveWorld(moveDirection, speed, limit);
+        MoveWorld(moveDirection, speed, limit, false, false);
     }
 
     protected void MoveWorld(Vector3 worldVector, float speed, float limit = 0, bool isOutForce = true, bool isSendRPC = true)

@@ -69,8 +69,10 @@ public class PlayerController : MoveOfCharacter
         SetWeapon();
     }
 
-    void Update()
+    protected override void Update()
     {
+        base.Update();
+
         if (targetTran == null || targetStatus == null)
         {
             SearchTarget();

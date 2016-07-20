@@ -36,8 +36,10 @@ public class PhysicsBulletController : MoveOfVelocity
         SetSpeed(firstSpeed);
     }
 
-    protected virtual void Update()
+    protected override void Update()
     {
+        base.Update();
+
         //稼働時間
         activeTime += Time.deltaTime;
         if (activeTime >= 10) base.DestoryObject();

@@ -62,8 +62,10 @@ public class NpcController : MoveOfCharacter
         StartCoroutine(Attack());
     }
 
-    void Update()
+    protected override void Update()
     {
+        base.Update();
+
         preBoostTime += Time.deltaTime;
         quickTurnTime += Time.deltaTime;
 

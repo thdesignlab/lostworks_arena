@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MissileController : PhysicsBulletController
+public class PhysicsTrackingBulletController : PhysicsBulletController
 {
     [SerializeField]
     private float speed;  //巡航速度
@@ -56,6 +56,9 @@ public class MissileController : PhysicsBulletController
     protected override void OnCollisionEnter(Collision other)
     {
         if (IsSafety(other.gameObject)) return;
+
+        //同じタグはスルー
+        if (other.gameObject.tag == myTran.tag) return;
         isHit = true;
 
         //ダメージを与える

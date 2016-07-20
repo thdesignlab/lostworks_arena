@@ -549,7 +549,6 @@ public class PlayerStatus : Photon.MonoBehaviour {
     }
 
     //回転制限(自分専用)
-    private bool isInterfareTurn = false;
     public void InterfareTurn(float rate, float limit)
     {
         StartCoroutine(CheckInterfareTurn(rate, limit));
@@ -557,7 +556,6 @@ public class PlayerStatus : Photon.MonoBehaviour {
 
     IEnumerator CheckInterfareTurn(float rate, float limit)
     {
-        isInterfareTurn = true;
         boostTurnSpeed = turnSpeed * rate;
         if (rate < 1) turnSpeed *= rate;
 
@@ -565,7 +563,6 @@ public class PlayerStatus : Photon.MonoBehaviour {
 
         boostTurnSpeed = defaultBoostTurnSpeed;
         turnSpeed = defaultTurnSpeed;
-        isInterfareTurn = true;
     }
 
     //無敵時間延長(自分専用)

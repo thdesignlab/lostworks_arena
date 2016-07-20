@@ -93,6 +93,21 @@ namespace Common
 
     public static class Func
     {
+        //リソース取得
+        public static string GetResourceBullet(string name)
+        {
+            return Common.CO.RESOURCE_BULLET + name;
+        }
+        public static string GetResourceEffect(string name)
+        {
+            return Common.CO.RESOURCE_EFFECT + name;
+        }
+        public static string GetResourceWeapon(string name)
+        {
+            return Common.CO.RESOURCE_WEAPON + name;
+        }
+
+        //物理弾チェック
         public static bool IsPhysicsBullet(string tag)
         {
             bool isPhysicsBullet = false;

@@ -125,8 +125,8 @@ public class PlayerSetting : Photon.MonoBehaviour
         int weaponViewId = PhotonView.Get(ob).viewID;
         if (!isNpc) weaponMap[partsViewId] = weaponViewId;
         //Debug.Log(partsViewId.ToString()+" : "+ weaponViewId.ToString());
-        //object[] args = new object[] { partsViewId, weaponViewId };
-        //photonView.RPC("SetParentRPC", PhotonTargets.All, args);
+        object[] args = new object[] { partsViewId, weaponViewId };
+        photonView.RPC("SetParentRPC", PhotonTargets.Others, args);
         ob.transform.parent = parts.transform;
 
         //装備再セット
@@ -173,16 +173,19 @@ public class PlayerSetting : Photon.MonoBehaviour
     }
     private void SetWeaponParent()
     {
-        photonView.RPC("SetWeaponParentRPC", PhotonTargets.All);
+        photonView.RPC("SetWeaponParentRPC", PhotonTargets.Others);
     }
     [PunRPC]
     private void SetWeaponParentRPC()
     {
         //Debug.Log("[SetWeaponParent]"+myTran.name+": "+weaponMap.Count.ToString());
-        foreach (int key in weaponMap.Keys)
+        if (photonView.isMine)
         {
-            object[] args = new object[] { key, weaponMap[key] };
-            photonView.RPC("SetParentRPC", PhotonTargets.All, args);
+            foreach (int key in weaponMap.Keys)
+            {
+                object[] args = new object[] { key, weaponMap[key] };
+                photonView.RPC("SetParentRPC", PhotonTargets.Others, args);
+            }
         }
     }
 
@@ -212,7 +215,7 @@ public class PlayerSetting : Photon.MonoBehaviour
     [PunRPC]
     private void SetCustomStatusRPC()
     {
-        if (isCustomEnd)
+        if (photonView.isMine && isCustomEnd)
         {
             photonView.RPC("CustomEndRPC", PhotonTargets.Others);
         }

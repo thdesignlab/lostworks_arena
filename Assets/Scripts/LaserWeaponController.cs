@@ -20,10 +20,12 @@ public class LaserWeaponController : WeaponController
     [SerializeField]
     private float turnSpeedRate;   //回転速度制限
 
+    private float laserMazzleMaxScale = 2.5f;
+
     private Transform muzzle;
     private GameObject laser;
     private Transform laserTran;
-    //private Transform laserEndTran;
+    private Transform laserMuzzle;
     private CapsuleCollider laserCollider;
     
     //private AimingController aimingCtrl;
@@ -40,19 +42,19 @@ public class LaserWeaponController : WeaponController
     {
         base.Awake();
 
-        //発射口取得
-        foreach (Transform child in myTran)
-        {
-            if (child.tag == Common.CO.TAG_MUZZLE)
-            {
-                muzzle = child;
-                break;
-            }
-        }
-
         if (photonView.isMine)
         {
             StartCoroutine(SetPlayerStatus());
+
+            //発射口取得
+            foreach (Transform child in myTran)
+            {
+                if (child.tag == Common.CO.TAG_MUZZLE)
+                {
+                    muzzle = child;
+                    break;
+                }
+            }
 
             //レーザー生成
             laser = PhotonNetwork.Instantiate(Common.CO.RESOURCE_BULLET + laserPrefab.name, muzzle.position, muzzle.rotation, 0);
@@ -61,6 +63,14 @@ public class LaserWeaponController : WeaponController
             laserTran = laser.transform;
             laserTran.parent = muzzle;
             laserTran.localPosition = Vector3.zero;
+            foreach (Transform child in laserTran)
+            {
+                if (child.tag == Common.CO.TAG_MUZZLE)
+                {
+                    laserMuzzle = child;
+                    break;
+                }
+            }
 
             //InitLaserRPC();
             //photonView.RPC("InitLaserRPC", PhotonTargets.All);
@@ -71,15 +81,18 @@ public class LaserWeaponController : WeaponController
         else
         {
             //レーザー初期設定
-            photonView.RPC("SetInitRPC", PhotonTargets.All);
+            photonView.RPC("SetInitRPC", PhotonTargets.Others);
         }
     }
 
     [PunRPC]
     private void SetInitRPC()
     {
-        object[] args = new object[] { muzzleViewId, laserViewId };
-        photonView.RPC("InitLaserRPC", PhotonTargets.All, args);
+        if (photonView.isMine)
+        {
+            object[] args = new object[] { muzzleViewId, laserViewId };
+            photonView.RPC("InitLaserRPC", PhotonTargets.Others, args);
+        }
     }
 
     [PunRPC]
@@ -227,10 +240,8 @@ public class LaserWeaponController : WeaponController
 
     private void SetLaserWidth(float width)
     {
-        //Debug.Log(width);
         laserTran.localScale = new Vector3(width, width, laserTran.localScale.z);
-        //laser.SetWidth(width, width);
-        //laserCollider.radius = Mathf.Sqrt(width);
+        laserMuzzle.localScale = Vector3.Lerp(Vector3.one, Vector3.one * laserMazzleMaxScale, width / effectiveWidth);
     }
 
     public override bool IsEnableFire()
