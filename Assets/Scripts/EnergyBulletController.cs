@@ -16,6 +16,8 @@ public class EnergyBulletController : MoveOfCharacter
     protected bool isHit = false;
 
     protected Transform targetTran;
+    protected PlayerStatus targetStatus;
+
     private float totalDamage = 0;
     private int sendMinDamage = 5;
 
@@ -71,7 +73,12 @@ public class EnergyBulletController : MoveOfCharacter
             if (hitObj.CompareTag("Player"))
             {
                 //プレイヤー
-                hitObj.GetComponent<PlayerStatus>().AddDamage(damage);
+                PlayerStatus status = targetStatus;
+                if (hitObj != targetTran)
+                {
+                    status = hitObj.GetComponent<PlayerStatus>();
+                }
+                status.AddDamage(damage);
             }
         }
     }
@@ -126,17 +133,18 @@ public class EnergyBulletController : MoveOfCharacter
     public void SetTarget(Transform target)
     {
         if (target == null) return;
-        object[] args = new object[] { target.name };
-        photonView.RPC("SetTargetRPC", PhotonTargets.All, args);
+        //object[] args = new object[] { target.name };
+        photonView.RPC("SetTargetRPC", PhotonTargets.All, PhotonView.Get(target.gameObject).viewID);
     }
 
     [PunRPC]
-    protected virtual void SetTargetRPC(string targetName)
+    protected virtual void SetTargetRPC(int targetViewId)
     {
-        GameObject targetObj = GameObject.Find(targetName);
-        if (targetObj != null)
+        PhotonView targetView = PhotonView.Find(targetViewId);
+        if (targetView != null)
         {
-            targetTran = targetObj.transform;
+            targetTran = targetView.gameObject.transform;
+            targetStatus = targetView.gameObject.GetComponent<PlayerStatus>();
         }
     }
 }

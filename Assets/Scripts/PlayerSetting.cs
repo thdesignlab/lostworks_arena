@@ -15,8 +15,6 @@ public class PlayerSetting : Photon.MonoBehaviour
 
     public bool isNpc = false;
 
-    const string WEAPON_FOLDER = "Weapon/";
-
     private GameController gameCtrl;
     private WeaponStore weaponStroe;
 
@@ -118,7 +116,7 @@ public class PlayerSetting : Photon.MonoBehaviour
             PhotonNetwork.Destroy(child.gameObject);
         }
 
-        GameObject ob = PhotonNetwork.Instantiate(WEAPON_FOLDER + weapon.name, parts.position, parts.rotation, 0);
+        GameObject ob = PhotonNetwork.Instantiate(Common.Func.GetResourceWeapon(weapon.name), parts.position, parts.rotation, 0);
 
         //装備をPartsの子に設定
         int partsViewId = PhotonView.Get(parts.gameObject).viewID;

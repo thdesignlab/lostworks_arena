@@ -8,15 +8,12 @@ public class AimingController: BaseMoveController
 
     private float aimSpeed = 60;
 
-    private bool isNpc = false;
-
-    void Update()
+    protected override void Update()
     {
         if (targetTran == null || status == null) return;
 
-        if (status.IsLocked() || isNpc)
+        if (status.IsLocked() || status.IsNpc())
         {
-
             base.SetAngle(targetTran, aimSpeed);
         }
         else
@@ -32,7 +29,6 @@ public class AimingController: BaseMoveController
         status = target.GetComponent<PlayerStatus>();
         if (status == null) return;
         targetTran = target;
-        isNpc = status.IsNpc();
     }
 
     //protected override void Move(Vector3 vector, float speed, float limit = 0){}

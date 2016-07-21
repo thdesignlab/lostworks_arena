@@ -9,6 +9,8 @@ public class PhysicsBulletController : MoveOfVelocity
     protected int damage; //ダメージ量
     [SerializeField]
     protected float stuckTime; //スタック時間
+    [SerializeField]
+    protected float angleSpeed; //回転速度
 
     protected int playerId;
     protected int ownerId;
@@ -18,6 +20,7 @@ public class PhysicsBulletController : MoveOfVelocity
     protected bool isHit = false;
 
     protected Transform targetTran;
+    protected PlayerStatus targetStatus;
 
     protected override void Awake()
     {
@@ -43,6 +46,11 @@ public class PhysicsBulletController : MoveOfVelocity
         //稼働時間
         activeTime += Time.deltaTime;
         if (activeTime >= 10) base.DestoryObject();
+
+        if (angleSpeed > 0)
+        {
+            myTran.Rotate(Vector3.forward, angleSpeed * Time.deltaTime);
+        }
     }
 
     //衝突時処理
@@ -75,12 +83,16 @@ public class PhysicsBulletController : MoveOfVelocity
                 if (dmg == 0) dmg = damage;
 
                 //プレイヤーステータス
-                PlayerStatus targetStatus = hitObj.GetComponent<PlayerStatus>();
-                targetStatus.AddDamage(damage);
+                PlayerStatus status = targetStatus;
+                if (hitObj != targetTran)
+                {
+                    status = hitObj.GetComponent<PlayerStatus>();
+                }
+                status.AddDamage(damage);
 
                 if (stuckTime > 0)
                 {
-                    targetStatus.AccelerateRunSpeed(0, stuckTime);
+                    status.AccelerateRunSpeed(0, stuckTime);
                 }
 
                 //ノックバック
@@ -120,17 +132,18 @@ public class PhysicsBulletController : MoveOfVelocity
     public void SetTarget(Transform target)
     {
         if (target == null) return;
-        object[] args = new object[] { target.name }; 
-        photonView.RPC("SetTargetRPC", PhotonTargets.All, args);
+        //object[] args = new object[] { PhotonView.Get(target.gameObject).viewID }; 
+        photonView.RPC("SetTargetRPC", PhotonTargets.All, PhotonView.Get(target.gameObject).viewID);
     }
 
     [PunRPC]
-    protected virtual void SetTargetRPC(string targetName)
+    protected virtual void SetTargetRPC(int targetViewId)
     {
-        GameObject targetObj = GameObject.Find(targetName);
-        if (targetObj != null)
+        PhotonView targetView = PhotonView.Find(targetViewId);
+        if (targetView != null)
         {
-            targetTran = targetObj.transform;
+            targetTran = targetView.gameObject.transform;
+            targetStatus = targetView.gameObject.GetComponent<PlayerStatus>();
         }
     }
 }

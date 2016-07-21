@@ -9,7 +9,6 @@ public class EnergyTrackingBulletController : EnergyBulletController
     private bool isNeedLock = false;    //誘導に要ロック(画面に捕らえている)
 
     private bool enableSetAngle = true;
-    private PlayerStatus targetStatus;
 
     protected override void Update()
     {
@@ -20,9 +19,9 @@ public class EnergyTrackingBulletController : EnergyBulletController
         if (isNeedLock)
         {
             enableSetAngle = false;
-            if (targetStatus != null)
+            if (base.targetStatus != null)
             {
-                enableSetAngle = targetStatus.IsLocked();
+                enableSetAngle = base.targetStatus.IsLocked();
             }
         }
 
@@ -30,17 +29,6 @@ public class EnergyTrackingBulletController : EnergyBulletController
         if (enableSetAngle)
         {
             base.SetAngle(base.targetTran, turnSpeed);
-        }
-    }
-
-    [PunRPC]
-    protected override void SetTargetRPC(string targetName)
-    {
-        GameObject targetObj = GameObject.Find(targetName);
-        if (targetObj != null)
-        {
-            base.targetTran = targetObj.transform;
-            targetStatus = targetObj.GetComponent<PlayerStatus>();
         }
     }
 }

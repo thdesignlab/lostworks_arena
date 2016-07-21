@@ -238,7 +238,6 @@ public class GameController : Photon.MonoBehaviour
 
     public void SetTarget(Transform target)
     {
-        //Debug.Log("SetTarget:"+ target.name);
         targetTran = target;
     }
     public Transform GetTarget()

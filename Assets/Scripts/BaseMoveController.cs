@@ -6,6 +6,7 @@ public abstract class BaseMoveController : Photon.MonoBehaviour
     protected Transform myTran;
     protected Rigidbody myRigidbody;
     protected PhotonTransformView ptv;
+    protected WeaponController weaponCtrl;
 
     [SerializeField]
     protected bool isCheckGrounded = false;
@@ -13,9 +14,7 @@ public abstract class BaseMoveController : Photon.MonoBehaviour
     protected float glideGravityRate = 1;
     [SerializeField]
     protected bool isLockOn = false;
-    [SerializeField]
-    protected float preserveSpeedTime = 0;
-    protected bool isPreserveSpeed = false;
+
     protected float leftPreserveSpeedTime = 0;
 
     //地面接地判定用
@@ -35,20 +34,29 @@ public abstract class BaseMoveController : Photon.MonoBehaviour
     protected float knockBackBaseTime = 0.2f;
     protected bool isKnockBack = false;
 
+    protected bool isNpc = false;
+
     protected virtual void Awake()
     {
         myTran = transform;
         myRigidbody = GetComponent<Rigidbody>();
         ptv = GetComponent<PhotonTransformView>();
+        weaponCtrl = GetComponent<WeaponController>();
     }
 
     protected virtual void Start()
     {
-        //地面接地判定
-        StartCoroutine(checkGrounded());
+        if (photonView.isMine)
+        {
+            //地面接地判定
+            StartCoroutine(checkGrounded());
+        }
 
-        //移動中判定
-        StartCoroutine(CheckMooving());
+        if (myTran.tag == "Player")
+        {
+            //移動中判定
+            StartCoroutine(CheckMooving());
+        }
     }
 
     protected virtual void Update()
@@ -176,9 +184,18 @@ public abstract class BaseMoveController : Photon.MonoBehaviour
 
     private Vector3 DifferentialCorrection(Transform targetTran)
     {
+        //CheckNpc();
+
         float distance = Vector3.Distance(targetTran.position, myTran.position);
-        float myVelocity = GetVelocity(myTran);
-        Vector3 targetVelocityVector = GetVelocityVector(targetTran);
+        float myVelocity = GetVelocity();
+        BaseMoveController targetCtrl = targetTran.gameObject.GetComponent<BaseMoveController>();
+        Vector3 targetVelocityVector = Vector3.zero;
+        if (targetCtrl != null)
+        {
+            targetVelocityVector = targetCtrl.GetVelocityVector();
+        }
+        //if (!isNpc) Debug.Log(targetTran.name + " >> v=" + targetVelocityVector.ToString() + " / distance: " + distance.ToString() + " / myVelocity: " + myVelocity.ToString());
+
         if (distance == 0 || myVelocity == 0)
         {
             return targetTran.position;
@@ -187,52 +204,46 @@ public abstract class BaseMoveController : Photon.MonoBehaviour
         //ターゲットまでの到達時間
         float arriveTime = distance / myVelocity;
         if (arriveTime >= 1.5f) return Vector3.zero;
+        //if (!isNpc) Debug.Log("arriveTime=" + arriveTime.ToString());
 
         //到達するまでにターゲットが移動するベクトル
         Vector3 targetMoveVector = targetVelocityVector * arriveTime;
+        //if (!isNpc) Debug.Log("moveVector=" + targetMoveVector.ToString());
 
         return targetMoveVector;
     }
-
-    public virtual Vector3 GetVelocityVector(Transform tran = null)
+    private void DebugLog(Vector3 vec)
     {
-        Vector3 velocity = Vector3.zero;
-        if (tran == null)
+        if (myTran.tag == "Weapon")
         {
-            if (moveDiffVector != Vector3.zero || flameTime > 0)
-            {
-                velocity = moveDiffVector / flameTime;
-            }
+            Debug.Log(myTran.name+" : "+vec);
         }
-        else
+    }
+
+    public virtual Vector3 GetVelocityVector()
+    {
+        //Debug.Log("[Parent]GetVelocityVector");
+
+        Vector3 velocity = Vector3.zero;
+        if (moveDiffVector != Vector3.zero && flameTime > 0)
         {
-            BaseMoveController ctrl = tran.GetComponent<BaseMoveController>();
-            if (ctrl != null)
-            {
-                velocity = ctrl.GetVelocityVector();
-            }
+            velocity = moveDiffVector / flameTime;
         }
 
         return velocity;
     }
 
-    public virtual float GetVelocity(Transform tran = null)
+    public virtual float GetVelocity()
     {
+        //Debug.Log("parent GetVelocity");
         float v = 0;
-        if (tran == null)
+        if (myTran.tag == Common.CO.TAG_WEAPON && weaponCtrl != null)
         {
-            v = GetVelocityVector().magnitude;
+            v = weaponCtrl.GetBulletSpeed();
         }
         else
         {
-            if (tran.tag == Common.CO.TAG_WEAPON)
-            {
-                v = tran.GetComponent<WeaponController>().GetBulletSpeed();
-            }
-            else
-            {
-                v = GetVelocityVector(tran).magnitude;
-            }
+            v = GetVelocityVector().magnitude;
         }
 
         return v;
@@ -263,6 +274,8 @@ public abstract class BaseMoveController : Photon.MonoBehaviour
         Vector3 moveDirection = worldVector.normalized * speed;
         if (photonView.isMine)
         {
+            if (!isOutForce) leftPreserveSpeedTime = 0;
+
             if (limit > 0)
             {
                 StartCoroutine(Boost(moveDirection, limit, isOutForce));
@@ -369,4 +382,10 @@ public abstract class BaseMoveController : Photon.MonoBehaviour
         //子で実装(abstarctにする場合継承しているClass注意)
         return;
     }        
+
+    protected void CheckNpc()
+    {
+        PlayerStatus status = myTran.root.gameObject.GetComponent<PlayerStatus>();
+        if (status != null) isNpc = status.IsNpc();
+    }
 }

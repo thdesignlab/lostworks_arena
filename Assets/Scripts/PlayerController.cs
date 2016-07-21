@@ -8,6 +8,12 @@ public class PlayerController : MoveOfCharacter
     [SerializeField]
     private GameObject boostEffect;
 
+    [SerializeField]
+    protected float attackPreserveSpeedTime = 0;    //攻撃時速度維持時間
+    [SerializeField]
+    protected float movePreserveSpeedTime = 0;  //移動終了時速度維持時間
+
+    private GameController gameCtrl;
     private PlayerMotionController motionCtrl;
     private Animator animator;
     private PlayerStatus status;
@@ -35,84 +41,95 @@ public class PlayerController : MoveOfCharacter
     protected override void Awake()
     {
         base.Awake();
-        motionCtrl = GetComponent<PlayerMotionController>();
-        animator = base.myTran.FindChild(Common.CO.PARTS_BODY).gameObject.GetComponent<Animator>();
-        status = GetComponent<PlayerStatus>();
 
-        leftHandBtn = GameObject.Find(Common.CO.SCREEN_CANVAS + Common.CO.BUTTON_LEFT_ATTACK).GetComponent<Button>();
-        rightHandBtn = GameObject.Find(Common.CO.SCREEN_CANVAS + Common.CO.BUTTON_RIGHT_ATTACK).GetComponent<Button>(); ;
-        shoulderBtn = GameObject.Find(Common.CO.SCREEN_CANVAS + Common.CO.BUTTON_SHOULDER_ATTACK).GetComponent<Button>(); ;
-        subBtn = GameObject.Find(Common.CO.SCREEN_CANVAS + Common.CO.BUTTON_USE_SUB).GetComponent<Button>(); ;
-
-        GameObject autoLockObj = GameObject.Find(Common.CO.SCREEN_CANVAS + Common.CO.BUTTON_AUTO_LOCK);
-        if (autoLockObj != null)
+        if (photonView.isMine)
         {
-            //autoLockButton = autoLockObj.GetComponent<Button>();
-            autoLockText = autoLockObj.transform.FindChild("Text").GetComponent<Text>();
-        }
+            gameCtrl = GameObject.Find("GameController").GetComponent<GameController>();
+            motionCtrl = GetComponent<PlayerMotionController>();
+            animator = base.myTran.FindChild(Common.CO.PARTS_BODY).gameObject.GetComponent<Animator>();
+            status = GetComponent<PlayerStatus>();
 
-        switch (Application.platform)
-        {
-            case RuntimePlatform.Android:
-            case RuntimePlatform.IPhonePlayer:
-                isPC = false;
-                break;
-            default:
-                isPC = true;
-                break;
+            leftHandBtn = GameObject.Find(Common.CO.SCREEN_CANVAS + Common.CO.BUTTON_LEFT_ATTACK).GetComponent<Button>();
+            rightHandBtn = GameObject.Find(Common.CO.SCREEN_CANVAS + Common.CO.BUTTON_RIGHT_ATTACK).GetComponent<Button>(); ;
+            shoulderBtn = GameObject.Find(Common.CO.SCREEN_CANVAS + Common.CO.BUTTON_SHOULDER_ATTACK).GetComponent<Button>(); ;
+            subBtn = GameObject.Find(Common.CO.SCREEN_CANVAS + Common.CO.BUTTON_USE_SUB).GetComponent<Button>(); ;
+
+            GameObject autoLockObj = GameObject.Find(Common.CO.SCREEN_CANVAS + Common.CO.BUTTON_AUTO_LOCK);
+            if (autoLockObj != null)
+            {
+                //autoLockButton = autoLockObj.GetComponent<Button>();
+                autoLockText = autoLockObj.transform.FindChild("Text").GetComponent<Text>();
+            }
+
+            switch (Application.platform)
+            {
+                case RuntimePlatform.Android:
+                case RuntimePlatform.IPhonePlayer:
+                    isPC = false;
+                    break;
+                default:
+                    isPC = true;
+                    break;
+            }
         }
     }
 
     protected override void Start()
     {
         base.Start();
-        SetWeapon();
+        if (photonView.isMine)
+        {
+            SetWeapon();
+        }
     }
 
     protected override void Update()
     {
         base.Update();
 
-        if (targetTran == null || targetStatus == null)
+        if (photonView.isMine)
         {
-            SearchTarget();
-        }
-        else
-        {
-            if (targetTran != null && isAutoLock && targetStatus.IsLocked())
+            if (targetTran == null || targetStatus == null)
             {
-                base.SetAngle(targetTran, status.turnSpeed, new Vector3(1, 0, 1));
+                SearchTarget();
             }
-        }
+            else
+            {
+                if (targetTran != null && isAutoLock && targetStatus.IsLocked())
+                {
+                    base.SetAngle(targetTran, status.turnSpeed, new Vector3(1, 0, 1));
+                }
+            }
 
-        if (isPC)
-        {
-            float x = Input.GetAxis("Horizontal");
-            float y = Input.GetAxis("Vertical");
-            bool j = Input.GetButtonDown("Jump");
-            if (j)
+            if (isPC)
             {
-                if (x > 0)
+                float x = Input.GetAxis("Horizontal");
+                float y = Input.GetAxis("Vertical");
+                bool j = Input.GetButtonDown("Jump");
+                if (j)
                 {
-                    x = 1;
+                    if (x > 0)
+                    {
+                        x = 1;
+                    }
+                    else if (x < 0)
+                    {
+                        x = -1;
+                    }
+                    if (y > 0)
+                    {
+                        y = 1;
+                    }
+                    else if (y < 0)
+                    {
+                        y = -1;
+                    }
+                    Jump((int)x, (int)y);
                 }
-                else if (x < 0)
+                else if (x != 0 || y != 0)
                 {
-                    x = -1;
+                    Run(x, y);
                 }
-                if (y > 0)
-                {
-                    y = 1;
-                }
-                else if (y < 0)
-                {
-                    y = -1;
-                }
-                Jump((int)x, (int)y);
-            }
-            else if (x != 0 || y != 0)
-            {
-                Run(x, y);
             }
         }
     }
@@ -173,7 +190,7 @@ public class PlayerController : MoveOfCharacter
     {
         if (targetTran != null) return;
 
-        Transform tran = GameObject.Find("GameController").GetComponent<GameController>().GetTarget();
+        Transform tran = gameCtrl.GetTarget();
         
         if (SetTarget(tran)) return;
 
@@ -192,6 +209,8 @@ public class PlayerController : MoveOfCharacter
         if (tran == null) return false;
         targetTran = tran;
         targetStatus = tran.gameObject.GetComponent<PlayerStatus>();
+        gameCtrl.SetTarget(tran);
+        SetWeapon();
         return true;
     }
 
@@ -363,7 +382,7 @@ public class PlayerController : MoveOfCharacter
     {
         if (!photonView.isMine) return;
         if (rightHandCtrl == null) return;
-        base.PreserveSpeed();
+        base.PreserveSpeed(attackPreserveSpeedTime, status.runSpeed);
         rightHandCtrl.Fire(targetTran);
     }
 
@@ -371,7 +390,7 @@ public class PlayerController : MoveOfCharacter
     {
         if (!photonView.isMine) return;
         if (leftHandCtrl == null) return;
-        base.PreserveSpeed();
+        base.PreserveSpeed(attackPreserveSpeedTime, status.runSpeed);
         leftHandCtrl.Fire(targetTran);
     }
 
@@ -379,7 +398,7 @@ public class PlayerController : MoveOfCharacter
     {
         if (!photonView.isMine) return;
         if (shoulderCtrl == null) return;
-        base.PreserveSpeed();
+        base.PreserveSpeed(attackPreserveSpeedTime, status.runSpeed);
         shoulderCtrl.Fire(targetTran);
     }
 
@@ -387,7 +406,6 @@ public class PlayerController : MoveOfCharacter
     {
         if (!photonView.isMine) return;
         if (subCtrl == null) return;
-        base.PreserveSpeed();
         subCtrl.Fire(targetTran);
     }
 
@@ -497,7 +515,7 @@ public class PlayerController : MoveOfCharacter
         if (isSwipe)
         {
             //スワイプ終了時現在の速度維持
-            base.PreserveSpeed();
+            base.PreserveSpeed(movePreserveSpeedTime, status.runSpeed);
         }
         isTouchEnd = true;
         isSwipe = false;

@@ -31,7 +31,11 @@ public class MoveOfCharacter : BaseMoveController
     protected override void Start()
     {
         base.Start();
-        StartCoroutine(MoveRoutine());
+
+        if (photonView.isMine)
+        {
+            StartCoroutine(MoveRoutine());
+        }
     }
 
     //移動は全てここで行う
@@ -92,29 +96,37 @@ public class MoveOfCharacter : BaseMoveController
         moveVector += v;
     }
 
-    protected void PreserveSpeed(float time = 0)
+    protected void PreserveSpeed(float time = 0, float maxSpeed = 0)
     {
-        if (time == 0) time = base.preserveSpeedTime;
         if (time == 0) return;
-        if (base.isPreserveSpeed)
+        if (base.leftPreserveSpeedTime > 0)
         {
             leftPreserveSpeedTime = time;
             return;
         }
-        StartCoroutine(PreserveSpeedProccess(time));
+        StartCoroutine(PreserveSpeedProccess(time, maxSpeed));
     }
 
-    IEnumerator PreserveSpeedProccess(float time)
+    IEnumerator PreserveSpeedProccess(float time, float maxSpeed = 0)
     {
-        base.isPreserveSpeed = true;
         Vector3 v = new Vector3(moveDiffVector.x, 0, moveDiffVector.z);
+        if (v.magnitude == 0)
+        {
+            base.leftPreserveSpeedTime = 0;
+            yield break;
+        }
         base.leftPreserveSpeedTime = time;
+
+        if (maxSpeed > 0 && v.magnitude > maxSpeed * Time.deltaTime)
+        {
+            v = v.normalized * maxSpeed * Time.deltaTime;
+        }
         for (;;)
         {
-            leftPreserveSpeedTime -= Time.deltaTime;
-            if (!base.isPreserveSpeed || leftPreserveSpeedTime <= 0)
+            base.leftPreserveSpeedTime -= Time.deltaTime;
+            if (base.leftPreserveSpeedTime <= 0)
             {
-                base.isPreserveSpeed = false;
+                base.leftPreserveSpeedTime = 0;
                 yield break;
             }
             MoveProcess(v);
@@ -122,27 +134,16 @@ public class MoveOfCharacter : BaseMoveController
         }
     }
 
-    public override Vector3 GetVelocityVector(Transform tran = null)
+    public override Vector3 GetVelocityVector()
     {
         Vector3 velocity = Vector3.zero;
-        if (tran == null)
+        if (charaCtrl != null && photonView.isMine)
         {
-            if (charaCtrl != null)
-            {
-                velocity = charaCtrl.velocity;
-            }
-            else
-            {
-                velocity = base.GetVelocityVector();
-            }
+            velocity = charaCtrl.velocity;
         }
         else
         {
-            BaseMoveController ctrl = tran.GetComponent<BaseMoveController>();
-            if (ctrl != null)
-            {
-                velocity = ctrl.GetVelocityVector();
-            }
+            velocity = base.GetVelocityVector();
         }
 
         return velocity;

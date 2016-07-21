@@ -20,7 +20,11 @@ public class MoveOfVelocity : BaseMoveController
     protected override void Start()
     {
         base.Start();
-        StartCoroutine(AddGravity());
+
+        if (photonView.isMine)
+        {
+            StartCoroutine(AddGravity());
+        }
     }
 
     IEnumerator AddGravity()
@@ -116,27 +120,38 @@ public class MoveOfVelocity : BaseMoveController
         base.myRigidbody.velocity = myTran.forward * sp;
     }
 
-    protected void PreserveSpeed(float time = 0)
+    protected void PreserveSpeed(float time = 0, float maxSpeed = 0)
     {
-        if (time == 0) time = base.preserveSpeedTime;
         if (time == 0) return;
-        if (base.isPreserveSpeed)
+        if (base.leftPreserveSpeedTime > 0)
         {
             base.leftPreserveSpeedTime = time;
+            return;
         }
-        StartCoroutine(PreserveSpeedProccess(time));
+        StartCoroutine(PreserveSpeedProccess(time, maxSpeed));
     }
-    IEnumerator PreserveSpeedProccess(float time)
+
+    IEnumerator PreserveSpeedProccess(float time, float maxSpeed = 0)
     {
-        base.isPreserveSpeed = true;
-        Vector3 v = base.myRigidbody.velocity;
+        Vector3 v = new Vector3(base.myRigidbody.velocity.x, 0, base.myRigidbody.velocity.y);
+        if (v.magnitude == 0)
+        {
+            base.leftPreserveSpeedTime = 0;
+            yield break;
+        }
         base.leftPreserveSpeedTime = time;
+
+        if (maxSpeed > 0 && v.magnitude > maxSpeed)
+        {
+            v = v.normalized * maxSpeed;
+        }
+
         for (;;)
         {
             leftPreserveSpeedTime -= Time.deltaTime;
-            if (!base.isPreserveSpeed || leftPreserveSpeedTime <= 0)
+            if (base.leftPreserveSpeedTime <= 0)
             {
-                base.isPreserveSpeed = false;
+                base.leftPreserveSpeedTime = 0;
                 yield break;
             }
             base.myRigidbody.velocity = new Vector3(v.x, base.myRigidbody.velocity.y, v.z);
@@ -144,22 +159,10 @@ public class MoveOfVelocity : BaseMoveController
         }
     }
 
-    public override Vector3 GetVelocityVector(Transform tran = null)
+    public override Vector3 GetVelocityVector()
     {
         Vector3 velocity = Vector3.zero;
-        if (tran == null)
-        {
-            velocity = base.myRigidbody.velocity;
-        }
-        else
-        {
-            BaseMoveController ctrl = tran.GetComponent<BaseMoveController>();
-            if (ctrl != null)
-            {
-                velocity = ctrl.GetVelocityVector();
-            }
-        }
-
+        velocity = base.myRigidbody.velocity;
         return velocity;
     }
 }
