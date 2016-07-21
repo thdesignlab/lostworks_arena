@@ -532,7 +532,7 @@ public class PlayerController : MoveOfCharacter
 
         float diffX = e.Input.ScreenPosition.x - touchPosX;
         float diffY = e.Input.ScreenPosition.y - touchPosY;
-        float diffLimit = 5.0f;
+        float diffLimit = 10.0f;
         if (Mathf.Abs(diffX) < diffLimit && Mathf.Abs(diffY) < diffLimit) return;
         
         isTouchStart = false;
