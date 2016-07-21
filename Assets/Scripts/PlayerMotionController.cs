@@ -5,6 +5,8 @@ public class PlayerMotionController : MonoBehaviour
 {
     [SerializeField]
     private Animator animator;
+    [SerializeField]
+    private GameObject boostEffect;
 
     //private float runAnimationVelocity = 0.1f;  //モーションを適用するスピード
     //private float backAnimationVelocity = -0.3f;  //Backモーションに移行するスピード
@@ -15,6 +17,8 @@ public class PlayerMotionController : MonoBehaviour
     //private Rigidbody myRigidbody;
     private PlayerController playerCtrl;
     private MeshRenderer shadow;
+    private Transform boostEffectTran;
+    private float leftBoostEffectTime = 0;
 
     void Awake()
     {
@@ -28,12 +32,52 @@ public class PlayerMotionController : MonoBehaviour
         {
             shadow = shadowTran.GetComponent<MeshRenderer>();
         }
+
+        if (boostEffect != null)
+        {
+            boostEffectTran = boostEffect.transform;
+        }
     }
 
     void Start()
     {
-        //ジャンプモーション
-        StartCoroutine(CheckJumpMotion());
+        ////ジャンプモーションチェック
+        //StartCoroutine(CheckJumpMotion());
+    }
+
+    void Update()
+    {
+        //ジャンプモーションチェック
+        CheckJumpMotion();
+
+        //攻撃中チェック
+        if (IsAttack())
+        {
+            //攻撃中は体を正面に向ける
+            SetBodyAngle();
+        }
+    }
+
+    public void SetBodyAngle(float x = 0, float y = 0)
+    {
+        if (x == 0 && y == 0)
+        {
+            //体を正面に向ける
+            myBodyTran.rotation = myPlayerTran.rotation;
+        }
+        else
+        {
+            //体を移動方向に向ける
+            //if (y < backAnimationVelocity)
+            //{
+            //    //後退時
+            //    motionName = Common.CO.MOTION_BACK;
+            //    x *= -1;
+            //    y *= -1;
+            //}
+            Vector3 lookPos = myBodyTran.root.forward * y + myBodyTran.root.right * x;
+            myBodyTran.LookAt(myBodyTran.position + lookPos);
+        }
     }
 
     //### 走る ###
@@ -56,27 +100,6 @@ public class PlayerMotionController : MonoBehaviour
         if (!animator.GetBool(motionName))
         {
             InitRunMotion(motionName);
-        }
-    }
-    public void SetBodyAngle(float x = 0, float y = 0)
-    {
-        if (x == 0 && y == 0)
-        {
-            //体を正面に向ける
-            myBodyTran.rotation = myPlayerTran.rotation;
-        }
-        else
-        {
-            //体を移動方向に向ける
-            //if (y < backAnimationVelocity)
-            //{
-            //    //後退時
-            //    motionName = Common.CO.MOTION_BACK;
-            //    x *= -1;
-            //    y *= -1;
-            //}
-            Vector3 lookPos = myBodyTran.root.forward * y + myBodyTran.root.right * x;
-            myBodyTran.LookAt(myBodyTran.position + lookPos);
         }
     }
 
@@ -127,6 +150,40 @@ public class PlayerMotionController : MonoBehaviour
         }
     }
 
+    //### ブースト ###
+
+    public void StartBoostEffect(float limit)
+    {
+        if (boostEffect == null) return;
+
+        if (leftBoostEffectTime > 0)
+        {
+            leftBoostEffectTime = limit;
+            return;
+        }
+
+        StartCoroutine(BoostEffect(limit));
+
+    }
+    IEnumerator BoostEffect(float limit)
+    {
+        leftBoostEffectTime = limit;
+
+        boostEffect.SetActive(true);
+        for (;;)
+        {
+            leftBoostEffectTime -= Time.deltaTime;
+            if (leftBoostEffectTime <= 0)
+            {
+                break;
+            }
+            boostEffectTran.rotation = myBodyTran.rotation;
+            yield return null;
+        }
+        boostEffect.SetActive(false);
+    }
+
+
     //### ジャンプ ###
 
     private void SetJumpMotion()
@@ -145,28 +202,37 @@ public class PlayerMotionController : MonoBehaviour
     }
 
     private bool preIsGrounded;
-    IEnumerator CheckJumpMotion()
+    private void CheckJumpMotion()
     {
-        for (;;)
+        bool isGrounded = playerCtrl.IsGrounded();
+        //Debug.Log(preIsGrounded.ToString()+" / "+ isGrounded.ToString());
+        if (preIsGrounded != isGrounded)
         {
-            bool isGrounded = playerCtrl.IsGrounded();
-            //Debug.Log(preIsGrounded.ToString()+" / "+ isGrounded.ToString());
-            if (preIsGrounded != isGrounded)
+            if (isGrounded)
             {
-                if (isGrounded)
-                {
-                    ResetJumpMotion();
-                }
-                else
-                {
-                    SetJumpMotion();
-                }
+                ResetJumpMotion();
             }
-            preIsGrounded = isGrounded;
-            yield return null;
+            else
+            {
+                SetJumpMotion();
+            }
         }
+        preIsGrounded = isGrounded;
     }
 
     //### 攻撃 ###
 
+    private bool IsAttack()
+    {
+        bool isAttack = false;
+        foreach (string motionName in Common.CO.attackMotionArray)
+        {
+            if (animator.GetBool(motionName))
+            {
+                isAttack = true;
+                break;
+            }
+        }
+        return isAttack;
+    }
 }

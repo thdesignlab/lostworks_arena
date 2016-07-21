@@ -31,8 +31,17 @@ namespace Common
         public const string MOTION_LEFT_ATTACK = "LeftAttack";
         public const string MOTION_RIGHT_ATTACK = "RightAttack";
         public const string MOTION_SHOULDER_ATTACK = "ShoulderAttack";
-        public const string MOTION_CLOSE_RANGE_ATTACK = "CloseRangeAttack";
+        public const string MOTION_CROSS_RANGE_ATTACK = "CrossRangeAttack";
         public const string MOTION_USE_SUB = "UseSub";
+
+        public static string[] attackMotionArray = new string[] 
+        {
+            MOTION_LEFT_ATTACK,
+            MOTION_RIGHT_ATTACK,
+            MOTION_SHOULDER_ATTACK,
+            MOTION_CROSS_RANGE_ATTACK,
+            MOTION_USE_SUB
+        };
 
         //パーツ名称
         public const string PARTS_BODY = "Body";

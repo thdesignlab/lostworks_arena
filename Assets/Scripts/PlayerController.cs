@@ -6,9 +6,6 @@ public class PlayerController : MoveOfCharacter
 //public class PlayerController : MoveOfVelocity
 {
     [SerializeField]
-    private GameObject boostEffect;
-
-    [SerializeField]
     protected float attackPreserveSpeedTime = 0;    //攻撃時速度維持時間
     [SerializeField]
     protected float movePreserveSpeedTime = 0;  //移動終了時速度維持時間
@@ -302,7 +299,9 @@ public class PlayerController : MoveOfCharacter
                 speed *= status.glideBoost;
             }
             if (speed == 0) return;
-            StartCoroutine(BoostEffect(limit));
+
+            //ブーストエフェクト
+            motionCtrl.StartBoostEffect(limit);
         }
 
         if (move != Vector3.zero && speed > 0)
@@ -318,20 +317,6 @@ public class PlayerController : MoveOfCharacter
 
         //旋回
         QuickTarget(targetTran, isSetAngle);
-    }
-    IEnumerator BoostEffect(float limit)
-    {
-        boostEffect.SetActive(true);
-        for (;;)
-        {
-            limit -= Time.deltaTime;
-            if (limit <= 0)
-            {
-                break;
-            }
-            yield return null;
-        }
-        boostEffect.SetActive(false);
     }
 
     private void FallDown()
