@@ -24,7 +24,7 @@ public class LaserBulletController : Photon.MonoBehaviour
         AddDamage(other.gameObject);
 
         //対象を破壊
-        if (other.gameObject.tag == Common.CO.TAG_BULLET_PHYSICS)
+        if (Common.Func.IsBullet(other.gameObject.tag))
         {
             TargetDestory(other.gameObject);
             return;

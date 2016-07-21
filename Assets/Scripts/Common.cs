@@ -66,10 +66,12 @@ namespace Common
         //弾発射口タグ
         public const string TAG_MUZZLE = "Muzzle";
 
-        //弾の種類(タグ)
+        //弾の種類(射出系)
         public const string TAG_BULLET_PHYSICS = "Bullet";
         public const string TAG_BULLET_MISSILE = "Missile";
         public const string TAG_BULLET_ENERGY = "EnergyBullet";
+
+        //弾の種類(放出系)
         public const string TAG_BULLET_LASER = "Laser";
 
         //弾タグ全て
@@ -78,7 +80,6 @@ namespace Common
             TAG_BULLET_PHYSICS,
             TAG_BULLET_MISSILE,
             TAG_BULLET_ENERGY,
-            TAG_BULLET_LASER
         };
 
         //物理系の弾タグ
@@ -116,19 +117,31 @@ namespace Common
             return Common.CO.RESOURCE_WEAPON + name;
         }
 
-        //物理弾チェック
-        public static bool IsPhysicsBullet(string tag)
+        //配列チェック
+        private static bool InArrayString(string[] tags, string tagName)
         {
-            bool isPhysicsBullet = false;
-            foreach (string physicsTag in Common.CO.physicsBulletArray)
+            bool flg = false;
+            foreach (string tag in tags)
             {
-                if (tag == physicsTag)
+                if (tagName == tag)
                 {
-                    isPhysicsBullet = true;
+                    flg = true;
                     break;
                 }
             }
-            return isPhysicsBullet;
+            return flg;
+        }
+
+        //物理弾判定
+        public static bool IsPhysicsBullet(string tag)
+        {
+            return InArrayString(Common.CO.physicsBulletArray, tag);
+        }
+
+        //弾判定
+        public static bool IsBullet(string tag)
+        {
+            return InArrayString(Common.CO.physicsBulletArray, tag);
         }
     }
 }
