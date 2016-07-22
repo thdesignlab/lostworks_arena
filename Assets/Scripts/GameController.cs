@@ -248,7 +248,6 @@ public class GameController : Photon.MonoBehaviour
     public void GoToTitle()
     {
         PhotonNetwork.LeaveRoom();
-        PhotonNetwork.JoinLobby();
         PhotonNetwork.LoadLevel("Title");
     }
 

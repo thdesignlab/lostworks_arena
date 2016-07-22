@@ -10,7 +10,9 @@ public class PhysicsBulletController : MoveOfVelocity
     [SerializeField]
     protected float stuckTime; //スタック時間
     [SerializeField]
-    protected float angleSpeed; //回転速度
+    protected float knockBackRate; //ノックバック係数
+    //[SerializeField]
+    //protected float angleSpeed; //回転速度
 
     protected int playerId;
     protected int ownerId;
@@ -47,10 +49,10 @@ public class PhysicsBulletController : MoveOfVelocity
         activeTime += Time.deltaTime;
         if (activeTime >= 10) base.DestoryObject();
 
-        if (angleSpeed > 0)
-        {
-            myTran.Rotate(Vector3.forward, angleSpeed * Time.deltaTime);
-        }
+        //if (angleSpeed > 0)
+        //{
+        //    myTran.Rotate(Vector3.forward, angleSpeed * Time.deltaTime);
+        //}
     }
 
     //衝突時処理
@@ -90,13 +92,17 @@ public class PhysicsBulletController : MoveOfVelocity
                 }
                 status.AddDamage(damage);
 
+                //スタック
                 if (stuckTime > 0)
                 {
                     status.AccelerateRunSpeed(0, stuckTime);
                 }
 
                 //ノックバック
-                base.TargetKnockBack(hitObj.transform);
+                if (knockBackRate > 0)
+                {
+                    base.TargetKnockBack(hitObj.transform, knockBackRate);
+                }
             }
         }
     }
