@@ -147,6 +147,7 @@ public class BulletWeaponController : WeaponController
         }
         GameObject ob = PhotonNetwork.Instantiate(BULLET_FOLDER + bullet.name, pos, quat, groupId);
         SetBulletTarget(ob);
+        base.PlayAudio();
     }
 
     public override bool IsEnableFire()

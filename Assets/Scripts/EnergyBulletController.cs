@@ -8,7 +8,7 @@ public class EnergyBulletController : MoveOfCharacter
     [SerializeField]
     protected int damage; //ダメージ量
 
-    protected int playerId;
+    //protected int playerId;
     protected int ownerId;
 
     protected float activeTime = 0;
@@ -26,7 +26,7 @@ public class EnergyBulletController : MoveOfCharacter
         base.Awake();
 
         //プレイヤーIDと所有者ID取得
-        playerId = PhotonNetwork.player.ID;
+        //playerId = PhotonNetwork.player.ID;
         ownerId = photonView.ownerId;
     }
 
@@ -119,7 +119,11 @@ public class EnergyBulletController : MoveOfCharacter
         if (targetTran != null && targetTran.name == hitObj.name) return false;
 
         //自分の撃った弾はSafetyTImeの間無視
-        if (playerId == ownerId && activeTime <= safetyTime) return true;
+        PhotonView pv = PhotonView.Get(hitObj);
+        if (pv != null)
+        {
+            if (ownerId == pv.ownerId && activeTime <= safetyTime) return true;
+        }
         return false;
     }
 

@@ -146,21 +146,6 @@ public class LaserWeaponController : WeaponController
         base.isEnabledFire = true;
     }
 
-    //private void SetLaserParent()
-    //{
-    //    photonView.RPC("SetLaserParentRPC", PhotonTargets.All)
-    //}
-
-    //[PunRPC]
-    //private void SetLaserParentRPC()
-    //{
-    //    PhotonView parent = PhotonView.Find(key);
-    //    PhotonView child = PhotonView.Find(laserMap[key]);
-    //    if (parent == null || child == null) return;
-    //    child.gameObject.transform.parent = parent.gameObject.transform;
-    //    child.transform.localPosition = Vector3.zero;
-    //}
-
     private void SwitchLaser(bool flg)
     {
         photonView.RPC("SwitchLaserRPC", PhotonTargets.All, flg);

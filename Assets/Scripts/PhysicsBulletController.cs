@@ -14,7 +14,7 @@ public class PhysicsBulletController : MoveOfVelocity
     //[SerializeField]
     //protected float angleSpeed; //回転速度
 
-    protected int playerId;
+    //protected int playerId;
     protected int ownerId;
 
     protected float activeTime = 0;
@@ -28,9 +28,9 @@ public class PhysicsBulletController : MoveOfVelocity
     {
         base.Awake();
 
-        //プレイヤーIDと所有者ID取得
-        playerId = PhotonNetwork.player.ID;
-        ownerId = photonView.ownerId;
+        //プレイヤーID取得
+        //playerId = PhotonNetwork.player.ID;
+        ownerId = PhotonView.Get(gameObject).ownerId;
     }
 
     protected override void Start()
@@ -122,8 +122,12 @@ public class PhysicsBulletController : MoveOfVelocity
         //ターゲットの場合はHIT
         if (targetTran != null && targetTran.name == hitObj.name) return false;
 
-        //自分の撃った弾はSafetyTImeの間無視
-        if (playerId == ownerId && activeTime <= safetyTime) return true;
+        //自分の撃った弾はSafetyTimeの間無視
+        PhotonView pv = PhotonView.Get(hitObj);
+        if (pv != null)
+        {
+            if (ownerId == pv.ownerId && activeTime <= safetyTime) return true;
+        }
 
         return false;
     }
