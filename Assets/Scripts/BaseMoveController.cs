@@ -301,7 +301,7 @@ public abstract class BaseMoveController : Photon.MonoBehaviour
     }
 
     //対象にRigidBodyがあり、IsKinematicがONの場合のみ
-    protected void TargetKnockBack(Transform targetTran, bool isReturnForce = false)
+    protected void TargetKnockBack(Transform targetTran, float rate = 1.0f)
     {
         if (isKnockBack) return;
         if (myRigidbody == null) return;
@@ -310,7 +310,7 @@ public abstract class BaseMoveController : Photon.MonoBehaviour
 
         Vector3 velocity = GetVelocityVector();
         float forceRate = myRigidbody.mass / targetCtrl.myRigidbody.mass;
-        float force = Mathf.Pow(velocity.magnitude, 2) / 100 * forceRate;
+        float force = Mathf.Pow(velocity.magnitude, 2) / targetCtrl.myRigidbody.mass * forceRate * rate;
         float limit = knockBackBaseTime * forceRate;
         if (limit < knockBackBaseTime / 2)
         {
@@ -323,10 +323,6 @@ public abstract class BaseMoveController : Photon.MonoBehaviour
         //Debug.Log(velocity + " / "+force.ToString()+" / "+limit.ToString());
         targetCtrl.MoveWorld(velocity, force, limit);
 
-        if (isReturnForce)
-        {
-            //自分にも力を加える
-        }
     }
 
     private float startAngle = 135;
