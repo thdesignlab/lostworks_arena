@@ -1,9 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using UnityEngine;
+using System.Collections.Generic;
 
 namespace Common
 {
     public static class CO
     {
+        //シーン名
+        public const string SCEANE_TITLE = "Title";
+        public const string SCEANE_SETTING = "Setting";
+        public const string SCEANE_BATTLE = "Battle";
+
         //NPCの名前
         public const string NPC_NAME = "NPC";
 
@@ -142,6 +148,14 @@ namespace Common
         public static bool IsBullet(string tag)
         {
             return InArrayString(Common.CO.physicsBulletArray, tag);
+        }
+
+        //三角関数
+        public static float GetSin(float time, float anglePerSec = 360,  float startAngle = 0)
+        {
+            float angle = (startAngle + anglePerSec * time) % 360;
+            float radian = Mathf.PI / 180 * angle;
+            return Mathf.Sin(radian) * time;
         }
     }
 }

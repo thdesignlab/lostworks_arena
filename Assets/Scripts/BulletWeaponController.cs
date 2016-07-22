@@ -8,11 +8,11 @@ public class BulletWeaponController : WeaponController
     [SerializeField]
     protected GameObject bullet;  //発射物
     [SerializeField]
-    protected int rapidCount;     //1度に発射する弾数(Rapid,Spreadのみ)
+    protected int rapidCount;     //連射数
     [SerializeField]
-    protected float rapidInterval;  //連射間隔(Rapid,Spreadのみ)
+    protected float rapidInterval;  //連射間隔
     [SerializeField]
-    protected float spreadCount;     //1度に発射する弾数(Rapid,Spreadのみ)
+    protected int spreadCount;     //同時発射数
     [SerializeField]
     protected int spreadDiffAngle; //角度差分(Spreadのみ)
     [SerializeField]
@@ -23,7 +23,8 @@ public class BulletWeaponController : WeaponController
 
     protected AimingController aimingCtrl;
 
-    protected List<float> startMuzzleAngles = new List<float>();
+    protected float startMuzzleAngle = 0;
+    //protected List<float> startMuzzleAngles = new List<float>();
 
     const string BULLET_FOLDER = "Bullet/";
 
@@ -46,8 +47,9 @@ public class BulletWeaponController : WeaponController
 
         if (spreadCount > 1)
         {
-            startMuzzleAngles.Add(spreadDiffAngle * (Mathf.Floor(spreadCount) - 1) / -2);
-            startMuzzleAngles.Add(spreadDiffAngle * (Mathf.Ceil(spreadCount) - 1) / -2);
+            //startMuzzleAngles.Add(spreadDiffAngle * (Mathf.Floor(spreadCount) - 1) / -2);
+            //startMuzzleAngles.Add(spreadDiffAngle * (Mathf.Ceil(spreadCount) - 1) / -2);
+            startMuzzleAngle = spreadDiffAngle * (spreadCount - 1) / -2;
         }
     }
 
@@ -109,10 +111,8 @@ public class BulletWeaponController : WeaponController
 
     private void SpreadFire(int muzzleNo = 0, int rapidNo = 1)
     {
-        RotateMuzzle(muzzleNo, startMuzzleAngles[rapidNo % 2]);
-        int cnt = (int)Mathf.Floor(spreadCount);
-        if (rapidNo % 2 == 1) cnt += 1;
-        for (int k = 0; k < cnt; k++)
+        RotateMuzzle(muzzleNo, startMuzzleAngle);
+        for (int k = 0; k < spreadCount; k++)
         {
             SpawnBullet(muzzles[muzzleNo].position + muzzles[muzzleNo].forward, muzzles[muzzleNo].rotation, 0);
             RotateMuzzle(muzzleNo, spreadDiffAngle);
