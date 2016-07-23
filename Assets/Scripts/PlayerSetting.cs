@@ -87,9 +87,16 @@ public class PlayerSetting : Photon.MonoBehaviour
 
     private void EquipWeaponRandom()
     {
-        foreach (string partsName in Common.CO.partsNameArray)
+        foreach (Transform child in myTran)
         {
-            EquipWeapon(myTran.FindChild(partsName));
+            foreach (string partsName in Common.CO.partsNameArray)
+            {
+                if (child.name == partsName)
+                {
+                    EquipWeapon(child);
+                    break;
+                }
+            }
         }
     }
 
@@ -100,7 +107,7 @@ public class PlayerSetting : Photon.MonoBehaviour
         if (weapon == null)
         {
             //ランダム取得
-            weapon = weaponStroe.GetWeapon(partsTran);
+            weapon = weaponStroe.GetRandomWeapon(partsTran, weaponMap);
         }
         SpawnWeapon(partsTran, weapon);
     }
@@ -117,11 +124,12 @@ public class PlayerSetting : Photon.MonoBehaviour
         }
 
         GameObject ob = PhotonNetwork.Instantiate(Common.Func.GetResourceWeapon(weapon.name), parts.position, parts.rotation, 0);
+        ob.name = ob.name.Replace("(Clone)", "");
 
         //装備をPartsの子に設定
         int partsViewId = PhotonView.Get(parts.gameObject).viewID;
         int weaponViewId = PhotonView.Get(ob).viewID;
-        if (!isNpc) weaponMap[partsViewId] = weaponViewId;
+        weaponMap[partsViewId] = weaponViewId;
         //Debug.Log(partsViewId.ToString()+" : "+ weaponViewId.ToString());
         object[] args = new object[] { partsViewId, weaponViewId };
         photonView.RPC("SetParentRPC", PhotonTargets.Others, args);

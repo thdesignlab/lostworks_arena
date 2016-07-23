@@ -76,7 +76,8 @@ public class LaserWeaponController : WeaponController
             //photonView.RPC("InitLaserRPC", PhotonTargets.All);
 
             //レーザー初期設定
-            SetInitLaser();
+            //SetInitLaser();
+            laser.SetActive(false);
         }
         else
         {
@@ -107,7 +108,9 @@ public class LaserWeaponController : WeaponController
         laserTran.parent = muzzleView.gameObject.transform;
         laserTran.localPosition = Vector3.zero;
 
-        SetInitLaser();
+        //レーザー非表示
+        laser.SetActive(false);
+        //SetInitLaser();
     }
 
     private void SetInitLaser()
@@ -161,37 +164,21 @@ public class LaserWeaponController : WeaponController
     {
         base.SetTarget(target);
         laser.GetComponent<LaserBulletController>().SetTarget(target);
-        //if (base.targetTran == null) return;
-        //targetStatus = base.targetTran.gameObject.GetComponent<PlayerStatus>();
-
-        //if (aimingCtrl != null)
-        //{
-        //    aimingCtrl.SetTarget(target);
-        //}
     }
 
     protected override void Action()
     {
-        //GameObject ob = PhotonNetwork.Instantiate(Common.CO.RESOURCE_BULLET + laser.name, muzzle.position, muzzle.rotation, 0);
-        //int muzzleViewId = PhotonView.Get(muzzle.gameObject).viewID;
-        //int laserViewId = PhotonView.Get(ob).viewID;
-        //object[] args = new object[] { muzzleViewId, laserViewId };
-        //photonView.RPC("SetParentRPC", PhotonTargets.All, args);
-
-        //laserTran = laser.transform;
-        //foreach (Transform child in laserTran)
-        //{
-        //    if (child.tag == "LaserEnd")
-        //    {
-        //        child.position = new Vector3(0, 0, effectiveLength);
-        //        break;
-        //    }
-        //}
-        //laserCollider = laser.GetComponent<CapsuleCollider>();
+        if (playerStatus == null)
+        {
+            base.isEnabledFire = false;
+            return;
+        }
 
         //移動・回転制限
-        playerStatus.AccelerateRunSpeed(runSpeedRate, effectiveTime + effectiveWidthTime * 2);
-        playerStatus.InterfareTurn(turnSpeedRate, effectiveTime + effectiveWidthTime * 2);
+        float laserShootTime = effectiveTime + effectiveWidthTime * 2;
+        playerStatus.AccelerateRunSpeed(runSpeedRate, laserShootTime);
+        playerStatus.InterfareTurn(turnSpeedRate, laserShootTime);
+        base.StartReload(laserShootTime);
 
         StartCoroutine(LaserShoot());
     }
@@ -201,6 +188,7 @@ public class LaserWeaponController : WeaponController
         //レーザー幅変更
         int factor = 1;
         float nowWidth = 0;
+        SetLaserLength(effectiveLength);
         SetLaserWidth(nowWidth);
         SwitchLaser(true);
         //laserCollider.enabled = true;
@@ -220,7 +208,27 @@ public class LaserWeaponController : WeaponController
         }
         SwitchLaser(false);
         //laserCollider.enabled = false;
-        base.StartReload();
+    }
+
+    private void SetLaserLength(float length)
+    {
+        //レーザーの長さ設定
+        foreach (Transform child in laserTran)
+        {
+            if (child.tag == "LaserEnd")
+            {
+                child.localPosition = new Vector3(0, 0, effectiveLength);
+                break;
+            }
+        }
+
+        //コライダーの長さ設定
+        laserCollider = laser.GetComponent<CapsuleCollider>();
+        if (laserCollider != null)
+        {
+            laserCollider.height = effectiveLength;
+            laserCollider.center = new Vector3(0, 0, effectiveLength / 2);
+        }
     }
 
     private void SetLaserWidth(float width)
@@ -236,5 +244,4 @@ public class LaserWeaponController : WeaponController
         if (effectiveTime <= 0 || effectiveWidthTime <= 0) return false;
         return true;
     }
-
 }

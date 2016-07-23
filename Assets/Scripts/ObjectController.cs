@@ -12,6 +12,7 @@ public class ObjectController : Photon.MonoBehaviour {
     private float activeLimitDistance = 0;
 
     private Transform myTran;
+    private Vector3 prePos;
 
     void Start()
     {
@@ -39,56 +40,48 @@ public class ObjectController : Photon.MonoBehaviour {
     IEnumerator CheckDistance()
     {
         float distance = 0;
-        Vector3 fromPos = myTran.position;
+        Vector3 prePos = myTran.position;
         for (;;)
         {
             yield return new WaitForSeconds(0.5f);
-            distance += Mathf.Abs(Vector3.Distance(myTran.position, fromPos));
+            distance += Mathf.Abs(Vector3.Distance(myTran.position, prePos));
             if (distance >= activeLimitDistance)
             {
                 DestoryObject();
                 break;
             }
-            fromPos = transform.position;
+            prePos = myTran.position;
         }
     }
 
-    public void DestoryObject(float delay = 0, bool isSendRpc = true)
+    public void DestoryObject(bool isSendRpc = false)
     {
         if (!photonView) return;
         if (photonView.isMine)
         {
-            if (delay > 0)
-            {
-                StartCoroutine(DelayDestroy(delay));
-            }
-            else
-            {
-                DestroyProccess();
-            }
+            DestroyProccess();
         }
         else
         {
             if (isSendRpc)
             {
-                object[] args = new object[] { delay };
-                photonView.RPC("DestroyObjectRPC", PhotonTargets.Others, args);
+                photonView.RPC("DestroyObjectRPC", PhotonTargets.Others);
             }
         }
     }
 
     [PunRPC]
-    private void DestroyObjectRPC(float delay)
+    private void DestroyObjectRPC()
     {
-        DestoryObject(delay, false);
+        DestoryObject();
     }
 
-    IEnumerator DelayDestroy(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        if (photonView == null) yield break;
-        DestroyProccess();
-    }
+    //IEnumerator DelayDestroy(float delay)
+    //{
+    //    yield return new WaitForSeconds(delay);
+    //    if (photonView == null) yield break;
+    //    DestroyProccess();
+    //}
 
     private void DestroyProccess()
     {

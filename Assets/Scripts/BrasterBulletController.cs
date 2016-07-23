@@ -27,8 +27,10 @@ public class BrasterBulletController : EnergyTrackingBulletController
     private CapsuleCollider myCollider;
     private Transform myPlayerTran;
     private PlayerStatus myPlayerStatus;
+    private AudioSource audioSource;
 
     private float firedTime = 0;
+
 
     protected override void Awake()
     {
@@ -39,6 +41,7 @@ public class BrasterBulletController : EnergyTrackingBulletController
             myCollider.enabled = false;
             myPlayerTran = GameObject.Find("GameController").GetComponent<GameController>().GetMyTran();
             myPlayerStatus = myPlayerTran.gameObject.GetComponent<PlayerStatus>();
+            audioSource = GetComponent<AudioSource>();
 
             chargingVector = myPlayerTran.InverseTransformVector(myTran.position - myPlayerTran.position);
 
@@ -56,7 +59,7 @@ public class BrasterBulletController : EnergyTrackingBulletController
         if (photonView.isMine)
         {
             base.Update();
-            if (Input.GetMouseButton(0) && isCharge)
+            if (Input.GetMouseButton(0) && isCharge && myPlayerTran != null)
             {
                 //チャージ中
                 myTran.position = myPlayerTran.position + myPlayerTran.TransformVector(chargingVector);
@@ -80,6 +83,7 @@ public class BrasterBulletController : EnergyTrackingBulletController
                 isCharge = false;
                 base.speed = (int)Mathf.Lerp(baseSpeed, baseSpeed * maxSpeedRate, chargeRate);
                 if (chargeEffect != null) chargeEffect.SetActive(false);
+                if (audioSource != null) audioSource.Play();
             }
 
             firedTime += Time.deltaTime;

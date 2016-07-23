@@ -3,23 +3,21 @@ using System.Collections;
 
 public class NpcController : MoveOfCharacter
 {
-    [SerializeField]
-    private int level = 2;
-    private float[] hpRateArray = new float[] { 1, 1.5f, 2 };
-    private float[] invincibleTimeArray = new float[] { 1, 1, 1.5f };
-    private float[] atackIntervalArray = new float[] { 0, 3, 1 };
-    private float[] boostIntervalArray = new float[] { 0, 3, 1 };
-    private float[] searchRangeArray = new float[] { 0, 3, 5 };
-    private float[] runSpeedArray = new float[] { 1.0f, 1.0f, 1.5f };
+    private float[] hpRateArray = new float[] { 1, 1.5f, 2 , 3};
+    private float[] invincibleTimeArray = new float[] { 1, 1, 1.5f , 1.5f};
+    private float[] atackIntervalArray = new float[] { 0, 3, 1 , 0.2f};
+    private float[] boostIntervalArray = new float[] { 0, 3, 1 , 0.5f};
+    private float[] searchRangeArray = new float[] { 0, 3, 6 , 6};
+    private float[] runSpeedArray = new float[] { 1.0f, 1.0f, 1.5f , 1.5f};
     [SerializeField]
     private SphereCollider searchCollider;
 
     private PlayerStatus status;
     private Transform targetTran;
 
-    private WeaponController rightHandCtrl;
-    private WeaponController leftHandCtrl;
-    private WeaponController shoulderCtrl;
+    //private WeaponController rightHandCtrl;
+    //private WeaponController leftHandCtrl;
+    //private WeaponController shoulderCtrl;
     private WeaponController[] weapons;
 
     private float preBoostTime = 0;
@@ -41,11 +39,6 @@ public class NpcController : MoveOfCharacter
         base.Awake();
         status = GetComponent<PlayerStatus>();
         preHp = status.GetNowHp();
-
-        rightHandCtrl = transform.FindChild(Common.CO.PARTS_RIGHT_HAND).GetComponentInChildren<WeaponController>();
-        leftHandCtrl = transform.FindChild(Common.CO.PARTS_LEFT_HAND).GetComponentInChildren<WeaponController>();
-        shoulderCtrl = transform.FindChild(Common.CO.PARTS_SHOULDER).GetComponentInChildren<WeaponController>();
-        weapons = new WeaponController[] { rightHandCtrl, leftHandCtrl, shoulderCtrl };
    }
 
     protected override void Start()
@@ -53,11 +46,6 @@ public class NpcController : MoveOfCharacter
         base.Start();
 
         SearchTarget();
-        if (rightHandCtrl != null) rightHandCtrl.SetTarget(targetTran);
-        if (leftHandCtrl != null) leftHandCtrl.SetTarget(targetTran);
-        if (shoulderCtrl != null) shoulderCtrl.SetTarget(targetTran);
-
-        //StartCoroutine(LevelCheck());
         StartCoroutine(RandomMoveTarget());
         StartCoroutine(Attack());
     }
@@ -115,6 +103,26 @@ public class NpcController : MoveOfCharacter
         boostIntervalTime = boostIntervalArray[npcLevel];
         runSpeedRate = runSpeedArray[npcLevel];
         invincibleTimeRate = invincibleTimeArray[npcLevel];
+
+        if (npcLevel >= 3)
+        {
+            foreach (Transform child in myTran)
+            {
+                foreach (string partsName in Common.CO.partsNameArray)
+                {
+                    if (child.name == partsName)
+                    {
+                        child.gameObject.SetActive(true);
+                        break;
+                    }
+                }
+            }
+        }
+        weapons = myTran.GetComponentsInChildren<WeaponController>();
+        foreach (WeaponController weapon in weapons)
+        {
+            weapon.SetTarget(targetTran);
+        }
     }
 
     IEnumerator RandomMoveTarget()
@@ -147,22 +155,28 @@ public class NpcController : MoveOfCharacter
 
     IEnumerator Attack()
     {
-        int weaponNo = 0; 
+        if (atackIntervalTime == 0) yield break;
+
+        int weaponNo = 0;
         for (;;)
         {
-            if (atackIntervalTime == 0 || targetTran == null)
+            float interval = atackIntervalTime;
+
+            if (targetTran == null)
             {
-                yield return new WaitForSeconds(5.0f);
+                yield return new WaitForSeconds(3.0f);
                 continue;
             }
-            if (!weapons[weaponNo].IsEnableFire())
+            if (weapons[weaponNo].IsEnableFire())
             {
-                yield return new WaitForSeconds(0.5f);
-                continue;
+                weapons[weaponNo].Fire(targetTran);
             }
-            weapons[weaponNo].Fire(targetTran);
+            else
+            {
+                interval = 0.2f;
+            }
             weaponNo = (weaponNo + 1) % weapons.Length;
-            yield return new WaitForSeconds(atackIntervalTime);
+            yield return new WaitForSeconds(interval);
         }
     }
 
@@ -277,29 +291,29 @@ public class NpcController : MoveOfCharacter
         }
     }
 
-    public void FireRightHand()
-    {
-        if (!photonView.isMine) return;
-        if (rightHandCtrl == null) return;
-        base.PreserveSpeed();
-        rightHandCtrl.Fire(targetTran);
-    }
+    //public void FireRightHand()
+    //{
+    //    if (!photonView.isMine) return;
+    //    if (rightHandCtrl == null) return;
+    //    base.PreserveSpeed();
+    //    rightHandCtrl.Fire(targetTran);
+    //}
 
-    public void FireLeftHand()
-    {
-        if (!photonView.isMine) return;
-        if (leftHandCtrl == null) return;
-        base.PreserveSpeed();
-        leftHandCtrl.Fire(targetTran);
-    }
+    //public void FireLeftHand()
+    //{
+    //    if (!photonView.isMine) return;
+    //    if (leftHandCtrl == null) return;
+    //    base.PreserveSpeed();
+    //    leftHandCtrl.Fire(targetTran);
+    //}
 
-    public void FireShoulder()
-    {
-        if (!photonView.isMine) return;
-        if (shoulderCtrl == null) return;
-        base.PreserveSpeed();
-        shoulderCtrl.Fire(targetTran);
-    }
+    //public void FireShoulder()
+    //{
+    //    if (!photonView.isMine) return;
+    //    if (shoulderCtrl == null) return;
+    //    base.PreserveSpeed();
+    //    shoulderCtrl.Fire(targetTran);
+    //}
 
     private void QuickTarget(Transform target)
     {
@@ -332,7 +346,7 @@ public class NpcController : MoveOfCharacter
 
         //回避行動
         //Vector3 bulletVector = myTran.position - other.transform.position;
-        if (isGrounded && Random.Range(0, 100) < 20)
+        if (isGrounded && Random.Range(0, 100) < 15)
         {
             Jump(0, 0);
         }

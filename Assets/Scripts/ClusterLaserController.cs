@@ -14,11 +14,14 @@ public class ClusterLaserController : EnergyTrackingBulletController
     {
         base.Update();
 
-        if (base.targetTran != null && childBullet != null && base.activeTime >= 1.0f)
+        if (photonView.isMine)
         {
-            if (Vector3.Distance(myTran.position, base.targetTran.position) <= purgeDistance)
+            if (base.targetTran != null && childBullet != null && base.activeTime >= 1.0f)
             {
-                Purge();
+                if (Vector3.Distance(myTran.position, base.targetTran.position) <= purgeDistance)
+                {
+                    Purge();
+                }
             }
         }
     }

@@ -105,6 +105,7 @@ public class MoveOfVelocity : BaseMoveController
     //速度変化は全てここで行う
     protected override void MoveProcess(Vector3 v)
     {
+        //Debug.Log("MoveProcess"+v);
         //base.isPreserveSpeed = false;
         base.myRigidbody.velocity += v;
 

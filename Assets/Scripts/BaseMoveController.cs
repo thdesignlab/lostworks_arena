@@ -177,9 +177,9 @@ public abstract class BaseMoveController : Photon.MonoBehaviour
         return false;
     }
 
-    protected void DestoryObject(float delay = 0)
+    protected void DestoryObject(bool isSendRpc = false)
     {
-        GetComponent<ObjectController>().DestoryObject(delay);
+        GetComponent<ObjectController>().DestoryObject(isSendRpc);
     }
 
     private Vector3 DifferentialCorrection(Transform targetTran)
@@ -272,7 +272,7 @@ public abstract class BaseMoveController : Photon.MonoBehaviour
     protected void MoveWorld(Vector3 worldVector, float speed, float limit = 0, bool isOutForce = true, bool isSendRPC = true)
     {
         Vector3 moveDirection = worldVector.normalized * speed;
-        if (photonView.isMine)
+        if (photonView.isMine || ptv == null)
         {
             if (!isOutForce) leftPreserveSpeedTime = 0;
 

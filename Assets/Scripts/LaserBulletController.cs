@@ -52,7 +52,7 @@ public class LaserBulletController : Photon.MonoBehaviour
     //ターゲットを破壊する
     private void TargetDestory(GameObject hitObj)
     {
-        hitObj.gameObject.GetComponent<ObjectController>().DestoryObject();
+        hitObj.gameObject.GetComponent<ObjectController>().DestoryObject(true);
     }
 
     //ターゲットを設定する

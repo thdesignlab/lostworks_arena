@@ -14,29 +14,32 @@ public class PhysicsTrackingBulletController : PhysicsBulletController
 
     private bool enableSetAngle = true;
 
-    void FixedUpdate()
+    protected override void Update()
     {
+        base.Update();
+
         //推進力
         base.Move(Vector3.forward, speed);
 
         //初回ターゲット待機時間
-        if (base.activeTime <= lockStartTime) return;
-
-        //ロック可能チェック
-        enableSetAngle = true;
-        if (isNeedLock)
+        if (base.activeTime >= lockStartTime)
         {
-            enableSetAngle = false;
-            if (base.targetStatus != null)
+            //ロック可能チェック
+            enableSetAngle = true;
+            if (isNeedLock)
             {
-                enableSetAngle = base.targetStatus.IsLocked();
+                enableSetAngle = false;
+                if (base.targetStatus != null)
+                {
+                    enableSetAngle = base.targetStatus.IsLocked();
+                }
             }
-        }
 
-        //向き調整
-        if (enableSetAngle)
-        {
-            base.SetAngle(base.targetTran, turnSpeed);
+            //向き調整
+            if (enableSetAngle)
+            {
+                base.SetAngle(base.targetTran, turnSpeed);
+            }
         }
     }
 

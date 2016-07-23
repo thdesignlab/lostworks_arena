@@ -32,7 +32,7 @@ public class MoveOfCharacter : BaseMoveController
     {
         base.Start();
 
-        if (photonView.isMine)
+        if (photonView.isMine || base.ptv == null)
         {
             StartCoroutine(MoveRoutine());
         }
@@ -57,14 +57,13 @@ public class MoveOfCharacter : BaseMoveController
                 //Transform.positionによる移動
                 base.myTran.position += moveVector;
             }
+            moveVector = Vector3.zero;
 
             //同期処理
             if (photonView.isMine && base.ptv != null)
             {
                 base.ptv.SetSynchronizedValues(speed: moveVector / Time.deltaTime , turnSpeed: 0);
             }
-
-            moveVector = Vector3.zero;
             yield return null;
         }
     }

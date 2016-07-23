@@ -28,9 +28,27 @@ public class WeaponStore : Photon.MonoBehaviour
 
     private Transform myPlayerTran;
 
+    [SerializeField]
+    private bool isEnableSomeWeapon;
+    private List<string> excludeWeapons = new List<string>();
+    
     public void SetMyTran()
     {
         myPlayerTran = GameObject.Find("GameController").GetComponent<GameController>().GetMyTran();
+    }
+
+    public GameObject GetRandomWeapon(Transform parts, Dictionary<int, int> weaponMap)
+    {
+        if (weaponMap != null)
+        {
+            excludeWeapons = new List<string>();
+            foreach (int partsViewId in weaponMap.Keys)
+            {
+                PhotonView weapon = PhotonView.Find(weaponMap[partsViewId]);
+                excludeWeapons.Add(weapon.name);
+            }
+        }
+        return GetWeapon(parts);
     }
 
     public GameObject GetWeapon(Transform parts, int weaponNo = -1)
@@ -59,11 +77,28 @@ public class WeaponStore : Photon.MonoBehaviour
     private GameObject SelectWeapon(List<GameObject> weaponList, int weaponNo)
     {
         if (weaponList == null || weaponList.Count == 0) return null;
+
+        List<GameObject> SelectableWeaponList = new List<GameObject>(weaponList);
         if (weaponNo < 0 || weaponList.Count <= weaponNo)
         {
-            weaponNo = Random.Range(0, weaponList.Count);
+
+            //ランダム選択
+            if (!isEnableSomeWeapon)
+            {
+                //重複装備不可
+                SelectableWeaponList = new List<GameObject>();
+                foreach (GameObject weapon in weaponList)
+                {
+                    if (!excludeWeapons.Contains(weapon.name))
+                    {
+                        SelectableWeaponList.Add(weapon);
+                    }
+                }
+                if (SelectableWeaponList.Count == 0) return null;
+            }
+            weaponNo = Random.Range(0, SelectableWeaponList.Count);
         }
-        return weaponList[weaponNo];
+        return SelectableWeaponList[weaponNo];
     }
 
     public void CustomMenuOpen()
@@ -98,16 +133,33 @@ public class WeaponStore : Photon.MonoBehaviour
         {
             case Common.CO.PARTS_LEFT_HAND:
             case Common.CO.PARTS_RIGHT_HAND:
-                selectableWeaponList = handWeaponList;
+                selectableWeaponList = new List<GameObject>(handWeaponList);
                 break;
 
             case Common.CO.PARTS_SHOULDER:
-                selectableWeaponList = shoulderWeaponList;
+                selectableWeaponList = new List<GameObject>(shoulderWeaponList); ;
                 break;
 
             case Common.CO.PARTS_SUB:
-                selectableWeaponList = subWeaponList;
+                selectableWeaponList = new List<GameObject>(subWeaponList); ;
                 break;
+        }
+
+        if (!isEnableSomeWeapon)
+        {
+            //重複装備削除
+            List<GameObject> tmpWeaponList = new List<GameObject>(selectableWeaponList);
+            foreach (GameObject weaponText in GameObject.FindGameObjectsWithTag("EquipedWeapon"))
+            {
+                string weaponName = weaponText.GetComponent<Text>().text;
+                foreach (GameObject weapon in tmpWeaponList)
+                {
+                    if (weapon.name == weaponName)
+                    {
+                        selectableWeaponList.Remove(weapon);
+                    }
+                }
+            }
         }
 
         if (selectableWeaponList.Count == 0) return;
@@ -154,7 +206,7 @@ public class WeaponStore : Photon.MonoBehaviour
         Transform weaponNameText = weaponCanvas.transform.FindChild("CustomMenu/PartsSelect/" + partsName + "/WeqponName");
         if (weaponNameText == null) return;
 
-        weaponNameText.gameObject.GetComponent<Text>().text = weaponName.Replace("(Clone)", "");
+        weaponNameText.gameObject.GetComponent<Text>().text = weaponName;
     }
 
     public void OnCancelEquipButton()

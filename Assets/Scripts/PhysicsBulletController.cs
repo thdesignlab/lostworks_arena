@@ -110,7 +110,7 @@ public class PhysicsBulletController : MoveOfVelocity
     //ターゲットを破壊する
     protected void TargetDestory(GameObject hitObj)
     {
-        hitObj.gameObject.GetComponent<ObjectController>().DestoryObject();
+        hitObj.gameObject.GetComponent<ObjectController>().DestoryObject(true);
     }
 
     //HIT判定スルーチェック
