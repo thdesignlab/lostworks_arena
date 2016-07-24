@@ -87,7 +87,8 @@ public class ObjectController : Photon.MonoBehaviour {
     {
         if (effectSpawn != null)
         {
-            PhotonNetwork.Instantiate(Common.Func.GetResourceEffect(effectSpawn.name), myTran.position, myTran.rotation, effectSpawnGroupId);
+            //PhotonNetwork.Instantiate(Common.Func.GetResourceEffect(effectSpawn.name), myTran.position, myTran.rotation, effectSpawnGroupId);
+            PhotonNetwork.Instantiate(Common.Func.GetResourceEffect(effectSpawn.name), myTran.position, effectSpawn.transform.rotation, effectSpawnGroupId);
         }
         PhotonNetwork.Destroy(gameObject);
     }

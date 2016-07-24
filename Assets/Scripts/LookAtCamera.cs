@@ -5,15 +5,17 @@ public class LookAtCamera : MonoBehaviour
 {
     private Transform myTran;
     private Transform cameraTran;
+    private Quaternion defaultRotation;
 
-	void Start ()
+    void Start ()
     {
         myTran = transform;
         cameraTran = Camera.main.transform;
-	}
-	
-	void Update ()
+        defaultRotation = myTran.rotation;
+    }
+
+    void Update ()
     {
-        myTran.rotation = cameraTran.rotation;
-	}
+        myTran.rotation = cameraTran.rotation * defaultRotation;
+    }
 }
