@@ -136,7 +136,7 @@ public class EnergyBulletController : MoveOfCharacter
     }
 
     //ターゲットを設定する
-    public void SetTarget(Transform target)
+    public virtual void SetTarget(Transform target)
     {
         if (target == null) return;
         //object[] args = new object[] { target.name };

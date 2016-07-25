@@ -41,6 +41,7 @@ public class PlayerSetting : Photon.MonoBehaviour
                 EquipWeaponRandom();
                 //Debug.Log("NPC: " + transform.name);
                 gameCtrl.SetTarget(myTran);
+                gameCtrl.SetNpcTran(myTran);
                 gameCtrl.ResetGame();
                 isCustomEnd = true;
             }

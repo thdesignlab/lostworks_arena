@@ -22,6 +22,7 @@ public class GameController : Photon.MonoBehaviour
 
     private Transform myTran;
     private Transform targetTran;
+    private Transform npcTran;
 
     [HideInInspector]
     public bool isGameStart = false;
@@ -234,6 +235,16 @@ public class GameController : Photon.MonoBehaviour
     public Transform GetMyTran()
     {
         return myTran;
+    }
+
+    public void SetNpcTran(Transform tran)
+    {
+        npcTran = tran;
+    }
+
+    public Transform GetNpcTran()
+    {
+        return npcTran;
     }
 
     public void SetTarget(Transform target)

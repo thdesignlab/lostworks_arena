@@ -28,9 +28,11 @@ public class BrasterBulletController : EnergyTrackingBulletController
     private Transform myPlayerTran;
     private PlayerStatus myPlayerStatus;
     private AudioController audioCtrl;
+    private GameController GameCtrl;
 
     private float firedTime = 0;
 
+    private float npcChargeTime = 0;
 
     protected override void Awake()
     {
@@ -39,10 +41,8 @@ public class BrasterBulletController : EnergyTrackingBulletController
         {
             myCollider = myTran.GetComponent<CapsuleCollider>();
             myCollider.enabled = false;
-            myPlayerTran = GameObject.Find("GameController").GetComponent<GameController>().GetMyTran();
-            myPlayerStatus = myPlayerTran.gameObject.GetComponent<PlayerStatus>();
-
-            chargingVector = myPlayerTran.InverseTransformVector(myTran.position - myPlayerTran.position);
+            GameCtrl = GameObject.Find("GameController").GetComponent<GameController>();
+            myPlayerTran = GameCtrl.GetMyTran();
 
             baseSpeed = base.speed;
             baseDamage = base.damage;
@@ -58,7 +58,6 @@ public class BrasterBulletController : EnergyTrackingBulletController
     protected override void Start()
     {
         base.Start();
-
         if (audioCtrl != null) audioCtrl.Play(0);
     }
 
@@ -67,7 +66,8 @@ public class BrasterBulletController : EnergyTrackingBulletController
         if (photonView.isMine)
         {
             base.Update();
-            if (Input.GetMouseButton(0) && isCharge && myPlayerTran != null)
+            if ((isCharge && myPlayerTran != null) 
+                && ((npcChargeTime <= 0 && Input.GetMouseButton(0)) || (npcChargeTime > 0 && base.activeTime < npcChargeTime)))
             {
                 //チャージ中
                 myTran.position = myPlayerTran.position + myPlayerTran.TransformVector(chargingVector);
@@ -107,5 +107,19 @@ public class BrasterBulletController : EnergyTrackingBulletController
                 base.DestoryObject();
             }
         }
+    }
+
+    //ターゲットを設定する
+    public override void SetTarget(Transform target)
+    {
+        base.SetTarget(target);
+
+        if (myPlayerTran == target)
+        {
+            //NPC
+            myPlayerTran = GameCtrl.GetNpcTran();
+            npcChargeTime = Random.Range(maxChargeTime * 0.5f, maxChargeTime);
+        }
+        chargingVector = myPlayerTran.InverseTransformVector(myTran.position - myPlayerTran.position);
     }
 }
