@@ -87,9 +87,13 @@ public class MenuController : Photon.MonoBehaviour
         enableMenuAction = true;
     }
 
+    public void OnExitButton()
+    {
+        DialogController.OpenDialog("アプリを終了します", () => gameCtrl.Exit(), true);
+    }
     public void OnTitleButton()
     {
-        GameObject.Find("GameController").GetComponent<GameController>().GoToTitle();
+        DialogController.OpenDialog("タイトルに戻ります", () => gameCtrl.GoToTitle(), true);
     }
 
     public void OnCustomButton()

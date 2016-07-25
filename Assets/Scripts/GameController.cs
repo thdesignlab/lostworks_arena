@@ -256,6 +256,11 @@ public class GameController : Photon.MonoBehaviour
         return targetTran;
     }
 
+    public void Exit()
+    {
+        Application.Quit();
+    }
+
     public void GoToTitle()
     {
         PhotonNetwork.LeaveRoom();

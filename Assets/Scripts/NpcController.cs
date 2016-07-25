@@ -3,9 +3,9 @@ using System.Collections;
 
 public class NpcController : MoveOfCharacter
 {
-    private float[] hpRateArray = new float[] { 1, 1.5f, 2 , 3};
+    private float[] hpRateArray = new float[] { 1, 1.5f, 2 , 2};
     private float[] invincibleTimeArray = new float[] { 1, 1, 1.5f , 1.5f};
-    private float[] atackIntervalArray = new float[] { 0, 3, 1 , 0.2f};
+    private float[] atackIntervalArray = new float[] { 0, 3, 1 , 0.5f};
     private float[] boostIntervalArray = new float[] { 0, 3, 1 , 0.5f};
     private float[] searchRangeArray = new float[] { 0, 3, 6 , 6};
     private float[] runSpeedArray = new float[] { 1.0f, 1.0f, 1.5f , 1.5f};
