@@ -96,6 +96,12 @@ public class PhysicsBulletController : MoveOfVelocity
                 }
                 status.AddDamage(damage);
 
+                //ダメージエフェクト
+                if (hitEffect != null)
+                {
+                    PhotonNetwork.Instantiate(Common.Func.GetResourceEffect(hitEffect.name), myTran.position, hitEffect.transform.rotation, 0);
+                }
+
                 //スタック
                 if (stuckTime > 0)
                 {

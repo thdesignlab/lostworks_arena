@@ -4,9 +4,13 @@ using System.Collections;
 public class EnergyBulletController : MoveOfCharacter
 {
     [SerializeField]
+    protected GameObject hitEffect;
+    [SerializeField]
     protected float speed; //速度
     [SerializeField]
     protected int damage; //ダメージ量
+    [SerializeField]
+    protected float stuckTime; //スタック時間
 
     //protected int playerId;
     protected int ownerId;
@@ -81,6 +85,18 @@ public class EnergyBulletController : MoveOfCharacter
                     status = hitObj.GetComponent<PlayerStatus>();
                 }
                 status.AddDamage(damage);
+
+                //ダメージエフェクト
+                if (hitEffect != null)
+                {
+                    PhotonNetwork.Instantiate(Common.Func.GetResourceEffect(hitEffect.name), myTran.position, hitEffect.transform.rotation, 0);
+                }
+
+                //スタック
+                if (stuckTime > 0)
+                {
+                    status.AccelerateRunSpeed(0, stuckTime);
+                }
             }
         }
     }
