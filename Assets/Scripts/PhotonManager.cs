@@ -263,6 +263,7 @@ public class PhotonManager : MonoBehaviour
         SwitchModeSelectArea(false);
 
         // this makes sure we can use PhotonNetwork.LoadLevel() on the master client and all clients in the same room sync their level automatically
+        PhotonNetwork.offlineMode = false;
         PhotonNetwork.automaticallySyncScene = true;
         PhotonNetwork.autoJoinLobby = true;
 

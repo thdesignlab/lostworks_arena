@@ -60,6 +60,7 @@ public class LaserWeaponController : WeaponController
             laser = PhotonNetwork.Instantiate(Common.CO.RESOURCE_BULLET + laserPrefab.name, muzzle.position, muzzle.rotation, 0);
             muzzleViewId = PhotonView.Get(muzzle.gameObject).viewID;
             laserViewId = PhotonView.Get(laser).viewID;
+
             laserTran = laser.transform;
             laserTran.parent = muzzle;
             laserTran.localPosition = Vector3.zero;
@@ -72,11 +73,7 @@ public class LaserWeaponController : WeaponController
                 }
             }
 
-            //InitLaserRPC();
-            //photonView.RPC("InitLaserRPC", PhotonTargets.All);
-
             //レーザー初期設定
-            //SetInitLaser();
             laser.SetActive(false);
         }
         else
@@ -103,35 +100,11 @@ public class LaserWeaponController : WeaponController
         PhotonView muzzleView = PhotonView.Find(parentViewId);
         PhotonView laserView = PhotonView.Find(childViewId);
         if (muzzleView == null || laserView == null) return;
+
         laser = laserView.gameObject;
         laserTran = laser.transform;
         laserTran.parent = muzzleView.gameObject.transform;
         laserTran.localPosition = Vector3.zero;
-
-        //レーザー非表示
-        laser.SetActive(false);
-        //SetInitLaser();
-    }
-
-    private void SetInitLaser()
-    {
-        //レーザーの長さ設定
-        foreach (Transform child in laserTran)
-        {
-            if (child.tag == "LaserEnd")
-            {
-                child.localPosition = new Vector3(0, 0, effectiveLength);
-                break;
-            }
-        }
-
-        //コライダーの長さ設定
-        laserCollider = laser.GetComponent<CapsuleCollider>();
-        if (laserCollider != null)
-        {
-            laserCollider.height = effectiveLength;
-            laserCollider.center = new Vector3(0, 0, effectiveLength / 2);
-        }
 
         //レーザー非表示
         laser.SetActive(false);
@@ -207,7 +180,6 @@ public class LaserWeaponController : WeaponController
             yield return null;
         }
         SwitchLaser(false);
-        //laserCollider.enabled = false;
     }
 
     private void SetLaserLength(float length)

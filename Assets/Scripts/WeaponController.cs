@@ -10,7 +10,7 @@ public class WeaponController : Photon.MonoBehaviour
     protected float leftReloadTime = 0;
 
     protected Transform targetTran;
-    protected AudioSource audioSource;
+    protected AudioController audioCtrl;
     protected Animator animator;
     protected string motionParam = "";
 
@@ -24,7 +24,7 @@ public class WeaponController : Photon.MonoBehaviour
     protected virtual void Awake()
     {
         myTran = transform;
-        audioSource = GetComponent<AudioSource>();
+        audioCtrl = myTran.GetComponent<AudioController>();
     }
 
     protected virtual void Start()
@@ -130,11 +130,14 @@ public class WeaponController : Photon.MonoBehaviour
         return 0;
     }
 
-    protected void PlayAudio()
+    protected void PlayAudio(int no = 0)
     {
-        if (audioSource != null)
-        {
-            audioSource.Play();
-        }
+        if (audioCtrl == null) return;
+        audioCtrl.Play(no);
+    }
+    protected void StopAudio(int no = 0)
+    {
+        if (audioCtrl == null) return;
+        audioCtrl.Stop(no);
     }
 }

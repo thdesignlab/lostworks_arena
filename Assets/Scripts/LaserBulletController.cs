@@ -4,6 +4,7 @@ using System.Collections;
 public class LaserBulletController : Photon.MonoBehaviour
 {
     private Transform myTran;
+    private AudioController audioCtrl;
 
     [SerializeField]
     private int damagePerSecond; //ダメージ量
@@ -15,6 +16,16 @@ public class LaserBulletController : Photon.MonoBehaviour
     void Awake()
     {
         myTran = transform;
+        audioCtrl = myTran.GetComponent<AudioController>();
+    }
+
+    void OnEnable()
+    {
+        if (audioCtrl != null) audioCtrl.Play();
+    }
+    void OnDisable()
+    {
+        if (audioCtrl != null) audioCtrl.Stop();
     }
 
     //HIT時処理

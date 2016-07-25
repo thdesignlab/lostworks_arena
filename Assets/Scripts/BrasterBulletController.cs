@@ -27,7 +27,7 @@ public class BrasterBulletController : EnergyTrackingBulletController
     private CapsuleCollider myCollider;
     private Transform myPlayerTran;
     private PlayerStatus myPlayerStatus;
-    private AudioSource audioSource;
+    private AudioController audioCtrl;
 
     private float firedTime = 0;
 
@@ -41,7 +41,6 @@ public class BrasterBulletController : EnergyTrackingBulletController
             myCollider.enabled = false;
             myPlayerTran = GameObject.Find("GameController").GetComponent<GameController>().GetMyTran();
             myPlayerStatus = myPlayerTran.gameObject.GetComponent<PlayerStatus>();
-            audioSource = GetComponent<AudioSource>();
 
             chargingVector = myPlayerTran.InverseTransformVector(myTran.position - myPlayerTran.position);
 
@@ -52,6 +51,15 @@ public class BrasterBulletController : EnergyTrackingBulletController
             base.speed = 0;
             if (chargeEffect != null) chargeEffect.SetActive(true);
         }
+
+        audioCtrl = myTran.GetComponent<AudioController>();
+    }
+
+    protected override void Start()
+    {
+        base.Start();
+
+        if (audioCtrl != null) audioCtrl.Play(0);
     }
 
     protected override void Update()
@@ -74,16 +82,19 @@ public class BrasterBulletController : EnergyTrackingBulletController
 
                 base.damage = (int)Mathf.Lerp(baseDamage, baseDamage * maxDamageRate, chargeRate);
                 base.myTran.localScale = Vector3.Lerp(baseScale, baseScale * maxSizeRate, chargeRate);
-
                 return;
             }
             if (isCharge)
             {
                 //発射
+                if (audioCtrl != null)
+                {
+                    audioCtrl.Stop(0);
+                    audioCtrl.Play(1);
+                }
                 isCharge = false;
                 base.speed = (int)Mathf.Lerp(baseSpeed, baseSpeed * maxSpeedRate, chargeRate);
                 if (chargeEffect != null) chargeEffect.SetActive(false);
-                if (audioSource != null) audioSource.Play();
             }
 
             firedTime += Time.deltaTime;

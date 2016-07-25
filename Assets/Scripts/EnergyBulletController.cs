@@ -17,6 +17,7 @@ public class EnergyBulletController : MoveOfCharacter
 
     protected Transform targetTran;
     protected PlayerStatus targetStatus;
+    protected AudioSource audioSource;
 
     private float totalDamage = 0;
     private int sendMinDamage = 5;
@@ -28,6 +29,7 @@ public class EnergyBulletController : MoveOfCharacter
         //プレイヤーIDと所有者ID取得
         //playerId = PhotonNetwork.player.ID;
         ownerId = photonView.ownerId;
+        audioSource = GetComponent<AudioSource>();
     }
 
     protected override void Update()
@@ -149,6 +151,14 @@ public class EnergyBulletController : MoveOfCharacter
         {
             targetTran = targetView.gameObject.transform;
             targetStatus = targetView.gameObject.GetComponent<PlayerStatus>();
+        }
+    }
+
+    protected void PlayAudio()
+    {
+        if (audioSource != null)
+        {
+            audioSource.Play();
         }
     }
 }

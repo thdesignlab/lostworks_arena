@@ -4,6 +4,8 @@ using System.Collections;
 public class PhysicsBulletController : MoveOfVelocity
 {
     [SerializeField]
+    protected GameObject hitEffect;
+    [SerializeField]
     protected float firstSpeed;  //発射速度
     [SerializeField]
     protected int damage; //ダメージ量
@@ -23,6 +25,7 @@ public class PhysicsBulletController : MoveOfVelocity
 
     protected Transform targetTran;
     protected PlayerStatus targetStatus;
+    protected AudioSource audioSource;
 
     protected override void Awake()
     {
@@ -31,6 +34,7 @@ public class PhysicsBulletController : MoveOfVelocity
         //プレイヤーID取得
         //playerId = PhotonNetwork.player.ID;
         ownerId = PhotonView.Get(gameObject).ownerId;
+        audioSource = GetComponent<AudioSource>();
     }
 
     protected override void Start()
@@ -154,6 +158,14 @@ public class PhysicsBulletController : MoveOfVelocity
         {
             targetTran = targetView.gameObject.transform;
             targetStatus = targetView.gameObject.GetComponent<PlayerStatus>();
+        }
+    }
+
+    protected void PlayAudio()
+    {
+        if (audioSource != null)
+        {
+            audioSource.Play();
         }
     }
 }
