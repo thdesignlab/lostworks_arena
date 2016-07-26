@@ -74,15 +74,18 @@ public class PlayerStatus : Photon.MonoBehaviour {
     {
         isNpc = GetComponent<PlayerSetting>().isNpc;
 
+        //ステータス構造
+        string screenStatus = Common.CO.SCREEN_CANVAS + Common.CO.SCREEN_STATUS;
+
         //HPSPバー
-        hpBarMine = GameObject.Find("ScreenCanvas/HpBarMine/HP").GetComponent<Slider>();
-        spBarMine = GameObject.Find("ScreenCanvas/SpBarMine/SP").GetComponent<Slider>();
-        hpBarEnemy = GameObject.Find("ScreenCanvas/HpBarEnemy/HP").GetComponent<Slider>();
-        //spBarEnemy = GameObject.Find("ScreenCanvas/SpBarEnemy/SP").GetComponent<Slider>();
+        hpBarMine = GameObject.Find(screenStatus+"HpBarMine/HP").GetComponent<Slider>();
+        spBarMine = GameObject.Find(screenStatus + "SpBarMine/SP").GetComponent<Slider>();
+        hpBarEnemy = GameObject.Find(screenStatus + "HpBarEnemy/HP").GetComponent<Slider>();
+        //spBarEnemy = GameObject.Find(screenStatus+"SpBarEnemy/SP").GetComponent<Slider>();
 
         //HPバーイメージ
-        hpBarMineImage = GameObject.Find("ScreenCanvas/HpBarMine/HP/Fill Area/Fill").GetComponent<Image>();
-        hpBarEnemyImage = GameObject.Find("ScreenCanvas/HpBarEnemy/HP/Fill Area/Fill").GetComponent<Image>();
+        hpBarMineImage = GameObject.Find(screenStatus + "HpBarMine/HP/Fill Area/Fill").GetComponent<Image>();
+        hpBarEnemyImage = GameObject.Find(screenStatus + "HpBarEnemy/HP/Fill Area/Fill").GetComponent<Image>();
 
         //キャラ付きキャンバス
         //statusCanvas = transform.FindChild("StatusCanvas");

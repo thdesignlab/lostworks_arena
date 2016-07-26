@@ -25,6 +25,7 @@ public class LaserWeaponController : WeaponController
     private Transform muzzle;
     private GameObject laser;
     private Transform laserTran;
+    private Transform laserEndTran;
     private Transform laserMuzzle;
     private CapsuleCollider laserCollider;
     
@@ -57,7 +58,7 @@ public class LaserWeaponController : WeaponController
             }
 
             //レーザー生成
-            laser = PhotonNetwork.Instantiate(Common.CO.RESOURCE_BULLET + laserPrefab.name, muzzle.position, muzzle.rotation, 0);
+            laser = PhotonNetwork.Instantiate(Common.Func.GetResourceBullet(laserPrefab.name), muzzle.position, muzzle.rotation, 0);
             muzzleViewId = PhotonView.Get(muzzle.gameObject).viewID;
             laserViewId = PhotonView.Get(laser).viewID;
 
@@ -69,15 +70,20 @@ public class LaserWeaponController : WeaponController
                 if (child.tag == Common.CO.TAG_MUZZLE)
                 {
                     laserMuzzle = child;
-                    break;
+                }
+                else if (child.tag == "LaserEnd")
+                {
+                    laserEndTran = child;
                 }
             }
+            Debug.Log(laserMuzzle.name+" / "+ laserEndTran.name);
 
             //レーザー初期設定
             laser.SetActive(false);
         }
         else
         {
+            //Debug.Log("RPC:SetInitRPC");
             //レーザー初期設定
             photonView.RPC("SetInitRPC", PhotonTargets.Others);
         }
@@ -89,6 +95,8 @@ public class LaserWeaponController : WeaponController
         if (photonView.isMine)
         {
             object[] args = new object[] { muzzleViewId, laserViewId };
+            //Debug.Log("SetInitRPC: "+ muzzleViewId.ToString()+" >> "+ laserViewId.ToString());
+
             photonView.RPC("InitLaserRPC", PhotonTargets.Others, args);
         }
     }
@@ -96,11 +104,12 @@ public class LaserWeaponController : WeaponController
     [PunRPC]
     private void InitLaserRPC(int parentViewId, int childViewId)
     {
+        //Debug.Log("InitLaserRPC: " + parentViewId.ToString() + " >> " + childViewId.ToString());
         //武器にレーザー取り付け
         PhotonView muzzleView = PhotonView.Find(parentViewId);
         PhotonView laserView = PhotonView.Find(childViewId);
         if (muzzleView == null || laserView == null) return;
-
+        
         laser = laserView.gameObject;
         laserTran = laser.transform;
         laserTran.parent = muzzleView.gameObject.transform;
@@ -161,12 +170,18 @@ public class LaserWeaponController : WeaponController
         //レーザー幅変更
         int factor = 1;
         float nowWidth = 0;
-        SetLaserLength(effectiveLength);
+        float nowLength = 0;
+        SetLaserLength(nowLength);
         SetLaserWidth(nowWidth);
         SwitchLaser(true);
         //laserCollider.enabled = true;
         for (;;)
         {
+            //長さ
+            nowLength = GetLaserLength();
+            SetLaserLength(nowLength);
+
+            //幅
             nowWidth += effectiveWidth * Time.deltaTime / effectiveWidthTime * factor;
             SetLaserWidth(nowWidth);
             if (nowWidth >= effectiveWidth)
@@ -182,24 +197,43 @@ public class LaserWeaponController : WeaponController
         SwitchLaser(false);
     }
 
+    private int hitCnt = 0;
+    private float GetLaserLength()
+    {
+        float length = effectiveLength;
+
+        RaycastHit hit;
+        int layerNo = LayerMask.NameToLayer(Common.CO.LAYER_STRUCTURE);
+        int layerMask = 1 << layerNo;
+        Ray ray = new Ray(laserMuzzle.position, laserMuzzle.forward);
+        if (Physics.Raycast(ray, out hit, effectiveLength, layerMask))
+        {
+            length = Vector3.Distance(laserMuzzle.position, hit.transform.position);
+            StructureParentController atructureCtrl = hit.transform.root.GetComponent<StructureParentController>();
+            if (atructureCtrl != null)
+            {
+                hitCnt++;
+                if (hitCnt >= 10)
+                {
+                    atructureCtrl.AddDamage(1);
+                    hitCnt = 0;
+                }
+            }
+        }
+        return length;
+    }
+
     private void SetLaserLength(float length)
     {
         //レーザーの長さ設定
-        foreach (Transform child in laserTran)
-        {
-            if (child.tag == "LaserEnd")
-            {
-                child.localPosition = new Vector3(0, 0, effectiveLength);
-                break;
-            }
-        }
+        laserEndTran.localPosition = new Vector3(0, 0, length);
 
         //コライダーの長さ設定
         laserCollider = laser.GetComponent<CapsuleCollider>();
         if (laserCollider != null)
         {
-            laserCollider.height = effectiveLength;
-            laserCollider.center = new Vector3(0, 0, effectiveLength / 2);
+            laserCollider.height = length;
+            laserCollider.center = new Vector3(0, 0, length / 2);
         }
     }
 

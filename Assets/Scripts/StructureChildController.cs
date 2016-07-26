@@ -24,7 +24,7 @@ public class StructureChildController : Photon.MonoBehaviour
         myRigidbody = GetComponent<Rigidbody>();
         parentCtrl = myTran.root.GetComponent<StructureParentController>();
         //myMat = GetComponent<Renderer>().material;
-        liveTime *= Random.Range(0.5f, 1.5f);
+        liveTime *= Random.Range(1.0f, 2.0f);
     }
 
     void Update()

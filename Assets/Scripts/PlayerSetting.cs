@@ -185,9 +185,9 @@ public class PlayerSetting : Photon.MonoBehaviour
     [PunRPC]
     private void SetWeaponParentRPC()
     {
-        //Debug.Log("[SetWeaponParent]"+myTran.name+": "+weaponMap.Count.ToString());
         if (photonView.isMine)
         {
+            //Debug.Log("[SetWeaponParent]" + myTran.name + ": " + weaponMap.Count.ToString());
             foreach (int key in weaponMap.Keys)
             {
                 object[] args = new object[] { key, weaponMap[key] };

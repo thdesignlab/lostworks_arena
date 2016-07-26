@@ -46,12 +46,15 @@ public class PlayerController : MoveOfCharacter
             animator = base.myTran.FindChild(Common.CO.PARTS_BODY).gameObject.GetComponent<Animator>();
             status = GetComponent<PlayerStatus>();
 
-            leftHandBtn = GameObject.Find(Common.CO.SCREEN_CANVAS + Common.CO.BUTTON_LEFT_ATTACK).GetComponent<Button>();
-            rightHandBtn = GameObject.Find(Common.CO.SCREEN_CANVAS + Common.CO.BUTTON_RIGHT_ATTACK).GetComponent<Button>(); ;
-            shoulderBtn = GameObject.Find(Common.CO.SCREEN_CANVAS + Common.CO.BUTTON_SHOULDER_ATTACK).GetComponent<Button>(); ;
-            subBtn = GameObject.Find(Common.CO.SCREEN_CANVAS + Common.CO.BUTTON_USE_SUB).GetComponent<Button>(); ;
+            //キャンパスボタン構造
+            string screenBtn = Common.CO.SCREEN_CANVAS + Common.CO.SCREEN_INPUT_BUTTON;
 
-            GameObject autoLockObj = GameObject.Find(Common.CO.SCREEN_CANVAS + Common.CO.BUTTON_AUTO_LOCK);
+            leftHandBtn = GameObject.Find(screenBtn + Common.CO.BUTTON_LEFT_ATTACK).GetComponent<Button>();
+            rightHandBtn = GameObject.Find(screenBtn + Common.CO.BUTTON_RIGHT_ATTACK).GetComponent<Button>(); ;
+            shoulderBtn = GameObject.Find(screenBtn + Common.CO.BUTTON_SHOULDER_ATTACK).GetComponent<Button>(); ;
+            subBtn = GameObject.Find(screenBtn + Common.CO.BUTTON_USE_SUB).GetComponent<Button>(); ;
+
+            GameObject autoLockObj = GameObject.Find(screenBtn + Common.CO.BUTTON_AUTO_LOCK);
             if (autoLockObj != null)
             {
                 //autoLockButton = autoLockObj.GetComponent<Button>();

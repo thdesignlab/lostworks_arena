@@ -20,6 +20,8 @@ namespace Common
 
         //スクリーンUI
         public const string SCREEN_CANVAS = "ScreenCanvas/";
+        public const string SCREEN_STATUS = "Status/";
+        public const string SCREEN_INPUT_BUTTON = "InputButton/";
         public const string BUTTON_LEFT_ATTACK = "FireLeft";
         public const string BUTTON_RIGHT_ATTACK = "FireRight";
         public const string BUTTON_SHOULDER_ATTACK = "FireShoulder";
@@ -103,6 +105,9 @@ namespace Common
             TAG_BULLET_ENERGY,
             TAG_BULLET_LASER
         };
+
+        //レイヤー
+        public static string LAYER_STRUCTURE = "Structure";
     }
 
     public static class Weapon
