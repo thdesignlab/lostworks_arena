@@ -435,7 +435,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
         recoverSp = defaultRecoverSp;
     }
 
-    //移動速度アップ・ダウン(重ね掛け不可)
+    //移動速度アップ・ダウン(負の効果優先)
     private float nowSpeedRate = 1;
     public bool AccelerateRunSpeed(float rate, float limit, GameObject effect = null, bool isSendRpc = true)
     {
@@ -447,7 +447,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
 
         if (photonView.isMine)
         {
-            if (nowSpeedRate != 1)
+            if (nowSpeedRate != 1 && nowSpeedRate <= rate)
             {
                 //既に別の効果が適用中
                 return false;
@@ -479,16 +479,22 @@ public class PlayerStatus : Photon.MonoBehaviour {
         boostSpeed *= rate;
         if (effect != null) effect.SetActive(true);
 
-        yield return new WaitForSeconds(limit);
+        for (;;)
+        {
+            yield return null;
+            limit -= Time.deltaTime;
+            if (limit <= 0) break;
+            if (nowSpeedRate != rate) break;
+        }
 
         if (effect != null) effect.SetActive(false);
-        if (interfareMoveTime <= 0)
+        if (interfareMoveTime <= 0 && nowSpeedRate == rate)
         {
             runSpeed = defaultRunSpeed;
             jumpSpeed = defaultJumpSpeed;
             boostSpeed = defaultBoostSpeed;
+            nowSpeedRate = 1;
         }
-        nowSpeedRate = 1;
     }
 
     //移動制限

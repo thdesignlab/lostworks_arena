@@ -32,6 +32,7 @@ public class DialogController : MonoBehaviour
         buttonOk.onClick.AddListener(() => OnOk(okAction));
         if (cancelAction != null || isCancel)
         {
+            Debug.Log(cancelAction);
             buttonCancelObj.GetComponent<Button>().onClick.AddListener(() => OnCancel(cancelAction));
             buttonCancelObj.SetActive(true);
         }
@@ -46,20 +47,21 @@ public class DialogController : MonoBehaviour
         Destroy(dialog);
     }
 
-    public static void OnOk(UnityAction action = null)
+    public static void OnOk(UnityAction unityAction = null)
     {
-        if (action != null)
+        if (unityAction != null)
         {
-            action();
+            unityAction.Invoke();
         }
         CloseDialog();
     }
 
-    public static void OnCancel(UnityAction action = null)
+    public static void OnCancel(UnityAction unityAction = null)
     {
-        if (action != null)
+        if (unityAction != null)
         {
-            action();
+            Debug.Log(unityAction);
+            unityAction.Invoke();
         }
         CloseDialog();
     }
