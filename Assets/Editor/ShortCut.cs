@@ -9,6 +9,7 @@ public class ShortCut : MonoBehaviour
     {
         "Title",    //0
         "Battle",   //1
+        "Custom",   //2
     };
 
 
