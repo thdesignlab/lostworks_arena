@@ -6,21 +6,25 @@ public class StructureChildController : Photon.MonoBehaviour
     private Transform myTran;
     private Rigidbody myRigidbody;
     private StructureParentController parentCtrl;
+    //private Material myMat;
 
     [SerializeField]
     private int damage;
     [SerializeField]
-    private float damageVelocity;
+    private float baseDamageVelocity;
     [SerializeField]
-    private int liveTime;
+    private float liveTime;
 
     private float destroyTime = 0;
+    //private Color alpha = new Color(0, 0, 0, 0.1f);
 
     void Awake()
     {
         myTran = transform;
         myRigidbody = GetComponent<Rigidbody>();
         parentCtrl = myTran.root.GetComponent<StructureParentController>();
+        //myMat = GetComponent<Renderer>().material;
+        liveTime *= Random.Range(0.5f, 1.5f);
     }
 
     void Update()
@@ -45,16 +49,19 @@ public class StructureChildController : Photon.MonoBehaviour
         {
             if (myTran.parent == null)
             {
-                if (other.transform.tag == "Player" && myRigidbody.velocity.magnitude >= damageVelocity)
+                if (other.transform.tag == "Player")
                 {
-                    other.gameObject.GetComponent<PlayerStatus>().AddDamage(damage);
+                    float damageRate = myRigidbody.velocity.magnitude / baseDamageVelocity;
+                    if (damageRate > 1) damageRate = 1;
+                    other.gameObject.GetComponent<PlayerStatus>().AddDamage((int)(damage * damageRate));
                 }
             }
             else
             {
                 if (Common.Func.IsDamageAffect(other.transform.tag))
                 {
-                    parentCtrl.AddDamage(100);
+                    int damage = Random.Range(1, 25);
+                    parentCtrl.AddDamage(damage);
                 }
             }
         }

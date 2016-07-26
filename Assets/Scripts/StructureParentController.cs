@@ -8,7 +8,7 @@ public class StructureParentController : Photon.MonoBehaviour
     [SerializeField]
     private int maxHp;
 
-
+    private GameController gameCtrl;
     private int nowHp;
     private int totalDamage = 0;
 
@@ -19,10 +19,13 @@ public class StructureParentController : Photon.MonoBehaviour
     {
         myTran = transform;
         nowHp = maxHp;
+        gameCtrl = GameObject.Find("GameController").GetComponent<GameController>();
     }
 
     void Update()
     {
+        if (!gameCtrl.isGameStart) return;
+
         if (PhotonNetwork.player == PhotonNetwork.masterClient)
         {
             if (nowHp <= 0)
