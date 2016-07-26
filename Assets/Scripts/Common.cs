@@ -95,6 +95,14 @@ namespace Common
             TAG_BULLET_MISSILE
         };
 
+        //ダメージ判定のあるタグ
+        public static string[] DamageAffectTagArray = new string[]
+        {
+            TAG_BULLET_PHYSICS,
+            TAG_BULLET_MISSILE,
+            TAG_BULLET_ENERGY,
+            TAG_BULLET_LASER
+        };
     }
 
     public static class Weapon
@@ -148,6 +156,12 @@ namespace Common
         public static bool IsBullet(string tag)
         {
             return InArrayString(Common.CO.physicsBulletArray, tag);
+        }
+
+        //ダメージ判定
+        public static bool IsDamageAffect(string tag)
+        {
+            return InArrayString(Common.CO.DamageAffectTagArray, tag);
         }
 
         //三角関数
