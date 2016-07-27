@@ -31,7 +31,7 @@ public class WeaponStore : Photon.MonoBehaviour
     [SerializeField]
     private bool isEnableSomeWeapon;
     private List<string> excludeWeapons = new List<string>();
-    
+
     public void SetMyTran()
     {
         myPlayerTran = GameObject.Find("GameController").GetComponent<GameController>().GetMyTran();

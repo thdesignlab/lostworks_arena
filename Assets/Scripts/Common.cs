@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace Common
 {
+    //### 定数 ###
     public static class CO
     {
         //シーン名
@@ -110,6 +111,7 @@ namespace Common
         public static string LAYER_STRUCTURE = "Structure";
     }
 
+    //### 武器詳細 ###
     public static class Weapon
     {
         public static Dictionary<string, string[]> weaponLineUp = new Dictionary<string, string[]>()
@@ -119,7 +121,31 @@ namespace Common
 
     }
 
+    //### 端末保持情報 ###
+    public static class PP
+    {
+        public const string USER_INFO = "UserInfo";
+        public const string USER_RESULT = "UserResult";
+        public const string USER_EQUIP = "UserEquip";
+        public const string OPEN_CHARACTERS = "OpenCharacters";
+        public const string OPEN_WEAPONS = "OpenWeapons";
 
+        public const string INFO_USER_ID = "UserId";
+        public const string INFO_USER_NAME = "UserName";
+
+        public const string RESULT_BATTLE_COUNT = "BattleCount";
+        public const string RESULT_WIN_COUNT = "WinCount";
+        public const string RESULT_LOSE_COUNT = "LoseCount";
+        public const string RESULT_BATTLE_RATE = "BattleRate";
+
+        public const string EQUIP_CHARACTER_NO = "CharacterNo";
+        public const string EQUIP_LEFT_HAND = "LeftHandWeapon";
+        public const string EQUIP_RIGHT_HAND = "RightHandWeapon";
+        public const string EQUIP_SHOULDER = "ShoulderWeapon";
+        public const string EQUIP_SUB = "SubWeapon";
+    }
+
+    //### 共通関数 ###
     public static class Func
     {
         //リソース取得
@@ -163,7 +189,7 @@ namespace Common
             return InArrayString(Common.CO.physicsBulletArray, tag);
         }
 
-        //ダメージ判定
+        //ダメージオブジェクト判定
         public static bool IsDamageAffect(string tag)
         {
             return InArrayString(Common.CO.DamageAffectTagArray, tag);

@@ -38,6 +38,8 @@ public class GameController : Photon.MonoBehaviour
 
     void Awake()
     {
+        UserManager.DispUserInfo();
+
         isDebugMode = GameObject.Find("Debug").GetComponent<MyDebug>().isDebugMode;
         SpawnMyPlayerEverywhere();
         messageCanvasGroup = messageCanvas.GetComponent<CanvasGroup>();

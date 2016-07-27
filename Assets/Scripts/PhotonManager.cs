@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.UI;
 
 public class PhotonManager : MonoBehaviour
@@ -10,7 +11,7 @@ public class PhotonManager : MonoBehaviour
     private GameObject networkArea;
     [SerializeField]
     private GameObject roomListArea;
-    [SerializeField]
+    //[SerializeField]
     private GameObject messageArea;
 
     [SerializeField]
@@ -46,11 +47,30 @@ public class PhotonManager : MonoBehaviour
     private Text roomStatusText;
 
 
+    //メッセージ
+    const string MESSAGE_TOP = "Tap to Start";
+    const string MESSAGE_CONNECT = "Connecting";
+    const string MESSAGE_LOADING = "Now Loading";
+    const string MESSAGE_CREATE_ROOM = "Create Room";
+    const string MESSAGE_JOIN_ROOM = "Join Room";
+    const string MESSAGE_SEARCH_ROOM = "Search Room";
+
+    const string MESSAGE_CONNECT_FAILED = "ネットワーク接続に失敗しました\n通信状況をご確認の上\n再度お試しください";
+    const string MESSAGE_CREATE_ROOM_FAILED = "Room作成に失敗しました\n既に存在するRoom名です";
+    const string MESSAGE_JOIN_ROOM_FAILED = "参加可能なRoomがありません\nRoomを作成するか\n時間を空けてから再度お試しください";
+
     public void Awake()
     {
         //テキストエリア
-        messageAreaText = messageArea.transform.FindChild("Message").GetComponent<Text>();
+        //messageAreaText = messageArea.transform.FindChild("Message").GetComponent<Text>();
         Init();
+
+        DontDestroyOnLoad(GameObject.Find("WeaponStore"));
+        DontDestroyOnLoad(GameObject.Find("Debug"));
+
+        //ユーザー情報取得
+        UserManager.SetUserInfo();
+        UserManager.DispUserInfo();
     }
 
     void Update()
@@ -59,17 +79,20 @@ public class PhotonManager : MonoBehaviour
 
         if (isTapToStart)
         {
-            SwitchMessageArea("Tap to Start");
+            SwitchMessageArea(MESSAGE_TOP);
             if (Input.GetMouseButtonDown(0))
             {
                 TapToStart();
             }
         }
-        if (messageArea.GetActive())
+        if (messageAreaText != null)
         {
-            //一定時間ごとに点滅
-            float alpha = Common.Func.GetSin(processTime, 270);
-            messageAreaText.color = new Color(messageAreaText.color.r, messageAreaText.color.g, messageAreaText.color.b, alpha);
+            if (processTime > 1.0f)
+            {
+                //一定時間ごとに点滅
+                float alpha = Common.Func.GetSin(processTime, 270, 45);
+                messageAreaText.color = new Color(messageAreaText.color.r, messageAreaText.color.g, messageAreaText.color.b, alpha);
+            }
         }
         else
         {
@@ -101,7 +124,7 @@ public class PhotonManager : MonoBehaviour
                     //初期値設定
                     PlayerPrefs.SetString("playerName", PhotonNetwork.playerName);
                     roomNameIF.text = ROOM_NAME_PREFIX;
-                    roomStatusText.text = "Room :" + PhotonNetwork.countOfRooms + " / Player :" + PhotonNetwork.countOfPlayers;
+                    //roomStatusText.text = "Room :" + PhotonNetwork.countOfRooms + " / Player :" + PhotonNetwork.countOfPlayers;
                     //isConnected = true;
                 }
             }
@@ -113,7 +136,7 @@ public class PhotonManager : MonoBehaviour
                 if (PhotonNetwork.connecting)
                 {
                     // *** 接続中 ***
-                    SwitchMessageArea("Connecting");
+                    SwitchMessageArea(MESSAGE_CONNECT);
                 }
                 else
                 {
@@ -124,7 +147,7 @@ public class PhotonManager : MonoBehaviour
                 {
                     // *** 接続失敗 ***
                     isDialogOpen = true;
-                    DialogController.OpenDialog("ネットワーク接続に失敗しました\n通信状況をご確認の上\n再度お試しください", () => ConnectStart(), () => ExitGame());
+                    DialogController.OpenDialog(MESSAGE_CONNECT_FAILED, () => ConnectStart(), () => ExitGame());
                 }
             }
         }
@@ -152,15 +175,21 @@ public class PhotonManager : MonoBehaviour
     private void SwitchMessageArea(string text = "")
     {
         //Debug.Log("SwitchMessageArea: " + text);
-        messageAreaText.text = text;
+        //messageAreaText.text = text;
 
         if (text == "")
         {
-            messageArea.SetActive(false);
+            //messageArea.SetActive(false);
+            DialogController.CloseMessage();
         }
         else
         {
-            messageArea.SetActive(true);
+            //messageArea.SetActive(true);
+            if (!messageArea)
+            {
+                messageArea = DialogController.OpenMessage(text);
+                messageAreaText = messageArea.transform.GetComponentInChildren<Text>();
+            }
         }
     }
 
@@ -249,7 +278,7 @@ public class PhotonManager : MonoBehaviour
     //ローカルモード選択
     public void LocalModeSelect()
     {
-        SwitchMessageArea("Now Loading");
+        SwitchMessageArea(MESSAGE_LOADING);
         SwitchModeSelectArea(false);
 
         PhotonNetwork.offlineMode = true;
@@ -259,7 +288,7 @@ public class PhotonManager : MonoBehaviour
     //ネットワークモード選択
     public void NetworkModeSelect()
     {
-        SwitchMessageArea("Now Loading");
+        SwitchMessageArea(MESSAGE_LOADING);
         SwitchModeSelectArea(false);
 
         // this makes sure we can use PhotonNetwork.LoadLevel() on the master client and all clients in the same room sync their level automatically
@@ -275,10 +304,10 @@ public class PhotonManager : MonoBehaviour
         }
 
         // generate a name for this player, if none is assigned yet
-        if (string.IsNullOrEmpty(PhotonNetwork.playerName))
-        {
-            PhotonNetwork.playerName = "Guest" + Random.Range(1, 9999);
-        }
+        //if (string.IsNullOrEmpty(PhotonNetwork.playerName))
+        //{
+        PhotonNetwork.playerName = UserManager.userInfo[Common.PP.INFO_USER_NAME];
+        //}
 
         // if you wanted more debug out, turn this on:
         // PhotonNetwork.logLevel = NetworkLogLevel.Full;
@@ -308,14 +337,14 @@ public class PhotonManager : MonoBehaviour
     //Room作成
     public void CreateRoom()
     {
-        SwitchMessageArea("Create Room");
+        SwitchMessageArea(MESSAGE_CREATE_ROOM);
         PhotonNetwork.CreateRoom(roomNameIF.text, new RoomOptions() { maxPlayers = 2 }, null);
     }
 
     //入室
     public void JoinRoom(string roomName = "")
     {
-        SwitchMessageArea("Join Room");
+        SwitchMessageArea(MESSAGE_JOIN_ROOM);
         if (roomName == "")
         {
             roomName = roomNameIF.text;
@@ -326,7 +355,7 @@ public class PhotonManager : MonoBehaviour
     //ランダム入室
     public void RandomJoinRoom()
     {
-        SwitchMessageArea("Search Room");
+        SwitchMessageArea(MESSAGE_SEARCH_ROOM);
         PhotonNetwork.JoinRandomRoom();
     }
 
@@ -342,7 +371,7 @@ public class PhotonManager : MonoBehaviour
     public void OnPhotonCreateRoomFailed()
     {
         SwitchMessageArea();
-        DialogController.OpenDialog("Room作成に失敗しました\n既に存在するRoom名です");
+        DialogController.OpenDialog(MESSAGE_CREATE_ROOM_FAILED);
         //ErrorDialog = "Error: Can't create room (room name maybe already used).";
         Debug.Log("OnPhotonCreateRoomFailed got called. This can happen if the room exists (even if not visible). Try another room name.");
     }
@@ -350,7 +379,7 @@ public class PhotonManager : MonoBehaviour
     public void OnPhotonJoinRoomFailed(object[] cause)
     {
         SwitchMessageArea();
-        DialogController.OpenDialog("参加可能なRoomがありません\nRoomを作成するか\n時間を空けて再度お試しください");
+        DialogController.OpenDialog(MESSAGE_JOIN_ROOM_FAILED);
         //ErrorDialog = "Error: Can't join room (full or unknown room name). " + cause[1];
         Debug.Log("OnPhotonJoinRoomFailed got called. This can happen if the room is not existing or full or closed.");
     }
@@ -358,7 +387,7 @@ public class PhotonManager : MonoBehaviour
     public void OnPhotonRandomJoinFailed()
     {
         SwitchMessageArea();
-        DialogController.OpenDialog("参加可能なRoomがありません\nRoomを作成するか\n時間を空けて再度お試しください");
+        DialogController.OpenDialog(MESSAGE_JOIN_ROOM_FAILED);
         //ErrorDialog = "Error: Can't join random room (none found).";
         Debug.Log("OnPhotonRandomJoinFailed got called. Happens if no room is available (or all full or invisible or closed). JoinrRandom filter-options can limit available rooms.");
     }
