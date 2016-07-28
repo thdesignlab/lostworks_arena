@@ -183,7 +183,7 @@ public class WeaponStore : Photon.MonoBehaviour
     {
         if (index < 0 || selectableWeaponList.Count <= index) return;
 
-        Transform partsTran = myPlayerTran.FindChild(Common.CO.partsNameArray[customPartsNo]);
+        Transform partsTran = myPlayerTran.FindChild(Common.Func.GetPartsStructure(customPartsNo));
         myPlayerTran.gameObject.GetComponent<PlayerSetting>().EquipWeapon(partsTran, selectableWeaponList[index]);
 
         SetEquipWeaponName(Common.CO.partsNameArray[customPartsNo], selectableWeaponList[index].name);
@@ -193,7 +193,7 @@ public class WeaponStore : Photon.MonoBehaviour
     {
         if (weaponName == "")
         {
-            Transform partsTran = myPlayerTran.FindChild(partsName);
+            Transform partsTran = myPlayerTran.FindChild(Common.Func.GetPartsStructure(partsName));
             if (partsTran == null || partsTran.childCount == 0) return;
             Transform weaponTran = partsTran.GetChild(0);
             if (weaponTran != null)

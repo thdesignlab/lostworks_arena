@@ -243,5 +243,15 @@ namespace Common
             }
             return motionName;
         }
+
+        //パーツ構造取得
+        public static string GetPartsStructure(string partsName)
+        {
+            return Common.CO.PARTS_BODY + "/" + partsName;
+        }
+        public static string GetPartsStructure(int partsNo)
+        {
+            return GetPartsStructure(Common.CO.partsNameArray[partsNo]);
+        }
     }
 }

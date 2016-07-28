@@ -90,13 +90,20 @@ public class PlayerSetting : Photon.MonoBehaviour
     {
         foreach (Transform child in myTran)
         {
-            foreach (string partsName in Common.CO.partsNameArray)
+            if (child.name == Common.CO.PARTS_BODY)
             {
-                if (child.name == partsName)
+                foreach (Transform grandson in child)
                 {
-                    EquipWeapon(child);
-                    break;
+                    foreach (string partsName in Common.CO.partsNameArray)
+                    {
+                        if (grandson.name == partsName)
+                        {
+                            EquipWeapon(grandson);
+                            break;
+                        }
+                    }
                 }
+                break;
             }
         }
     }

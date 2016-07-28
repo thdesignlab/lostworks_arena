@@ -159,7 +159,7 @@ public class PlayerController : MoveOfCharacter
 
     public void SetWeapon()
     {
-        leftHandCtrl = base.myTran.FindChild(Common.CO.PARTS_LEFT_HAND).GetComponentInChildren<WeaponController>();
+        leftHandCtrl = base.myTran.FindChild(Common.Func.GetPartsStructure(Common.CO.PARTS_LEFT_HAND)).GetComponentInChildren<WeaponController>();
         if (leftHandCtrl != null)
         {
             leftHandCtrl.SetTarget(targetTran);
@@ -171,7 +171,7 @@ public class PlayerController : MoveOfCharacter
             leftHandBtn.interactable = false;
         }
 
-        rightHandCtrl = base.myTran.FindChild(Common.CO.PARTS_RIGHT_HAND).GetComponentInChildren<WeaponController>();
+        rightHandCtrl = base.myTran.FindChild(Common.Func.GetPartsStructure(Common.CO.PARTS_RIGHT_HAND)).GetComponentInChildren<WeaponController>();
         if (rightHandCtrl != null)
         {
             rightHandCtrl.SetTarget(targetTran);
@@ -183,7 +183,7 @@ public class PlayerController : MoveOfCharacter
             rightHandBtn.interactable = false;
         }
 
-        shoulderCtrl = base.myTran.FindChild(Common.CO.PARTS_SHOULDER).GetComponentInChildren<WeaponController>();
+        shoulderCtrl = base.myTran.FindChild(Common.Func.GetPartsStructure(Common.CO.PARTS_SHOULDER)).GetComponentInChildren<WeaponController>();
         if (shoulderCtrl != null)
         {
             shoulderCtrl.SetTarget(targetTran);
@@ -195,7 +195,7 @@ public class PlayerController : MoveOfCharacter
             shoulderBtn.interactable = false;
         }
 
-        subCtrl = base.myTran.FindChild(Common.CO.PARTS_SUB).GetComponentInChildren<WeaponController>();
+        subCtrl = base.myTran.FindChild(Common.Func.GetPartsStructure(Common.CO.PARTS_SUB)).GetComponentInChildren<WeaponController>();
         if (subCtrl != null)
         {
             subCtrl.SetTarget(targetTran);
@@ -394,6 +394,7 @@ public class PlayerController : MoveOfCharacter
         if (!photonView.isMine) return;
         if (rightHandCtrl == null) return;
         base.PreserveSpeed(attackPreserveSpeedTime, status.runSpeed);
+        motionCtrl.SetBodyAngle();
         rightHandCtrl.Fire(targetTran);
     }
 
@@ -402,6 +403,7 @@ public class PlayerController : MoveOfCharacter
         if (!photonView.isMine) return;
         if (leftHandCtrl == null) return;
         base.PreserveSpeed(attackPreserveSpeedTime, status.runSpeed);
+        motionCtrl.SetBodyAngle();
         leftHandCtrl.Fire(targetTran);
     }
 
@@ -410,6 +412,7 @@ public class PlayerController : MoveOfCharacter
         if (!photonView.isMine) return;
         if (shoulderCtrl == null) return;
         base.PreserveSpeed(attackPreserveSpeedTime, status.runSpeed);
+        motionCtrl.SetBodyAngle();
         shoulderCtrl.Fire(targetTran);
     }
 
