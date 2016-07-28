@@ -25,14 +25,8 @@ public class ChargeBulletController : EnergyTrackingBulletController
     private bool isCharge = true;
 
     private CapsuleCollider myCollider;
-    private Transform myPlayerTran;
-    private PlayerStatus myPlayerStatus;
-    private AudioController audioCtrl;
-    private GameController GameCtrl;
 
     private float firedTime = 0;
-
-    private float npcChargeTime = 0;
 
     protected override void Awake()
     {
@@ -41,8 +35,6 @@ public class ChargeBulletController : EnergyTrackingBulletController
         {
             myCollider = myTran.GetComponent<CapsuleCollider>();
             myCollider.enabled = false;
-            GameCtrl = GameObject.Find("GameController").GetComponent<GameController>();
-            myPlayerTran = GameCtrl.GetMyTran();
 
             baseSpeed = base.speed;
             baseDamage = base.damage;
@@ -51,14 +43,6 @@ public class ChargeBulletController : EnergyTrackingBulletController
             base.speed = 0;
             if (chargeEffect != null) chargeEffect.SetActive(true);
         }
-
-        audioCtrl = myTran.GetComponent<AudioController>();
-    }
-
-    protected override void Start()
-    {
-        base.Start();
-        if (audioCtrl != null) audioCtrl.Play(0);
     }
 
     protected override void Update()
@@ -66,60 +50,44 @@ public class ChargeBulletController : EnergyTrackingBulletController
         if (photonView.isMine)
         {
             base.Update();
-            if ((isCharge && myPlayerTran != null) 
-                && ((npcChargeTime <= 0 && Input.GetMouseButton(0)) || (npcChargeTime > 0 && base.activeTime < npcChargeTime)))
-            {
-                //チャージ中
-                myTran.position = myPlayerTran.position + myPlayerTran.TransformVector(chargingVector);
-                myTran.rotation = myPlayerTran.rotation;
 
-                chargeRate = base.activeTime / maxChargeTime;
-                if (maxChargeTime < base.activeTime)
+            if (!isCharge)
+            {
+                firedTime += Time.deltaTime;
+                if (firedTime >= 0.1f)
                 {
-                    chargeRate = 1;
-                    if (chargeEffect != null) chargeEffect.SetActive(false);
+                    myCollider.enabled = true;
                 }
-
-                base.damage = (int)Mathf.Lerp(baseDamage, baseDamage * maxDamageRate, chargeRate);
-                base.myTran.localScale = Vector3.Lerp(baseScale, baseScale * maxSizeRate, chargeRate);
-                return;
-            }
-            if (isCharge)
-            {
-                //発射
-                if (audioCtrl != null)
+                if (firedTime >= limitTime)
                 {
-                    audioCtrl.Stop(0);
-                    audioCtrl.Play(1);
+                    base.DestoryObject();
                 }
-                isCharge = false;
-                base.speed = (int)Mathf.Lerp(baseSpeed, baseSpeed * maxSpeedRate, chargeRate);
-                if (chargeEffect != null) chargeEffect.SetActive(false);
-            }
-
-            firedTime += Time.deltaTime;
-            if (firedTime >= 0.1f)
-            {
-                myCollider.enabled = true;
-            }
-            if (firedTime >= limitTime)
-            {
-                base.DestoryObject();
             }
         }
     }
 
-    //ターゲットを設定する
-    public override void SetTarget(Transform target)
+    public void Charging(float chargeTiem)
     {
-        base.SetTarget(target);
-
-        if (myPlayerTran == target)
+        chargeRate = chargeTiem / maxChargeTime;
+        if (maxChargeTime < base.activeTime)
         {
-            //NPC
-            myPlayerTran = GameCtrl.GetNpcTran();
-            npcChargeTime = Random.Range(maxChargeTime * 0.5f, maxChargeTime);
+            chargeRate = 1;
+            if (chargeEffect != null) chargeEffect.SetActive(false);
         }
-        chargingVector = myPlayerTran.InverseTransformVector(myTran.position - myPlayerTran.position);
+
+        base.damage = (int)Mathf.Lerp(baseDamage, baseDamage * maxDamageRate, chargeRate);
+        base.myTran.localScale = Vector3.Lerp(baseScale, baseScale * maxSizeRate, chargeRate);
+    }
+    public void Fire(float chargeTime)
+    {
+        Charging(chargeTime);
+        isCharge = false;
+        base.speed = (int)Mathf.Lerp(baseSpeed, baseSpeed * maxSpeedRate, chargeRate);
+        if (chargeEffect != null) chargeEffect.SetActive(false);
+    }
+
+    public float GetMaxChargeTime()
+    {
+        return maxChargeTime;
     }
 }

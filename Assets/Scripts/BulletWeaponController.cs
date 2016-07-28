@@ -140,7 +140,7 @@ public class BulletWeaponController : WeaponController
         muzzles[muzzleNo].localRotation = defaultMuzzleQuaternions[muzzleNo];
     }
 
-    private void SpawnBullet(Vector3 pos, Quaternion quat, int groupId)
+    protected GameObject SpawnBullet(Vector3 pos, Quaternion quat, int groupId)
     {
         if (focusDiff > 0)
         {
@@ -150,6 +150,7 @@ public class BulletWeaponController : WeaponController
         GameObject ob = PhotonNetwork.Instantiate(BULLET_FOLDER + bullet.name, pos, quat, groupId);
         SetBulletTarget(ob);
         base.PlayAudio();
+        return ob;
     }
 
     public override bool IsEnableFire()
