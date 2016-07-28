@@ -6,9 +6,12 @@ public class PlayerController : MoveOfCharacter
 //public class PlayerController : MoveOfVelocity
 {
     [SerializeField]
-    protected float attackPreserveSpeedTime = 0;    //攻撃時速度維持時間
+    private float attackPreserveSpeedTime = 0;    //攻撃時速度維持時間
     [SerializeField]
-    protected float movePreserveSpeedTime = 0;  //移動終了時速度維持時間
+    private float movePreserveSpeedTime = 0;  //移動終了時速度維持時間
+    [SerializeField]
+    private GameObject circleArrow;
+    private Transform circleArrowTran;
 
     private GameController gameCtrl;
     private PlayerMotionController motionCtrl;
@@ -61,6 +64,11 @@ public class PlayerController : MoveOfCharacter
                 autoLockText = autoLockObj.transform.FindChild("Text").GetComponent<Text>();
             }
 
+            if (circleArrow != null)
+            {
+                circleArrowTran = circleArrow.transform;
+            }
+
             switch (Application.platform)
             {
                 case RuntimePlatform.Android:
@@ -95,9 +103,24 @@ public class PlayerController : MoveOfCharacter
             }
             else
             {
-                if (targetTran != null && isAutoLock && targetStatus.IsLocked())
+                if (targetStatus.IsLocked())
                 {
-                    base.SetAngle(targetTran, status.turnSpeed, new Vector3(1, 0, 1));
+                    if (isAutoLock)
+                    {
+                        base.SetAngle(targetTran, status.turnSpeed, new Vector3(1, 0, 1));
+                    }
+                    if (circleArrow != null)
+                    {
+                        circleArrow.SetActive(false);
+                    }
+                }
+                else
+                {
+                    if (circleArrow != null)
+                    {
+                        circleArrowTran.LookAt(new Vector3(targetTran.position.x, circleArrowTran.position.y, targetTran.position.z));
+                        circleArrow.SetActive(true);
+                    }
                 }
             }
 

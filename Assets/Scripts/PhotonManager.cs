@@ -57,6 +57,7 @@ public class PhotonManager : MonoBehaviour
 
     const string MESSAGE_CONNECT_FAILED = "ネットワーク接続に失敗しました\n通信状況をご確認の上\n再度お試しください";
     const string MESSAGE_CREATE_ROOM_FAILED = "Room作成に失敗しました\n既に存在するRoom名です";
+    const string MESSAGE_ROOM_LIMIT_FAILED = "Room作成に失敗しました\nこれ以上Roomを作成できません";
     const string MESSAGE_JOIN_ROOM_FAILED = "参加可能なRoomがありません\nRoomを作成するか\n時間を空けてから再度お試しください";
 
     public void Awake()
@@ -70,7 +71,6 @@ public class PhotonManager : MonoBehaviour
 
         //ユーザー情報取得
         UserManager.SetUserInfo();
-        UserManager.DispUserInfo();
     }
 
     void Update()
@@ -338,6 +338,12 @@ public class PhotonManager : MonoBehaviour
     public void CreateRoom()
     {
         SwitchMessageArea(MESSAGE_CREATE_ROOM);
+        if (PhotonNetwork.countOfRooms >= 10)
+        {
+            SwitchMessageArea();
+            DialogController.OpenDialog(MESSAGE_ROOM_LIMIT_FAILED);
+            return;
+        }
         PhotonNetwork.CreateRoom(roomNameIF.text, new RoomOptions() { maxPlayers = 2 }, null);
     }
 

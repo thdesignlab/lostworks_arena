@@ -10,6 +10,10 @@ public class WeaponStore : Photon.MonoBehaviour
     private GameObject weaponCanvas;
     [SerializeField]
     private GameObject weaponListPanel;
+    [SerializeField]
+    private GameObject weaponEquipCancelButton;
+    [SerializeField]
+    private GameObject weaponEquipButton;
 
     [SerializeField]
     private List<GameObject> handWeaponList = new List<GameObject>();
@@ -20,11 +24,6 @@ public class WeaponStore : Photon.MonoBehaviour
 
     private int customPartsNo = -1;
     private List<GameObject> selectableWeaponList = new List<GameObject>();
-
-    [SerializeField]
-    private GameObject weaponEquipCancelButton;
-    [SerializeField]
-    private GameObject weaponEquipButton;
 
     private Transform myPlayerTran;
 

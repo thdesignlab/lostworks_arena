@@ -76,7 +76,7 @@ public class LaserWeaponController : WeaponController
                     laserEndTran = child;
                 }
             }
-            Debug.Log(laserMuzzle.name+" / "+ laserEndTran.name);
+            //Debug.Log(laserMuzzle.name+" / "+ laserEndTran.name);
 
             //レーザー初期設定
             laser.SetActive(false);

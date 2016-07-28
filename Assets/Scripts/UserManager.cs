@@ -10,27 +10,6 @@ public class UserManager
     public static List<int> userCharacters;    //開放キャラクター
     public static List<int> userWeapons;       //開放武器
 
-    //private static string[] userInfoTitles = new string[] 
-    //{
-    //    Common.PP.USER_ID,
-    //    Common.PP.USER_NAME,
-    //};
-    //private static string[] userResultTitles = new string[]
-    //{
-    //    Common.PP.BATTLE_RATE,
-    //    Common.PP.BATTLE_COUNT,
-    //    Common.PP.WIN_COUNT,
-    //    Common.PP.LOSE_COUNT
-    //};
-    //private static string[] userEquipmentTitles = new string[] 
-    //{
-    //    Common.PP.CHARACTER_NO,
-    //    Common.PP.LEFT_HAND,
-    //    Common.PP.RIGHT_HAND,
-    //    Common.PP.SHOULDER,
-    //    Common.PP.SUB
-    //};
-
     //##### ユーザー情報 #####
 
     private static void InitUserInfo()
