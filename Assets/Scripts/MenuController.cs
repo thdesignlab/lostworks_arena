@@ -4,6 +4,8 @@ using System.Collections;
 public class MenuController : Photon.MonoBehaviour
 {
     [SerializeField]
+    private GameObject npcMenu;
+    [SerializeField]
     private GameObject debugButton;
     [SerializeField]
     private GameObject debugMenu;
@@ -87,24 +89,42 @@ public class MenuController : Photon.MonoBehaviour
         enableMenuAction = true;
     }
 
+    //##### 通常メニュー #####
+
+    //アプリ終了
     public void OnExitButton()
     {
         DialogController.OpenDialog("アプリを終了します", () => gameCtrl.Exit(), true);
     }
+
+    //タイトルへ戻る
     public void OnTitleButton()
     {
         DialogController.OpenDialog("タイトルに戻ります", () => gameCtrl.GoToTitle(), true);
     }
 
-    public void OnCustomButton()
+    //NPC選択表示切替
+    public void OnNpcSelectButton(bool flg)
     {
-        GameObject.Find("WeaponStore").GetComponent<WeaponStore>().CustomMenuOpen();
+        npcMenu.SetActive(flg);
     }
 
+    //NPC生成
+    public void OnNpcCreateButton(int level = 0)
+    {
+        if (!gameCtrl.isDebugMode) return;
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        if (PhotonNetwork.countOfPlayersInRooms > 1 || players.Length > 1)
+        {
+            return;
+        }
+        gameCtrl.NpcSpawn(level);
+        OnNpcSelectButton(false);
+    }
 
     //##### デバッグメニュー #####
 
-
+    //デバッグメニュー表示切り替え
     public void OnDebugMenuButton(bool flg)
     {
         if (debugMenu != null)
@@ -113,6 +133,7 @@ public class MenuController : Photon.MonoBehaviour
         }
     }
 
+    //復活
     public void OnRespawnButton()
     {
         if (!gameCtrl.isDebugMode) return;
@@ -124,15 +145,10 @@ public class MenuController : Photon.MonoBehaviour
         debugMenu.SetActive(false);
     }
 
-    public void OnNpcCreateButton(int level = 0)
+    //装備カスタム
+    public void OnCustomButton()
     {
         if (!gameCtrl.isDebugMode) return;
-        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-        if (PhotonNetwork.countOfPlayersInRooms > 1 || players.Length > 1)
-        {
-            return;
-        }
-        gameCtrl.NpcSpawn(level);
-        debugMenu.SetActive(false);
+        GameObject.Find("WeaponStore").GetComponent<WeaponStore>().CustomMenuOpen();
     }
 }
