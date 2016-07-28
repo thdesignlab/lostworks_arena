@@ -9,7 +9,8 @@ public class LockOnController : Photon.MonoBehaviour
 
     private RawImage targetMarkImg;
     private RectTransform targetMarkRectTran;
-    private float markLastSizeRate = 0.3f;
+    private float markFirstSizeRate = 1.2f;
+    private float markLastSizeRate = 0.5f;
     private float markResizeTime = 0.2f;
 
     private bool isLockOn = false;
@@ -69,7 +70,7 @@ public class LockOnController : Photon.MonoBehaviour
             {
                 lockOnTime += Time.deltaTime;
                 if (lockOnTime > markResizeTime) lockOnTime = markResizeTime;
-                targetMarkRectTran.localScale = Vector3.Lerp(Vector3.one, Vector3.one * markLastSizeRate, lockOnTime / markResizeTime);
+                targetMarkRectTran.localScale = Vector3.Lerp(Vector3.one * markFirstSizeRate, Vector3.one * markLastSizeRate, lockOnTime / markResizeTime);
             }
             targetMarkRectTran.position = RectTransformUtility.WorldToScreenPoint(Camera.main, myTran.position);
         }
