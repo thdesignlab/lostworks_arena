@@ -79,6 +79,7 @@ namespace Common
 
         //武器タグ
         public const string TAG_WEAPON = "Weapon";
+        public const string TAG_WEAPON_BIT = "WeaponBit";
 
         //弾発射口タグ
         public const string TAG_MUZZLE = "Muzzle";

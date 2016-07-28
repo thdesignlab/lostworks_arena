@@ -4,7 +4,8 @@ using System.Collections.Generic;
 
 public class BulletWeaponController : WeaponController
 {
-
+    [SerializeField]
+    protected GameObject fireEffect;  //発射エフェクト
     [SerializeField]
     protected GameObject bullet;  //発射物
     [SerializeField]
@@ -40,6 +41,17 @@ public class BulletWeaponController : WeaponController
             {
                 muzzles.Add(child);
                 defaultMuzzleQuaternions.Add(child.localRotation);
+            }
+            else if (child.tag == Common.CO.TAG_WEAPON_BIT)
+            {
+                foreach (Transform grandsun in child)
+                {
+                    if (grandsun.tag == Common.CO.TAG_MUZZLE)
+                    {
+                        muzzles.Add(grandsun);
+                        defaultMuzzleQuaternions.Add(grandsun.localRotation);
+                    }
+                }
             }
         }
         if (rapidCount <= 0) rapidCount = 1;
@@ -142,11 +154,18 @@ public class BulletWeaponController : WeaponController
 
     protected GameObject SpawnBullet(Vector3 pos, Quaternion quat, int groupId)
     {
+        if (fireEffect != null)
+        {
+            //発射エフェクト
+            GameObject.Instantiate(fireEffect, pos, fireEffect.transform.rotation);
+        }
         if (focusDiff > 0)
         {
+            //ブレ
             Vector3 axis = Vector3.up * Random.Range(-focusDiff, focusDiff) + Vector3.right * Random.Range(-focusDiff, focusDiff);
             quat *= Quaternion.AngleAxis(Random.Range(-focusDiff, focusDiff), axis);
         }
+        //弾生成
         GameObject ob = PhotonNetwork.Instantiate(BULLET_FOLDER + bullet.name, pos, quat, groupId);
         SetBulletTarget(ob);
         base.PlayAudio();

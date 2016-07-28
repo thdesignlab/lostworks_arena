@@ -12,7 +12,6 @@ public class ObjectController : Photon.MonoBehaviour {
     private float activeLimitDistance = 0;
 
     private Transform myTran;
-    private Vector3 prePos;
 
     void Start()
     {
