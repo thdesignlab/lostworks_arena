@@ -10,8 +10,8 @@ public class LockOnController : Photon.MonoBehaviour
     private RawImage targetMarkImg;
     private RectTransform targetMarkRectTran;
     private float markFirstSizeRate = 1.2f;
-    private float markLastSizeRate = 0.5f;
-    private float markResizeTime = 0.2f;
+    private float markLastSizeRate = 0.7f;
+    private float markResizeTime = 0.3f;
 
     private bool isLockOn = false;
     private float lockOnTime = 0;

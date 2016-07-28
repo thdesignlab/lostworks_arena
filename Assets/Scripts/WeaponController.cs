@@ -106,12 +106,21 @@ public class WeaponController : Photon.MonoBehaviour
     IEnumerator Reload(float addReloadTime = 0)
     {
         leftReloadTime = reloadTime + addReloadTime;
+        Transform imgGageTran = myBtn.transform.FindChild("ImgGage");
+        Image imgGage = null;
+        if (imgGageTran != null)
+        {
+            imgGage = imgGageTran.GetComponent<Image>();
+            imgGage.fillAmount = 1;
+        }
         for (;;)
         {
             yield return null;
             leftReloadTime -= Time.deltaTime;
+            if (imgGage != null) imgGage.fillAmount = leftReloadTime / reloadTime;
             if (leftReloadTime <= 0) break;
         }
+        if (imgGage != null) imgGage.fillAmount = 0;
         SetEnable(true);
     }
 
