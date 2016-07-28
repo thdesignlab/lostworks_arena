@@ -9,28 +9,7 @@ public class ChargeWeaponController : BulletWeaponController
     //private Vector3 chargingVector;
     private ChargeBulletController bulletCtrl;
 
-    private bool isNpc = false;
     private float npcChargeTime = 0;
-
-    protected override void Start()
-    {
-        base.Start();
-        StartCoroutine(CheckParent());
-    }
-
-    IEnumerator CheckParent()
-    {
-        for (;;)
-        {
-            PlayerStatus status = myTran.root.GetComponent<PlayerStatus>();
-            if (status != null)
-            {
-                isNpc = status.IsNpc();
-                break;
-            }
-            yield return null;
-        }
-    }
 
     void Update()
     {
@@ -38,7 +17,7 @@ public class ChargeWeaponController : BulletWeaponController
         {
             if (isCharge)
             {
-                if ((Input.GetMouseButton(0) && !isNpc) || (chargeTime <= npcChargeTime && isNpc))
+                if ((Input.GetMouseButton(0) && !base.isNpc) || (chargeTime <= npcChargeTime && base.isNpc))
                 {
                     //チャージ中
                     chargeTime += Time.deltaTime;
@@ -84,7 +63,7 @@ public class ChargeWeaponController : BulletWeaponController
         ////チャージ位置
         //chargingVector = myTran.InverseTransformVector(bulletTran.position - myTran.position);
 
-        if (isNpc)
+        if (base.isNpc)
         {
             float maxChargeTime = bulletCtrl.GetMaxChargeTime();
             npcChargeTime = Random.Range(maxChargeTime * 0.5f, maxChargeTime * 1.5f);

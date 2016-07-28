@@ -23,6 +23,9 @@ public class WeaponController : Photon.MonoBehaviour
 
     protected Transform myTran;
 
+    protected PlayerStatus playerStatus;
+    protected bool isNpc = false;
+
     protected Button myBtn;
 
     // Use this for initialization
@@ -35,6 +38,26 @@ public class WeaponController : Photon.MonoBehaviour
 
     protected virtual void Start()
     {
+        if (photonView.isMine)
+        {
+            StartCoroutine(CheckPlayerStatus());
+        }
+    }
+
+    IEnumerator CheckPlayerStatus()
+    {
+        isEnabledFire = false;
+        for (;;)
+        {
+            playerStatus = myTran.root.GetComponent<PlayerStatus>();
+            if (playerStatus != null)
+            {
+                isNpc = playerStatus.IsNpc();
+                break;
+            }
+            yield return null;
+        }
+        isEnabledFire = true;
     }
 
     public virtual void SetTarget(Transform target = null)

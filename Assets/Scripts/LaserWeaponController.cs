@@ -22,6 +22,14 @@ public class LaserWeaponController : WeaponController
 
     private float laserMazzleMaxScale = 2.5f;
 
+    private Transform myBitTran;
+    private float bitMoveTime = 0.5f;
+    private float laserSwitchTime = 0;
+    private float lerpRate;
+    private Vector3 bitFromPos;
+    private Vector3 bitToPos;
+    private float radius;
+
     private Transform muzzle;
     private GameObject laser;
     private Transform laserTran;
@@ -31,7 +39,7 @@ public class LaserWeaponController : WeaponController
     
     //private AimingController aimingCtrl;
 
-    private PlayerStatus playerStatus;
+    //private PlayerStatus playerStatus;
     //private PlayerStatus targetStatus;
 
     //private Dictionary<int, int> laserMap = new Dictionary<int, int>();
@@ -45,8 +53,6 @@ public class LaserWeaponController : WeaponController
 
         if (photonView.isMine)
         {
-            StartCoroutine(SetPlayerStatus());
-
             //発射口取得
             foreach (Transform child in myTran)
             {
@@ -80,12 +86,52 @@ public class LaserWeaponController : WeaponController
 
             //レーザー初期設定
             laser.SetActive(false);
+
+            //Bit移動用
+            myBitTran = myTran.FindChild("Bit");
+            bitFromPos = myBitTran.localPosition;
+            bitToPos = muzzle.localPosition;
+            radius = Vector3.Distance(bitFromPos, bitToPos);
         }
         else
         {
             //Debug.Log("RPC:SetInitRPC");
             //レーザー初期設定
             photonView.RPC("SetInitRPC", PhotonTargets.Others);
+        }
+    }
+
+    void Update()
+    {
+        if (photonView.isMine && !base.isNpc)
+        {
+            bool isBitMove = false;
+            float startAngle = 0;
+            if (laser.GetActive() && laserSwitchTime < bitMoveTime)
+            {
+                //発射口の場所へ移動
+                isBitMove = true;
+                laserSwitchTime += Time.deltaTime;
+                lerpRate = laserSwitchTime / bitMoveTime;
+                if (lerpRate > 1) lerpRate = 1;
+                startAngle = 0;
+            }
+            else if (!laser.GetActive() && laserSwitchTime > 0)
+            {
+                //元の場所へ移動
+                isBitMove = true;
+                laserSwitchTime -= Time.deltaTime;
+                lerpRate = laserSwitchTime / bitMoveTime;
+                if (lerpRate < 0) lerpRate = 0;
+                startAngle = 180;
+            }
+
+            if (isBitMove)
+            {
+                Vector3 leftSide = Vector3.left * Common.Func.GetSin(lerpRate, 180, startAngle) * radius / 2;
+                //myBitTran.position = myBitTran.TransformDirection(Vector3.Lerp(bitFromPos, bitToPos, lerpRate) + leftSide);
+                myBitTran.localPosition = Vector3.Lerp(bitFromPos, bitToPos, lerpRate) + leftSide;
+            }
         }
     }
 
@@ -117,18 +163,6 @@ public class LaserWeaponController : WeaponController
 
         //レーザー非表示
         laser.SetActive(false);
-    }
-
-    IEnumerator SetPlayerStatus()
-    {
-        base.isEnabledFire = false;
-        for (;;)
-        {
-            playerStatus = base.myTran.root.gameObject.GetComponent<PlayerStatus>();
-            if (playerStatus != null) break;
-            yield return null;
-        }
-        base.isEnabledFire = true;
     }
 
     private void SwitchLaser(bool flg)
@@ -170,6 +204,7 @@ public class LaserWeaponController : WeaponController
     IEnumerator LaserShoot()
     {
         //レーザー幅変更
+        laserSwitchTime = 0;
         int factor = 1;
         float nowWidth = 0;
         float nowLength = 0;
