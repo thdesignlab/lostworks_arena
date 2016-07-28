@@ -42,8 +42,7 @@ namespace Common
         public const string MOTION_SHOULDER_ATTACK = "ShoulderAttack";
         public const string MOTION_CROSS_RANGE_ATTACK = "CrossRangeAttack";
         public const string MOTION_USE_SUB = "UseSub";
-
-        public static string[] attackMotionArray = new string[] 
+        public static string[] attackMotionArray = new string[]
         {
             MOTION_LEFT_ATTACK,
             MOTION_RIGHT_ATTACK,
@@ -51,6 +50,15 @@ namespace Common
             MOTION_CROSS_RANGE_ATTACK,
             MOTION_USE_SUB
         };
+
+        //BITモーション
+        public const string BIT_MOTION_LEFT_OPEN = "Bit_left_gun_open";
+        public const string BIT_MOTION_RIGHT_OPEN = "Bit_right_gun_open";
+        public const string BIT_MOTION_MISSILE_OPEN = "Bit_missile_open";
+        public const string BIT_MOTION_LASER_OPEN = "Bit_center_weapon_open";
+        public const int BIT_MOTION_TYPE_GUN = 1;
+        public const int BIT_MOTION_TYPE_MISSILE = 2;
+        public const int BIT_MOTION_TYPE_LASER = 3;
 
         //パーツ名称
         public const string PARTS_BODY = "Body";
@@ -201,6 +209,39 @@ namespace Common
             float angle = (startAngle + anglePerSec * time) % 360;
             float radian = Mathf.PI / 180 * angle;
             return Mathf.Sin(radian) * time;
+        }
+
+        //BitMotion取得
+        public static string GetBitMotionName(int motionType, string charaMotionName)
+        {
+            string motionName = "";
+
+            switch (motionType)
+            {
+                case Common.CO.BIT_MOTION_TYPE_GUN:
+                    if (charaMotionName == Common.CO.MOTION_LEFT_ATTACK)
+                    {
+                        motionName = Common.CO.BIT_MOTION_LEFT_OPEN;
+                    }
+                    else if (charaMotionName == Common.CO.MOTION_RIGHT_ATTACK)
+                    {
+                        motionName = Common.CO.BIT_MOTION_RIGHT_OPEN;
+                    }
+                    else
+                    {
+                        motionName = Common.CO.BIT_MOTION_MISSILE_OPEN;
+                    }
+                    break;
+
+                case Common.CO.BIT_MOTION_TYPE_MISSILE:
+                    motionName = Common.CO.BIT_MOTION_MISSILE_OPEN;
+                    break;
+
+                case Common.CO.BIT_MOTION_TYPE_LASER:
+                    motionName = Common.CO.BIT_MOTION_LASER_OPEN;
+                    break;
+            }
+            return motionName;
         }
     }
 }

@@ -156,11 +156,13 @@ public class LaserWeaponController : WeaponController
             return;
         }
 
+        base.Action();
+
         //移動・回転制限
         float laserShootTime = effectiveTime + effectiveWidthTime * 2;
         playerStatus.AccelerateRunSpeed(runSpeedRate, laserShootTime);
         playerStatus.InterfareTurn(turnSpeedRate, laserShootTime);
-        base.StartReload(laserShootTime);
+        //base.StartReload(laserShootTime);
 
         StartCoroutine(LaserShoot());
     }
@@ -195,6 +197,7 @@ public class LaserWeaponController : WeaponController
             yield return null;
         }
         SwitchLaser(false);
+        base.EndAction();
     }
 
     private int hitCnt = 0;

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class BrasterBulletController : EnergyTrackingBulletController
+public class ChargeBulletController : EnergyTrackingBulletController
 {
     [SerializeField]
     private GameObject chargeEffect;

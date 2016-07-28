@@ -6,12 +6,17 @@ using UnityEngine.UI;
 public class WeaponController : Photon.MonoBehaviour
 {
     [SerializeField]
+    protected int bitMotionType;   //Bitのモーション(1:Gun, 2:Missile, 3:Laser)
+    protected Animator bitAnimator;
+    protected string bitMotionParam;
+
+    [SerializeField]
     protected float reloadTime;   //再装填時間
     protected float leftReloadTime = 0;
 
     protected Transform targetTran;
     protected AudioController audioCtrl;
-    protected Animator animator;
+    protected Animator charaAnimator;
     protected string motionParam = "";
 
     protected bool isEnabledFire = true;
@@ -25,6 +30,7 @@ public class WeaponController : Photon.MonoBehaviour
     {
         myTran = transform;
         audioCtrl = myTran.GetComponent<AudioController>();
+        bitAnimator = myTran.GetComponentInChildren<Animator>();
     }
 
     protected virtual void Start()
@@ -47,17 +53,20 @@ public class WeaponController : Photon.MonoBehaviour
             SetTarget(target);
         }
 
-        //モーション開始
-        if (animator != null)
-        {
-            animator.SetBool(motionParam, true);
-        }
-
         Action();
     }
 
     protected virtual void Action()
     {
+        //モーション開始
+        StartMotion();
+    }
+    protected virtual void EndAction()
+    {
+        //モーション終了
+        StopMotion();
+
+        //リロード
         StartReload();
     }
 
@@ -73,12 +82,6 @@ public class WeaponController : Photon.MonoBehaviour
 
     IEnumerator Reload(float addReloadTime = 0)
     {
-        //モーション終了
-        if (animator != null)
-        {
-            animator.SetBool(motionParam, false);
-        }
-
         leftReloadTime = reloadTime + addReloadTime;
         for (;;)
         {
@@ -96,8 +99,10 @@ public class WeaponController : Photon.MonoBehaviour
 
     public void SetMotionCtrl(Animator a, string s)
     {
-        animator = a;
+        charaAnimator = a;
         motionParam = s;
+
+        bitMotionParam = Common.Func.GetBitMotionName(bitMotionType, s);
     }
 
     public void SetBtn(Button btn)
@@ -128,6 +133,63 @@ public class WeaponController : Photon.MonoBehaviour
     public virtual float GetBulletSpeed()
     {
         return 0;
+    }
+
+    protected void StartMotion()
+    {
+        //Debug.Log("StartMotion >>");
+        if (charaAnimator != null && motionParam != "")
+        {
+            charaAnimator.SetBool(motionParam, true);
+        }
+        if (bitMotionParam != null && bitMotionParam != "")
+        {
+            bitAnimator.SetBool(bitMotionParam, true);
+        }
+    }
+
+    protected void StopMotion()
+    {
+        //Debug.Log(">> StopMotion");
+        if (charaAnimator != null && motionParam != "")
+        {
+            StartCoroutine(WaitAnimatorEnd(charaAnimator, motionParam));
+            //if (charaAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)
+            //{
+            //    charaAnimator.SetBool(motionParam, false);
+            //}
+            //else
+            //{
+            //    StartCoroutine(WaitAnimatorEnd(charaAnimator, motionParam));
+            //}
+        }
+        if (bitMotionParam != null && bitMotionParam != "")
+        {
+            StartCoroutine(WaitAnimatorEnd(bitAnimator, bitMotionParam));
+            //if (bitAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)
+            //{
+
+            //    bitAnimator.SetBool(bitMotionParam, false);
+            //}
+            //else
+            //{
+            //    StartCoroutine(WaitAnimatorEnd(bitAnimator, bitMotionParam));
+            //}
+        }
+    }
+
+    IEnumerator WaitAnimatorEnd(Animator anim, string param)
+    {
+        yield return new WaitForSeconds(0.5f);
+        anim.SetBool(param, false);
+        //for (;;)
+        //{
+        //    if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)
+        //    {
+        //        anim.SetBool(param, false);
+        //        break;
+        //    }
+        //}
     }
 
     protected void PlayAudio(int no = 0)

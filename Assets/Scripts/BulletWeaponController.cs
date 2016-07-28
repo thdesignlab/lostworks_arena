@@ -72,17 +72,19 @@ public class BulletWeaponController : WeaponController
 
     protected override void Action()
     {
+        base.Action();
+
         if (rapidCount <= 1 && spreadCount <= 1)
         {
             SpawnBullet(muzzles[0].position, muzzles[0].rotation, 0);
-            StartReload();
+            base.EndAction();
             return;
         }
 
         if (rapidCount <= 1)
         {
             SpreadFire();
-            StartReload();
+            base.EndAction();
         }
         else
         {
@@ -106,7 +108,7 @@ public class BulletWeaponController : WeaponController
             muzzleNo = GetNextMuzzleNo(muzzleNo);
             yield return new WaitForSeconds(rapidInterval);
         }
-        StartReload();
+        base.EndAction();
     }
 
     private void SpreadFire(int muzzleNo = 0, int rapidNo = 1)
