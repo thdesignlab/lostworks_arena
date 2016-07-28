@@ -108,19 +108,26 @@ public class WeaponController : Photon.MonoBehaviour
         leftReloadTime = reloadTime + addReloadTime;
         Transform imgGageTran = myBtn.transform.FindChild("ImgGage");
         Image imgGage = null;
+        Color defaultColor = Color.red;
         if (imgGageTran != null)
         {
             imgGage = imgGageTran.GetComponent<Image>();
-            imgGage.fillAmount = 1;
+            imgGage.fillAmount = 0;
+            defaultColor = imgGage.color;
+            imgGage.color = Color.red;
         }
         for (;;)
         {
             yield return null;
             leftReloadTime -= Time.deltaTime;
-            if (imgGage != null) imgGage.fillAmount = leftReloadTime / reloadTime;
+            if (imgGage != null) imgGage.fillAmount = (reloadTime - leftReloadTime) / reloadTime;
             if (leftReloadTime <= 0) break;
         }
-        if (imgGage != null) imgGage.fillAmount = 0;
+        if (imgGage != null)
+        {
+            imgGage.fillAmount = 1;
+            imgGage.color = defaultColor;
+        }
         SetEnable(true);
     }
 
