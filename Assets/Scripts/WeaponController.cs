@@ -27,6 +27,10 @@ public class WeaponController : Photon.MonoBehaviour
     protected bool isNpc = false;
 
     protected Button myBtn;
+    protected Image imgGage;
+    protected Color normalGageColor;
+    [SerializeField]
+    protected Color reloadGageColor = Color.red;
 
     // Use this for initialization
     protected virtual void Awake()
@@ -106,16 +110,6 @@ public class WeaponController : Photon.MonoBehaviour
     IEnumerator Reload(float addReloadTime = 0)
     {
         leftReloadTime = reloadTime + addReloadTime;
-        Transform imgGageTran = myBtn.transform.FindChild("ImgGage");
-        Image imgGage = null;
-        Color defaultColor = Color.red;
-        if (imgGageTran != null)
-        {
-            imgGage = imgGageTran.GetComponent<Image>();
-            imgGage.fillAmount = 0;
-            defaultColor = imgGage.color;
-            imgGage.color = Color.red;
-        }
         for (;;)
         {
             yield return null;
@@ -126,7 +120,7 @@ public class WeaponController : Photon.MonoBehaviour
         if (imgGage != null)
         {
             imgGage.fillAmount = 1;
-            imgGage.color = defaultColor;
+            imgGage.color = normalGageColor;
         }
         SetEnable(true);
     }
@@ -147,6 +141,13 @@ public class WeaponController : Photon.MonoBehaviour
     public void SetBtn(Button btn)
     {
         myBtn = btn;
+        Transform imgGageTran = myBtn.transform.FindChild("ImgGage");
+        if (imgGageTran != null)
+        {
+            imgGage = imgGageTran.GetComponent<Image>();
+            imgGage.fillAmount = 1;
+            normalGageColor = imgGage.color;
+        }
     }
 
     public void SetEnable(bool flg, bool reloadFlg = false)
@@ -154,16 +155,33 @@ public class WeaponController : Photon.MonoBehaviour
         isEnabledFire = flg;
         if (myBtn != null)
         {
+            //ボタン使用切り替え
             myBtn.interactable = flg;
         }
+
         if (flg)
         {
+            //使用可能
             leftReloadTime = 0;
+            if (imgGage != null)
+            {
+                //クールゲージ切り替え
+                imgGage.fillAmount = 1;
+                imgGage.color = normalGageColor;
+            }
         }
         else
         {
+            //使用不可
+            if (imgGage != null)
+            {
+                //クールゲージ切り替え
+                imgGage.fillAmount = 0;
+                imgGage.color = reloadGageColor;
+            }
             if (reloadFlg)
             {
+                //リロード
                 StartReload();
             }
         }
@@ -193,27 +211,10 @@ public class WeaponController : Photon.MonoBehaviour
         if (charaAnimator != null && motionParam != "")
         {
             StartCoroutine(WaitAnimatorEnd(charaAnimator, motionParam));
-            //if (charaAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)
-            //{
-            //    charaAnimator.SetBool(motionParam, false);
-            //}
-            //else
-            //{
-            //    StartCoroutine(WaitAnimatorEnd(charaAnimator, motionParam));
-            //}
         }
         if (bitMotionParam != null && bitMotionParam != "")
         {
             StartCoroutine(WaitAnimatorEnd(bitAnimator, bitMotionParam));
-            //if (bitAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)
-            //{
-
-            //    bitAnimator.SetBool(bitMotionParam, false);
-            //}
-            //else
-            //{
-            //    StartCoroutine(WaitAnimatorEnd(bitAnimator, bitMotionParam));
-            //}
         }
     }
 
@@ -221,14 +222,6 @@ public class WeaponController : Photon.MonoBehaviour
     {
         yield return new WaitForSeconds(0.5f);
         anim.SetBool(param, false);
-        //for (;;)
-        //{
-        //    if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)
-        //    {
-        //        anim.SetBool(param, false);
-        //        break;
-        //    }
-        //}
     }
 
     protected void PlayAudio(int no = 0)

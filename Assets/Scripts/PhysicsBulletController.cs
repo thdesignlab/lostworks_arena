@@ -20,12 +20,14 @@ public class PhysicsBulletController : MoveOfVelocity
     protected int ownerId;
 
     protected float activeTime = 0;
-    protected float safetyTime = 0.5f;
+    protected float safetyTime = 0.2f;
     protected bool isHit = false;
 
     protected Transform targetTran;
     protected PlayerStatus targetStatus;
     protected AudioSource audioSource;
+
+    protected Collider myCollider;
 
     protected override void Awake()
     {
@@ -35,6 +37,12 @@ public class PhysicsBulletController : MoveOfVelocity
         //playerId = PhotonNetwork.player.ID;
         ownerId = PhotonView.Get(gameObject).ownerId;
         audioSource = GetComponent<AudioSource>();
+
+        if (photonView.isMine)
+        {
+            myCollider = myTran.GetComponentInChildren<Collider>();
+            if (myCollider != null) myCollider.enabled = false;
+        }
     }
 
     protected override void Start()
@@ -57,6 +65,11 @@ public class PhysicsBulletController : MoveOfVelocity
         //{
         //    myTran.Rotate(Vector3.forward, angleSpeed * Time.deltaTime);
         //}
+
+        if (photonView.isMine && activeTime >= safetyTime)
+        {
+            if (myCollider != null) myCollider.enabled = true;
+        }
     }
 
     //衝突時処理
