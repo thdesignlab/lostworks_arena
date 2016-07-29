@@ -92,6 +92,7 @@ public class PlayerSetting : Photon.MonoBehaviour
         {
             if (child.name == Common.CO.PARTS_BODY)
             {
+                //Bodyの中を検索
                 foreach (Transform grandson in child)
                 {
                     foreach (string partsName in Common.CO.partsNameArray)
@@ -103,7 +104,17 @@ public class PlayerSetting : Photon.MonoBehaviour
                         }
                     }
                 }
-                break;
+            }
+            else
+            {
+                foreach (string partsName in Common.CO.partsNameArray)
+                {
+                    if (child.name == partsName)
+                    {
+                        EquipWeapon(child);
+                        break;
+                    }
+                }
             }
         }
     }
