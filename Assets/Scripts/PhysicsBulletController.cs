@@ -17,10 +17,10 @@ public class PhysicsBulletController : MoveOfVelocity
     //protected float angleSpeed; //回転速度
 
     //protected int playerId;
-    protected int ownerId;
+    //protected int ownerId;
 
     protected float activeTime = 0;
-    protected float safetyTime = 0.2f;
+    protected float safetyTime = 0.1f;
     protected bool isHit = false;
 
     protected Transform targetTran;
@@ -35,7 +35,7 @@ public class PhysicsBulletController : MoveOfVelocity
 
         //プレイヤーID取得
         //playerId = PhotonNetwork.player.ID;
-        ownerId = PhotonView.Get(gameObject).ownerId;
+        //ownerId = PhotonView.Get(gameObject).ownerId;
         audioSource = GetComponent<AudioSource>();
 
         if (photonView.isMine)
@@ -145,12 +145,12 @@ public class PhysicsBulletController : MoveOfVelocity
         //ターゲットの場合はHIT
         if (targetTran != null && targetTran.name == hitObj.name) return false;
 
-        //自分の撃った弾はSafetyTimeの間無視
-        PhotonView pv = PhotonView.Get(hitObj);
-        if (pv != null)
-        {
-            if (ownerId == pv.ownerId && activeTime <= safetyTime) return true;
-        }
+        ////自分の撃った弾はSafetyTimeの間無視
+        //PhotonView pv = PhotonView.Get(hitObj);
+        //if (pv != null)
+        //{
+        //    if (ownerId == pv.ownerId && activeTime <= safetyTime) return true;
+        //}
 
         return false;
     }

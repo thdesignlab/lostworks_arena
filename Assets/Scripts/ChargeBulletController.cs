@@ -24,8 +24,6 @@ public class ChargeBulletController : EnergyTrackingBulletController
     private float chargeRate = 0;
     private bool isCharge = true;
 
-    private CapsuleCollider myCollider;
-
     private float firedTime = 0;
 
     protected override void Awake()
@@ -33,9 +31,6 @@ public class ChargeBulletController : EnergyTrackingBulletController
         base.Awake();
         if (photonView.isMine)
         {
-            myCollider = myTran.GetComponent<CapsuleCollider>();
-            myCollider.enabled = false;
-
             baseSpeed = base.speed;
             baseDamage = base.damage;
             baseScale = base.myTran.localScale;
@@ -56,7 +51,7 @@ public class ChargeBulletController : EnergyTrackingBulletController
                 firedTime += Time.deltaTime;
                 if (firedTime >= 0.1f)
                 {
-                    myCollider.enabled = true;
+                    base.myCollider.enabled = true;
                 }
                 if (firedTime >= limitTime)
                 {

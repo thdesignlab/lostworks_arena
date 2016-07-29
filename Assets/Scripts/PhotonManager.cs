@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class PhotonManager : MonoBehaviour
 {
+    public static bool isFirstScean = true;
+
     [SerializeField]
     private GameObject modeSelectArea;
     [SerializeField]
@@ -13,6 +15,8 @@ public class PhotonManager : MonoBehaviour
     private GameObject roomListArea;
     //[SerializeField]
     private GameObject messageArea;
+    [SerializeField]
+    private GameObject configArea;
 
     [SerializeField]
     private GameObject roomCancelBtn;
@@ -46,7 +50,6 @@ public class PhotonManager : MonoBehaviour
     private InputField roomNameIF;
     private Text roomStatusText;
 
-
     //メッセージ
     const string MESSAGE_TOP = "Tap to Start";
     const string MESSAGE_CONNECT = "Connecting";
@@ -64,13 +67,25 @@ public class PhotonManager : MonoBehaviour
     {
         //テキストエリア
         //messageAreaText = messageArea.transform.FindChild("Message").GetComponent<Text>();
-        Init();
 
+        //初期化
+        if (isFirstScean)
+        {
+            Init();
+            isFirstScean = false;
+        }
+        else
+        {
+            ReturnModeSelect();
+        }
+
+        DontDestroyOnLoad(GameObject.Find("Config"));
         DontDestroyOnLoad(GameObject.Find("WeaponStore"));
         DontDestroyOnLoad(GameObject.Find("Debug"));
 
         //ユーザー情報取得
         UserManager.SetUserInfo();
+
     }
 
     void Update()
@@ -163,10 +178,20 @@ public class PhotonManager : MonoBehaviour
         isOpenModeSelect = false;
         isConnectFailed = false;
         isNetworkMode = false;
+        if (PhotonNetwork.connected)
+        {
+            PhotonNetwork.Disconnect();
+        }
+    }
+
+    public void ReturnModeSelect()
+    {
+        Init();
+        TapToStart();
     }
 
     //モードセレクトダイアログ切り替え
-    private void SwitchModeSelectArea(bool flg)
+    public void SwitchModeSelectArea(bool flg)
     {
         modeSelectArea.SetActive(flg);
     }
@@ -252,28 +277,31 @@ public class PhotonManager : MonoBehaviour
     private void TapToStart()
     {
         isTapToStart = false;
+        SwitchModeSelectArea(true);
 
+        //現在はBOTHのみ
         switch (selectableMode)
         {
             case SELECTABLE_MODE_LOCAL:
                 //ローカルのみ
-                SwitchModeSelectArea(false);
-                LocalModeSelect();
+                //LocalModeSelect();
+                SwitchMessageArea();
                 break;
 
             case SELECTABLE_MODE_NETWORK:
                 //ネットワークのみ
-                SwitchModeSelectArea(false);
-                NetworkModeSelect();
+                //NetworkModeSelect();
+                SwitchMessageArea();
                 break;
 
             case SELECTABLE_MODE_BOTH:
                 //ローカル+ネットワーク
-                SwitchModeSelectArea(true);
                 SwitchMessageArea();
                 break;
         }
     }
+
+    // ##### モードセレクト #####
 
     //ローカルモード選択
     public void LocalModeSelect()
@@ -319,6 +347,22 @@ public class PhotonManager : MonoBehaviour
         isNetworkMode = true;
     }
 
+    //カスタマイズ
+    public void CustomSelect()
+    {
+        SwitchMessageArea(MESSAGE_LOADING);
+        PhotonNetwork.offlineMode = true;
+        PhotonNetwork.LoadLevel(Common.CO.SCENE_CUSTOM);
+    }
+
+    //コンフィグ
+    public void OnConfigButton()
+    {
+        GameObject.Find("Config").GetComponent<ConfigManager>().OpenConfig();
+    }
+
+    // ##### 各操作 #####
+
     //Photonへ接続開始
     private void ConnectStart()
     {
@@ -329,7 +373,7 @@ public class PhotonManager : MonoBehaviour
     }
 
     //ゲーム終了
-    private void ExitGame()
+    public void ExitGame()
     {
         Application.Quit();
     }
@@ -401,7 +445,7 @@ public class PhotonManager : MonoBehaviour
     public void OnCreatedRoom()
     {
         //Debug.Log("OnCreatedRoom");
-        PhotonNetwork.LoadLevel(Common.CO.SCEANE_BATTLE);
+        PhotonNetwork.LoadLevel(Common.CO.SCENE_BATTLE);
     }
 
     public void OnDisconnectedFromPhoton()
@@ -417,4 +461,5 @@ public class PhotonManager : MonoBehaviour
         isConnectFailed = true;
         Debug.Log("OnFailedToConnectToPhoton. StatusCode: " + parameters + " ServerAddress: " + PhotonNetwork.ServerAddress);
     }
+
 }

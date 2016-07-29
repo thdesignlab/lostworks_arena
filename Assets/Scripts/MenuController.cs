@@ -112,7 +112,6 @@ public class MenuController : Photon.MonoBehaviour
     //NPC生成
     public void OnNpcCreateButton(int level = 0)
     {
-        if (!gameCtrl.isDebugMode) return;
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
         if (PhotonNetwork.countOfPlayersInRooms > 1 || players.Length > 1)
         {
@@ -120,6 +119,12 @@ public class MenuController : Photon.MonoBehaviour
         }
         gameCtrl.NpcSpawn(level);
         OnNpcSelectButton(false);
+    }
+
+    //コンフィグ
+    public void OnConfigButton()
+    {
+        GameObject.Find("Config").GetComponent<ConfigManager>().OpenConfig();
     }
 
     //##### デバッグメニュー #####

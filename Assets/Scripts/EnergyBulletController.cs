@@ -13,10 +13,10 @@ public class EnergyBulletController : MoveOfCharacter
     protected float stuckTime; //スタック時間
 
     //protected int playerId;
-    protected int ownerId;
+    //protected int ownerId;
 
     protected float activeTime = 0;
-    protected float safetyTime = 0.3f;
+    protected float safetyTime = 0.1f;
     protected bool isHit = false;
 
     protected Transform targetTran;
@@ -26,14 +26,19 @@ public class EnergyBulletController : MoveOfCharacter
     private float totalDamage = 0;
     private int sendMinDamage = 5;
 
+    protected Collider myCollider;
+
     protected override void Awake()
     {
         base.Awake();
 
         //プレイヤーIDと所有者ID取得
         //playerId = PhotonNetwork.player.ID;
-        ownerId = photonView.ownerId;
+        //ownerId = photonView.ownerId;
         audioSource = GetComponent<AudioSource>();
+
+        myCollider = myTran.GetComponentInChildren<Collider>();
+        if (myCollider != null) myCollider.enabled = false;
     }
 
     protected override void Update()
@@ -43,6 +48,11 @@ public class EnergyBulletController : MoveOfCharacter
         //稼働時間
         activeTime += Time.deltaTime;
         if (activeTime >= 10) base.DestoryObject();
+
+        if (activeTime >= safetyTime)
+        {
+            if (myCollider != null) myCollider.enabled = true;
+        }
 
         base.Move(Vector3.forward, speed);
     }
@@ -136,12 +146,12 @@ public class EnergyBulletController : MoveOfCharacter
         //ターゲットの場合はHIT
         if (targetTran != null && targetTran.name == hitObj.name) return false;
 
-        //自分の撃った弾はSafetyTImeの間無視
-        PhotonView pv = PhotonView.Get(hitObj);
-        if (pv != null)
-        {
-            if (ownerId == pv.ownerId && activeTime <= safetyTime) return true;
-        }
+        ////自分の撃った弾はSafetyTImeの間無視
+        //PhotonView pv = PhotonView.Get(hitObj);
+        //if (pv != null)
+        //{
+        //    if (ownerId == pv.ownerId && activeTime <= safetyTime) return true;
+        //}
         return false;
     }
 

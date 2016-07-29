@@ -7,9 +7,9 @@ namespace Common
     public static class CO
     {
         //シーン名
-        public const string SCEANE_TITLE = "Title";
-        public const string SCEANE_SETTING = "Setting";
-        public const string SCEANE_BATTLE = "Battle";
+        public const string SCENE_TITLE = "Title";
+        public const string SCENE_BATTLE = "Battle";
+        public const string SCENE_CUSTOM = "Custom";
 
         //NPCの名前
         public const string NPC_NAME = "NPC";
