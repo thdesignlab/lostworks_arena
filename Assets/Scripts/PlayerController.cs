@@ -1,13 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine.UI;
 
 public class PlayerController : MoveOfCharacter
 //public class PlayerController : MoveOfVelocity
 {
-    [SerializeField]
-    private bool isAttackAndTurn;
     [SerializeField]
     private float attackPreserveSpeedTime = 0;    //攻撃時速度維持時間
     [SerializeField]
@@ -26,9 +23,6 @@ public class PlayerController : MoveOfCharacter
     private WeaponController rightHandCtrl;
     private WeaponController leftHandCtrl;
     private WeaponController shoulderCtrl;
-    private List<WeaponController> rightHandCtrls = new List<WeaponController>();
-    private List<WeaponController> leftHandCtrls = new List<WeaponController>();
-    private List<WeaponController> shoulderCtrls = new List<WeaponController>();
     private WeaponController subCtrl;
 
     private Button leftHandBtn;
@@ -165,69 +159,41 @@ public class PlayerController : MoveOfCharacter
 
     public void SetWeapon()
     {
-        WeaponController wepCtrl;
-        foreach (Transform child in base.myTran)
+        leftHandCtrl = base.myTran.FindChild(Common.Func.GetPartsStructure(Common.CO.PARTS_LEFT_HAND)).GetComponentInChildren<WeaponController>();
+        if (leftHandCtrl != null)
         {
-            wepCtrl = child.GetComponentInChildren<WeaponController>();
-            if (wepCtrl == null) continue;
-
-            wepCtrl.SetTarget(targetTran);
-        
-            if (child.name == Common.CO.PARTS_LEFT_HAND)
-            {
-                wepCtrl.SetMotionCtrl(animator, Common.CO.MOTION_LEFT_ATTACK);
-                wepCtrl.SetBtn(leftHandBtn);
-                leftHandCtrls.Add(wepCtrl);
-            }
-            else if (child.name == Common.CO.PARTS_RIGHT_HAND)
-            {
-                wepCtrl.SetMotionCtrl(animator, Common.CO.MOTION_RIGHT_ATTACK);
-                wepCtrl.SetBtn(rightHandBtn);
-                rightHandCtrls.Add(wepCtrl);
-            }
-            else if (child.name == Common.CO.PARTS_SHOULDER)
-            {
-                wepCtrl.SetMotionCtrl(animator, Common.CO.MOTION_SHOULDER_ATTACK);
-                wepCtrl.SetBtn(shoulderBtn);
-                shoulderCtrls.Add(wepCtrl);
-            }
+            leftHandCtrl.SetTarget(targetTran);
+            leftHandCtrl.SetMotionCtrl(animator, Common.CO.MOTION_LEFT_ATTACK);
+            leftHandCtrl.SetBtn(leftHandBtn);
+        }
+        else
+        {
+            leftHandBtn.interactable = false;
         }
 
-        //leftHandCtrl = base.myTran.FindChild(Common.Func.GetPartsStructure(Common.CO.PARTS_LEFT_HAND)).GetComponentInChildren<WeaponController>();
-        //if (leftHandCtrl != null)
-        //{
-        //    leftHandCtrl.SetTarget(targetTran);
-        //    leftHandCtrl.SetMotionCtrl(animator, Common.CO.MOTION_LEFT_ATTACK);
-        //    leftHandCtrl.SetBtn(leftHandBtn);
-        //}
-        //else
-        //{
-        //    leftHandBtn.interactable = false;
-        //}
+        rightHandCtrl = base.myTran.FindChild(Common.Func.GetPartsStructure(Common.CO.PARTS_RIGHT_HAND)).GetComponentInChildren<WeaponController>();
+        if (rightHandCtrl != null)
+        {
+            rightHandCtrl.SetTarget(targetTran);
+            rightHandCtrl.SetMotionCtrl(animator, Common.CO.MOTION_RIGHT_ATTACK);
+            rightHandCtrl.SetBtn(rightHandBtn);
+        }
+        else
+        {
+            rightHandBtn.interactable = false;
+        }
 
-        //rightHandCtrl = base.myTran.FindChild(Common.Func.GetPartsStructure(Common.CO.PARTS_RIGHT_HAND)).GetComponentInChildren<WeaponController>();
-        //if (rightHandCtrl != null)
-        //{
-        //    rightHandCtrl.SetTarget(targetTran);
-        //    rightHandCtrl.SetMotionCtrl(animator, Common.CO.MOTION_RIGHT_ATTACK);
-        //    rightHandCtrl.SetBtn(rightHandBtn);
-        //}
-        //else
-        //{
-        //    rightHandBtn.interactable = false;
-        //}
-
-        //shoulderCtrl = base.myTran.FindChild(Common.Func.GetPartsStructure(Common.CO.PARTS_SHOULDER)).GetComponentInChildren<WeaponController>();
-        //if (shoulderCtrl != null)
-        //{
-        //    shoulderCtrl.SetTarget(targetTran);
-        //    shoulderCtrl.SetMotionCtrl(animator, Common.CO.MOTION_SHOULDER_ATTACK);
-        //    shoulderCtrl.SetBtn(shoulderBtn);
-        //}
-        //else
-        //{
-        //    shoulderBtn.interactable = false;
-        //}
+        shoulderCtrl = base.myTran.FindChild(Common.Func.GetPartsStructure(Common.CO.PARTS_SHOULDER)).GetComponentInChildren<WeaponController>();
+        if (shoulderCtrl != null)
+        {
+            shoulderCtrl.SetTarget(targetTran);
+            shoulderCtrl.SetMotionCtrl(animator, Common.CO.MOTION_SHOULDER_ATTACK);
+            shoulderCtrl.SetBtn(shoulderBtn);
+        }
+        else
+        {
+            shoulderBtn.interactable = false;
+        }
 
         subCtrl = base.myTran.FindChild(Common.Func.GetPartsStructure(Common.CO.PARTS_SUB)).GetComponentInChildren<WeaponController>();
         if (subCtrl != null)
@@ -376,7 +342,7 @@ public class PlayerController : MoveOfCharacter
         }
 
         //旋回
-        //QuickTarget(targetTran, isSetAngle);
+        QuickTarget(targetTran, isSetAngle);
     }
 
     private void FallDown()
@@ -425,47 +391,29 @@ public class PlayerController : MoveOfCharacter
 
     public void FireRightHand()
     {
-        Fire(rightHandCtrls);
+        if (!photonView.isMine) return;
+        if (rightHandCtrl == null) return;
+        base.PreserveSpeed(attackPreserveSpeedTime, status.runSpeed);
+        motionCtrl.SetBodyAngle();
+        rightHandCtrl.Fire(targetTran);
     }
 
     public void FireLeftHand()
     {
-        Fire(leftHandCtrls);
+        if (!photonView.isMine) return;
+        if (leftHandCtrl == null) return;
+        base.PreserveSpeed(attackPreserveSpeedTime, status.runSpeed);
+        motionCtrl.SetBodyAngle();
+        leftHandCtrl.Fire(targetTran);
     }
 
     public void FireShoulder()
     {
-        Fire(shoulderCtrls);
-    }
-    private void Fire(List<WeaponController> weaponCtrls)
-    {
         if (!photonView.isMine) return;
-        if (weaponCtrls.Count  <= 0) return;
-
-        WeaponController weapon = null;
-        if (base.isBoost)
-        {
-            //ブースト中攻撃
-            //ターゲットを見る
-            QuickTarget(targetTran, true);
-            weapon = weaponCtrls[1];
-        }
-        else
-        {
-            //通常攻撃
-            weapon = weaponCtrls[0];
-        }
-
-        if (weapon == null) return;
-
-        //攻撃時速度維持
+        if (shoulderCtrl == null) return;
         base.PreserveSpeed(attackPreserveSpeedTime, status.runSpeed);
-
-        //体の向き変更
         motionCtrl.SetBodyAngle();
-
-        //攻撃
-        weapon.Fire(targetTran);
+        shoulderCtrl.Fire(targetTran);
     }
 
     public void UseSub()
