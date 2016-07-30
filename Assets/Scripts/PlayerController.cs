@@ -346,7 +346,9 @@ public class PlayerController : MoveOfCharacter
 
             //base.Move(move, speed);
             base.isGrounded = false;
-            isSetAngle = true;
+
+            //旋回
+            QuickTarget(targetTran, isSetAngle);
         }
         else
         {
@@ -374,9 +376,6 @@ public class PlayerController : MoveOfCharacter
 
             base.Move(move, speed, limit);
         }
-
-        //旋回
-        //QuickTarget(targetTran, isSetAngle);
     }
 
     private void FallDown()
@@ -441,6 +440,10 @@ public class PlayerController : MoveOfCharacter
     {
         if (!photonView.isMine) return;
         if (weaponCtrls.Count <= 0) return;
+        foreach (WeaponController tmpWep in weaponCtrls)
+        {
+            if (!tmpWep.IsEnableFire()) return;
+        }
 
         WeaponController weapon = null;
         if (base.isBoost)
