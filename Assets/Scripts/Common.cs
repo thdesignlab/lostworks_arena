@@ -64,8 +64,11 @@ namespace Common
         public const string PARTS_BODY = "Body";
         public const string PARTS_GROUNDED = "Grounded";
         public const string PARTS_LEFT_HAND = "LeftHand";
+        public const string PARTS_LEFT_HAND_DASH = "LeftHandDash";
         public const string PARTS_RIGHT_HAND = "RightHand";
+        public const string PARTS_RIGHT_HAND_DASH = "RightHandDash";
         public const string PARTS_SHOULDER = "Shoulder";
+        public const string PARTS_SHOULDER_DASH = "ShoulderDash";
         public const string PARTS_SUB = "Sub";
 
         //全部位名
@@ -249,7 +252,8 @@ namespace Common
         //パーツ構造取得
         public static string GetPartsStructure(string partsName)
         {
-            return Common.CO.PARTS_BODY + "/" + partsName;
+            //return Common.CO.PARTS_BODY + "/" + partsName;
+            return partsName;
         }
         public static string GetPartsStructure(int partsNo)
         {
