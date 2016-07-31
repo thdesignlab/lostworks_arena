@@ -71,14 +71,23 @@ namespace Common
         public const string PARTS_SHOULDER_DASH = "ShoulderDash";
         public const string PARTS_SUB = "Sub";
 
+        public const int WEAPON_NORMAL = 0;
+        public const int WEAPON_DASH = 1;
+
         //全部位名
         public static string[] partsNameArray = new string[]
         {
             PARTS_LEFT_HAND,
+            PARTS_LEFT_HAND_DASH,
             PARTS_RIGHT_HAND,
+            PARTS_RIGHT_HAND_DASH,
             PARTS_SHOULDER,
+            PARTS_SHOULDER_DASH,
             PARTS_SUB
         };
+
+        //リロードゲージカラー
+        public static Color reloadGageColor = Color.red;
 
         //武器タグ
         public const string TAG_WEAPON = "Weapon";

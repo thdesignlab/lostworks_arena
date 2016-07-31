@@ -18,7 +18,11 @@ public class WeaponStore : Photon.MonoBehaviour
     [SerializeField]
     private List<GameObject> handWeaponList = new List<GameObject>();
     [SerializeField]
+    private List<GameObject> dashHandWeaponList = new List<GameObject>();
+    [SerializeField]
     private List<GameObject> shoulderWeaponList = new List<GameObject>();
+    [SerializeField]
+    private List<GameObject> dashShoulderWeaponList = new List<GameObject>();
     [SerializeField]
     private List<GameObject> subWeaponList = new List<GameObject>();
 
@@ -55,17 +59,27 @@ public class WeaponStore : Photon.MonoBehaviour
         GameObject weapon = null;
         if (parts == null) return weapon;
 
-        switch (parts.tag)
+        switch (parts.name)
         {
-            case "Hand":
+            case Common.CO.PARTS_LEFT_HAND:
+            case Common.CO.PARTS_RIGHT_HAND:
                 weapon = SelectWeapon(handWeaponList, weaponNo);
                 break;
 
-            case "Shoulder":
+            case Common.CO.PARTS_LEFT_HAND_DASH:
+            case Common.CO.PARTS_RIGHT_HAND_DASH:
+                weapon = SelectWeapon(dashHandWeaponList, weaponNo);
+                break;
+
+            case Common.CO.PARTS_SHOULDER:
                 weapon = SelectWeapon(shoulderWeaponList, weaponNo);
                 break;
 
-            case "Sub":
+            case Common.CO.PARTS_SHOULDER_DASH:
+                weapon = SelectWeapon(dashShoulderWeaponList, weaponNo);
+                break;
+
+            case Common.CO.PARTS_SUB:
                 weapon = SelectWeapon(subWeaponList, weaponNo);
                 break;
         }

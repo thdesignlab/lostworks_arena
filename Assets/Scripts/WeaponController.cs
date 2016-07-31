@@ -29,8 +29,6 @@ public class WeaponController : Photon.MonoBehaviour
     protected Button myBtn;
     protected Image imgGage;
     protected Color normalGageColor;
-    [SerializeField]
-    protected Color reloadGageColor = Color.red;
 
     // Use this for initialization
     protected virtual void Awake()
@@ -177,7 +175,7 @@ public class WeaponController : Photon.MonoBehaviour
             {
                 //クールゲージ切り替え
                 imgGage.fillAmount = 0;
-                imgGage.color = reloadGageColor;
+                imgGage.color = Common.CO.reloadGageColor;
             }
             if (reloadFlg)
             {

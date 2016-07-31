@@ -48,15 +48,21 @@ public class ChargeBulletController : EnergyTrackingBulletController
 
             if (!isCharge)
             {
+                //発射
                 firedTime += Time.deltaTime;
-                if (firedTime >= 0.1f)
-                {
-                    base.myCollider.enabled = true;
-                }
+                //if (firedTime >= 0.1f)
+                //{
+                //    base.myCollider.enabled = true;
+                //}
                 if (firedTime >= limitTime)
                 {
                     base.DestoryObject();
                 }
+            }
+            else
+            {
+                //チャージ中
+                base.safetyTime += Time.deltaTime;
             }
         }
     }
