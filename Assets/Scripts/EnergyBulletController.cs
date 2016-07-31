@@ -16,7 +16,7 @@ public class EnergyBulletController : MoveOfCharacter
     //protected int ownerId;
 
     protected float activeTime = 0;
-    protected float safetyTime = 0.1f;
+    protected float safetyTime = 0.05f;
     protected bool isHit = false;
 
     protected Transform targetTran;
@@ -60,7 +60,7 @@ public class EnergyBulletController : MoveOfCharacter
     //衝突時処理
     protected virtual void OnTriggerEnter(Collider other)
     {
-        //Debug.Log("OnCollisionEnter: "+other.gameObject.name);
+        //Debug.Log("OnCollisionEnter: " + other.gameObject.name);
         if (IsSafety(other.gameObject)) return;
         isHit = true;
 
@@ -74,7 +74,6 @@ public class EnergyBulletController : MoveOfCharacter
             isHit = false;
             return;
         }
-
         base.DestoryObject();
     }
 

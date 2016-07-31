@@ -9,10 +9,6 @@ public class StructureChildController : Photon.MonoBehaviour
     //private Material myMat;
 
     [SerializeField]
-    private int damage;
-    [SerializeField]
-    private float baseDamageVelocity;
-    [SerializeField]
     private float liveTime;
 
     private float destroyTime = 0;
@@ -47,16 +43,7 @@ public class StructureChildController : Photon.MonoBehaviour
     {
         if (PhotonNetwork.player == PhotonNetwork.masterClient)
         {
-            if (myTran.parent == null)
-            {
-                if (other.transform.tag == "Player")
-                {
-                    float damageRate = myRigidbody.velocity.magnitude / baseDamageVelocity;
-                    if (damageRate > 1) damageRate = 1;
-                    other.gameObject.GetComponent<PlayerStatus>().AddDamage((int)(damage * damageRate));
-                }
-            }
-            else
+            if (myTran.parent != null)
             {
                 if (Common.Func.IsDamageAffect(other.transform.tag))
                 {

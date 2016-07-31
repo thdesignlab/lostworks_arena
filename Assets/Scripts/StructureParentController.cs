@@ -42,16 +42,6 @@ public class StructureParentController : Photon.MonoBehaviour
 
     public void AddDamage(int damage)
     {
-        totalDamage += damage;
-        if (nowHp <= totalDamage || totalDamage >= SEND_MIN_DAMAGE)
-        {
-            photonView.RPC("AddDamageRPC", PhotonTargets.All, totalDamage);
-        }
-    }
-
-    [PunRPC]
-    private void AddDamageRPC(int damage)
-    {
         nowHp -= damage;
     }
 

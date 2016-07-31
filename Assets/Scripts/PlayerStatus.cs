@@ -57,7 +57,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
     private Color hitHpColor = Color.red;
     private int totalDamage = 0;
 
-    private CameraController camCtrl;
+    //private CameraController camCtrl;
     private bool isLocked = false;
     private bool isNpc = false;
 
@@ -70,9 +70,13 @@ public class PlayerStatus : Photon.MonoBehaviour {
     private float defaultInvincibleTime;
     private int defaultRecoverSp;
 
+    private GameController gameCtrl;
+
     void Awake()
     {
         isNpc = GetComponent<PlayerSetting>().isNpc;
+
+        gameCtrl = GameObject.Find("GameController").GetComponent<GameController>();
 
         //ステータス構造
         string screenStatus = Common.CO.SCREEN_CANVAS + Common.CO.SCREEN_STATUS;
@@ -179,6 +183,8 @@ public class PlayerStatus : Photon.MonoBehaviour {
 
     public void AddDamage(int damage)
     {
+        if (!gameCtrl.isGameStart) return;
+
         if (leftInvincibleTime > 0)
         {
             if (shield != null)

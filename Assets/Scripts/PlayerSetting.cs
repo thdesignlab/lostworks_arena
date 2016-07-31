@@ -38,6 +38,8 @@ public class PlayerSetting : Photon.MonoBehaviour
             if (isNpc)
             {
                 myTran.name = Common.CO.NPC_NAME;
+                playerCtrl.enabled = false;
+                playerCam.SetActive(false);
                 EquipWeaponRandom();
                 //Debug.Log("NPC: " + transform.name);
                 gameCtrl.SetTarget(myTran);
@@ -52,18 +54,23 @@ public class PlayerSetting : Photon.MonoBehaviour
                 playerCam.SetActive(true);
                 gameCtrl.SetMyTran(myTran);
                 EquipWeaponRandom();
-                weaponStroe.CustomMenuOpen();
-                StartCoroutine(CustomizeCountDown());
+                isCustomEnd = true;
+                //weaponStroe.CustomMenuOpen();
+                //StartCoroutine(CustomizeCountDown());
             }
             //playerCanvas.SetActive(true);
         }
         else
         {
             //Debug.Log("target:" + transform.name);
+            playerCtrl.enabled = false;
+            playerCam.SetActive(false);
+
             //ターゲットを登録
             gameCtrl.SetTarget(myTran);
             gameCtrl.ResetGame();
             SetWeaponParent();
+            isCustomEnd = true;
             SetCustomStatus();
             StartCoroutine(CustomizeCountDown());
         }

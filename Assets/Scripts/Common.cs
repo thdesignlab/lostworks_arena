@@ -18,6 +18,7 @@ namespace Common
         public const string RESOURCE_WEAPON = "Weapon/";
         public const string RESOURCE_BULLET = "Bullet/";
         public const string RESOURCE_EFFECT = "Effect/";
+        public const string RESOURCE_STRUCTURE = "Structure/";
 
         //スクリーンUI
         public const string SCREEN_CANVAS = "ScreenCanvas/";
@@ -128,6 +129,9 @@ namespace Common
             TAG_BULLET_LASER
         };
 
+        //オブジェ
+        public static string TAG_STRUCTURE = "Structure";
+
         //レイヤー
         public static string LAYER_STRUCTURE = "Structure";
     }
@@ -181,6 +185,10 @@ namespace Common
         public static string GetResourceWeapon(string name)
         {
             return Common.CO.RESOURCE_WEAPON + name;
+        }
+        public static string GetResourceStructure(string name)
+        {
+            return Common.CO.RESOURCE_STRUCTURE + name;
         }
 
         //配列チェック

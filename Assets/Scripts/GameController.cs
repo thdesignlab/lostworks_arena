@@ -7,6 +7,8 @@ using UnityEngine.EventSystems;
 public class GameController : Photon.MonoBehaviour
 {
     [SerializeField]
+    private GameObject stageStructure;
+    [SerializeField]
     private GameObject messageCanvas;
     private CanvasGroup messageCanvasGroup;
     private Text messageText;
@@ -55,15 +57,39 @@ public class GameController : Photon.MonoBehaviour
 
     public void ResetGame()
     {
-        isGameStart = false;
-        isGameEnd = false;
-        photonView.RPC("ResetGameRPC", PhotonTargets.Others);
+        photonView.RPC("ResetGameRPC", PhotonTargets.All);
     }
     [PunRPC]
     private void ResetGameRPC()
     {
         isGameStart = false;
         isGameEnd = false;
+        StageObjReset();
+    }
+
+    private void StageObjReset()
+    {
+        if (PhotonNetwork.player == PhotonNetwork.masterClient)
+        {
+            //ステージオブジェ破壊
+            GameObject[] objes = GameObject.FindGameObjectsWithTag(Common.CO.TAG_STRUCTURE);
+            foreach (GameObject obj in objes)
+            {
+                ObjectController objCtrl = obj.GetComponent<ObjectController>();
+                if (objCtrl != null)
+                {
+                    objCtrl.DestoryObject(true);
+                }
+            }
+
+            //ステージオブジェ生成
+            GameObject spawns = GameObject.Find("StructureSpawns");
+            if (!spawns) return;
+            foreach (Transform spawnTran in spawns.transform)
+            {
+                PhotonNetwork.Instantiate(Common.Func.GetResourceStructure(stageStructure.name), spawnTran.position, spawnTran.rotation, 0);
+            }
+        }
     }
 
     IEnumerator ChceckGame()

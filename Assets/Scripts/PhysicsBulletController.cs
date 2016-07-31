@@ -20,7 +20,7 @@ public class PhysicsBulletController : MoveOfVelocity
     //protected int ownerId;
 
     protected float activeTime = 0;
-    protected float safetyTime = 0.1f;
+    protected float safetyTime = 0.05f;
     protected bool isHit = false;
 
     protected Transform targetTran;
