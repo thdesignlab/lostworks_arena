@@ -149,8 +149,17 @@ public class WeaponStore : Photon.MonoBehaviour
                 selectableWeaponList = new List<GameObject>(handWeaponList);
                 break;
 
+            case Common.CO.PARTS_LEFT_HAND_DASH:
+            case Common.CO.PARTS_RIGHT_HAND_DASH:
+                selectableWeaponList = new List<GameObject>(dashHandWeaponList);
+                break;
+
             case Common.CO.PARTS_SHOULDER:
                 selectableWeaponList = new List<GameObject>(shoulderWeaponList); ;
+                break;
+
+            case Common.CO.PARTS_SHOULDER_DASH:
+                selectableWeaponList = new List<GameObject>(dashShoulderWeaponList); ;
                 break;
 
             case Common.CO.PARTS_SUB:
