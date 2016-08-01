@@ -198,7 +198,7 @@ public abstract class BaseMoveController : Photon.MonoBehaviour
 
         if (distance == 0 || myVelocity == 0)
         {
-            return targetTran.position;
+            return Vector3.zero;
         }
 
         //ターゲットまでの到達時間

@@ -14,6 +14,12 @@ public class PhysicsTrackingBulletController : PhysicsBulletController
 
     private bool enableSetAngle = true;
 
+    protected override void Awake()
+    {
+        base.Awake();
+
+        base.safetyTime = 0.3f;
+    }
     protected override void Update()
     {
         base.Update();
