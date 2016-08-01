@@ -12,6 +12,12 @@ public class AimingController: BaseMoveController
     protected override void Awake()
     {
         base.Awake();
+    }
+
+    protected override void Start()
+    {
+        base.Start();
+
         myStatus = GameObject.Find("GameController").GetComponent<GameController>().GetMyTran().GetComponent<PlayerStatus>();
     }
 
