@@ -31,7 +31,7 @@ public class BeamBulletController : EnergyBulletController
             {
                 endPoint = child;
                 startPos = endPoint.position;
-                endPos = startPos + endPoint.forward * effectiveLength;
+                endPos = startPos - endPoint.up * effectiveLength;
                 break;
             }
         }
