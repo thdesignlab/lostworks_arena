@@ -8,19 +8,26 @@ public class GameController : Photon.MonoBehaviour
 {
     [SerializeField]
     private GameObject stageStructure;
-    [SerializeField]
-    private GameObject messageCanvas;
-    private CanvasGroup messageCanvasGroup;
+    //[SerializeField]
+    //private GameObject messageCanvas;
+    //private CanvasGroup messageCanvasGroup;
     private Text messageText;
     private int readyTime = 5;
     private int needPlayerCount = 2;
 
-    [SerializeField]
-    private GameObject waitCanvas;
-    [SerializeField]
-    private GameObject winCanvas;
-    [SerializeField]
-    private GameObject loseCanvas;
+    //[SerializeField]
+    //private GameObject waitCanvas;
+    //[SerializeField]
+    //private GameObject winCanvas;
+    //[SerializeField]
+    //private GameObject loseCanvas;
+    private Text textUp;
+    private Text textCenter;
+    private Color colorWin = Color.red;
+    private Color colorLose = Color.blue;
+    private Color colorReady = Color.yellow;
+    private Color colorWait = new Color(0, 255, 255);
+    private float baseAlpha = 0.6f;
 
     private Transform myTran;
     private Transform targetTran;
@@ -34,6 +41,10 @@ public class GameController : Photon.MonoBehaviour
 
     const string MESSAGE_WAITING = "Player waiting...";
     const string MESSAGE_CUSTOMIZE = "Customizing...";
+    const string MESSAGE_READY = "Ready...";
+    const string MESSAGE_START = "Start";
+    const string MESSAGE_WIN = "Win";
+    const string MESSAGE_LOSE = "Lose";
 
     [HideInInspector]
     public bool isDebugMode = false;
@@ -44,15 +55,67 @@ public class GameController : Photon.MonoBehaviour
 
         isDebugMode = GameObject.Find("Debug").GetComponent<MyDebug>().isDebugMode;
         SpawnMyPlayerEverywhere();
-        messageCanvasGroup = messageCanvas.GetComponent<CanvasGroup>();
-        messageText = messageCanvas.transform.FindChild("Text").GetComponent<Text>();
+        //messageCanvasGroup = messageCanvas.GetComponent<CanvasGroup>();
+        //messageText = messageCanvas.transform.FindChild("Text").GetComponent<Text>();
     }
 
     void Start()
     {
-        messageCanvasGroup.alpha = 0;
-        messageText.text = "";
+        //キャンバス情報
+        Transform screenTran = Camera.main.transform.FindChild(Common.CO.SCREEN_CANVAS);
+        textUp = screenTran.FindChild(Common.CO.TEXT_UP).GetComponent<Text>();
+        textCenter = screenTran.FindChild(Common.CO.TEXT_CENTER).GetComponent<Text>();
+        SetTextUp();
+        SetTextCenter();
+
+        //messageCanvasGroup.alpha = 0;
+        //messageText.text = "";
         StartCoroutine(ChceckGame());
+    }
+
+    public void SetTextUp(string text = "", Color color = default(Color), float fadeout = 0)
+    {
+        SetText(textUp, text, color, fadeout);
+    }
+    public void SetTextCenter(string text = "", Color color = default(Color), float fadeout = 0)
+    {
+        SetText(textCenter, text, color, fadeout);
+    }
+    private void SetText(Text textObj, string text, Color color, float fadeout)
+    {
+        //Debug.Log(textObj.name+" >> "+text);
+        if (text == "")
+        {
+            textObj.enabled = false;
+            textObj.text = "";
+        }
+        else
+        {
+            textObj.text = text;
+            if (color != default(Color)) textObj.color = new Color(color.r, color.g, color.b, baseAlpha);
+            if (fadeout > 0) StartCoroutine(MessageFadeOut(textObj, fadeout));
+            textObj.enabled = true;
+        }
+    }
+
+    IEnumerator MessageFadeOut(Text textObj, float fadeout)
+    {
+        //int second = 3;
+        //messageCanvasGroup.alpha = 1;
+        float startAlpha = textObj.color.a;
+        float nowAlpha = startAlpha;
+        for (;;)
+        {
+            //    messageCanvasGroup.alpha -= Time.deltaTime / second;
+            //    if (messageCanvasGroup.alpha <= 0) break;
+            nowAlpha -= Time.deltaTime / fadeout * startAlpha;
+            textObj.color = new Color(textObj.color.r, textObj.color.g, textObj.color.b, nowAlpha);
+            if (nowAlpha <= 0) break;
+            yield return null;
+        }
+        //messageText.text = "";
+        //messageCanvas.SetActive(false);
+        textObj.enabled = false;
     }
 
     public void ResetGame()
@@ -139,7 +202,8 @@ public class GameController : Photon.MonoBehaviour
                             }
                             if (!setting.IsCustomEnd())
                             {
-                                SetWaitMessage(MESSAGE_CUSTOMIZE + setting.GetLeftCustomTime().ToString());
+                                //SetWaitMessage(MESSAGE_CUSTOMIZE + setting.GetLeftCustomTime().ToString());
+                                SetTextUp(MESSAGE_CUSTOMIZE + setting.GetLeftCustomTime().ToString(), colorWait);
                                 waitTime = 1;
                                 break;
                             }
@@ -158,20 +222,24 @@ public class GameController : Photon.MonoBehaviour
                         if (playerStatuses.Count == needPlayerCount)
                         {
                             //カウントダウン
-                            SetWaitMessage();
-                            winCanvas.SetActive(false);
-                            loseCanvas.SetActive(false);
-                            messageText.text = "Ready";
-                            messageCanvasGroup.alpha = 1;
-                            messageCanvas.SetActive(true);
-                            yield return new WaitForSeconds(1);
+                            //SetWaitMessage();
+                            //winCanvas.SetActive(false);
+                            //loseCanvas.SetActive(false);
+                            //messageText.text = "Ready";
+                            //messageCanvasGroup.alpha = 1;
+                            //messageCanvas.SetActive(true);
+                            SetTextUp();
+                            SetTextCenter(MESSAGE_READY, colorReady);
+                            yield return new WaitForSeconds(3);
                             for (int i = readyTime; i > 0; i--)
                             {
-                                messageText.text = i.ToString();
+                                //messageText.text = i.ToString();
+                                SetTextCenter(i.ToString(), colorReady);
                                 yield return new WaitForSeconds(1);
                             }
-                            messageText.text = "Start";
-                            StartCoroutine(MessageFadeOut());
+                            SetTextCenter(MESSAGE_START, colorReady, 3);
+                            //messageText.text = "Start";
+                            //StartCoroutine(MessageFadeOut(textCenter));
 
                             //対戦スタート
                             GameStart();
@@ -181,7 +249,8 @@ public class GameController : Photon.MonoBehaviour
                     {
                         if (PhotonNetwork.countOfPlayersInRooms < needPlayerCount)
                         {
-                            SetWaitMessage(MESSAGE_WAITING);
+                            //SetWaitMessage(MESSAGE_WAITING);
+                            SetTextUp(MESSAGE_WAITING, colorWait);
                             waitTime = 1;
                         }
                     }
@@ -189,7 +258,9 @@ public class GameController : Photon.MonoBehaviour
                 else
                 {
                     //装備設定中
-                    SetWaitMessage(MESSAGE_CUSTOMIZE + playerSetting.GetLeftCustomTime().ToString());
+                    //SetWaitMessage(MESSAGE_CUSTOMIZE + playerSetting.GetLeftCustomTime().ToString());
+                    SetTextUp(MESSAGE_CUSTOMIZE + playerSetting.GetLeftCustomTime().ToString(), colorWait);
+
                 }
 
                 waitTime = 0.5f;
@@ -199,37 +270,23 @@ public class GameController : Photon.MonoBehaviour
         }
     }
 
-    public void SetWaitMessage(string message = "")
-    {
-        if (message == "")
-        {
-            waitCanvas.SetActive(false);
-        }
-        else
-        {
-            waitCanvas.SetActive(true);
-            waitCanvas.transform.FindChild("Text").GetComponent<Text>().text = message;
-        }
-    }
+    //public void SetWaitMessage(string message = "")
+    //{
+    //    if (message == "")
+    //    {
+    //        waitCanvas.SetActive(false);
+    //    }
+    //    else
+    //    {
+    //        waitCanvas.SetActive(true);
+    //        waitCanvas.transform.FindChild("Text").GetComponent<Text>().text = message;
+    //    }
+    //}
 
     private bool CheckPlayer()
     {
         if (playerStatuses.Count == needPlayerCount) return false;
         return true;
-    }
-
-    IEnumerator MessageFadeOut()
-    {
-        int second = 3;
-        messageCanvasGroup.alpha = 1;
-        for (;;)
-        {
-            messageCanvasGroup.alpha -= Time.deltaTime / second;
-            if (messageCanvasGroup.alpha <= 0) break;
-            yield return null;
-        }
-        messageText.text = "";
-        messageCanvas.SetActive(false);
     }
 
     //プレイヤー作成
@@ -349,20 +406,22 @@ public class GameController : Photon.MonoBehaviour
     {
         if (isWin)
         {
-            winCanvas.SetActive(true);
-            StartCoroutine(ResultMessageDelete(winCanvas));
+            //winCanvas.SetActive(true);
+            SetTextCenter(MESSAGE_WIN, colorWin, 10);
+            //StartCoroutine(ResultMessageDelete(textCenter));
         }
         else
         {
-            loseCanvas.SetActive(true);
-            StartCoroutine(ResultMessageDelete(loseCanvas));
+            //loseCanvas.SetActive(true);
+            SetTextCenter(MESSAGE_LOSE, colorLose, 10);
+            //StartCoroutine(ResultMessageDelete(textCenter));
         }
     }
-    IEnumerator ResultMessageDelete(GameObject c)
-    {
-        yield return new WaitForSeconds(10);
-        c.SetActive(false);
-    }
+    //IEnumerator ResultMessageDelete(GameObject c)
+    //{
+    //    yield return new WaitForSeconds(10);
+    //    c.SetActive(false);
+    //}
 
     public static string OnUGuiButton(Vector3 _scrPos)
     {

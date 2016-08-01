@@ -38,13 +38,12 @@ public class PlayerSetting : Photon.MonoBehaviour
             if (isNpc)
             {
                 myTran.name = Common.CO.NPC_NAME;
-                playerCtrl.enabled = false;
-                playerCam.SetActive(false);
+                //playerCtrl.enabled = false;
+                //playerCam.SetActive(false);
                 EquipWeaponRandom();
                 //Debug.Log("NPC: " + transform.name);
                 gameCtrl.SetTarget(myTran);
                 gameCtrl.SetNpcTran(myTran);
-                gameCtrl.ResetGame();
                 isCustomEnd = true;
             }
             else
@@ -68,11 +67,18 @@ public class PlayerSetting : Photon.MonoBehaviour
 
             //ターゲットを登録
             gameCtrl.SetTarget(myTran);
-            gameCtrl.ResetGame();
             SetWeaponParent();
             isCustomEnd = true;
             SetCustomStatus();
-            StartCoroutine(CustomizeCountDown());
+            //StartCoroutine(CustomizeCountDown());
+        }
+    }
+
+    void Start()
+    {
+        if (isNpc || !photonView.isMine)
+        {
+            gameCtrl.ResetGame();
         }
     }
 
@@ -234,6 +240,7 @@ public class PlayerSetting : Photon.MonoBehaviour
     }
     public bool IsCustomEnd()
     {
+        //Debug.Log(myTran.name+" : "+isCustomEnd.ToString());
         return isCustomEnd;
     }
     public int GetLeftCustomTime()

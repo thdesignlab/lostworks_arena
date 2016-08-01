@@ -58,19 +58,24 @@ public class PlayerController : MoveOfCharacter
             status = GetComponent<PlayerStatus>();
 
             //キャンパスボタン構造
-            string screenBtn = Common.CO.SCREEN_CANVAS + Common.CO.SCREEN_INPUT_BUTTON;
+            //string screenBtn = Common.CO.SCREEN_CANVAS + Common.CO.SCREEN_INPUT_BUTTON;
+            Transform screenInputBtnTran = Camera.main.transform.FindChild(Common.CO.SCREEN_CANVAS + Common.CO.SCREEN_INPUT_BUTTON);
 
-            leftHandBtn = GameObject.Find(screenBtn + Common.CO.BUTTON_LEFT_ATTACK).GetComponent<Button>();
-            rightHandBtn = GameObject.Find(screenBtn + Common.CO.BUTTON_RIGHT_ATTACK).GetComponent<Button>(); ;
-            shoulderBtn = GameObject.Find(screenBtn + Common.CO.BUTTON_SHOULDER_ATTACK).GetComponent<Button>(); ;
-            subBtn = GameObject.Find(screenBtn + Common.CO.BUTTON_USE_SUB).GetComponent<Button>(); ;
+            //leftHandBtn = GameObject.Find(screenBtn + Common.CO.BUTTON_LEFT_ATTACK).GetComponent<Button>();
+            //rightHandBtn = GameObject.Find(screenBtn + Common.CO.BUTTON_RIGHT_ATTACK).GetComponent<Button>(); ;
+            //shoulderBtn = GameObject.Find(screenBtn + Common.CO.BUTTON_SHOULDER_ATTACK).GetComponent<Button>(); ;
+            //subBtn = GameObject.Find(screenBtn + Common.CO.BUTTON_USE_SUB).GetComponent<Button>(); ;
+            leftHandBtn = screenInputBtnTran.FindChild(Common.CO.BUTTON_LEFT_ATTACK).GetComponent<Button>();
+            rightHandBtn = screenInputBtnTran.FindChild(Common.CO.BUTTON_RIGHT_ATTACK).GetComponent<Button>();
+            shoulderBtn = screenInputBtnTran.FindChild(Common.CO.BUTTON_SHOULDER_ATTACK).GetComponent<Button>();
+            subBtn = screenInputBtnTran.FindChild(Common.CO.BUTTON_USE_SUB).GetComponent<Button>();
 
-            GameObject autoLockObj = GameObject.Find(screenBtn + Common.CO.BUTTON_AUTO_LOCK);
-            if (autoLockObj != null)
-            {
-                //autoLockButton = autoLockObj.GetComponent<Button>();
-                autoLockText = autoLockObj.transform.FindChild("Text").GetComponent<Text>();
-            }
+            //GameObject autoLockObj = GameObject.Find(screenBtn + Common.CO.BUTTON_AUTO_LOCK);
+            //if (autoLockObj != null)
+            //{
+            //    //autoLockButton = autoLockObj.GetComponent<Button>();
+            //    autoLockText = autoLockObj.transform.FindChild("Text").GetComponent<Text>();
+            //}
 
             if (circleArrow != null)
             {
@@ -468,19 +473,19 @@ public class PlayerController : MoveOfCharacter
         subCtrl.Fire(targetTran);
     }
 
-    public void AutoLock()
-    {
-        if (isAutoLock)
-        {
-            isAutoLock = false;
-            autoLockText.text = lockTextPrefix + "off";
-        }
-        else
-        {
-            isAutoLock = true;
-            autoLockText.text = lockTextPrefix + "on";
-        }
-    }
+    //public void AutoLock()
+    //{
+    //    if (isAutoLock)
+    //    {
+    //        isAutoLock = false;
+    //        autoLockText.text = lockTextPrefix + "off";
+    //    }
+    //    else
+    //    {
+    //        isAutoLock = true;
+    //        autoLockText.text = lockTextPrefix + "on";
+    //    }
+    //}
 
     //#########################
     //##### TourchManager #####
@@ -542,9 +547,9 @@ public class PlayerController : MoveOfCharacter
                 case Common.CO.BUTTON_USE_SUB:
                     UseSub();
                     break;
-                case Common.CO.BUTTON_AUTO_LOCK:
-                    AutoLock();
-                    break;
+                //case Common.CO.BUTTON_AUTO_LOCK:
+                //    AutoLock();
+                //    break;
             }
             return;
         }

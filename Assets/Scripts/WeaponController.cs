@@ -28,7 +28,10 @@ public class WeaponController : Photon.MonoBehaviour
 
     protected Button myBtn;
     protected Image imgGage;
+    protected string normalGageHexColor = "0695EA4E";
     protected Color normalGageColor;
+    protected SpriteStudioController spriteStudioCtrl;
+    protected Script_SpriteStudio_Root scriptRoot;
 
     // Use this for initialization
     protected virtual void Awake()
@@ -117,9 +120,14 @@ public class WeaponController : Photon.MonoBehaviour
         }
         if (imgGage != null)
         {
+
+
             imgGage.fillAmount = 1;
             imgGage.color = normalGageColor;
         }
+
+        spriteStudioCtrl.Play(scriptRoot);
+
         SetEnable(true);
     }
 
@@ -145,7 +153,18 @@ public class WeaponController : Photon.MonoBehaviour
             imgGage = imgGageTran.GetComponent<Image>();
             imgGage.fillAmount = 1;
             normalGageColor = imgGage.color;
+            if (normalGageColor == Common.CO.reloadGageColor)
+            {
+                Color color = default(Color);
+                if (ColorUtility.TryParseHtmlString(normalGageHexColor, out color))
+                {
+                    normalGageColor = color;
+                }
+            }
         }
+        spriteStudioCtrl = GameObject.Find("SpriteStudioController").GetComponent<SpriteStudioController>();
+        scriptRoot = spriteStudioCtrl.CreateButtonFlash(myBtn.gameObject);
+        //scriptRoot = spriteStudioCtrl.CreateButtonFlash(myBtn.name, myBtn.transform.position);
     }
 
     public void SetEnable(bool flg, bool reloadFlg = false)

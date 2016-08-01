@@ -20,7 +20,8 @@ public class LockOnController : Photon.MonoBehaviour
     {
         myTran = transform;
         status = myTran.root.gameObject.GetComponent<PlayerStatus>();
-        GameObject targetObj = GameObject.Find(Common.CO.SCREEN_CANVAS+"TargetMark");
+        //GameObject targetObj = GameObject.Find(Common.CO.SCREEN_CANVAS+"TargetMark");
+        GameObject targetObj = Camera.main.transform.FindChild(Common.CO.SCREEN_CANVAS + Common.CO.TARGET_MARK).gameObject;
         if (targetObj != null)
         {
             targetMarkImg = targetObj.GetComponent<RawImage>();

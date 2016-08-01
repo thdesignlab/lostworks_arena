@@ -29,6 +29,12 @@ namespace Common
         public const string BUTTON_SHOULDER_ATTACK = "FireShoulder";
         public const string BUTTON_USE_SUB = "UseSub";
         public const string BUTTON_AUTO_LOCK = "AutoLock";
+        //ターゲットマーク
+        public const string TARGET_MARK = "TargetMark";
+        //メッセージ
+        public const string TEXT_UP = "TextUp";
+        public const string TEXT_CENTER = "TextCenter";
+
 
         //移動モーション
         public const string MOTION_RUN = "Run";

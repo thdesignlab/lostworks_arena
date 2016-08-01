@@ -79,17 +79,24 @@ public class PlayerStatus : Photon.MonoBehaviour {
         gameCtrl = GameObject.Find("GameController").GetComponent<GameController>();
 
         //ステータス構造
-        string screenStatus = Common.CO.SCREEN_CANVAS + Common.CO.SCREEN_STATUS;
+        //string screenStatus = Common.CO.SCREEN_CANVAS + Common.CO.SCREEN_STATUS;
+        Transform screenStatusTran = Camera.main.transform.FindChild(Common.CO.SCREEN_CANVAS + Common.CO.SCREEN_STATUS);
 
         //HPSPバー
-        hpBarMine = GameObject.Find(screenStatus+"HpBarMine/HP").GetComponent<Slider>();
-        spBarMine = GameObject.Find(screenStatus + "SpBarMine/SP").GetComponent<Slider>();
-        hpBarEnemy = GameObject.Find(screenStatus + "HpBarEnemy/HP").GetComponent<Slider>();
-        //spBarEnemy = GameObject.Find(screenStatus+"SpBarEnemy/SP").GetComponent<Slider>();
+        //hpBarMine = GameObject.Find(screenStatus + "HpBarMine/HP").GetComponent<Slider>();
+        //spBarMine = GameObject.Find(screenStatus + "SpBarMine/SP").GetComponent<Slider>();
+        //hpBarEnemy = GameObject.Find(screenStatus + "HpBarEnemy/HP").GetComponent<Slider>();
+        ////spBarEnemy = GameObject.Find(screenStatus+"SpBarEnemy/SP").GetComponent<Slider>();
+        hpBarMine = screenStatusTran.FindChild("HpBarMine/HP").GetComponent<Slider>();
+        spBarMine = screenStatusTran.FindChild("SpBarMine/SP").GetComponent<Slider>();
+        hpBarEnemy = screenStatusTran.FindChild("HpBarEnemy/HP").GetComponent<Slider>();
+        //spBarEnemy = screenStatusTran.FindChild("SpBarEnemy/SP").GetComponent<Slider>();
 
         //HPバーイメージ
-        hpBarMineImage = GameObject.Find(screenStatus + "HpBarMine/HP/Fill Area/Fill").GetComponent<Image>();
-        hpBarEnemyImage = GameObject.Find(screenStatus + "HpBarEnemy/HP/Fill Area/Fill").GetComponent<Image>();
+        //hpBarMineImage = GameObject.Find(screenStatus + "HpBarMine/HP/Fill Area/Fill").GetComponent<Image>();
+        //hpBarEnemyImage = GameObject.Find(screenStatus + "HpBarEnemy/HP/Fill Area/Fill").GetComponent<Image>();
+        hpBarMineImage = screenStatusTran.FindChild("HpBarMine/HP/Fill Area/Fill").GetComponent<Image>();
+        hpBarEnemyImage = screenStatusTran.FindChild("HpBarEnemy/HP/Fill Area/Fill").GetComponent<Image>();
 
         //キャラ付きキャンバス
         //statusCanvas = transform.FindChild("StatusCanvas");
