@@ -60,23 +60,23 @@ public class SpriteStudioController : MonoBehaviour
         scriptRoots.Remove(key);
     }
 
-    public void Play(Script_SpriteStudio_Root scriptRoot, int timesPlay = 1)
+    public void Play(Script_SpriteStudio_Root scriptRoot, int timesPlay = 1, bool isHideEnd = false)
     {
         scriptRoot.FlagHideForce = false;
         scriptRoot.AnimationPlay(-1, timesPlay);
-        if (timesPlay >= 1)
+        if (isHideEnd)
         {
             //ループ終了チェック
-            StartCoroutine(CheckRoopEnd(scriptRoot));
+            StartCoroutine(CheckAnimationEnd(scriptRoot));
         }
     }
-    IEnumerator CheckRoopEnd(Script_SpriteStudio_Root scriptRoot)
+    IEnumerator CheckAnimationEnd(Script_SpriteStudio_Root scriptRoot)
     {
         for (;;)
         {
             if (!scriptRoot.AnimationCheckPlay())
             {
-                //ループ終了
+                //終了
                 scriptRoot.FlagHideForce = true;
                 break;
             }

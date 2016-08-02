@@ -45,8 +45,8 @@ public class GameController : Photon.MonoBehaviour
     const string MESSAGE_CUSTOMIZE = "Customizing...";
     const string MESSAGE_READY = "Ready...";
     const string MESSAGE_START = "Start";
-    const string MESSAGE_WIN = "Win";
-    const string MESSAGE_LOSE = "Lose";
+    //const string MESSAGE_WIN = "Win";
+    //const string MESSAGE_LOSE = "Lose";
 
     [HideInInspector]
     public bool isDebugMode = false;
@@ -104,7 +104,7 @@ public class GameController : Photon.MonoBehaviour
             if (scriptRoot != null)
             {
                 //アニメーション
-                spriteStudioCtrl.Play(scriptRoot, (int)fadeout);
+                spriteStudioCtrl.Play(scriptRoot);
             }
             else
             {
@@ -425,13 +425,13 @@ public class GameController : Photon.MonoBehaviour
         if (isWin)
         {
             //winCanvas.SetActive(true);
-            SetTextCenter(spriteStudioCtrl.ANIMATION_TEXT_WIN, colorWin, 15);
+            SetTextCenter(spriteStudioCtrl.ANIMATION_TEXT_WIN, colorWin);
             //StartCoroutine(ResultMessageDelete(textCenter));
         }
         else
         {
             //loseCanvas.SetActive(true);
-            SetTextCenter(spriteStudioCtrl.ANIMATION_TEXT_LOSE, colorLose, 15);
+            SetTextCenter(spriteStudioCtrl.ANIMATION_TEXT_LOSE, colorLose);
             //StartCoroutine(ResultMessageDelete(textCenter));
         }
     }
