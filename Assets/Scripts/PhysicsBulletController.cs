@@ -25,7 +25,7 @@ public class PhysicsBulletController : MoveOfVelocity
 
     protected Transform targetTran;
     protected PlayerStatus targetStatus;
-    protected AudioSource audioSource;
+    //protected AudioSource audioSource;
 
     protected Collider myCollider;
 
@@ -36,7 +36,7 @@ public class PhysicsBulletController : MoveOfVelocity
         //プレイヤーID取得
         //playerId = PhotonNetwork.player.ID;
         //ownerId = PhotonView.Get(gameObject).ownerId;
-        audioSource = GetComponent<AudioSource>();
+        //audioSource = GetComponent<AudioSource>();
 
         if (photonView.isMine)
         {
@@ -180,11 +180,11 @@ public class PhysicsBulletController : MoveOfVelocity
         }
     }
 
-    protected void PlayAudio()
-    {
-        if (audioSource != null)
-        {
-            audioSource.Play();
-        }
-    }
+    //protected void PlayAudio()
+    //{
+    //    if (audioSource != null)
+    //    {
+    //        audioSource.Play();
+    //    }
+    //}
 }

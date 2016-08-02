@@ -21,7 +21,7 @@ public class EnergyBulletController : MoveOfCharacter
 
     protected Transform targetTran;
     protected PlayerStatus targetStatus;
-    protected AudioSource audioSource;
+    //protected AudioSource audioSource;
 
     private float totalDamage = 0;
     private int sendMinDamage = 5;
@@ -35,7 +35,7 @@ public class EnergyBulletController : MoveOfCharacter
         //プレイヤーIDと所有者ID取得
         //playerId = PhotonNetwork.player.ID;
         //ownerId = photonView.ownerId;
-        audioSource = GetComponent<AudioSource>();
+        //audioSource = GetComponent<AudioSource>();
 
         myCollider = myTran.GetComponentInChildren<Collider>();
         if (myCollider != null) myCollider.enabled = false;
@@ -120,11 +120,11 @@ public class EnergyBulletController : MoveOfCharacter
 
             if (hitObj.transform == targetTran)
             {
-                totalDamage += damage * Time.deltaTime;
+                totalDamage += dmg * Time.deltaTime;
                 if (totalDamage >= sendMinDamage)
                 {
-                    hitObj.GetComponent<PlayerStatus>().AddDamage((int)damage);
-                    totalDamage = damage % 1;
+                    targetStatus.AddDamage((int)totalDamage);
+                    totalDamage = totalDamage % 1;
                 }
             }
         }
@@ -179,11 +179,11 @@ public class EnergyBulletController : MoveOfCharacter
         }
     }
 
-    protected void PlayAudio()
-    {
-        if (audioSource != null)
-        {
-            audioSource.Play();
-        }
-    }
+    //protected void PlayAudio()
+    //{
+    //    if (audioSource != null)
+    //    {
+    //        audioSource.Play();
+    //    }
+    //}
 }

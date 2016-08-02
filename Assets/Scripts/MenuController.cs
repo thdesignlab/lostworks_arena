@@ -141,18 +141,19 @@ public class MenuController : Photon.MonoBehaviour
     //復活
     public void OnRespawnButton()
     {
+        OnDebugMenuButton(false);
         if (!gameCtrl.isDebugMode) return;
         //PhotonNetwork.LoadLevel("Battle");
         if (gameCtrl.GetMyTran() != null) return;
 
         Destroy(Camera.main.gameObject);
         gameCtrl.SpawnMyPlayerEverywhere();
-        debugMenu.SetActive(false);
     }
 
     //装備カスタム
     public void OnCustomButton()
     {
+        OnDebugMenuButton(false);
         if (!gameCtrl.isDebugMode) return;
         GameObject.Find("WeaponStore").GetComponent<WeaponStore>().CustomMenuOpen();
     }

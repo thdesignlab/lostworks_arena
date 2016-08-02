@@ -4,28 +4,21 @@ using System.Collections;
 public class LaserBulletController : Photon.MonoBehaviour
 {
     private Transform myTran;
-    private AudioController audioCtrl;
+    //private AudioController audioCtrl;
 
     [SerializeField]
     private int damagePerSecond; //ダメージ量
 
     private Transform targetTran;
+    private PlayerStatus targetStatus;
     private float totalDamage = 0;
     private int sendMinDamage = 5;
 
     void Awake()
     {
         myTran = transform;
-        audioCtrl = myTran.GetComponent<AudioController>();
-    }
-
-    void OnEnable()
-    {
-        if (audioCtrl != null) audioCtrl.Play();
-    }
-    void OnDisable()
-    {
-        if (audioCtrl != null) audioCtrl.Stop();
+        //audioCtrl = myTran.GetComponent<AudioController>();
+        //if (audioCtrl != null) audioCtrl.Play();
     }
 
     //HIT時処理
@@ -53,7 +46,7 @@ public class LaserBulletController : Photon.MonoBehaviour
                 totalDamage += damagePerSecond * Time.deltaTime;
                 if (totalDamage >= sendMinDamage)
                 {
-                    hitObj.GetComponent<PlayerStatus>().AddDamage((int)totalDamage);
+                    targetStatus.AddDamage((int)totalDamage);
                     totalDamage = totalDamage % 1;
                 }
             }
@@ -71,5 +64,6 @@ public class LaserBulletController : Photon.MonoBehaviour
     {
         if (target == null) return;
         targetTran = target;
+        targetStatus = targetTran.GetComponent<PlayerStatus>();
     }
 }

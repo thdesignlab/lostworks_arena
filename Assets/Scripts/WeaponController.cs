@@ -152,14 +152,15 @@ public class WeaponController : Photon.MonoBehaviour
         {
             imgGage = imgGageTran.GetComponent<Image>();
             imgGage.fillAmount = 1;
-            normalGageColor = imgGage.color;
-            if (normalGageColor == Common.CO.reloadGageColor)
+            
+            Color color = default(Color);
+            if (ColorUtility.TryParseHtmlString(normalGageHexColor, out color))
             {
-                Color color = default(Color);
-                if (ColorUtility.TryParseHtmlString(normalGageHexColor, out color))
-                {
-                    normalGageColor = color;
-                }
+                normalGageColor = color;
+            }
+            else
+            {
+                normalGageColor = imgGage.color;
             }
         }
         spriteStudioCtrl = GameObject.Find("SpriteStudioController").GetComponent<SpriteStudioController>();
