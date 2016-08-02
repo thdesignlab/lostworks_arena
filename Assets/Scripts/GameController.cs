@@ -38,6 +38,8 @@ public class GameController : Photon.MonoBehaviour
     private bool isGameEnd = false;
     private List<PlayerStatus> playerStatuses = new List<PlayerStatus>();
     private PlayerSetting playerSetting;
+    private SpriteStudioController spriteStudioCtrl;
+    private Script_SpriteStudio_Root scriptRoot;
 
     const string MESSAGE_WAITING = "Player waiting...";
     const string MESSAGE_CUSTOMIZE = "Customizing...";
@@ -52,11 +54,9 @@ public class GameController : Photon.MonoBehaviour
     void Awake()
     {
         UserManager.DispUserInfo();
-
         isDebugMode = GameObject.Find("Debug").GetComponent<MyDebug>().isDebugMode;
+        spriteStudioCtrl = GameObject.Find("SpriteStudioController").GetComponent<SpriteStudioController>();
         SpawnMyPlayerEverywhere();
-        //messageCanvasGroup = messageCanvas.GetComponent<CanvasGroup>();
-        //messageText = messageCanvas.transform.FindChild("Text").GetComponent<Text>();
     }
 
     void Start()
@@ -68,16 +68,14 @@ public class GameController : Photon.MonoBehaviour
         SetTextUp();
         SetTextCenter();
 
-        //messageCanvasGroup.alpha = 0;
-        //messageText.text = "";
         StartCoroutine(ChceckGame());
     }
 
-    public void SetTextUp(string text = "", Color color = default(Color), float fadeout = 0)
+    private void SetTextUp(string text = "", Color color = default(Color), float fadeout = 0)
     {
         SetText(textUp, text, color, fadeout);
     }
-    public void SetTextCenter(string text = "", Color color = default(Color), float fadeout = 0)
+    private void SetTextCenter(string text = "", Color color = default(Color), float fadeout = 0)
     {
         SetText(textCenter, text, color, fadeout);
     }
@@ -86,15 +84,35 @@ public class GameController : Photon.MonoBehaviour
         //Debug.Log(textObj.name+" >> "+text);
         if (text == "")
         {
-            textObj.enabled = false;
+            scriptRoot = spriteStudioCtrl.DispMessage(textObj.gameObject, textObj.text);
+            if (scriptRoot != null)
+            {
+                //アニメーション
+                spriteStudioCtrl.Stop(scriptRoot);
+            }
+            else
+            {
+                //Text
+                textObj.enabled = false;
+            }
             textObj.text = "";
         }
         else
         {
             textObj.text = text;
-            if (color != default(Color)) textObj.color = new Color(color.r, color.g, color.b, baseAlpha);
-            if (fadeout > 0) StartCoroutine(MessageFadeOut(textObj, fadeout));
-            textObj.enabled = true;
+            scriptRoot = spriteStudioCtrl.DispMessage(textObj.gameObject, textObj.text);
+            if (scriptRoot != null)
+            {
+                //アニメーション
+                spriteStudioCtrl.Play(scriptRoot, (int)fadeout);
+            }
+            else
+            {
+                //Text
+                if (color != default(Color)) textObj.color = new Color(color.r, color.g, color.b, baseAlpha);
+                if (fadeout > 0) StartCoroutine(MessageFadeOut(textObj, fadeout));
+                textObj.enabled = true;
+            }
         }
     }
 
@@ -407,13 +425,13 @@ public class GameController : Photon.MonoBehaviour
         if (isWin)
         {
             //winCanvas.SetActive(true);
-            SetTextCenter(MESSAGE_WIN, colorWin, 10);
+            SetTextCenter(spriteStudioCtrl.ANIMATION_TEXT_WIN, colorWin, 15);
             //StartCoroutine(ResultMessageDelete(textCenter));
         }
         else
         {
             //loseCanvas.SetActive(true);
-            SetTextCenter(MESSAGE_LOSE, colorLose, 10);
+            SetTextCenter(spriteStudioCtrl.ANIMATION_TEXT_LOSE, colorLose, 15);
             //StartCoroutine(ResultMessageDelete(textCenter));
         }
     }

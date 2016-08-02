@@ -165,7 +165,6 @@ public class WeaponController : Photon.MonoBehaviour
         }
         spriteStudioCtrl = GameObject.Find("SpriteStudioController").GetComponent<SpriteStudioController>();
         scriptRoot = spriteStudioCtrl.CreateButtonFlash(myBtn.gameObject);
-        //scriptRoot = spriteStudioCtrl.CreateButtonFlash(myBtn.name, myBtn.transform.position);
     }
 
     public void SetEnable(bool flg, bool reloadFlg = false)
