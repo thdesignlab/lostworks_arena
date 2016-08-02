@@ -19,7 +19,8 @@ namespace Common
         public const string RESOURCE_BULLET = "Bullet/";
         public const string RESOURCE_EFFECT = "Effect/";
         public const string RESOURCE_STRUCTURE = "Structure/";
-        public const string RESOURCE_ANIMATION = "Animation/";
+        public const string RESOURCE_ANIMATION_2D = "Animation2D/";
+        public const string RESOURCE_ANIMATION_3D = "Animation3D/";
 
         //スクリーンUI
         public const string SCREEN_CANVAS = "ScreenCanvas/";
@@ -199,7 +200,11 @@ namespace Common
         }
         public static string GetResourceAnimation(string name)
         {
-            return Common.CO.RESOURCE_ANIMATION + name;
+            return Common.CO.RESOURCE_ANIMATION_2D + name;
+        }
+        public static string GetResourceAnimation3D(string name)
+        {
+            return Common.CO.RESOURCE_ANIMATION_3D + name;
         }
 
         //配列チェック

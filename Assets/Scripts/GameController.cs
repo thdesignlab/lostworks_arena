@@ -43,8 +43,8 @@ public class GameController : Photon.MonoBehaviour
 
     const string MESSAGE_WAITING = "Player waiting...";
     const string MESSAGE_CUSTOMIZE = "Customizing...";
-    const string MESSAGE_READY = "Ready...";
-    const string MESSAGE_START = "Start";
+    const string MESSAGE_READY = "Ready";
+    const string MESSAGE_START = "Go";
     //const string MESSAGE_WIN = "Win";
     //const string MESSAGE_LOSE = "Lose";
 
@@ -108,12 +108,26 @@ public class GameController : Photon.MonoBehaviour
             }
             else
             {
-                //Text
-                if (color != default(Color)) textObj.color = new Color(color.r, color.g, color.b, baseAlpha);
-                if (fadeout > 0) StartCoroutine(MessageFadeOut(textObj, fadeout));
-                textObj.enabled = true;
+                GameObject text3d = (GameObject)Resources.Load(Common.Func.GetResourceAnimation3D(textObj.text));
+                if (text3d != null)
+                {
+                    //3DText
+                    
+                }
+                else
+                {
+                    //Text
+                    if (color != default(Color)) textObj.color = new Color(color.r, color.g, color.b, baseAlpha);
+                    if (fadeout > 0) StartCoroutine(MessageFadeOut(textObj, fadeout));
+                    textObj.enabled = true;
+                }
             }
         }
+    }
+
+    private void Set3DText(GameObject targetObj, string text)
+    {
+
     }
 
     IEnumerator MessageFadeOut(Text textObj, float fadeout)

@@ -64,7 +64,7 @@ public class SpriteStudioController : MonoBehaviour
     {
         scriptRoot.FlagHideForce = false;
         scriptRoot.AnimationPlay(-1, timesPlay);
-        if (isHideEnd)
+        if (isHideEnd)  
         {
             //ループ終了チェック
             StartCoroutine(CheckAnimationEnd(scriptRoot));
