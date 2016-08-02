@@ -12,7 +12,7 @@ public class GameController : Photon.MonoBehaviour
     //private GameObject messageCanvas;
     //private CanvasGroup messageCanvasGroup;
     private Text messageText;
-    private int readyTime = 5;
+    private int readyTime = 3;
     private int needPlayerCount = 2;
 
     //[SerializeField]
@@ -79,7 +79,7 @@ public class GameController : Photon.MonoBehaviour
     {
         SetText(textCenter, text, color, fadeout);
     }
-    private void SetText(Text textObj, string text, Color color, float fadeout)
+    private void SetText(Text textObj, string text, Color color = default(Color), float fadeout = 0)
     {
         //Debug.Log(textObj.name+" >> "+text);
         if (text == "")
@@ -111,6 +111,7 @@ public class GameController : Photon.MonoBehaviour
         {
             //テキスト表示
             textObj.enabled = false;
+            SetText(textObj, "");
             textObj.text = text;
             scriptRoot = spriteStudioCtrl.DispMessage(textObj.gameObject, textObj.text);
             if (scriptRoot != null)
@@ -130,17 +131,18 @@ public class GameController : Photon.MonoBehaviour
                 {
                     //Text
                     if (color != default(Color)) textObj.color = new Color(color.r, color.g, color.b, baseAlpha);
-                    if (fadeout > 0) StartCoroutine(MessageFadeOut(textObj, fadeout));
+                    //if (fadeout > 0) StartCoroutine(MessageFadeOut(textObj, fadeout));
                     textObj.enabled = true;
                 }
             }
+
+            if (fadeout > 0) StartCoroutine(MessageDelayDelete(textObj, fadeout));
         }
     }
 
     private void Set3DText(GameObject obj, Vector3 pos)
     {
-        Reset3DText();
-        Instantiate(obj, pos, Camera.main.transform.rotation);
+        Instantiate(obj, pos, Camera.main.transform.rotation * obj.transform.rotation);
     }
     private void Reset3DText()
     {
@@ -169,6 +171,12 @@ public class GameController : Photon.MonoBehaviour
         //messageText.text = "";
         //messageCanvas.SetActive(false);
         textObj.enabled = false;
+    }
+
+    IEnumerator MessageDelayDelete(Text textObj, float fadeout)
+    {
+        yield return new WaitForSeconds(fadeout);
+        SetText(textObj, "");
     }
 
     public void ResetGame()
@@ -275,24 +283,15 @@ public class GameController : Photon.MonoBehaviour
                         if (playerStatuses.Count == needPlayerCount)
                         {
                             //カウントダウン
-                            //SetWaitMessage();
-                            //winCanvas.SetActive(false);
-                            //loseCanvas.SetActive(false);
-                            //messageText.text = "Ready";
-                            //messageCanvasGroup.alpha = 1;
-                            //messageCanvas.SetActive(true);
                             SetTextUp();
-                            SetTextCenter(MESSAGE_READY, colorReady);
+                            SetTextCenter(MESSAGE_READY, colorReady, 3);
                             yield return new WaitForSeconds(3);
                             for (int i = readyTime; i > 0; i--)
                             {
-                                //messageText.text = i.ToString();
-                                SetTextCenter(i.ToString(), colorReady);
+                                SetTextCenter(i.ToString(), colorReady, 1);
                                 yield return new WaitForSeconds(1);
                             }
                             SetTextCenter(MESSAGE_START, colorReady, 3);
-                            //messageText.text = "Start";
-                            //StartCoroutine(MessageFadeOut(textCenter));
 
                             //対戦スタート
                             GameStart();
