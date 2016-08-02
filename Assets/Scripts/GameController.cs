@@ -84,6 +84,7 @@ public class GameController : Photon.MonoBehaviour
         //Debug.Log(textObj.name+" >> "+text);
         if (text == "")
         {
+            //テキスト削除
             scriptRoot = spriteStudioCtrl.DispMessage(textObj.gameObject, textObj.text);
             if (scriptRoot != null)
             {
@@ -92,13 +93,24 @@ public class GameController : Photon.MonoBehaviour
             }
             else
             {
-                //Text
-                textObj.enabled = false;
+                GameObject text3d = (GameObject)Resources.Load(Common.Func.GetResourceAnimation3D(textObj.text));
+                if (text3d != null)
+                {
+                    //3DText
+                    Reset3DText();
+                }
+                else
+                {
+                    //Text
+                    textObj.enabled = false;
+                }
             }
             textObj.text = "";
         }
         else
         {
+            //テキスト表示
+            textObj.enabled = false;
             textObj.text = text;
             scriptRoot = spriteStudioCtrl.DispMessage(textObj.gameObject, textObj.text);
             if (scriptRoot != null)
@@ -112,7 +124,7 @@ public class GameController : Photon.MonoBehaviour
                 if (text3d != null)
                 {
                     //3DText
-                    
+                    Set3DText(text3d, textObj.transform.position);
                 }
                 else
                 {
@@ -125,9 +137,18 @@ public class GameController : Photon.MonoBehaviour
         }
     }
 
-    private void Set3DText(GameObject targetObj, string text)
+    private void Set3DText(GameObject obj, Vector3 pos)
     {
-
+        Reset3DText();
+        Instantiate(obj, pos, Camera.main.transform.rotation);
+    }
+    private void Reset3DText()
+    {
+        GameObject[] texts = GameObject.FindGameObjectsWithTag("3DText");
+        foreach (GameObject text in texts)
+        {
+            Destroy(text);
+        }
     }
 
     IEnumerator MessageFadeOut(Text textObj, float fadeout)
