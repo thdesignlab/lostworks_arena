@@ -231,7 +231,7 @@ namespace Common
         //弾判定
         public static bool IsBullet(string tag)
         {
-            return InArrayString(Common.CO.physicsBulletArray, tag);
+            return InArrayString(Common.CO.bulletTagArray, tag);
         }
 
         //ダメージオブジェクト判定

@@ -1,69 +1,30 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class LaserBulletController : Photon.MonoBehaviour
+public class LaserBulletController : EnergyBulletController
 {
-    private Transform myTran;
-    //private AudioController audioCtrl;
-
     [SerializeField]
-    private int damagePerSecond; //ダメージ量
+    private int damagePerSecond;
 
-    private Transform targetTran;
-    private PlayerStatus targetStatus;
-    private float totalDamage = 0;
-    private int sendMinDamage = 5;
-
-    void Awake()
+    //衝突時処理
+    protected override void OnTriggerEnter(Collider other)
     {
-        myTran = transform;
-        //audioCtrl = myTran.GetComponent<AudioController>();
-        //if (audioCtrl != null) audioCtrl.Play();
-    }
+        //Debug.Log("OnCollisionEnter: " + other.gameObject.name);
+        GameObject otherObj = other.gameObject;
+        if (base.IsSafety(otherObj)) return;
+        base.isHit = true;
 
-    //HIT時処理
-    void OnTriggerStay(Collider other)
-    {
         //ダメージを与える
-        AddDamage(other.gameObject);
+        base.AddDamage(otherObj);
 
         //対象を破壊
-        if (Common.Func.IsBullet(other.gameObject.tag))
-        {
-            TargetDestory(other.gameObject);
-            return;
-        }
+        base.TargetDestory(otherObj);
     }
 
-    //ダメージ処理
-    private void AddDamage(GameObject hitObj)
+    //継続ダメージ
+    void OnTriggerStay(Collider other)
     {
-        //ダメージ処理は所有者のみ行う
-        if (photonView.isMine)
-        {
-            if (hitObj.transform == targetTran)
-            {
-                totalDamage += damagePerSecond * Time.deltaTime;
-                if (totalDamage >= sendMinDamage)
-                {
-                    targetStatus.AddDamage((int)totalDamage);
-                    totalDamage = totalDamage % 1;
-                }
-            }
-        }
-    }
-
-    //ターゲットを破壊する
-    private void TargetDestory(GameObject hitObj)
-    {
-        hitObj.gameObject.GetComponent<ObjectController>().DestoryObject(true);
-    }
-
-    //ターゲットを設定する
-    public void SetTarget(Transform target)
-    {
-        if (target == null) return;
-        targetTran = target;
-        targetStatus = targetTran.GetComponent<PlayerStatus>();
+        //Debug.Log("OnTriggerStay: " + other.name);
+        AddSlipDamage(other.gameObject, damagePerSecond);
     }
 }

@@ -7,19 +7,30 @@ public class EffectController : Photon.MonoBehaviour
     private int damage;
     [SerializeField]
     private int damagePerSecond;
+    [SerializeField]
+    private bool isPhysicsBulletBreak;
+    [SerializeField]
+    private bool isEnergyBulletBreak;
 
     void OnTriggerEnter(Collider other)
     {
         if (photonView.isMine)
         {
-            Transform otherTran = other.transform;
-            if (otherTran.tag == "Player")
+            GameObject otherObj = other.gameObject;
+            if (otherObj.tag == "Player")
             {
                 if (damage > 0)
                 {
                     //ダメージ
-                    otherTran.GetComponent<PlayerStatus>().AddDamage(damage);
+                    otherObj.GetComponent<PlayerStatus>().AddDamage(damage);
                 }
+            }
+
+            //対象を破壊
+            if ((isEnergyBulletBreak && Common.Func.IsBullet(otherObj.tag))
+                || (isPhysicsBulletBreak && Common.Func.IsPhysicsBullet(otherObj.tag)))
+            {
+                otherObj.GetComponent<ObjectController>().DestoryObject(true);
             }
         }
     }
@@ -42,7 +53,10 @@ public class EffectController : Photon.MonoBehaviour
                         //小数部分は確率
                         if (dmg * 100 > Random.Range(0, 100)) addDmg += 1;
                     }
-                    otherTran.GetComponent<PlayerStatus>().AddDamage(addDmg);
+                    if (addDmg > 0)
+                    {
+                        otherTran.GetComponent<PlayerStatus>().AddDamage(addDmg);
+                    }
                 }
             }
         }

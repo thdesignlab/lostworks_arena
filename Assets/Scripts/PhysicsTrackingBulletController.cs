@@ -52,14 +52,15 @@ public class PhysicsTrackingBulletController : PhysicsBulletController
     //衝突時処理
     protected override void OnCollisionEnter(Collision other)
     {
-        if (IsSafety(other.gameObject)) return;
+        GameObject otherObj = other.gameObject;
+        if (IsSafety(otherObj)) return;
 
         //同じタグはスルー
-        if (other.gameObject.tag == myTran.tag) return;
+        if (otherObj.tag == myTran.tag) return;
         isHit = true;
 
         //ダメージを与える
-        AddDamage(other.gameObject);
+        base.AddDamage(otherObj);
 
         base.DestoryObject();
     }

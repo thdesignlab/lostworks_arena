@@ -11,9 +11,10 @@ public class EnergyBulletController : MoveOfCharacter
     protected int damage; //ダメージ量
     [SerializeField]
     protected float stuckTime; //スタック時間
-
-    //protected int playerId;
-    //protected int ownerId;
+    [SerializeField]
+    private bool isPhysicsBulletBreak;
+    [SerializeField]
+    private bool isEnergyBulletBreak;
 
     protected float activeTime = 0;
     [SerializeField]
@@ -33,11 +34,6 @@ public class EnergyBulletController : MoveOfCharacter
     {
         base.Awake();
 
-        //プレイヤーIDと所有者ID取得
-        //playerId = PhotonNetwork.player.ID;
-        //ownerId = photonView.ownerId;
-        //audioSource = GetComponent<AudioSource>();
-
         myCollider = myTran.GetComponentInChildren<Collider>();
         if (myCollider != null) myCollider.enabled = false;
     }
@@ -48,7 +44,10 @@ public class EnergyBulletController : MoveOfCharacter
 
         //稼働時間
         activeTime += Time.deltaTime;
-        if (activeTime >= 10) base.DestoryObject();
+        if (photonView.isMine)
+        {
+            if (activeTime >= 10) base.DestoryObject();
+        }
 
         if (activeTime >= safetyTime)
         {
@@ -62,19 +61,16 @@ public class EnergyBulletController : MoveOfCharacter
     protected virtual void OnTriggerEnter(Collider other)
     {
         //Debug.Log("OnCollisionEnter: " + other.gameObject.name);
-        if (IsSafety(other.gameObject)) return;
+        GameObject otherObj = other.gameObject;
+        if (IsSafety(otherObj)) return;
         isHit = true;
 
         //ダメージを与える
-        AddDamage(other.gameObject);
+        AddDamage(otherObj);
 
         //対象を破壊
-        if (other.gameObject.tag == Common.CO.TAG_BULLET_PHYSICS)
-        {
-            TargetDestory(other.gameObject);
-            isHit = false;
-            return;
-        }
+        TargetDestory(otherObj);
+
         base.DestoryObject();
     }
 
@@ -132,9 +128,19 @@ public class EnergyBulletController : MoveOfCharacter
     }
 
     //ターゲットを破壊する
-    protected void TargetDestory(GameObject hitObj)
+    protected bool TargetDestory(GameObject hitObj)
     {
-        hitObj.gameObject.GetComponent<ObjectController>().DestoryObject(true);
+        if (photonView.isMine)
+        {
+            if ((isEnergyBulletBreak && Common.Func.IsBullet(hitObj.tag))
+                || (isPhysicsBulletBreak && Common.Func.IsPhysicsBullet(hitObj.tag)))
+            {
+                hitObj.GetComponent<ObjectController>().DestoryObject(true);
+                return true;
+            }
+        }
+
+        return false;
     }
 
     //HIT判定スルーチェック
@@ -146,12 +152,6 @@ public class EnergyBulletController : MoveOfCharacter
         //ターゲットの場合はHIT
         if (targetTran != null && targetTran.name == hitObj.name) return false;
 
-        ////自分の撃った弾はSafetyTImeの間無視
-        //PhotonView pv = PhotonView.Get(hitObj);
-        //if (pv != null)
-        //{
-        //    if (ownerId == pv.ownerId && activeTime <= safetyTime) return true;
-        //}
         return false;
     }
 
@@ -179,12 +179,4 @@ public class EnergyBulletController : MoveOfCharacter
             targetStatus = targetView.gameObject.GetComponent<PlayerStatus>();
         }
     }
-
-    //protected void PlayAudio()
-    //{
-    //    if (audioSource != null)
-    //    {
-    //        audioSource.Play();
-    //    }
-    //}
 }
