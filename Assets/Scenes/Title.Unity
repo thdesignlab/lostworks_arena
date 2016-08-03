@@ -180,6 +180,14 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 11432628, guid: 2623fc4cd3331da4e9acbba1f45baeb8, type: 2}
+      propertyPath: dashHandWeaponList.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 11432628, guid: 2623fc4cd3331da4e9acbba1f45baeb8, type: 2}
+      propertyPath: shoulderWeaponList.Array.size
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 431306, guid: 2623fc4cd3331da4e9acbba1f45baeb8, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -216,6 +224,14 @@ Prefab:
       propertyPath: shoulderWeaponList.Array.data[0]
       value: 
       objectReference: {fileID: 101480, guid: 942c5e13b704b954fb5120d95ebd1286, type: 2}
+    - target: {fileID: 11432628, guid: 2623fc4cd3331da4e9acbba1f45baeb8, type: 2}
+      propertyPath: dashHandWeaponList.Array.data[2]
+      value: 
+      objectReference: {fileID: 162666, guid: d682cafe7adf22642b2424adf2aaf953, type: 2}
+    - target: {fileID: 11432628, guid: 2623fc4cd3331da4e9acbba1f45baeb8, type: 2}
+      propertyPath: shoulderWeaponList.Array.data[1]
+      value: 
+      objectReference: {fileID: 180928, guid: 645efa265ba4d3346b0e6fa4dd6044d5, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2623fc4cd3331da4e9acbba1f45baeb8, type: 2}
   m_IsPrefabParent: 0

@@ -13,6 +13,7 @@ GameObject:
   - 114: {fileID: 11487068}
   - 114: {fileID: 11462110}
   - 135: {fileID: 13512890}
+  - 114: {fileID: 11418786}
   m_Layer: 0
   m_Name: PulseBullet
   m_TagString: EnergyBullet
@@ -62,6 +63,25 @@ Transform:
   - {fileID: 447854}
   m_Father: {fileID: 0}
   m_RootOrder: 0
+--- !u!114 &11418786
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 133600}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 574e8fb93b1b47843ad56bd7457803e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isCheckGrounded: 0
+  glideGravityRate: 1
+  isLockOn: 0
+  UseGravity: 0
+  hitEffect: {fileID: 0}
+  speed: 300
+  damage: 5
+  stuckTime: 0.1
 --- !u!114 &11462110
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -73,9 +93,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f086994b8c47ea443baf4face217f973, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effectSpawn: {fileID: 0}
+  effectSpawn: {fileID: 191864, guid: 3b4c59f82189a444f8cf8e6cb8304aa4, type: 2}
   activeLimitTime: 0
-  activeLimitDistance: 100
+  activeLimitDistance: 75
 --- !u!114 &11487068
 MonoBehaviour:
   m_ObjectHideFlags: 1

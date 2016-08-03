@@ -20,6 +20,7 @@ public class PhysicsBulletController : MoveOfVelocity
     //protected int ownerId;
 
     protected float activeTime = 0;
+    [SerializeField]
     protected float safetyTime = 0.05f;
     protected bool isHit = false;
 

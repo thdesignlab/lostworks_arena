@@ -42,7 +42,6 @@ public class ObjectController : Photon.MonoBehaviour {
         Vector3 prePos = myTran.position;
         for (;;)
         {
-            yield return new WaitForSeconds(0.5f);
             distance += Mathf.Abs(Vector3.Distance(myTran.position, prePos));
             if (distance >= activeLimitDistance)
             {
@@ -50,6 +49,7 @@ public class ObjectController : Photon.MonoBehaviour {
                 break;
             }
             prePos = myTran.position;
+            yield return null;
         }
     }
 
