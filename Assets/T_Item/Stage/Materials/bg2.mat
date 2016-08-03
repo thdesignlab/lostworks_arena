@@ -6,7 +6,7 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: efe8
+  m_Name: bg2
   m_Shader: {fileID: 200, guid: 0000000000000000f000000000000000, type: 0}
   m_ShaderKeywords: 
   m_LightmapFlags: 5
@@ -19,9 +19,9 @@ Material:
         first:
           name: _MainTex
         second:
-          m_Texture: {fileID: 2800000, guid: 91d5800621b208a40835a8697d4b08ea, type: 3}
+          m_Texture: {fileID: 2800000, guid: a85d3c6d4e74f4e4da6b8ed1e9a08515, type: 3}
           m_Scale: {x: 1, y: 1}
-          m_Offset: {x: 0.7424927, y: 0}
+          m_Offset: {x: 0, y: 0}
       data:
         first:
           name: _BumpMap
@@ -93,10 +93,6 @@ Material:
         second: 0.5
       data:
         first:
-          name: _InvFade
-        second: 1
-      data:
-        first:
           name: _Parallax
         second: 0.02
       data:
@@ -131,6 +127,10 @@ Material:
         first:
           name: _Metallic
         second: 0
+      data:
+        first:
+          name: _InvFade
+        second: 1
     m_Colors:
       data:
         first:
@@ -143,4 +143,4 @@ Material:
       data:
         first:
           name: _TintColor
-        second: {r: 1, g: 1, b: 1, a: 1}
+        second: {r: 0.14705884, g: 0.7176469, b: 1, a: 0.147}
