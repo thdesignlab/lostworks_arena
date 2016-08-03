@@ -7,7 +7,7 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: win_anim_SUB
-  m_Shader: {fileID: 200, guid: 0000000000000000f000000000000000, type: 0}
+  m_Shader: {fileID: 4800000, guid: 8bcafd3152f21d94da0870814c02c586, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 5
   m_CustomRenderQueue: 3000
@@ -22,16 +22,8 @@ Material:
           m_Texture: {fileID: 2800000, guid: a467acab1603a4d489a16bac0da3b4cc, type: 3}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
-    m_Floats:
-      data:
-        first:
-          name: _InvFade
-        second: 1
+    m_Floats: {}
     m_Colors:
-      data:
-        first:
-          name: _TintColor
-        second: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}
       data:
         first:
           name: _OverlayParameter_Non
