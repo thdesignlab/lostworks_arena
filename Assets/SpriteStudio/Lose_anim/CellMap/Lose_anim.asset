@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2c3e2fd293409448b70e6699a65a249, type: 3}
+  m_Name: Lose_anim
+  m_EditorClassIdentifier: 
+  ListDataCellMap:
+  - Name: lose_anim
+    SizeOriginal: {x: 1024, y: 1024}
+    ListCell:
+    - Name: NewCell
+      Rectangle:
+        serializedVersion: 2
+        x: 0
+        y: 393
+        width: 472
+        height: 180
+      Pivot: {x: 236, y: 90}
+    - Name: NewCell_1
+      Rectangle:
+        serializedVersion: 2
+        x: 0
+        y: 565
+        width: 100
+        height: 166
+      Pivot: {x: 50, y: 83}
+    - Name: NewCell_3
+      Rectangle:
+        serializedVersion: 2
+        x: 100
+        y: 570
+        width: 134
+        height: 166
+      Pivot: {x: 67, y: 83}
+    - Name: NewCell_4
+      Rectangle:
+        serializedVersion: 2
+        x: 233
+        y: 573
+        width: 114
+        height: 155
+      Pivot: {x: 57, y: 77.5}
+    - Name: NewCell_5
+      Rectangle:
+        serializedVersion: 2
+        x: 348
+        y: 575
+        width: 114
+        height: 155
+      Pivot: {x: 57, y: 77.5}
+    - Name: NewCell_2
+      Rectangle:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 621
+        height: 350
+      Pivot: {x: 310.5, y: 175}
