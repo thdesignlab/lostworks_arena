@@ -71,6 +71,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 0
   damagePerSecond: 30
+  isPhysicsBulletBreak: 1
+  isEnergyBulletBreak: 1
 --- !u!114 &11492074
 MonoBehaviour:
   m_ObjectHideFlags: 1

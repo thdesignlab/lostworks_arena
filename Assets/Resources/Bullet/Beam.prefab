@@ -595,7 +595,10 @@ MonoBehaviour:
   speed: 0
   damage: 100
   stuckTime: 0
-  damagePerSecond: 100
+  isPhysicsBulletBreak: 0
+  isEnergyBulletBreak: 0
+  safetyTime: 0.05
+  damagePerSecond: 50
 --- !u!114 &11479168
 MonoBehaviour:
   m_ObjectHideFlags: 1
