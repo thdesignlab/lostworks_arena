@@ -8504,18 +8504,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 589eae8145c3627499dc85eb11cefb9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  runSpeed: 45
+  runSpeed: 30
   jumpSpeed: 150
   jumpLimit: 0.3
   glideJump: 0
-  boostSpeed: 250
-  boostLimit: 0.8
+  boostSpeed: 75
+  boostLimit: 1.5
   glideBoost: 1
   turnSpeed: 15
   boostTurnSpeed: 500
   maxHp: 1000
   maxSp: 1000
-  recoverSp: 40
+  recoverSp: 35
   bonusRecoverSpRate: 2
   bonusRecoverSpTime: 1
   boostCost: 100

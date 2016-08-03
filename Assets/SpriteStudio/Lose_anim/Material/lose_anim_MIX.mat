@@ -30,6 +30,10 @@ Material:
     m_Colors:
       data:
         first:
+          name: _TintColor
+        second: {r: 0.77205884, g: 0.045415223, b: 0.18072122, a: 0.5}
+      data:
+        first:
           name: _OverlayParameter_Non
         second: {r: 1, g: 0, b: -1, a: 0}
       data:
@@ -48,7 +52,3 @@ Material:
         first:
           name: _OverlayParameter_Mul
         second: {r: 1, g: 1, b: 1, a: 1}
-      data:
-        first:
-          name: _TintColor
-        second: {r: 0.77205884, g: 0.045415223, b: 0.18072122, a: 0.5}

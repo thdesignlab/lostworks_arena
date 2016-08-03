@@ -1037,12 +1037,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 589eae8145c3627499dc85eb11cefb9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  runSpeed: 40
-  jumpSpeed: 300
+  runSpeed: 30
+  jumpSpeed: 150
   jumpLimit: 0.3
   glideJump: 0.5
-  boostSpeed: 350
-  boostLimit: 0.3
+  boostSpeed: 90
+  boostLimit: 1
   glideBoost: 1
   turnSpeed: 15
   boostTurnSpeed: 500

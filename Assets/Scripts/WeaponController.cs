@@ -125,8 +125,10 @@ public class WeaponController : Photon.MonoBehaviour
             imgGage.fillAmount = 1;
             imgGage.color = normalGageColor;
         }
-
-        spriteStudioCtrl.Play(scriptRoot);
+        if (spriteStudioCtrl)
+        {
+            spriteStudioCtrl.Play(scriptRoot);
+        }
 
         SetEnable(true);
     }
@@ -164,7 +166,10 @@ public class WeaponController : Photon.MonoBehaviour
             }
         }
         spriteStudioCtrl = GameObject.Find("SpriteStudioController").GetComponent<SpriteStudioController>();
-        scriptRoot = spriteStudioCtrl.CreateButtonFlash(myBtn.gameObject);
+        if (spriteStudioCtrl != null)
+        {
+            scriptRoot = spriteStudioCtrl.CreateButtonFlash(myBtn.gameObject);
+        }
     }
 
     public void SetEnable(bool flg, bool reloadFlg = false)
