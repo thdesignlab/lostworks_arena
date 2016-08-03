@@ -8,19 +8,10 @@ public class GameController : Photon.MonoBehaviour
 {
     [SerializeField]
     private GameObject stageStructure;
-    //[SerializeField]
-    //private GameObject messageCanvas;
-    //private CanvasGroup messageCanvasGroup;
     private Text messageText;
     private int readyTime = 3;
     private int needPlayerCount = 2;
 
-    //[SerializeField]
-    //private GameObject waitCanvas;
-    //[SerializeField]
-    //private GameObject winCanvas;
-    //[SerializeField]
-    //private GameObject loseCanvas;
     private Text textUp;
     private Text textCenter;
     private Color colorWin = Color.red;
@@ -97,7 +88,7 @@ public class GameController : Photon.MonoBehaviour
                 if (text3d != null)
                 {
                     //3DText
-                    Reset3DText();
+                    Reset3DText(textObj.transform);
                 }
                 else
                 {
@@ -125,7 +116,7 @@ public class GameController : Photon.MonoBehaviour
                 if (text3d != null)
                 {
                     //3DText
-                    Set3DText(text3d, textObj.transform.position);
+                    Set3DText(text3d, textObj.transform);
                 }
                 else
                 {
@@ -140,16 +131,17 @@ public class GameController : Photon.MonoBehaviour
         }
     }
 
-    private void Set3DText(GameObject obj, Vector3 pos)
+    private void Set3DText(GameObject obj, Transform textTran)
     {
-        Instantiate(obj, pos, Camera.main.transform.rotation * obj.transform.rotation);
+        GameObject ob = (GameObject)Instantiate(obj, textTran.position, Camera.main.transform.rotation * obj.transform.rotation);
+        ob.transform.parent = textTran;
     }
-    private void Reset3DText()
+    private void Reset3DText(Transform textTran)
     {
-        GameObject[] texts = GameObject.FindGameObjectsWithTag("3DText");
-        foreach (GameObject text in texts)
+        //GameObject[] texts = GameObject.FindGameObjectsWithTag("3DText");
+        foreach (Transform text in textTran)
         {
-            Destroy(text);
+            if (text.tag == "3DText") Destroy(text.gameObject);
         }
     }
 
