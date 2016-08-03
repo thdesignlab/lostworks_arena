@@ -314,19 +314,6 @@ public class GameController : Photon.MonoBehaviour
         }
     }
 
-    //public void SetWaitMessage(string message = "")
-    //{
-    //    if (message == "")
-    //    {
-    //        waitCanvas.SetActive(false);
-    //    }
-    //    else
-    //    {
-    //        waitCanvas.SetActive(true);
-    //        waitCanvas.transform.FindChild("Text").GetComponent<Text>().text = message;
-    //    }
-    //}
-
     private bool CheckPlayer()
     {
         if (playerStatuses.Count == needPlayerCount) return false;
@@ -421,7 +408,8 @@ public class GameController : Photon.MonoBehaviour
         GameObject[] spawnPoints = GameObject.FindGameObjectsWithTag("SpawnPoint");
         if (spawnPoints == null) return null;
 
-        int index = Random.Range(0, spawnPoints.Length);
+        //int index = Random.Range(0, spawnPoints.Length);
+        int index = GameObject.FindGameObjectsWithTag("Player").Length;
         return spawnPoints[index].transform;
     }
 
