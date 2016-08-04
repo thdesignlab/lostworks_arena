@@ -23,12 +23,15 @@ public class LaserWeaponController : WeaponController
     private float turnSpeedRate;   //回転速度制限
     [SerializeField]
     private float laserMazzleMaxScale;  //発射口スケール
+    [SerializeField]
+    private float bitMoveTime = 0.3f;   //発射までにかかる時間
 
     [SerializeField]
     private bool isShoulder;
+    private bool isBitMove = false;
     private bool isFire = false;
     private Transform myBitTran;
-    private float bitMoveTime = 0.3f;
+    private float bitMoveProccessTime = 0;
     private float laserSwitchTime = 0;
     private float lerpRate;
     private Vector3 bitFromPos;
@@ -36,20 +39,6 @@ public class LaserWeaponController : WeaponController
     private float radius;
 
     private Transform muzzle;
-    //private GameObject laser;
-    //private Transform laserTran;
-    //private Transform laserEndTran;
-    //private Transform laserMuzzle;
-    //private CapsuleCollider laserCollider;
-    
-    //private AimingController aimingCtrl;
-
-    //private PlayerStatus playerStatus;
-    //private PlayerStatus targetStatus;
-
-    //private Dictionary<int, int> laserMap = new Dictionary<int, int>();
-    //private int laserViewId;
-    //private int muzzleViewId;
 
     // Use this for initialization
     protected override void Awake()
@@ -72,7 +61,7 @@ public class LaserWeaponController : WeaponController
             myBitTran = myTran.FindChild("Bit");
             bitFromPos = myBitTran.localPosition;
             bitToPos = muzzle.localPosition;
-            radius = Vector3.Distance(bitFromPos, bitToPos);
+            radius = Vector3.Distance(bitFromPos, bitToPos) / 2;
         }
     }
 
@@ -83,13 +72,13 @@ public class LaserWeaponController : WeaponController
         {
             if (isShoulder)
             {
-                bool isBitMove = false;
+                isBitMove = false;
                 float startAngle = 0;
-                if (laserSwitchTime <= bitMoveTime && isFire)
+                if (bitMoveProccessTime <= bitMoveTime && isFire)
                 {
                     //発射口の場所へ移動
                     isBitMove = true;
-                    lerpRate = laserSwitchTime / bitMoveTime;
+                    lerpRate = bitMoveProccessTime / bitMoveTime;
                     if (lerpRate > 1) lerpRate = 1;
                     startAngle = 0;
                     bitReturnTime = bitMoveTime;
@@ -122,11 +111,7 @@ public class LaserWeaponController : WeaponController
             return;
         }
 
-        base.Action();
-
-        //移動・回転制限
-        base.playerStatus.AccelerateRunSpeed(runSpeedRate, effectiveTime);
-        base.playerStatus.InterfareTurn(turnSpeedRate, effectiveTime);
+        //base.Action();
 
         //発射
         StartCoroutine(LaserShoot());
@@ -134,6 +119,26 @@ public class LaserWeaponController : WeaponController
 
     IEnumerator LaserShoot()
     {
+        //Bit移動用パラメータ
+        isFire = true;
+        bitMoveProccessTime = 0;
+
+        //Bit移動まち
+        for (;;)
+        {
+            yield return null;
+            bitMoveProccessTime += Time.deltaTime;
+            if (!isBitMove) break;
+        }
+        laserSwitchTime = 0;
+
+        //モーション開始
+        StartMotion();
+
+        //移動・回転制限
+        base.playerStatus.AccelerateRunSpeed(runSpeedRate, effectiveTime);
+        base.playerStatus.InterfareTurn(turnSpeedRate, effectiveTime);
+
         //レーザー生成
         base.PlayAudio();
         GameObject laser = PhotonNetwork.Instantiate(Common.Func.GetResourceBullet(laserPrefab.name), muzzle.position, muzzle.rotation, 0);
@@ -161,10 +166,6 @@ public class LaserWeaponController : WeaponController
             base.EndAction();
             yield break;
         }
-
-        //Bit移動用パラメータ
-        isFire = true;
-        laserSwitchTime = 0;
 
         float nowWidth = 0;
         float nowLength = 0;

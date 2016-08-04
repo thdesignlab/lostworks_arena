@@ -59,8 +59,6 @@ public class BulletWeaponController : WeaponController
 
         if (spreadCount > 1)
         {
-            //startMuzzleAngles.Add(spreadDiffAngle * (Mathf.Floor(spreadCount) - 1) / -2);
-            //startMuzzleAngles.Add(spreadDiffAngle * (Mathf.Ceil(spreadCount) - 1) / -2);
             startMuzzleAngle = spreadDiffAngle * (spreadCount - 1) / -2;
         }
     }

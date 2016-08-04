@@ -244,9 +244,9 @@ namespace Common
         public static float GetSin(float time, float anglePerSec = 360, float startAngle = 0)
         {
             float angle = (startAngle + anglePerSec * time) % 360;
-            //Debug.Log("angle:"+angle.ToString());
             float radian = Mathf.PI / 180 * angle;
-            return Mathf.Sin(radian) * time;
+            //Debug.Log("angle:" + angle + " / sin:"+ Mathf.Sin(radian));
+            return Mathf.Sin(radian);
         }
 
         //BitMotion取得

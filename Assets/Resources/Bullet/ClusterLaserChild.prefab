@@ -76,8 +76,11 @@ MonoBehaviour:
   UseGravity: 0
   hitEffect: {fileID: 135988, guid: d7cd433d10510fe46a35c39bac480fe1, type: 2}
   speed: 100
-  damage: 5
+  damage: 8
   stuckTime: 0
+  isPhysicsBulletBreak: 0
+  isEnergyBulletBreak: 0
+  safetyTime: 0.05
   turnSpeed: 360
   isNeedLock: 1
 --- !u!114 &11463346

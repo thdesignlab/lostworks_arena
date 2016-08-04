@@ -50,11 +50,17 @@ public class PlayerMotionController : MonoBehaviour
         //ジャンプモーションチェック
         CheckJumpMotion();
 
-        //攻撃中チェック
         if (IsAttack())
         {
             //攻撃中は体を正面に向ける
             SetBodyAngle();
+        }
+        else if (playerCtrl.IsMoving())
+        {
+            //移動中は移動方向へ
+            Vector3 diffVector = playerCtrl.GetMoveDiff();
+            diffVector = myPlayerTran.InverseTransformDirection(diffVector).normalized;
+            SetBodyAngle(diffVector.x, diffVector.z);
         }
     }
 
@@ -84,10 +90,14 @@ public class PlayerMotionController : MonoBehaviour
 
     public void SetRunMotion(float x = 0, float y = 0)
     {
-        //体の方向変換
-        SetBodyAngle(x, y);
+        ////体の方向変換
+        //SetBodyAngle(x, y);
 
-        if (x == 0 && y == 0) return;
+        if (x == 0 && y == 0)
+        {
+            leftBoostEffectTime = 0;
+            return;
+        }
 
         string motionName = Common.CO.MOTION_RUN;
         //if (y < backAnimationVelocity)

@@ -96,10 +96,13 @@ MonoBehaviour:
   speed: 50
   damage: 5
   stuckTime: 0
+  isPhysicsBulletBreak: 0
+  isEnergyBulletBreak: 0
+  safetyTime: 0.05
   turnSpeed: 90
   isNeedLock: 1
   childBullet: {fileID: 155844, guid: cb76ca07cf378824ab81ece6bc293aa1, type: 2}
-  childeBulletCount: 5
+  childeBulletCount: 4
   purgeDistance: 50
 --- !u!114 &11484936
 MonoBehaviour:

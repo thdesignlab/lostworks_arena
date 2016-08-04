@@ -285,10 +285,25 @@ public class PlayerController : MoveOfCharacter
 
     private void TouchAction()
     {
-        Jump(0, 0);
+        if (base.isBoost)
+        {
+            //ダッシュ中はその場で停止
+            Run();
+            return;
+        }
+
+        //ジャンプ
+        Jump();
     }
     private void DoubleTouchAction()
     {
+        if (base.isBoost)
+        {
+            //ダッシュ中はダッシュキャンセル
+            Run();
+        }
+
+        //降下andターゲット
         FallDown();
     }
     private void SwipeAction(float x, float y)
@@ -311,14 +326,14 @@ public class PlayerController : MoveOfCharacter
 
     //###　CharcterAction ###
 
-    private void Run(float x, float y)
+    private void Run(float x = 0, float y = 0)
     {
         Vector3 moveDirection = new Vector3(x, 0, y).normalized;
         base.Move(moveDirection, status.runSpeed);
         motionCtrl.SetRunMotion(x, y);
     }
 
-    private void Jump(float x, float y)
+    private void Jump(float x = 0, float y = 0)
     {
         //Debug.Log("Jump :" + x.ToString() + " : " + y.ToString());
         if (!status.CheckSp(status.boostCost)) return;
@@ -547,9 +562,6 @@ public class PlayerController : MoveOfCharacter
                 case Common.CO.BUTTON_USE_SUB:
                     UseSub();
                     break;
-                //case Common.CO.BUTTON_AUTO_LOCK:
-                //    AutoLock();
-                //    break;
             }
             return;
         }

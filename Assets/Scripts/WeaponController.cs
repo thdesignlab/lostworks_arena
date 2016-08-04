@@ -242,7 +242,7 @@ public class WeaponController : Photon.MonoBehaviour
 
     IEnumerator WaitAnimatorEnd(Animator anim, string param)
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.2f);
         anim.SetBool(param, false);
     }
 

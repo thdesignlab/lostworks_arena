@@ -258,6 +258,10 @@ public abstract class BaseMoveController : Photon.MonoBehaviour
     {
         return isMoving;
     }
+    public Vector3 GetMoveDiff()
+    {
+        return moveDiffVector;
+    }
 
     //protected abstract void Move(Vector3 vector, float speed, float limit = 0);
 
@@ -274,14 +278,31 @@ public abstract class BaseMoveController : Photon.MonoBehaviour
         Vector3 moveDirection = worldVector.normalized * speed;
         if (photonView.isMine || ptv == null)
         {
-            if (!isOutForce) leftPreserveSpeedTime = 0;
+            leftPreserveSpeedTime = 0;
 
             if (limit > 0)
             {
-                StartCoroutine(Boost(moveDirection, limit, isOutForce));
+                if (isOutForce)
+                {
+                    //ノックバック
+                    StartCoroutine(KnockBack(moveDirection, limit));
+                }
+                else
+                {
+                    if (isBoost) return;
+
+                    //ブースト
+                    StartCoroutine(Boost(moveDirection, limit));
+                }
             }
             else
             {
+                if (isBoost && worldVector == Vector3.zero)
+                {
+                    //ブースト停止
+                    leftBoostTime = 0;
+                    return;
+                }
                 MoveProcess(moveDirection * Time.deltaTime);
             }
         }
@@ -325,52 +346,63 @@ public abstract class BaseMoveController : Photon.MonoBehaviour
 
     }
 
-    private float startAngle = 135;
-    private float totalAngle = 135;
-    IEnumerator Boost(Vector3 v, float limit, bool isOutForce = false)
+    //ブースト(重複不可)
+    private float leftBoostTime = 0;
+    private float startAngle = 45;
+    private float totalAngle = 120;
+    IEnumerator Boost(Vector3 v, float limit)
     {
-        if (!isOutForce)
-        {
-            if (isBoost) yield break;
-            isBoost = true;
-        }
-        else
-        {
-            if (isKnockBack) yield break;
-            isKnockBack = true;
-        }
+        if (v == Vector3.zero) yield break;
 
-        float limitTime = limit;
-        float nowTime = 0;
-        float nowAngle = startAngle;
+        isBoost = true;
+
+        leftBoostTime = limit;
         for (;;)
         {
             //時間
-            nowTime = Time.deltaTime;
-            if (limit < nowTime) nowTime = limit;
+            float processTime = limit - leftBoostTime;
 
-            //角度
-            nowAngle -= totalAngle * nowTime / limitTime;
-            float radian = Mathf.PI / 180 * nowAngle;
-            //Debug.Log("limit: "+limit.ToString()+" / angle: "+ nowAngle.ToString() + " / sin: "+ Mathf.Sin(radian).ToString());
+            //速度係数
+            float sinVal = Common.Func.GetSin(processTime, totalAngle / limit, startAngle);
 
             //移動
-            MoveProcess(v * Mathf.Sin(radian) * nowTime);
+            MoveProcess(v * sinVal * Time.deltaTime);
 
-            //残り時間計算
-            limit -= nowTime;
-            if (limit <= 0) break;
+            //残り時間チェック
+            leftBoostTime -= Time.deltaTime;
+            if (leftBoostTime <= 0) break;
             yield return null;
         }
 
-        if (!isOutForce)
+        isBoost = false;
+    }
+
+    //ノックバック
+    IEnumerator KnockBack(Vector3 v, float limit)
+    {
+        if (v == Vector3.zero) yield break;
+
+        isKnockBack = true;
+
+        float leftTime = limit;
+        for (;;)
         {
-            isBoost = false;
+            //時間
+            float processTime = limit - leftTime;
+
+            //速度係数
+            float sinVal = Common.Func.GetSin(processTime, totalAngle / limit, startAngle);
+
+            //移動
+            MoveProcess(v * sinVal * Time.deltaTime);
+
+            //残り時間チェック
+            leftTime -= Time.deltaTime;
+            if (leftTime <= 0) break;
+            yield return null;
         }
-        else
-        {
-            isKnockBack = false;
-        }
+
+        isKnockBack = false;
     }
 
     protected virtual void MoveProcess(Vector3 v)
