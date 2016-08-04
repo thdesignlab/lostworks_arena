@@ -4,13 +4,20 @@ using System.Collections;
 public class EffectController : Photon.MonoBehaviour
 {
     [SerializeField]
-    private int damage;
+    protected int damage;
     [SerializeField]
-    private int damagePerSecond;
+    protected int damagePerSecond;
     [SerializeField]
-    private bool isPhysicsBulletBreak;
+    protected bool isPhysicsBulletBreak;
     [SerializeField]
-    private bool isEnergyBulletBreak;
+    protected bool isEnergyBulletBreak;
+
+    protected Transform myTran;
+
+    protected virtual void Awake()
+    {
+        myTran = transform;
+    }
 
     void OnTriggerEnter(Collider other)
     {
