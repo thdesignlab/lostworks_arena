@@ -1617,16 +1617,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bitMotionType: 3
-  reloadTime: 3
+  reloadTime: 2
   laserPrefab: {fileID: 168918, guid: c1d63694744a12645834d0ef1c62400f, type: 2}
   effectiveLength: 400
   effectiveWidth: 2
-  effectiveTime: 1.2
-  effectiveLengthTime: 1.2
+  effectiveTime: 0.8
+  effectiveLengthTime: 0.8
   effectiveWidthTime: 0.2
   runSpeedRate: 0
   turnSpeedRate: 0
   laserMazzleMaxScale: 0
+  bitMoveTime: 0.3
   isShoulder: 0
 --- !u!1001 &100100000
 Prefab:
