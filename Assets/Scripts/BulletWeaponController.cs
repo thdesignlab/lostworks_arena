@@ -27,9 +27,7 @@ public class BulletWeaponController : WeaponController
     protected float startMuzzleAngle = 0;
     //protected List<float> startMuzzleAngles = new List<float>();
 
-    const string BULLET_FOLDER = "Bullet/";
 
-    // Use this for initialization
     protected override void Awake()
     {
         base.Awake();
@@ -54,6 +52,11 @@ public class BulletWeaponController : WeaponController
                 }
             }
         }
+
+        //Bit移動用
+        base.bitToPos = muzzles[0].localPosition;
+        base.radius = Vector3.Distance(base.bitFromPos, base.bitToPos) / 2;
+
         if (rapidCount <= 0) rapidCount = 1;
         if (spreadCount <= 0) spreadCount = 1;
 
@@ -78,9 +81,45 @@ public class BulletWeaponController : WeaponController
         {
             aimingCtrl.SetTarget(target);
         }
+
+        foreach (Transform mzl in muzzles)
+        {
+            AimingController aimCtrl = mzl.GetComponent<AimingController>();
+            if (aimCtrl != null)
+            {
+                aimCtrl.SetTarget(target);
+            }
+        }
     }
 
     protected override void Action()
+    {
+        if (base.bitMoveTime > 0)
+        {
+            StartCoroutine(WaitBitMove());
+        }
+        else
+        {
+            ActionProccess();
+        }
+    }
+
+    IEnumerator WaitBitMove()
+    {
+        //Bit移動
+        if (!base.StartBitMove())
+        {
+            //Bit移動まち
+            for (;;)
+            {
+                if (base.isBitMoved) break;
+                yield return null;
+            }
+        }
+        ActionProccess();
+    }
+
+    protected void ActionProccess()
     {
         base.Action();
 
@@ -164,7 +203,7 @@ public class BulletWeaponController : WeaponController
             quat *= Quaternion.AngleAxis(Random.Range(-focusDiff, focusDiff), axis);
         }
         //弾生成
-        GameObject ob = PhotonNetwork.Instantiate(BULLET_FOLDER + bullet.name, pos, quat, groupId);
+        GameObject ob = PhotonNetwork.Instantiate(Common.Func.GetResourceBullet(bullet.name), pos, quat, groupId);
         SetBulletTarget(ob);
         base.PlayAudio();
         return ob;
