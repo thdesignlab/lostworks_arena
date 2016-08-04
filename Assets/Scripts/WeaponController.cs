@@ -11,6 +11,13 @@ public class WeaponController : Photon.MonoBehaviour
     protected string bitMotionParam;
 
     [SerializeField]
+    protected float bitMoveTime;   //発射までにかかる時間
+    protected bool isBitMoved;
+    protected Vector3 bitFromPos;
+    protected Vector3 bitToPos;
+    protected float radius;
+
+    [SerializeField]
     protected float reloadTime;   //再装填時間
     protected float leftReloadTime = 0;
 
@@ -22,6 +29,7 @@ public class WeaponController : Photon.MonoBehaviour
     protected bool isEnabledFire = true;
 
     protected Transform myTran;
+    protected Transform myBitTran;
 
     protected PlayerStatus playerStatus;
     protected bool isNpc = false;
@@ -33,12 +41,19 @@ public class WeaponController : Photon.MonoBehaviour
     protected SpriteStudioController spriteStudioCtrl;
     protected Script_SpriteStudio_Root scriptRoot;
 
-    // Use this for initialization
+
     protected virtual void Awake()
     {
         myTran = transform;
         audioCtrl = myTran.GetComponent<AudioController>();
         bitAnimator = myTran.GetComponentInChildren<Animator>();
+
+        //Bit移動用
+        myBitTran = myTran.FindChild("Bit");
+        if (myBitTran)
+        {
+            bitFromPos = myBitTran.localPosition;
+        }
     }
 
     protected virtual void Start()
@@ -91,6 +106,9 @@ public class WeaponController : Photon.MonoBehaviour
     }
     protected virtual void EndAction()
     {
+        //Bit位置を戻す
+        ReturnBitMove();
+
         //モーション終了
         StopMotion();
 
@@ -255,5 +273,67 @@ public class WeaponController : Photon.MonoBehaviour
     {
         if (audioCtrl == null) return;
         audioCtrl.Stop(no);
+    }
+
+    protected bool StartBitMove()
+    {
+        if (bitFromPos == null || bitToPos == null) return true;
+
+        if (photonView.isMine)
+        {
+            isBitMoved = false;
+            if (bitMoveTime > 0)
+            {
+                StartCoroutine(BitMoveProccess(bitFromPos, bitToPos, 0));
+            }
+            else
+            {
+                isBitMoved = true;
+            }
+        }
+        return isBitMoved;
+    }
+
+    protected void ReturnBitMove()
+    {
+        if (bitFromPos == null || bitToPos == null) return;
+
+        if (photonView.isMine)
+        {
+            if (bitMoveTime > 0)
+            {
+                StartCoroutine(BitMoveProccess(bitToPos, bitFromPos, 180));
+            }
+            else
+            {
+                isBitMoved = false;
+            }
+        }
+    }
+
+    IEnumerator BitMoveProccess(Vector3 fromPos, Vector3 toPos, float startAngle)
+    {
+        float time = 0;
+        for (;;)
+        {
+            time += Time.deltaTime;
+            float lerpRate = time / bitMoveTime;
+            if (lerpRate > 1) lerpRate = 1;
+            
+            Vector3 leftSide = Vector3.left * Common.Func.GetSin(lerpRate, 180, startAngle) * radius / 2;
+            myBitTran.localPosition = Vector3.Lerp(fromPos, toPos, lerpRate) + leftSide;
+
+            if (lerpRate >= 1) break;
+            yield return null;
+        }
+
+        if (isBitMoved)
+        {
+            isBitMoved = false;
+        }
+        else
+        {
+            isBitMoved = true;
+        }
     }
 }

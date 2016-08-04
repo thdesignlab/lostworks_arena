@@ -102,6 +102,9 @@ MonoBehaviour:
   damage: 15
   stuckTime: 0.1
   knockBackRate: 0
+  isPhysicsBulletBreak: 0
+  isEnergyBulletBreak: 0
+  safetyTime: 0.01
 --- !u!114 &11434812
 MonoBehaviour:
   m_ObjectHideFlags: 1

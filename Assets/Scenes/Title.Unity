@@ -188,6 +188,10 @@ Prefab:
       propertyPath: shoulderWeaponList.Array.size
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 11432628, guid: 2623fc4cd3331da4e9acbba1f45baeb8, type: 2}
+      propertyPath: dashShoulderWeaponList.Array.size
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 431306, guid: 2623fc4cd3331da4e9acbba1f45baeb8, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -232,6 +236,10 @@ Prefab:
       propertyPath: shoulderWeaponList.Array.data[1]
       value: 
       objectReference: {fileID: 180928, guid: 645efa265ba4d3346b0e6fa4dd6044d5, type: 2}
+    - target: {fileID: 11432628, guid: 2623fc4cd3331da4e9acbba1f45baeb8, type: 2}
+      propertyPath: dashShoulderWeaponList.Array.data[2]
+      value: 
+      objectReference: {fileID: 166018, guid: 09bb74e201371324e885d37d6889451a, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2623fc4cd3331da4e9acbba1f45baeb8, type: 2}
   m_IsPrefabParent: 0

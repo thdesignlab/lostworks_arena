@@ -23,24 +23,11 @@ public class LaserWeaponController : WeaponController
     private float turnSpeedRate;   //回転速度制限
     [SerializeField]
     private float laserMazzleMaxScale;  //発射口スケール
-    [SerializeField]
-    private float bitMoveTime = 0.3f;   //発射までにかかる時間
 
-    [SerializeField]
-    private bool isShoulder;
-    private bool isBitMove = false;
-    private bool isFire = false;
-    private Transform myBitTran;
-    private float bitMoveProccessTime = 0;
     private float laserSwitchTime = 0;
-    private float lerpRate;
-    private Vector3 bitFromPos;
-    private Vector3 bitToPos;
-    private float radius;
 
     private Transform muzzle;
 
-    // Use this for initialization
     protected override void Awake()
     {
         base.Awake();
@@ -58,48 +45,8 @@ public class LaserWeaponController : WeaponController
             }
 
             //Bit移動用
-            myBitTran = myTran.FindChild("Bit");
-            bitFromPos = myBitTran.localPosition;
-            bitToPos = muzzle.localPosition;
-            radius = Vector3.Distance(bitFromPos, bitToPos) / 2;
-        }
-    }
-
-    private float bitReturnTime = 0;
-    void Update()
-    {
-        if (photonView.isMine)
-        {
-            if (isShoulder)
-            {
-                isBitMove = false;
-                float startAngle = 0;
-                if (bitMoveProccessTime <= bitMoveTime && isFire)
-                {
-                    //発射口の場所へ移動
-                    isBitMove = true;
-                    lerpRate = bitMoveProccessTime / bitMoveTime;
-                    if (lerpRate > 1) lerpRate = 1;
-                    startAngle = 0;
-                    bitReturnTime = bitMoveTime;
-                }
-                else if (bitReturnTime > 0 && !isFire)
-                {
-                    //元の場所へ移動
-                    bitReturnTime -= Time.deltaTime;
-                    isBitMove = true;
-                    lerpRate = bitReturnTime / bitMoveTime;
-                    if (lerpRate < 0) lerpRate = 0;
-                    startAngle = 180;
-                }
-
-                if (isBitMove)
-                {
-                    Vector3 leftSide = Vector3.left * Common.Func.GetSin(lerpRate, 180, startAngle) * radius / 2;
-                    //myBitTran.position = myBitTran.TransformDirection(Vector3.Lerp(bitFromPos, bitToPos, lerpRate) + leftSide);
-                    myBitTran.localPosition = Vector3.Lerp(bitFromPos, bitToPos, lerpRate) + leftSide;
-                }
-            }
+            base.bitToPos = muzzle.localPosition;
+            base.radius = Vector3.Distance(base.bitFromPos, base.bitToPos) / 2;
         }
     }
 
@@ -119,16 +66,15 @@ public class LaserWeaponController : WeaponController
 
     IEnumerator LaserShoot()
     {
-        //Bit移動用パラメータ
-        isFire = true;
-        bitMoveProccessTime = 0;
-
-        //Bit移動まち
-        for (;;)
+        //Bit移動
+        if (!base.StartBitMove())
         {
-            yield return null;
-            bitMoveProccessTime += Time.deltaTime;
-            if (!isBitMove) break;
+            //Bit移動まち
+            for (;;)
+            {
+                if (base.isBitMoved) break;
+                yield return null;
+            }
         }
         laserSwitchTime = 0;
 
@@ -171,6 +117,8 @@ public class LaserWeaponController : WeaponController
         float nowLength = 0;
         for (;;)
         {
+            laserSwitchTime += Time.deltaTime;
+
             //発射位置固定
             laserTran.position = muzzle.position;
             laserTran.rotation = muzzle.rotation;
@@ -223,11 +171,7 @@ public class LaserWeaponController : WeaponController
                 {
                     //細くする
                     nowWidth -= effectiveWidth * Time.deltaTime / effectiveWidthTime;
-                    if (nowWidth <= 0)
-                    {
-                        isFire = false;
-                        nowWidth = 0;
-                    }
+                    if (nowWidth <= 0) nowWidth = 0;
                 }
             }
             
@@ -239,19 +183,14 @@ public class LaserWeaponController : WeaponController
             }
 
             //照射時間チェック
-            if (laserSwitchTime >= effectiveTime) isFire = false;
-
-            if (!isFire)
-            {
-                //照射終了
-                laserTran.GetComponent<ObjectController>().DestoryObject();
-                break;
-            }
+            if (laserSwitchTime >= effectiveTime) break;
 
             yield return null;
-            laserSwitchTime += Time.deltaTime;
         }
-        //SwitchLaser(false);
+
+        //照射終了
+        laserTran.GetComponent<ObjectController>().DestoryObject();
+
         base.StopAudio();
         base.EndAction();
     }
