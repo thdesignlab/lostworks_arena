@@ -17,9 +17,8 @@ public class PhysicsTrackingBulletController : PhysicsBulletController
     protected override void Awake()
     {
         base.Awake();
-
-        base.safetyTime = 0.3f;
     }
+
     protected override void Update()
     {
         base.Update();
