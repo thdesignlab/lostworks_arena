@@ -80,6 +80,7 @@ GameObject:
   - 114: {fileID: 11471342}
   - 114: {fileID: 11420940}
   - 114: {fileID: 11491032}
+  - 135: {fileID: 13540924}
   m_Layer: 0
   m_Name: Detonation
   m_TagString: Untagged
@@ -322,8 +323,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 11471342}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 0
-  instantiationId: -1
+  viewIdField: 1
+  instantiationId: 1
   isRuntimeInstantiated: 0
 --- !u!114 &11420940
 MonoBehaviour:
@@ -337,10 +338,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 0
-  damagePerSecond: 50
+  damagePerSecond: 100
   isPhysicsBulletBreak: 1
   isEnergyBulletBreak: 1
-  startScale: 0
+  startScale: 5
   endScale: 30
   scaleTime: 4
   effectiveTime: 5
@@ -445,6 +446,18 @@ MonoBehaviour:
   effectSpawn: {fileID: 163966, guid: 65351d6cc2acb2741b5115144056024d, type: 2}
   activeLimitTime: 5
   activeLimitDistance: 0
+--- !u!135 &13540924
+SphereCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 125456}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1.1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!198 &19825604
 ParticleSystem:
   m_ObjectHideFlags: 1
