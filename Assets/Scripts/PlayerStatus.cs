@@ -53,7 +53,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
 
     private Image hpBarMineImage;
     private Image hpBarEnemyImage;
-    private Color defaultHpColor = Color.green;
+    private Color defaultHpColor;
     private Color hitHpColor = Color.red;
     private int totalDamage = 0;
 
@@ -82,21 +82,23 @@ public class PlayerStatus : Photon.MonoBehaviour {
         //string screenStatus = Common.CO.SCREEN_CANVAS + Common.CO.SCREEN_STATUS;
         Transform screenStatusTran = Camera.main.transform.FindChild(Common.CO.SCREEN_CANVAS + Common.CO.SCREEN_STATUS);
 
-        //HPSPバー
-        //hpBarMine = GameObject.Find(screenStatus + "HpBarMine/HP").GetComponent<Slider>();
-        //spBarMine = GameObject.Find(screenStatus + "SpBarMine/SP").GetComponent<Slider>();
-        //hpBarEnemy = GameObject.Find(screenStatus + "HpBarEnemy/HP").GetComponent<Slider>();
-        ////spBarEnemy = GameObject.Find(screenStatus+"SpBarEnemy/SP").GetComponent<Slider>();
-        hpBarMine = screenStatusTran.FindChild("HpBarMine/HP").GetComponent<Slider>();
-        spBarMine = screenStatusTran.FindChild("SpBarMine/SP").GetComponent<Slider>();
-        hpBarEnemy = screenStatusTran.FindChild("HpBarEnemy/HP").GetComponent<Slider>();
-        //spBarEnemy = screenStatusTran.FindChild("SpBarEnemy/SP").GetComponent<Slider>();
+        //HPバー
+        Transform hpBarMineTran = screenStatusTran.FindChild("HpLine/Mine/HpBar");
+        hpBarMine = hpBarMineTran.GetComponent<Slider>();
+        hpBarMine.value = 0;
+        Transform hpBarEnemyTran = screenStatusTran.FindChild("HpLine/Enemy/HpBar");
+        hpBarEnemy = hpBarEnemyTran.GetComponent<Slider>();
+        hpBarEnemy.value = 0;
 
         //HPバーイメージ
-        //hpBarMineImage = GameObject.Find(screenStatus + "HpBarMine/HP/Fill Area/Fill").GetComponent<Image>();
-        //hpBarEnemyImage = GameObject.Find(screenStatus + "HpBarEnemy/HP/Fill Area/Fill").GetComponent<Image>();
-        hpBarMineImage = screenStatusTran.FindChild("HpBarMine/HP/Fill Area/Fill").GetComponent<Image>();
-        hpBarEnemyImage = screenStatusTran.FindChild("HpBarEnemy/HP/Fill Area/Fill").GetComponent<Image>();
+        hpBarMineImage = hpBarMineTran.FindChild("Fill Area/Fill").GetComponent<Image>();
+        hpBarEnemyImage = hpBarEnemyTran.FindChild("Fill Area/Fill").GetComponent<Image>();
+        defaultHpColor = hpBarMineImage.color;
+
+        //SPバー
+        spBarMine = screenStatusTran.FindChild("SpLine/SpBar").GetComponent<Slider>();
+        spBarMine.value = 0;
+        //spBarEnemy = screenStatusTran.FindChild("SpBarEnemy/SP").GetComponent<Slider>();
 
         //キャラ付きキャンバス
         //statusCanvas = transform.FindChild("StatusCanvas");
