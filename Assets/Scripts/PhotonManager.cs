@@ -350,6 +350,7 @@ public class PhotonManager : MonoBehaviour
     {
         SwitchMessageArea(MESSAGE_LOADING);
         PhotonNetwork.offlineMode = true;
+        PhotonNetwork.CreateRoom(ROOM_NAME_PREFIX+ UserManager.userInfo[Common.PP.INFO_USER_ID]);
         PhotonNetwork.LoadLevel(Common.CO.SCENE_CUSTOM);
     }
 

@@ -7,7 +7,9 @@ public class AimingController: BaseMoveController
     private PlayerStatus targetStatus;
     private PlayerStatus myStatus;
 
+    [SerializeField]
     private float aimSpeed = 60;
+    
 
     protected override void Awake()
     {
@@ -18,14 +20,19 @@ public class AimingController: BaseMoveController
     {
         base.Start();
 
-        myStatus = GameObject.Find("GameController").GetComponent<GameController>().GetMyTran().GetComponent<PlayerStatus>();
+        GameObject gameObj = GameObject.Find("GameController");
+        if (gameObj)
+        {
+            //myStatus = gameObj.GetComponent<GameController>().GetMyTran().GetComponent<PlayerStatus>();
+            base.CheckNpc();
+        }
     }
 
     protected override void Update()
     {
         if (targetStatus == null) return;
 
-        if (targetStatus.IsLocked() || myStatus.IsNpc())
+        if (targetStatus.IsLocked() || base.isNpc)
         {
             base.SetAngle(targetTran, aimSpeed);
         }

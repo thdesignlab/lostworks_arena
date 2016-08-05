@@ -166,6 +166,8 @@ public class WeaponController : Photon.MonoBehaviour
 
     public void SetBtn(Button btn)
     {
+        if (btn == null) return;
+
         myBtn = btn;
         Transform imgGageTran = myBtn.transform.FindChild("ImgGage");
         if (imgGageTran != null)

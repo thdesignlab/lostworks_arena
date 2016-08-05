@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class LockOnController : Photon.MonoBehaviour
 {
@@ -17,14 +18,25 @@ public class LockOnController : Photon.MonoBehaviour
     private bool isLockOn = false;
     private float lockOnTime = 0;
 
+    private bool isACtiveSceane = true;
+
     void Awake ()
     {
+        if (SceneManager.GetActiveScene().name == Common.CO.SCENE_CUSTOM)
+        {
+            //カスタム画面
+            isACtiveSceane = false;
+            return;
+        }
+
         myTran = transform;
         status = myTran.root.gameObject.GetComponent<PlayerStatus>();
         //GameObject targetObj = GameObject.Find(Common.CO.SCREEN_CANVAS+"TargetMark");
 	}
     void Start()
     {
+        if (!isACtiveSceane) return;
+
         CanvasRect = GameObject.FindGameObjectWithTag("PlayerCanvas").GetComponent<RectTransform>();
         GameObject targetObj = Camera.main.transform.FindChild(Common.CO.SCREEN_CANVAS + Common.CO.TARGET_MARK).gameObject;
         if (targetObj != null)
@@ -36,6 +48,8 @@ public class LockOnController : Photon.MonoBehaviour
 
     void OnBecameInvisible()
     {
+        if (!isACtiveSceane) return;
+
         if (!photonView.isMine || status.IsNpc())
         {
             //Debug.Log("Invisible" + transform.root.name);
@@ -46,6 +60,8 @@ public class LockOnController : Photon.MonoBehaviour
     }
     void OnBecameVisible()
     {
+        if (!isACtiveSceane) return;
+
         if (!photonView.isMine || status.IsNpc())
         {
             //Debug.Log("Visible: " + myTran.root.name);
@@ -69,6 +85,8 @@ public class LockOnController : Photon.MonoBehaviour
 
     void Update()
     {
+        if (!isACtiveSceane) return;
+
         if (isLockOn)
         {
             if (targetMarkRectTran.localScale != Vector3.one * markLastSizeRate)

@@ -1,17 +1,18 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class PlayerSetting : Photon.MonoBehaviour
 {
     Transform myTran;
 
     [SerializeField]
-    private PlayerController playerCtrl;
-    [SerializeField]
     private GameObject playerCam;
-    //[SerializeField]
-    //private GameObject playerCanvas;
+
+    private PlayerStatus playerStatus;
+    private PlayerController playerCtrl;
+    private PlayerMotionController motionCtrl;
 
     public bool isNpc = false;
 
@@ -24,22 +25,37 @@ public class PlayerSetting : Photon.MonoBehaviour
 
     private Dictionary<int, int> weaponMap = new Dictionary<int, int>();
 
+    private bool isActiveSceane = true;
+
     void Awake()
     {
         myTran = transform;
-        gameCtrl = GameObject.Find("GameController").GetComponent<GameController>();
-        weaponStroe = GameObject.Find("WeaponStore").GetComponent<WeaponStore>();
-
         myTran.name = "Hero" + photonView.viewID.ToString();
+        weaponStroe = GameObject.Find("WeaponStore").GetComponent<WeaponStore>();
+        playerStatus = myTran.GetComponent<PlayerStatus>();
+        playerCtrl = myTran.GetComponent<PlayerController>();
+        motionCtrl = myTran.GetComponent<PlayerMotionController>();
 
+        if (SceneManager.GetActiveScene().name == Common.CO.SCENE_CUSTOM)
+        {
+            //カスタム画面
+            isActiveSceane = false;
+            playerStatus.enabled = true;
+            playerCtrl.enabled = true;
+            motionCtrl.enabled = true;
+            playerCam.SetActive(false);
+            return;
+        }
+
+        gameCtrl = GameObject.Find("GameController").GetComponent<GameController>();
+        
         if (photonView.isMine)
         {
             //Debug.Log("isMine:"+transform.name);
             if (isNpc)
             {
                 myTran.name = Common.CO.NPC_NAME;
-                //playerCtrl.enabled = false;
-                //playerCam.SetActive(false);
+                playerStatus.enabled = true;
                 EquipWeaponRandom();
                 //Debug.Log("NPC: " + transform.name);
                 gameCtrl.SetTarget(myTran);
@@ -49,7 +65,9 @@ public class PlayerSetting : Photon.MonoBehaviour
             else
             {
                 //コントローラーを有効
+                playerStatus.enabled = true;
                 playerCtrl.enabled = true;
+                motionCtrl.enabled = true;
                 playerCam.SetActive(true);
                 gameCtrl.SetMyTran(myTran);
                 EquipWeaponRandom();
@@ -62,7 +80,9 @@ public class PlayerSetting : Photon.MonoBehaviour
         else
         {
             //Debug.Log("target:" + transform.name);
+            playerStatus.enabled = true;
             playerCtrl.enabled = false;
+            motionCtrl.enabled = false;
             playerCam.SetActive(false);
 
             //ターゲットを登録
@@ -76,6 +96,8 @@ public class PlayerSetting : Photon.MonoBehaviour
 
     void Start()
     {
+        if (!isActiveSceane) return;
+
         if (isNpc || !photonView.isMine)
         {
             gameCtrl.ResetGame();
@@ -185,7 +207,6 @@ public class PlayerSetting : Photon.MonoBehaviour
 
     IEnumerator SetWeapon(Transform parts)
     {
-        PlayerController playerCtrl = GetComponent<PlayerController>();
         if (playerCtrl == null) yield break;
         for (;;)
         {

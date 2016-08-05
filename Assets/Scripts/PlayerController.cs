@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MoveOfCharacter
 //public class PlayerController : MoveOfVelocity
@@ -23,9 +24,6 @@ public class PlayerController : MoveOfCharacter
     private Transform targetTran;
     private PlayerStatus targetStatus;
 
-    //private WeaponController rightHandCtrl;
-    //private WeaponController leftHandCtrl;
-    //private WeaponController shoulderCtrl;
     private Dictionary<int, WeaponController> rightHandCtrls = new Dictionary<int, WeaponController>();
     private Dictionary<int, WeaponController> leftHandCtrls = new Dictionary<int, WeaponController>();
     private Dictionary<int, WeaponController> shoulderCtrls = new Dictionary<int, WeaponController>();
@@ -45,26 +43,58 @@ public class PlayerController : MoveOfCharacter
 
     private Vector3 setAngleVector = new Vector3(1, 0, 1);
 
+    private bool isACtiveSceane = true;
+
     // Use this for initialization
     protected override void Awake()
     {
         base.Awake();
 
+        if (SceneManager.GetActiveScene().name == Common.CO.SCENE_CUSTOM)
+        {
+            //カスタム画面
+            isACtiveSceane = false;
+        }
+
         if (photonView.isMine)
         {
-            gameCtrl = GameObject.Find("GameController").GetComponent<GameController>();
             motionCtrl = GetComponent<PlayerMotionController>();
             animator = base.myTran.FindChild(Common.CO.PARTS_BODY).gameObject.GetComponent<Animator>();
-            status = GetComponent<PlayerStatus>();
 
+            if (isACtiveSceane)
+            {
+                gameCtrl = GameObject.Find("GameController").GetComponent<GameController>();
+                status = GetComponent<PlayerStatus>();
+
+                if (circleArrow != null)
+                {
+                    circleArrowTran = circleArrow.transform;
+                }
+
+                switch (Application.platform)
+                {
+                    case RuntimePlatform.Android:
+                    case RuntimePlatform.IPhonePlayer:
+                        isPC = false;
+                        break;
+                    default:
+                        isPC = true;
+                        break;
+                }
+            }
+        }
+    }
+
+    protected override void Start()
+    {
+        if (!isACtiveSceane) return;
+
+        base.Start();
+        if (photonView.isMine)
+        {
             //キャンパスボタン構造
-            //string screenBtn = Common.CO.SCREEN_CANVAS + Common.CO.SCREEN_INPUT_BUTTON;
             Transform screenInputBtnTran = Camera.main.transform.FindChild(Common.CO.SCREEN_CANVAS + Common.CO.SCREEN_INPUT_BUTTON);
 
-            //leftHandBtn = GameObject.Find(screenBtn + Common.CO.BUTTON_LEFT_ATTACK).GetComponent<Button>();
-            //rightHandBtn = GameObject.Find(screenBtn + Common.CO.BUTTON_RIGHT_ATTACK).GetComponent<Button>(); ;
-            //shoulderBtn = GameObject.Find(screenBtn + Common.CO.BUTTON_SHOULDER_ATTACK).GetComponent<Button>(); ;
-            //subBtn = GameObject.Find(screenBtn + Common.CO.BUTTON_USE_SUB).GetComponent<Button>(); ;
             leftHandBtn = screenInputBtnTran.FindChild(Common.CO.BUTTON_LEFT_ATTACK).GetComponent<Button>();
             rightHandBtn = screenInputBtnTran.FindChild(Common.CO.BUTTON_RIGHT_ATTACK).GetComponent<Button>();
             shoulderBtn = screenInputBtnTran.FindChild(Common.CO.BUTTON_SHOULDER_ATTACK).GetComponent<Button>();
@@ -77,35 +107,14 @@ public class PlayerController : MoveOfCharacter
             //    autoLockText = autoLockObj.transform.FindChild("Text").GetComponent<Text>();
             //}
 
-            if (circleArrow != null)
-            {
-                circleArrowTran = circleArrow.transform;
-            }
-
-            switch (Application.platform)
-            {
-                case RuntimePlatform.Android:
-                case RuntimePlatform.IPhonePlayer:
-                    isPC = false;
-                    break;
-                default:
-                    isPC = true;
-                    break;
-            }
-        }
-    }
-
-    protected override void Start()
-    {
-        base.Start();
-        if (photonView.isMine)
-        {
             SetWeapon();
         }
     }
 
     protected override void Update()
     {
+        if (!isACtiveSceane) return;
+
         base.Update();
 
         if (photonView.isMine)
@@ -275,6 +284,13 @@ public class PlayerController : MoveOfCharacter
         if (isSetBodyAngle) motionCtrl.SetBodyAngle();
     }
 
+    public void CustomSceaneFire(WeaponController weaponCtrl)
+    {
+        if (isACtiveSceane) return;
+
+        weaponCtrl.Fire();
+        weaponCtrl.SetEnable(true);
+    }
 
     //####################
     //###　TouchAction ###
@@ -515,6 +531,8 @@ public class PlayerController : MoveOfCharacter
 
     void OnEnable()
     {
+        if (!isACtiveSceane) return;
+
         if (photonView.isMine)
         {
             TouchManager.Instance.Drag += OnSwipe;
@@ -527,6 +545,8 @@ public class PlayerController : MoveOfCharacter
 
     void OnDisable()
     {
+        if (!isACtiveSceane) return;
+
         if (TouchManager.Instance != null)
         {
             TouchManager.Instance.Drag -= OnSwipe;

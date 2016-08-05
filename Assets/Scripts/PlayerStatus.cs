@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PlayerStatus : Photon.MonoBehaviour {
 
@@ -71,12 +72,36 @@ public class PlayerStatus : Photon.MonoBehaviour {
     private int defaultRecoverSp;
 
     private GameController gameCtrl;
+    private bool isACtiveSceane = true;
 
     void Awake()
     {
+        if (SceneManager.GetActiveScene().name == Common.CO.SCENE_CUSTOM)
+        {
+            //カスタム画面
+            isACtiveSceane = false;
+            return;
+        }
+
         isNpc = GetComponent<PlayerSetting>().isNpc;
 
         gameCtrl = GameObject.Find("GameController").GetComponent<GameController>();
+
+        Init();
+
+        //初期値保管
+        defaultRunSpeed = runSpeed;
+        defaultJumpSpeed = jumpSpeed;
+        defaultBoostSpeed = boostSpeed;
+        defaultTurnSpeed = turnSpeed;
+        defaultBoostTurnSpeed = boostTurnSpeed;
+        defaultInvincibleTime = invincibleTime;
+        defaultRecoverSp = recoverSp;
+    }
+
+    void Start()
+    {
+        if (!isACtiveSceane) return;
 
         //ステータス構造
         //string screenStatus = Common.CO.SCREEN_CANVAS + Common.CO.SCREEN_STATUS;
@@ -107,20 +132,6 @@ public class PlayerStatus : Photon.MonoBehaviour {
         //キャラカメラ
         //camCtrl = Camera.main.gameObject.GetComponent<CameraController>();
 
-        Init();
-
-        //初期値保管
-        defaultRunSpeed = runSpeed;
-        defaultJumpSpeed = jumpSpeed;
-        defaultBoostSpeed = boostSpeed;
-        defaultTurnSpeed = turnSpeed;
-        defaultBoostTurnSpeed = boostTurnSpeed;
-        defaultInvincibleTime = invincibleTime;
-        defaultRecoverSp = recoverSp;
-    }
-
-    void Start()
-    {
         StartCoroutine(DamageSync());
         StartCoroutine(RecoverSp());
         if (photonView.isMine)
@@ -353,6 +364,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
 
     void Update()
     {
+        if (!isACtiveSceane) return;
         //statusCanvas.rotation = Camera.main.transform.rotation;
 
         if (photonView.isMine)
