@@ -4,9 +4,9 @@ using System.Collections;
 public class ChangeEffectController : EffectController
 {
     [SerializeField]
-    private float startScale;
+    private Vector3 startScale;
     [SerializeField]
-    private float endScale;
+    private Vector3 endScale;
     [SerializeField]
     private float scaleTime;
     [SerializeField]
@@ -20,9 +20,6 @@ public class ChangeEffectController : EffectController
     {
         base.Awake();
 
-        startScaleVector = new Vector3(startScale, startScale, startScale);
-        lastScaleVector = new Vector3(endScale, endScale, endScale);
-
         base.myTran.localScale = startScaleVector;
     }
 	
@@ -33,6 +30,6 @@ public class ChangeEffectController : EffectController
         float rate = activeTime / scaleTime;
         if (rate > 1) rate = 1;
 
-        base.myTran.localScale = Vector3.Lerp(startScaleVector, lastScaleVector, rate);
+        base.myTran.localScale = Vector3.Lerp(startScale, endScale, rate);
     }
 }

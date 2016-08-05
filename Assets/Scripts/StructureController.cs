@@ -25,27 +25,27 @@ public class StructureController : Photon.MonoBehaviour
         nowHp = maxHp;
     }
 
-    void OnCollisionEnter(Collision other)
-    {
-        if (PhotonNetwork.player == PhotonNetwork.masterClient)
-        {
-            int damage = Random.Range(1, 10);
-            if (myTran.parent == null)
-            {
-                if (Common.Func.IsDamageAffect(other.transform.tag))
-                {
-                    AddDamage(damage);
-                }
-            }
-            else
-            {
-                if (parentCtrl != null)
-                {
-                    parentCtrl.AddDamage(damage);
-                }
-            }
-        }
-    }
+    //void OnCollisionEnter(Collision other)
+    //{
+    //    if (PhotonNetwork.player == PhotonNetwork.masterClient)
+    //    {
+    //        int damage = Random.Range(1, 10);
+    //        if (myTran.parent == null)
+    //        {
+    //            if (Common.Func.IsDamageAffect(other.transform.tag))
+    //            {
+    //                AddDamage(damage);
+    //            }
+    //        }
+    //        else
+    //        {
+    //            if (parentCtrl != null)
+    //            {
+    //                parentCtrl.AddDamage(damage);
+    //            }
+    //        }
+    //    }
+    //}
 
     public void AddDamage(int damage)
     {

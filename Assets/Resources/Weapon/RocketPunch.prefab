@@ -1571,7 +1571,7 @@ MonoBehaviour:
   bitMotionType: 2
   bitMoveTime: 0
   isBitFixed: 0
-  reloadTime: 3
+  reloadTime: 10
   fireEffect: {fileID: 0}
   bullet: {fileID: 101162, guid: ad7cb826ad4cf3b41acd35e6eedc35ae, type: 2}
   rapidCount: 1
@@ -1624,8 +1624,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 0}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 1
-  instantiationId: 1
+  viewIdField: 0
+  instantiationId: -1
   isRuntimeInstantiated: 0
 --- !u!1001 &100100000
 Prefab:

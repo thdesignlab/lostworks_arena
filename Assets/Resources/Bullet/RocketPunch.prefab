@@ -163,7 +163,7 @@ Transform:
   m_GameObject: {fileID: 101162}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 5, y: 5, z: 5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 417770}
@@ -412,14 +412,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1d600a14ff695d4f9c4f4a7d7101de8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 30
+  damage: 0
   damagePerSecond: 30
   isPhysicsBulletBreak: 1
   isEnergyBulletBreak: 1
-  startScale: 1
-  endScale: 200
-  scaleTime: 10
-  effectiveTime: 10
+  startScale: {x: 1, y: 1, z: 1}
+  endScale: {x: 40, y: 30, z: 40}
+  scaleTime: 8
+  effectiveTime: 8
 --- !u!114 &11427014
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -455,8 +455,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 0}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 1
-  instantiationId: 1
+  viewIdField: 0
+  instantiationId: -1
   isRuntimeInstantiated: 0
 --- !u!114 &11450964
 MonoBehaviour:
@@ -474,7 +474,7 @@ MonoBehaviour:
   isLockOn: 0
   UseGravity: 0
   hitEffect: {fileID: 0}
-  speed: 40
+  speed: 30
   damage: 0
   damagePerSecond: 0
   stuckTime: 0
@@ -486,7 +486,8 @@ MonoBehaviour:
   turnSpeed: 120
   lockStartTime: 0
   lockedSpeedRate: 1
-  isNeedLock: 0
+  isNeedLock: 1
+  isLockFlat: 1
 --- !u!114 &11468660
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -499,7 +500,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effectSpawn: {fileID: 0}
-  activeLimitTime: 10
+  activeLimitTime: 8
   activeLimitDistance: 0
 --- !u!114 &11481900
 MonoBehaviour:

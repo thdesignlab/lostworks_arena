@@ -195,7 +195,7 @@ public class LaserWeaponController : WeaponController
         base.EndAction();
     }
 
-    private int hitCnt = 0;
+    //private int hitCnt = 0;
     private float GetLaserLength(float length, Transform laserMuzzle)
     {
         RaycastHit hit;
@@ -206,16 +206,16 @@ public class LaserWeaponController : WeaponController
         if (Physics.Raycast(ray, out hit, length, layerMask))
         {
             length = Vector3.Distance(laserMuzzle.position, hit.transform.position);
-            StructureController structureCtrl = hit.transform.GetComponent<StructureController>();
-            if (structureCtrl != null)
-            {
-                hitCnt++;
-                if (hitCnt >= 10)
-                {
-                    structureCtrl.AddDamage(Random.Range(0, 20));
-                    hitCnt = 0;
-                }
-            }
+            //StructureController structureCtrl = hit.transform.GetComponent<StructureController>();
+            //if (structureCtrl != null)
+            //{
+            //    hitCnt++;
+            //    if (hitCnt >= 10)
+            //    {
+            //        structureCtrl.AddDamage(Random.Range(0, 20));
+            //        hitCnt = 0;
+            //    }
+            //}
         }
         return length;
     }

@@ -117,16 +117,16 @@ public class BulletController : MoveOfCharacter
     //ダメージ処理
     protected void AddDamage(GameObject hitObj, int dmg = 0)
     {
-        if (hitObj.CompareTag("Player"))
+        //ダメージ系処理は所有者のみ行う
+        if (photonView.isMine)
         {
-            //ダメージ系処理は所有者のみ行う
-            if (photonView.isMine)
+            if (hitObj.CompareTag("Player"))
             {
                 if (dmg == 0) dmg = damage;
 
                 //プレイヤーステータス
                 PlayerStatus status = targetStatus;
-                if (hitObj != targetTran)
+                if (hitObj.transform != targetTran)
                 {
                     status = hitObj.GetComponent<PlayerStatus>();
                 }
@@ -150,6 +150,10 @@ public class BulletController : MoveOfCharacter
                     base.TargetKnockBack(hitObj.transform, knockBackRate);
                 }
             }
+            else if (hitObj.CompareTag(Common.CO.TAG_STRUCTURE))
+            {
+                hitObj.GetComponent<StructureController>().AddDamage(damage);
+            }
         }
     }
 
@@ -159,16 +163,37 @@ public class BulletController : MoveOfCharacter
         //ダメージ処理は所有者のみ行う
         if (photonView.isMine)
         {
+            //ダメージ計算
             if (dmg == 0) dmg = damagePerSecond;
-
-            if (hitObj.transform == targetTran)
+            float fltDmg = dmg * Time.deltaTime;
+            int addDmg = (int)Mathf.Floor(fltDmg);
+            dmg -= addDmg;
+            if (dmg > 0)
             {
-                totalDamage += dmg * Time.deltaTime;
-                if (totalDamage >= MIN_SEND_DAMAGE)
+                //小数部分は確率
+                if (dmg * 100 > Random.Range(0, 100)) addDmg += 1;
+            }
+
+            if (hitObj.CompareTag("Player"))
+            {
+                //プレイヤーステータス
+                PlayerStatus status = targetStatus;
+                if (hitObj.transform != targetTran)
                 {
-                    targetStatus.AddDamage((int)totalDamage);
-                    totalDamage = totalDamage % 1;
+                    status = hitObj.GetComponent<PlayerStatus>();
                 }
+                status.AddDamage(addDmg);
+
+                //totalDamage += dmg * Time.deltaTime;
+                //if (totalDamage >= MIN_SEND_DAMAGE)
+                //{
+                //    status.AddDamage((int)totalDamage);
+                //    totalDamage = totalDamage % 1;
+                //}
+            }
+            else if (hitObj.CompareTag(Common.CO.TAG_STRUCTURE))
+            {
+                hitObj.GetComponent<StructureController>().AddDamage(addDmg);
             }
         }
     }

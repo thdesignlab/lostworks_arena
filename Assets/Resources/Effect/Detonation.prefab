@@ -340,8 +340,8 @@ MonoBehaviour:
   damagePerSecond: 100
   isPhysicsBulletBreak: 1
   isEnergyBulletBreak: 1
-  startScale: 5
-  endScale: 30
+  startScale: {x: 1, y: 1, z: 1}
+  endScale: {x: 30, y: 30, z: 30}
   scaleTime: 4
   effectiveTime: 4.5
 --- !u!114 &11459882
