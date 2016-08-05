@@ -1591,8 +1591,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 0}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 0
-  instantiationId: -1
+  viewIdField: 2
+  instantiationId: 2
   isRuntimeInstantiated: 0
 --- !u!114 &11455006
 MonoBehaviour:
@@ -1607,6 +1607,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bitMotionType: 3
   bitMoveTime: 0.5
+  isBitFixed: 0
   reloadTime: 5
   laserPrefab: {fileID: 108382, guid: cf05095eaf849d945932d8127c7a6d73, type: 2}
   effectiveLength: 300
@@ -1639,8 +1640,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 0}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 0
-  instantiationId: -1
+  viewIdField: 1
+  instantiationId: 1
   isRuntimeInstantiated: 0
 --- !u!114 &11493038
 MonoBehaviour:

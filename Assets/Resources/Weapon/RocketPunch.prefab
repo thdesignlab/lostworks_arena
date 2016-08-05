@@ -284,7 +284,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 411466}
   - 114: {fileID: 11493070}
-  - 114: {fileID: 11490438}
   - 114: {fileID: 11448244}
   - 114: {fileID: 11460058}
   m_Layer: 0
@@ -863,7 +862,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 180138}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 2}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
@@ -1571,6 +1570,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bitMotionType: 2
   bitMoveTime: 0
+  isBitFixed: 0
   reloadTime: 3
   fireEffect: {fileID: 0}
   bullet: {fileID: 101162, guid: ad7cb826ad4cf3b41acd35e6eedc35ae, type: 2}
@@ -1578,7 +1578,7 @@ MonoBehaviour:
   rapidInterval: 0
   spreadCount: 0
   spreadDiffAngle: 0
-  focusDiff: 0.5
+  focusDiff: 0
 --- !u!114 &11460058
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1602,21 +1602,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   basePrefab: {fileID: 193044, guid: a94f9fdda92af004e818b390b34f1362, type: 2}
---- !u!114 &11490438
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 163874}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2bf824a3d499c32439fa2f967ffd296c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isCheckGrounded: 0
-  glideGravityRate: 1
-  isLockOn: 1
-  aimSpeed: 60
 --- !u!114 &11493070
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1639,8 +1624,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 0}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 0
-  instantiationId: -1
+  viewIdField: 1
+  instantiationId: 1
   isRuntimeInstantiated: 0
 --- !u!1001 &100100000
 Prefab:

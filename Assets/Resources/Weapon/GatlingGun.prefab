@@ -1582,6 +1582,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bitMotionType: 1
   bitMoveTime: 0
+  isBitFixed: 0
   reloadTime: 2
   fireEffect: {fileID: 182678, guid: bb8b28526e4afa1488092ff5b00c3e2b, type: 2}
   bullet: {fileID: 162386, guid: 71549f6141740924a81f64ecd7184db9, type: 2}
@@ -1624,8 +1625,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 0}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 0
-  instantiationId: -1
+  viewIdField: 1
+  instantiationId: 1
   isRuntimeInstantiated: 0
 --- !u!114 &11498362
 MonoBehaviour:

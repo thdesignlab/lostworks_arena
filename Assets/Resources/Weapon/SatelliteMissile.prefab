@@ -1602,8 +1602,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 0}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 0
-  instantiationId: -1
+  viewIdField: 1
+  instantiationId: 1
   isRuntimeInstantiated: 0
 --- !u!114 &11488754
 MonoBehaviour:
@@ -1618,6 +1618,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bitMotionType: 2
   bitMoveTime: 0
+  isBitFixed: 0
   reloadTime: 8
   fireEffect: {fileID: 0}
   bullet: {fileID: 192564, guid: 381742e8f5b05964380abab9ed52ca91, type: 2}
