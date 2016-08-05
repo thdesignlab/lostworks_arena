@@ -56,8 +56,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 0}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 0
-  instantiationId: -1
+  viewIdField: 1
+  instantiationId: 1
   isRuntimeInstantiated: 0
 --- !u!114 &11463346
 MonoBehaviour:
@@ -88,7 +88,7 @@ MonoBehaviour:
   glideGravityRate: 1
   isLockOn: 0
   UseGravity: 0
-  hitEffect: {fileID: 0}
+  hitEffect: {fileID: 135988, guid: d7cd433d10510fe46a35c39bac480fe1, type: 2}
   speed: 100
   damage: 10
   damagePerSecond: 0
@@ -102,6 +102,7 @@ MonoBehaviour:
   lockStartTime: 0
   lockedSpeedRate: 1
   isNeedLock: 1
+  isLockFlat: 0
 --- !u!135 &13541138
 SphereCollider:
   m_ObjectHideFlags: 1
