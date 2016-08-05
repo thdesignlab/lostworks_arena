@@ -38,11 +38,13 @@ public class WeaponController : Photon.MonoBehaviour
 
     protected Button myBtn;
     protected Image imgGage;
-    protected string normalGageHexColor = "0695EA4E";
-    protected Color normalGageColor;
     protected SpriteStudioController spriteStudioCtrl;
     protected Script_SpriteStudio_Root scriptRoot;
 
+    //リロードゲージカラー
+    private Color RELOAD_GAGE_COLOR = Color.red;
+    private Color NORMAL_GAGE_COLOR = new Color(0.000f, 1.000f, 0.834f, 0.634f);
+    //public static string normalGageHexColor = "0695EA4E";
 
     protected virtual void Awake()
     {
@@ -143,10 +145,8 @@ public class WeaponController : Photon.MonoBehaviour
         }
         if (imgGage != null)
         {
-
-
             imgGage.fillAmount = 1;
-            imgGage.color = normalGageColor;
+            imgGage.color = NORMAL_GAGE_COLOR;
         }
         if (spriteStudioCtrl)
         {
@@ -177,18 +177,19 @@ public class WeaponController : Photon.MonoBehaviour
         Transform imgGageTran = myBtn.transform.FindChild("ImgGage");
         if (imgGageTran != null)
         {
+            //Debug.Log("first:" + imgGage.color);
             imgGage = imgGageTran.GetComponent<Image>();
             imgGage.fillAmount = 1;
-            
-            Color color = default(Color);
-            if (ColorUtility.TryParseHtmlString(normalGageHexColor, out color))
-            {
-                normalGageColor = color;
-            }
-            else
-            {
-                normalGageColor = imgGage.color;
-            }
+            imgGage.color = NORMAL_GAGE_COLOR;
+            //Color color = default(Color);
+            //if (ColorUtility.TryParseHtmlString(normalGageHexColor, out color))
+            //{
+            //    normalGageColor = color;
+            //}
+            //else
+            //{
+            //normalGageColor = imgGage.color;
+            //}
         }
         spriteStudioCtrl = GameObject.Find("SpriteStudioController").GetComponent<SpriteStudioController>();
         if (spriteStudioCtrl != null)
@@ -214,7 +215,7 @@ public class WeaponController : Photon.MonoBehaviour
             {
                 //クールゲージ切り替え
                 imgGage.fillAmount = 1;
-                imgGage.color = normalGageColor;
+                imgGage.color = NORMAL_GAGE_COLOR;
             }
         }
         else
@@ -224,7 +225,7 @@ public class WeaponController : Photon.MonoBehaviour
             {
                 //クールゲージ切り替え
                 imgGage.fillAmount = 0;
-                imgGage.color = Common.CO.reloadGageColor;
+                imgGage.color = RELOAD_GAGE_COLOR;
             }
             if (reloadFlg)
             {

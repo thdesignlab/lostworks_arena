@@ -118,9 +118,6 @@ namespace Common
             PARTS_SUB
         };
 
-        //リロードゲージカラー
-        public static Color reloadGageColor = Color.red;
-
         //武器タグ
         public const string TAG_WEAPON = "Weapon";
         public const string TAG_WEAPON_BIT = "WeaponBit";

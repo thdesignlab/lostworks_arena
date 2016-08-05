@@ -173,14 +173,14 @@ MonoBehaviour:
   UseGravity: 0
   hitEffect: {fileID: 135988, guid: d7cd433d10510fe46a35c39bac480fe1, type: 2}
   speed: 400
-  damage: 30
+  damage: 25
   damagePerSecond: 0
   stuckTime: 0
   knockBackRate: 0
-  isPhysicsBulletBreak: 1
+  isPhysicsBulletBreak: 0
   isEnergyBulletBreak: 0
   isHitBreak: 1
-  safetyTime: 0
+  safetyTime: 0.05
 --- !u!114 &11475486
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -70,18 +70,9 @@ public class BulletController : MoveOfCharacter
         base.Move(Vector3.forward, speed);
     }
 
-    ////衝突時処理(Trigger=false)
-    //void OnCollisionEnter(Collision other)
-    //{
-    //    //Debug.Log("OnCollisionEnter: " + other.gameObject.name);
-    //    GameObject otherObj = other.gameObject;
-    //    OnHit(otherObj);
-    //}
-
     //衝突時処理(Trigger=true)
     void OnTriggerEnter(Collider other)
     {
-        //Debug.Log("OnCollisionEnter: " + other.gameObject.name);
         GameObject otherObj = other.gameObject;
         OnHit(otherObj);
     }
@@ -89,7 +80,6 @@ public class BulletController : MoveOfCharacter
     //接触時処理
     void OnTriggerStay(Collider other)
     {
-        //Debug.Log("OnCollisionEnter: " + other.gameObject.name);
         GameObject otherObj = other.gameObject;
         OnStay(otherObj);
     }
@@ -99,6 +89,7 @@ public class BulletController : MoveOfCharacter
     {
         if (photonView.isMine)
         {
+            //Debug.Log(otherObj.name);
             if (IsSafety(otherObj)) return;
 
             //ダメージを与える
@@ -168,7 +159,7 @@ public class BulletController : MoveOfCharacter
         //ダメージ処理は所有者のみ行う
         if (photonView.isMine)
         {
-            if (dmg == 0) dmg = damage;
+            if (dmg == 0) dmg = damagePerSecond;
 
             if (hitObj.transform == targetTran)
             {
@@ -201,12 +192,9 @@ public class BulletController : MoveOfCharacter
         //一度衝突しているものは無視
         if (isHit && isHitCheck) return true;
 
-        //ターゲットの場合はHIT
-        if (targetTran != null && targetTran == hitObj.transform) return false;
-
         //エフェクトはスルー
         //HIT判定はエフェクト側で行う
-        if (hitObj.tag == Common.CO.TAG_EFFECT) return false; 
+        if (hitObj.tag == Common.CO.TAG_EFFECT) return false;
 
         if (isHitCheck) isHit = true;
 

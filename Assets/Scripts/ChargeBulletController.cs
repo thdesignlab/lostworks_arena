@@ -83,6 +83,8 @@ public class ChargeBulletController : TrackingBulletController
         Charging(chargeTime);
         isCharge = false;
         base.speed = (int)Mathf.Lerp(baseSpeed, baseSpeed * maxSpeedRate, chargeRate);
+        base.defaultSpeed = base.speed;
+
         if (chargeEffect != null) chargeEffect.SetActive(false);
     }
 
