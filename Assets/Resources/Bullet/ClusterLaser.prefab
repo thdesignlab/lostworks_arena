@@ -95,11 +95,16 @@ MonoBehaviour:
   hitEffect: {fileID: 0}
   speed: 50
   damage: 5
+  damagePerSecond: 0
   stuckTime: 0
+  knockBackRate: 0
   isPhysicsBulletBreak: 0
   isEnergyBulletBreak: 0
-  safetyTime: 0.05
+  isHitBreak: 1
+  safetyTime: 0.5
   turnSpeed: 90
+  lockStartTime: 0
+  lockedSpeedRate: 1
   isNeedLock: 1
   childBullet: {fileID: 155844, guid: cb76ca07cf378824ab81ece6bc293aa1, type: 2}
   childeBulletCount: 4

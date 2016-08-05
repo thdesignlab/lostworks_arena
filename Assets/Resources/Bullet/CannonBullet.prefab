@@ -170,13 +170,16 @@ MonoBehaviour:
   isCheckGrounded: 0
   glideGravityRate: 1
   isLockOn: 0
+  UseGravity: 0
   hitEffect: {fileID: 135988, guid: d7cd433d10510fe46a35c39bac480fe1, type: 2}
-  firstSpeed: 500
+  speed: 400
   damage: 30
-  stuckTime: 1
+  damagePerSecond: 0
+  stuckTime: 0
   knockBackRate: 1
-  isPhysicsBulletBreak: 0
+  isPhysicsBulletBreak: 1
   isEnergyBulletBreak: 0
+  isHitBreak: 1
   safetyTime: 0.01
 --- !u!114 &11475486
 MonoBehaviour:
@@ -199,7 +202,7 @@ CapsuleCollider:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 113868}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   m_Radius: 1
   m_Height: 3

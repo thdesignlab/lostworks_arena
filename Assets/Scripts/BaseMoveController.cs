@@ -52,11 +52,11 @@ public abstract class BaseMoveController : Photon.MonoBehaviour
             StartCoroutine(checkGrounded());
         }
 
-        if (myTran.tag == "Player")
-        {
+        //if (myTran.tag == "Player")
+        //{
             //移動中判定
             StartCoroutine(CheckMooving());
-        }
+        //}
     }
 
     protected virtual void Update()
@@ -322,16 +322,17 @@ public abstract class BaseMoveController : Photon.MonoBehaviour
     }
 
     //対象にRigidBodyがあり、IsKinematicがONの場合のみ
-    protected void TargetKnockBack(Transform targetTran, float rate = 1.0f)
+    protected void TargetKnockBack(Transform targetTran, float rate = 100.0f)
     {
         if (isKnockBack) return;
         if (myRigidbody == null) return;
         BaseMoveController targetCtrl = targetTran.gameObject.GetComponent<BaseMoveController>();
-        if (targetCtrl == null || targetCtrl.myRigidbody == null || !targetCtrl.myRigidbody.isKinematic) return;
+        //if (targetCtrl == null || targetCtrl.myRigidbody == null || !targetCtrl.myRigidbody.isKinematic) return;
+        if (targetCtrl == null || targetCtrl.myRigidbody == null) return;
 
         Vector3 velocity = GetVelocityVector();
         float forceRate = myRigidbody.mass / targetCtrl.myRigidbody.mass;
-        float force = Mathf.Pow(velocity.magnitude, 2) / targetCtrl.myRigidbody.mass * forceRate * rate;
+        float force = Mathf.Pow(velocity.magnitude, 2) / targetCtrl.myRigidbody.mass * forceRate * rate / 100;
         float limit = knockBackBaseTime * forceRate;
         if (limit < knockBackBaseTime / 2)
         {
@@ -341,7 +342,7 @@ public abstract class BaseMoveController : Photon.MonoBehaviour
         {
             limit = knockBackBaseTime * 2;
         }
-        //Debug.Log(velocity + " / "+force.ToString()+" / "+limit.ToString());
+        //Debug.Log(velocity + " / " + force.ToString() + " / " + limit.ToString());
         targetCtrl.MoveWorld(velocity, force, limit);
 
     }

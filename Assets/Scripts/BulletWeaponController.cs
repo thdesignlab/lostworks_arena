@@ -220,21 +220,10 @@ public class BulletWeaponController : WeaponController
     {
         float v = 0;
 
-        if (Common.Func.IsPhysicsBullet(bullet.tag))
+        BulletController bulletCtrl = bullet.GetComponent<BulletController>();
+        if (bulletCtrl != null)
         {
-            PhysicsBulletController pb = bullet.GetComponent<PhysicsBulletController>();
-            if (pb != null)
-            {
-                v = pb.GetFirstSpeed();
-            }
-        }
-        else
-        {
-            EnergyBulletController eb = bullet.GetComponent<EnergyBulletController>();
-            if (eb != null)
-            {
-                v = eb.GetFirstSpeed();
-            }
+            v = bulletCtrl.GetSpeed();
         }
 
         return v;
@@ -244,21 +233,10 @@ public class BulletWeaponController : WeaponController
     {
         if (base.targetTran == null) return;
 
-        if (Common.Func.IsPhysicsBullet(bullet.tag))
+        BulletController bulletCtrl = bulletObj.GetComponent<BulletController>();
+        if (bulletCtrl != null)
         {
-            PhysicsBulletController pb = bulletObj.GetComponent<PhysicsBulletController>();
-            if (pb != null)
-            {
-                pb.SetTarget(base.targetTran);
-            }
-        }
-        else
-        {
-            EnergyBulletController eb = bulletObj.GetComponent<EnergyBulletController>();
-            if (eb != null)
-            {
-                eb.SetTarget(base.targetTran);
-            }
+            bulletCtrl.SetTarget(base.targetTran);
         }
     }
 }

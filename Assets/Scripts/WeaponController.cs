@@ -13,8 +13,8 @@ public class WeaponController : Photon.MonoBehaviour
     [SerializeField]
     protected float bitMoveTime;   //発射までにかかる時間
     protected bool isBitMoved;
-    protected Vector3 bitFromPos;
-    protected Vector3 bitToPos;
+    protected Vector3 bitFromPos = default(Vector3);
+    protected Vector3 bitToPos = default(Vector3);
     protected float radius;
 
     [SerializeField]
@@ -277,7 +277,7 @@ public class WeaponController : Photon.MonoBehaviour
 
     protected bool StartBitMove()
     {
-        if (bitFromPos == null || bitToPos == null) return true;
+        if (bitFromPos == default(Vector3) || bitToPos == default(Vector3)) return true;
 
         if (photonView.isMine)
         {
@@ -296,7 +296,7 @@ public class WeaponController : Photon.MonoBehaviour
 
     protected void ReturnBitMove()
     {
-        if (bitFromPos == null || bitToPos == null) return;
+        if (bitFromPos == default(Vector3) || bitToPos == default(Vector3)) return;
 
         if (photonView.isMine)
         {

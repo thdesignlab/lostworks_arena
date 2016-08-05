@@ -153,11 +153,17 @@ MonoBehaviour:
   isCheckGrounded: 0
   glideGravityRate: 1
   isLockOn: 0
+  UseGravity: 0
   hitEffect: {fileID: 0}
-  firstSpeed: 200
+  speed: 300
   damage: 10
+  damagePerSecond: 0
   stuckTime: 2
-  knockBackRate: 2
+  knockBackRate: 10
+  isPhysicsBulletBreak: 0
+  isEnergyBulletBreak: 0
+  isHitBreak: 1
+  safetyTime: 0.05
 --- !u!114 &11468660
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -179,7 +185,7 @@ SphereCollider:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 101162}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5

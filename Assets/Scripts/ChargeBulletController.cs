@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ChargeBulletController : EnergyTrackingBulletController
+public class ChargeBulletController : TrackingBulletController
 {
     [SerializeField]
     private GameObject chargeEffect;
@@ -23,12 +23,13 @@ public class ChargeBulletController : EnergyTrackingBulletController
     private Vector3 chargingVector;
     private float chargeRate = 0;
     private bool isCharge = true;
-
     private float firedTime = 0;
+
 
     protected override void Awake()
     {
         base.Awake();
+
         if (photonView.isMine)
         {
             baseSpeed = base.speed;
@@ -50,10 +51,7 @@ public class ChargeBulletController : EnergyTrackingBulletController
             {
                 //発射
                 firedTime += Time.deltaTime;
-                //if (firedTime >= 0.1f)
-                //{
-                //    base.myCollider.enabled = true;
-                //}
+
                 if (firedTime >= limitTime)
                 {
                     base.DestoryObject();
@@ -79,6 +77,7 @@ public class ChargeBulletController : EnergyTrackingBulletController
         base.damage = (int)Mathf.Lerp(baseDamage, baseDamage * maxDamageRate, chargeRate);
         base.myTran.localScale = Vector3.Lerp(baseScale, baseScale * maxSizeRate, chargeRate);
     }
+
     public void Fire(float chargeTime)
     {
         Charging(chargeTime);

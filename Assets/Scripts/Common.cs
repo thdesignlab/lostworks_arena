@@ -86,13 +86,13 @@ namespace Common
         //全部位名
         public static string[] partsNameArray = new string[]
         {
-            PARTS_LEFT_HAND,
-            PARTS_LEFT_HAND_DASH,
-            PARTS_RIGHT_HAND,
-            PARTS_RIGHT_HAND_DASH,
-            PARTS_SHOULDER,
-            PARTS_SHOULDER_DASH,
-            PARTS_SUB
+            PARTS_LEFT_HAND,        //0
+            PARTS_LEFT_HAND_DASH,   //1
+            PARTS_RIGHT_HAND,       //2
+            PARTS_RIGHT_HAND_DASH,  //3
+            PARTS_SHOULDER,         //4
+            PARTS_SHOULDER_DASH,    //5
+            PARTS_SUB               //6
         };
 
         //リロードゲージカラー
@@ -112,6 +112,9 @@ namespace Common
 
         //弾の種類(放出系)
         public const string TAG_BULLET_LASER = "Laser";
+
+        //エフェクト
+        public const string TAG_EFFECT = "Effect";
 
         //弾タグ全て
         public static string[] bulletTagArray = new string[]
@@ -147,9 +150,31 @@ namespace Common
     //### 武器詳細 ###
     public static class Weapon
     {
-        public static Dictionary<string, string[]> weaponLineUp = new Dictionary<string, string[]>()
+        //武器獲得タイプ
+        public const string OBTAIN_TYPE_INIT = "INIT";
+        public const string OBTAIN_TYPE_BUY = "BUY";
+        public const string OBTAIN_TYPE_STAGE = "STAGE";
+
+        /*
+        ##### 武器リスト #####
+        0 : プレハブ名
+        1 : 武器名
+        2 : 説明
+        3 : 取得タイプ
+        */
+        public static List<string[]> weaponLineUp = new List<string[]>()
         {
-            { "MachineGun",  new string[]{ "マシンガン", "連射するやつ"}},
+            //両手
+            { new string[]{ "MashinGun", "マシンガン", "普通の銃", OBTAIN_TYPE_INIT}},
+            { new string[]{ "", "", "", OBTAIN_TYPE_INIT}},
+            //両手(ダッシュ)
+            { new string[]{ "", "", "", OBTAIN_TYPE_INIT}},
+            //背中
+            { new string[]{ "", "", "", OBTAIN_TYPE_INIT}},
+            //背中(ダッシュ
+            { new string[]{ "", "", "", OBTAIN_TYPE_INIT}},
+            //サブ
+            { new string[]{ "", "", "", OBTAIN_TYPE_INIT}},
         };
 
     }

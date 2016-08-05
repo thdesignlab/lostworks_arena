@@ -38,7 +38,6 @@ public class PhotonManager : MonoBehaviour
     const string ROOM_NAME_PREFIX = "Room";
 
     private bool isTapToStart = false;
-    private bool isOpenModeSelect = false;
     private bool isConnectFailed = false;
     private bool isDialogOpen = false;
     private bool isNetworkMode = false;
@@ -175,7 +174,6 @@ public class PhotonManager : MonoBehaviour
         SwitchMessageArea();
         SwitchNetworkArea(false);
         isTapToStart = true;
-        isOpenModeSelect = false;
         isConnectFailed = false;
         isNetworkMode = false;
         if (PhotonNetwork.connected)

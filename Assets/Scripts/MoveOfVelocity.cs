@@ -27,7 +27,7 @@ public class MoveOfVelocity : BaseMoveController
     {
         base.Start();
 
-        if (photonView.isMine && UseGravity)
+        if (UseGravity)
         {
             StartCoroutine(AddGravity());
         }
@@ -47,6 +47,7 @@ public class MoveOfVelocity : BaseMoveController
                 g = glideG;
             }
 
+            Debug.Log(g * Time.deltaTime + " / " + myRigidbody.mass);
             MoveProcess(g * Time.deltaTime);
             yield return null;
         }
@@ -57,6 +58,7 @@ public class MoveOfVelocity : BaseMoveController
     {
         //Debug.Log("MoveProcess"+v);
         base.myRigidbody.velocity += v;
+        //base.myRigidbody.AddForce(v, ForceMode.Acceleration);
 
         //同期処理
         if (photonView.isMine && base.ptv != null)

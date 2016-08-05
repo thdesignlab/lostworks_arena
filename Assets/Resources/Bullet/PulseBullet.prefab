@@ -11,9 +11,9 @@ GameObject:
   - 198: {fileID: 19855154}
   - 199: {fileID: 19933246}
   - 114: {fileID: 11487068}
-  - 114: {fileID: 11462110}
   - 135: {fileID: 13512890}
-  - 114: {fileID: 11418786}
+  - 114: {fileID: 11462110}
+  - 114: {fileID: 11489468}
   m_Layer: 0
   m_Name: PulseBullet
   m_TagString: EnergyBullet
@@ -63,25 +63,6 @@ Transform:
   - {fileID: 447854}
   m_Father: {fileID: 0}
   m_RootOrder: 0
---- !u!114 &11418786
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 133600}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 574e8fb93b1b47843ad56bd7457803e6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isCheckGrounded: 0
-  glideGravityRate: 1
-  isLockOn: 0
-  UseGravity: 0
-  hitEffect: {fileID: 0}
-  speed: 300
-  damage: 5
-  stuckTime: 0.1
 --- !u!114 &11462110
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -121,6 +102,31 @@ MonoBehaviour:
   viewIdField: 0
   instantiationId: -1
   isRuntimeInstantiated: 0
+--- !u!114 &11489468
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 133600}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42c6dc432c4d2e34fa6fb808c6464dc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isCheckGrounded: 0
+  glideGravityRate: 1
+  isLockOn: 0
+  UseGravity: 0
+  hitEffect: {fileID: 0}
+  speed: 300
+  damage: 30
+  damagePerSecond: 0
+  stuckTime: 0
+  knockBackRate: 0
+  isPhysicsBulletBreak: 0
+  isEnergyBulletBreak: 0
+  isHitBreak: 1
+  safetyTime: 0.05
 --- !u!135 &13512890
 SphereCollider:
   m_ObjectHideFlags: 1

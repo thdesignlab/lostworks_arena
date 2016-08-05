@@ -324,13 +324,13 @@ Rigidbody:
   m_GameObject: {fileID: 149964}
   serializedVersion: 2
   m_Mass: 50
-  m_Drag: 5
+  m_Drag: 1
   m_AngularDrag: 10
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 1
+  m_CollisionDetection: 2
 --- !u!96 &9618226
 TrailRenderer:
   m_ObjectHideFlags: 1
@@ -419,15 +419,20 @@ MonoBehaviour:
   isCheckGrounded: 0
   glideGravityRate: 1
   isLockOn: 1
+  UseGravity: 0
   hitEffect: {fileID: 0}
-  firstSpeed: 0
+  speed: 100
   damage: 25
+  damagePerSecond: 0
   stuckTime: 0
   knockBackRate: 1
-  safetyTime: 0.05
-  speed: 800
+  isPhysicsBulletBreak: 0
+  isEnergyBulletBreak: 0
+  isHitBreak: 1
+  safetyTime: 0.2
   turnSpeed: 180
   lockStartTime: 0
+  lockedSpeedRate: 1.5
   isNeedLock: 1
 --- !u!114 &11478710
 MonoBehaviour:
@@ -461,7 +466,7 @@ CapsuleCollider:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 149964}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   m_Radius: 0.2
   m_Height: 0.8

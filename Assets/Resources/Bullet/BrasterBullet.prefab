@@ -1667,7 +1667,7 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    ExtrapolateOption: 0
+    ExtrapolateOption: 2
     ExtrapolateSpeed: 1
     ExtrapolateIncludingRoundTripTime: 1
     ExtrapolateNumberOfStoredPositions: 1
@@ -1700,11 +1700,16 @@ MonoBehaviour:
   hitEffect: {fileID: 135988, guid: d7cd433d10510fe46a35c39bac480fe1, type: 2}
   speed: 100
   damage: 1
+  damagePerSecond: 0
   stuckTime: 0
+  knockBackRate: 0
   isPhysicsBulletBreak: 0
   isEnergyBulletBreak: 0
+  isHitBreak: 1
   safetyTime: 0.05
   turnSpeed: 120
+  lockStartTime: 0
+  lockedSpeedRate: 1
   isNeedLock: 1
   chargeEffect: {fileID: 175020}
   maxChargeTime: 3

@@ -13,7 +13,6 @@ GameObject:
   - 135: {fileID: 13577188}
   - 114: {fileID: 11422660}
   - 114: {fileID: 11453172}
-  - 114: {fileID: 11434604}
   m_Layer: 0
   m_Name: EnergyBomb
   m_TagString: EnergyBullet
@@ -48,26 +47,6 @@ MonoBehaviour:
   effectSpawn: {fileID: 0}
   activeLimitTime: 3
   activeLimitDistance: 0
---- !u!114 &11434604
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 104904}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f8c5c098df6519e45bed2f9fec78fa2e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isCheckGrounded: 0
-  glideGravityRate: 1
-  isLockOn: 0
-  UseGravity: 0
-  hitEffect: {fileID: 135988, guid: d7cd433d10510fe46a35c39bac480fe1, type: 2}
-  speed: 100
-  damage: 3
-  stuckTime: 0
-  turnSpeed: 1800
 --- !u!114 &11453172
 MonoBehaviour:
   m_ObjectHideFlags: 1

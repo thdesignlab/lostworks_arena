@@ -77,7 +77,7 @@ public class DialogController : MonoBehaviour
     {
         if (message != null) CloseMessage();
         message = Instantiate((GameObject)Resources.Load(RESOURCE_MESSAGE));
-        Image label = message.transform.FindChild("Label").GetComponent<Image>();
+        //Image label = message.transform.FindChild("Label").GetComponent<Image>();
         Text textMessage = message.transform.FindChild("Label/Text").GetComponent<Text>();
         textMessage.text = text;
 

@@ -16,7 +16,7 @@ GameObject:
   - 135: {fileID: 13552354}
   m_Layer: 0
   m_Name: ChemicalBomb
-  m_TagString: Untagged
+  m_TagString: Effect
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -47,6 +47,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 50
   damagePerSecond: 0
+  isPhysicsBulletBreak: 0
+  isEnergyBulletBreak: 0
 --- !u!114 &11460454
 MonoBehaviour:
   m_ObjectHideFlags: 1

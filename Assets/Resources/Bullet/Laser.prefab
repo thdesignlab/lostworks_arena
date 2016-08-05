@@ -13,7 +13,7 @@ GameObject:
   - 114: {fileID: 11486702}
   - 136: {fileID: 13613692}
   - 114: {fileID: 11410922}
-  - 114: {fileID: 11431064}
+  - 114: {fileID: 11407788}
   m_Layer: 0
   m_Name: Laser
   m_TagString: Laser
@@ -190,6 +190,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scrollSpeedX: 1
   scrollSpeedY: -1
+--- !u!114 &11407788
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 108382}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42c6dc432c4d2e34fa6fb808c6464dc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isCheckGrounded: 0
+  glideGravityRate: 1
+  isLockOn: 0
+  UseGravity: 0
+  hitEffect: {fileID: 0}
+  speed: 0
+  damage: 0
+  damagePerSecond: 80
+  stuckTime: 0
+  knockBackRate: 0
+  isPhysicsBulletBreak: 0
+  isEnergyBulletBreak: 0
+  safetyTime: 0.2
 --- !u!114 &11410922
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -204,29 +228,6 @@ MonoBehaviour:
   effectSpawn: {fileID: 0}
   activeLimitTime: 0
   activeLimitDistance: 0
---- !u!114 &11431064
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 108382}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4cc6533ab98d91045a95f0f255e0050c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isCheckGrounded: 0
-  glideGravityRate: 1
-  isLockOn: 0
-  UseGravity: 0
-  hitEffect: {fileID: 0}
-  speed: 0
-  damage: 0
-  stuckTime: 0
-  isPhysicsBulletBreak: 0
-  isEnergyBulletBreak: 0
-  safetyTime: 0.1
-  damagePerSecond: 100
 --- !u!114 &11440762
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -467,7 +468,7 @@ MonoBehaviour:
     DrawErrorGizmo: 0
   m_RotationModel:
     SynchronizeEnabled: 1
-    InterpolateOption: 2
+    InterpolateOption: 1
     InterpolateRotateTowardsSpeed: 180
     InterpolateLerpSpeed: 5
   m_ScaleModel:

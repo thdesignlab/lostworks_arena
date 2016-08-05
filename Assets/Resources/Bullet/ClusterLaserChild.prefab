@@ -11,9 +11,9 @@ GameObject:
   - 198: {fileID: 19816656}
   - 199: {fileID: 19918204}
   - 114: {fileID: 11412434}
-  - 114: {fileID: 11463346}
   - 135: {fileID: 13541138}
-  - 114: {fileID: 11434372}
+  - 114: {fileID: 11463346}
+  - 114: {fileID: 11493428}
   m_Layer: 0
   m_Name: ClusterLaserChild
   m_TagString: EnergyBullet
@@ -59,30 +59,6 @@ MonoBehaviour:
   viewIdField: 0
   instantiationId: -1
   isRuntimeInstantiated: 0
---- !u!114 &11434372
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 155844}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c9f8560e0d0b2a4793bcb7cf1980c76, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isCheckGrounded: 0
-  glideGravityRate: 1
-  isLockOn: 0
-  UseGravity: 0
-  hitEffect: {fileID: 135988, guid: d7cd433d10510fe46a35c39bac480fe1, type: 2}
-  speed: 100
-  damage: 8
-  stuckTime: 0
-  isPhysicsBulletBreak: 0
-  isEnergyBulletBreak: 0
-  safetyTime: 0.05
-  turnSpeed: 360
-  isNeedLock: 1
 --- !u!114 &11463346
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -97,6 +73,35 @@ MonoBehaviour:
   effectSpawn: {fileID: 0}
   activeLimitTime: 2
   activeLimitDistance: 0
+--- !u!114 &11493428
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 155844}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c39a9577c9d9ce419562d5c935a761e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isCheckGrounded: 0
+  glideGravityRate: 1
+  isLockOn: 0
+  UseGravity: 0
+  hitEffect: {fileID: 0}
+  speed: 100
+  damage: 10
+  damagePerSecond: 0
+  stuckTime: 0
+  knockBackRate: 0
+  isPhysicsBulletBreak: 0
+  isEnergyBulletBreak: 0
+  isHitBreak: 1
+  safetyTime: 0
+  turnSpeed: 180
+  lockStartTime: 0
+  lockedSpeedRate: 1
+  isNeedLock: 1
 --- !u!135 &13541138
 SphereCollider:
   m_ObjectHideFlags: 1

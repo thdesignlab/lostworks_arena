@@ -112,11 +112,11 @@ GameObject:
   m_Component:
   - 4: {fileID: 479636}
   - 95: {fileID: 9572876}
+  - 136: {fileID: 13603360}
   - 114: {fileID: 11413318}
   - 114: {fileID: 11423940}
   - 114: {fileID: 11421764}
-  - 114: {fileID: 11478796}
-  - 136: {fileID: 13603360}
+  - 114: {fileID: 11455404}
   m_Layer: 0
   m_Name: Beam
   m_TagString: Laser
@@ -561,7 +561,7 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    ExtrapolateOption: 0
+    ExtrapolateOption: 3
     ExtrapolateSpeed: 1
     ExtrapolateIncludingRoundTripTime: 1
     ExtrapolateNumberOfStoredPositions: 1
@@ -576,7 +576,7 @@ MonoBehaviour:
     InterpolateOption: 0
     InterpolateMoveTowardsSpeed: 1
     InterpolateLerpSpeed: 0
---- !u!114 &11478796
+--- !u!114 &11455404
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -584,7 +584,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 168918}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4cc6533ab98d91045a95f0f255e0050c, type: 3}
+  m_Script: {fileID: 11500000, guid: 42c6dc432c4d2e34fa6fb808c6464dc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   isCheckGrounded: 0
@@ -593,12 +593,13 @@ MonoBehaviour:
   UseGravity: 0
   hitEffect: {fileID: 0}
   speed: 0
-  damage: 100
-  stuckTime: 0
-  isPhysicsBulletBreak: 0
-  isEnergyBulletBreak: 0
-  safetyTime: 0.05
+  damage: 50
   damagePerSecond: 50
+  stuckTime: 0
+  knockBackRate: 0
+  isPhysicsBulletBreak: 1
+  isEnergyBulletBreak: 0
+  safetyTime: 0
 --- !u!114 &11479168
 MonoBehaviour:
   m_ObjectHideFlags: 1

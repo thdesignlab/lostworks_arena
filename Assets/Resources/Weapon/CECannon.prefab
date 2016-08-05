@@ -1675,11 +1675,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bitMotionType: 2
+  bitMoveTime: 0
   reloadTime: 5
   fireEffect: {fileID: 0}
   bullet: {fileID: 159356, guid: c3afc60529efd224d8bdd3a2cd06819c, type: 2}
   rapidCount: 3
-  rapidInterval: 0.25
+  rapidInterval: 0.5
   spreadCount: 3
   spreadDiffAngle: 10
   focusDiff: 10

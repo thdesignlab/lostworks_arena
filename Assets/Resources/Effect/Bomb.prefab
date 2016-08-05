@@ -16,7 +16,7 @@ GameObject:
   - 135: {fileID: 13505480}
   m_Layer: 0
   m_Name: Bomb
-  m_TagString: Untagged
+  m_TagString: Effect
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -86,6 +86,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 5
   damagePerSecond: 0
+  isPhysicsBulletBreak: 0
+  isEnergyBulletBreak: 0
 --- !u!135 &13505480
 SphereCollider:
   m_ObjectHideFlags: 1

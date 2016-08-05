@@ -417,7 +417,6 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 470980}
-  - 114: {fileID: 11431690}
   - 114: {fileID: 11496606}
   m_Layer: 0
   m_Name: Muzzle (1)
@@ -449,7 +448,6 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 457522}
-  - 114: {fileID: 11457170}
   - 114: {fileID: 11477684}
   m_Layer: 0
   m_Name: Muzzle
@@ -481,7 +479,6 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 444264}
-  - 114: {fileID: 11463788}
   - 114: {fileID: 11484704}
   m_Layer: 0
   m_Name: Muzzle (2)
@@ -1647,27 +1644,13 @@ MonoBehaviour:
   bitMotionType: 2
   bitMoveTime: 0.3
   reloadTime: 5
-  fireEffect: {fileID: 0}
+  fireEffect: {fileID: 182678, guid: bb8b28526e4afa1488092ff5b00c3e2b, type: 2}
   bullet: {fileID: 113868, guid: ba43121d744c79a4b9076c4cf537a212, type: 2}
   rapidCount: 50
   rapidInterval: 0.1
   spreadCount: 0
   spreadDiffAngle: 0
-  focusDiff: 3
---- !u!114 &11431690
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 177236}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2bf824a3d499c32439fa2f967ffd296c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isCheckGrounded: 0
-  glideGravityRate: 1
-  isLockOn: 1
+  focusDiff: 5
 --- !u!114 &11454678
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1679,34 +1662,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9afa1e6dd7dae2b4b86c732a5f351dee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &11457170
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 180926}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2bf824a3d499c32439fa2f967ffd296c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isCheckGrounded: 0
-  glideGravityRate: 1
-  isLockOn: 1
---- !u!114 &11463788
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 186332}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2bf824a3d499c32439fa2f967ffd296c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isCheckGrounded: 0
-  glideGravityRate: 1
-  isLockOn: 1
 --- !u!114 &11477684
 MonoBehaviour:
   m_ObjectHideFlags: 1

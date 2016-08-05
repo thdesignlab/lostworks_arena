@@ -20,26 +20,19 @@ public class ChangeEffectController : EffectController
     {
         base.Awake();
 
-        if (photonView.isMine)
-        {
-            startScaleVector = new Vector3(startScale, startScale, startScale);
-            lastScaleVector = new Vector3(endScale, endScale, endScale);
+        startScaleVector = new Vector3(startScale, startScale, startScale);
+        lastScaleVector = new Vector3(endScale, endScale, endScale);
 
-            base.myTran.localScale = startScaleVector;
-        }
+        base.myTran.localScale = startScaleVector;
     }
 	
-	// Update is called once per frame
 	void Update ()
     {
-        if (photonView.isMine)
-        {
-            activeTime += Time.deltaTime;
+        activeTime += Time.deltaTime;
 
-            float rate = activeTime / scaleTime;
-            if (rate > 1) rate = 1;
+        float rate = activeTime / scaleTime;
+        if (rate > 1) rate = 1;
 
-            base.myTran.localScale = Vector3.Lerp(startScaleVector, lastScaleVector, rate);
-        }
+        base.myTran.localScale = Vector3.Lerp(startScaleVector, lastScaleVector, rate);
     }
 }
