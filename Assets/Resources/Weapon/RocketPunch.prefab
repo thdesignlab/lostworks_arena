@@ -450,7 +450,7 @@ GameObject:
   - 4: {fileID: 495578}
   m_Layer: 0
   m_Name: Bit
-  m_TagString: Untagged
+  m_TagString: WeaponBit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1616,6 +1616,7 @@ MonoBehaviour:
   isCheckGrounded: 0
   glideGravityRate: 1
   isLockOn: 1
+  aimSpeed: 60
 --- !u!114 &11493070
 MonoBehaviour:
   m_ObjectHideFlags: 1

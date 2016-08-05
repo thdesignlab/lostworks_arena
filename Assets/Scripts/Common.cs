@@ -69,7 +69,21 @@ namespace Common
         public const int BIT_MOTION_TYPE_MISSILE = 2;
         public const int BIT_MOTION_TYPE_LASER = 3;
 
-        //パーツ名称
+        //パーツ分類No
+        public const int PARTS_KIND_HAND_NO = 1;
+        public const int PARTS_KIND_HAND_DASH_NO = 2;
+        public const int PARTS_KIND_SHOULDER_NO = 3;
+        public const int PARTS_KIND_SHOULDER_DASH_NO = 4;
+        public const int PARTS_KIND_SUB_NO = 5;
+
+        //パーツ分類(タグ)
+        public const string PARTS_KIND_HAND = "Hand";
+        public const string PARTS_KIND_HAND_DASH = "HandDash";
+        public const string PARTS_KIND_SHOULDER = "Shoulder";
+        public const string PARTS_KIND_SHOULDER_DASH = "ShoulderDash";
+        public const string PARTS_KIND_SUB = "Sub";
+
+        //パーツ名称(名前)
         public const string PARTS_BODY = "Body";
         public const string PARTS_GROUNDED = "Grounded";
         public const string PARTS_LEFT_HAND = "LeftHand";
@@ -83,16 +97,25 @@ namespace Common
         public const int WEAPON_NORMAL = 0;
         public const int WEAPON_DASH = 1;
 
-        //全部位名
+        //装備可能パーツNo
+        public const int PARTS_LEFT_HAND_NO = 0;
+        public const int PARTS_LEFT_HAND_DASH_NO = 1;
+        public const int PARTS_RIGHT_HAND_NO = 2;
+        public const int PARTS_RIGHT_HAND_DASH_NO = 3;
+        public const int PARTS_SHOULDER_NO = 4;
+        public const int PARTS_SHOULDER_DASH_NO = 5;
+        public const int PARTS_SUB_NO = 6;
+
+        //装備可能部位名
         public static string[] partsNameArray = new string[]
         {
-            PARTS_LEFT_HAND,        //0
-            PARTS_LEFT_HAND_DASH,   //1
-            PARTS_RIGHT_HAND,       //2
-            PARTS_RIGHT_HAND_DASH,  //3
-            PARTS_SHOULDER,         //4
-            PARTS_SHOULDER_DASH,    //5
-            PARTS_SUB               //6
+            PARTS_LEFT_HAND,
+            PARTS_LEFT_HAND_DASH,
+            PARTS_RIGHT_HAND,
+            PARTS_RIGHT_HAND_DASH,
+            PARTS_SHOULDER,
+            PARTS_SHOULDER_DASH,
+            PARTS_SUB
         };
 
         //リロードゲージカラー
@@ -101,6 +124,7 @@ namespace Common
         //武器タグ
         public const string TAG_WEAPON = "Weapon";
         public const string TAG_WEAPON_BIT = "WeaponBit";
+        public const string TAG_BIT_POINT = "BitPoint";
 
         //弾発射口タグ
         public const string TAG_MUZZLE = "Muzzle";
@@ -147,34 +171,63 @@ namespace Common
         public static string LAYER_STRUCTURE = "Structure";
     }
 
+    //### キャラクター詳細 ###
+    public static class Character
+    {
+        //獲得タイプ
+        public const string OBTAIN_TYPE_INIT = "INIT";
+
+        //武器リストNo
+        public const int DETAIL_PREFAB_NAME_NO = 0;     //プレハブ名
+        public const int DETAIL_NAME_NO = 1;            //キャラ名
+        public const int DETAIL_DESCRIPTION_NO = 2;     //説明
+        public const int DETAIL_OBTAIN_TYPE_NO = 3;     //取得タイプ
+
+        //キャラクターリスト
+        public static Dictionary<int, string[]> characterLineUp = new Dictionary<int, string[]>()
+        {
+            {0, new string[]{ "Hero", "るり", "せぶんないつ", OBTAIN_TYPE_INIT}},
+        };
+    }
+
     //### 武器詳細 ###
     public static class Weapon
     {
-        //武器獲得タイプ
+        //獲得タイプ
         public const string OBTAIN_TYPE_INIT = "INIT";
-        public const string OBTAIN_TYPE_BUY = "BUY";
-        public const string OBTAIN_TYPE_STAGE = "STAGE";
 
-        /*
-        ##### 武器リスト #####
-        0 : プレハブ名
-        1 : 武器名
-        2 : 説明
-        3 : 取得タイプ
-        */
-        public static List<string[]> weaponLineUp = new List<string[]>()
+        //武器リストNo
+        public const int DETAIL_PREFAB_NAME_NO = 0;     //プレハブ名
+        public const int DETAIL_NAME_NO = 1;            //武器名
+        public const int DETAIL_DESCRIPTION_NO = 2;     //説明
+        public const int DETAIL_EQUIP_PARTS_NO = 3;     //装備箇所
+        public const int DETAIL_OBTAIN_TYPE_NO = 4;     //取得タイプ
+
+        //武器リスト
+        public static Dictionary<int, string[]> weaponLineUp = new Dictionary<int, string[]>()
         {
-            //両手
-            { new string[]{ "MashinGun", "マシンガン", "普通の銃", OBTAIN_TYPE_INIT}},
-            { new string[]{ "", "", "", OBTAIN_TYPE_INIT}},
-            //両手(ダッシュ)
-            { new string[]{ "", "", "", OBTAIN_TYPE_INIT}},
+            //手
+            { 1000, new string[]{ "BeamCannon", "", "", OBTAIN_TYPE_INIT}},
+            { 1001, new string[]{ "BrasterLauncher", "", "", OBTAIN_TYPE_INIT}},
+            { 1002, new string[]{ "Rifle", "", "", OBTAIN_TYPE_INIT}},
+            { 1003, new string[]{ "RocketPunch", "", "", OBTAIN_TYPE_INIT}},
+            //手(ダッシュ)
+            { 1100, new string[]{ "MachineGun", "マシンガン", "", OBTAIN_TYPE_INIT}},
+            { 1101, new string[]{ "GatlingGun", "", "", OBTAIN_TYPE_INIT}},
+            { 1102, new string[]{ "PulseGun", "", "", OBTAIN_TYPE_INIT}},
             //背中
-            { new string[]{ "", "", "", OBTAIN_TYPE_INIT}},
+            { 2000, new string[]{ "CECannon", "", "", OBTAIN_TYPE_INIT}},
+            { 2001, new string[]{ "GatlingCannon", "", "", OBTAIN_TYPE_INIT}},
+            { 2002, new string[]{ "HugeLaser", "", "", OBTAIN_TYPE_INIT}},
             //背中(ダッシュ
-            { new string[]{ "", "", "", OBTAIN_TYPE_INIT}},
+            { 2100, new string[]{ "ClusterLaser", "", "", OBTAIN_TYPE_INIT}},
+            { 2101, new string[]{ "MissileLauncher", "", "", OBTAIN_TYPE_INIT}},
+            { 2101, new string[]{ "SatelliteMissile", "", "", OBTAIN_TYPE_INIT}},
             //サブ
-            { new string[]{ "", "", "", OBTAIN_TYPE_INIT}},
+            { 3000, new string[]{ "AvoidBurst", "", "", OBTAIN_TYPE_INIT}},
+            { 3001, new string[]{ "BoostRecoverSp", "", "", OBTAIN_TYPE_INIT}},
+            { 3002, new string[]{ "InvincibleShield", "", "", OBTAIN_TYPE_INIT}},
+            { 3003, new string[]{ "SpeedBurst", "", "", OBTAIN_TYPE_INIT}},
         };
 
     }
@@ -310,7 +363,6 @@ namespace Common
         //パーツ構造取得
         public static string GetPartsStructure(string partsName)
         {
-            //return Common.CO.PARTS_BODY + "/" + partsName;
             return partsName;
         }
         public static string GetPartsStructure(int partsNo)

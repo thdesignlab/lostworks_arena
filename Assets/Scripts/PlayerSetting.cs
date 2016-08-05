@@ -125,30 +125,12 @@ public class PlayerSetting : Photon.MonoBehaviour
     {
         foreach (Transform child in myTran)
         {
-            if (child.name == Common.CO.PARTS_BODY)
+            foreach (string partsName in Common.CO.partsNameArray)
             {
-                //Bodyの中を検索
-                foreach (Transform grandson in child)
+                if (child.name == partsName)
                 {
-                    foreach (string partsName in Common.CO.partsNameArray)
-                    {
-                        if (grandson.name == partsName)
-                        {
-                            EquipWeapon(grandson);
-                            break;
-                        }
-                    }
-                }
-            }
-            else
-            {
-                foreach (string partsName in Common.CO.partsNameArray)
-                {
-                    if (child.name == partsName)
-                    {
-                        EquipWeapon(child);
-                        break;
-                    }
+                    EquipWeapon(child);
+                    break;
                 }
             }
         }

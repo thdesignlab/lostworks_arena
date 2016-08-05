@@ -11,8 +11,6 @@ TagManager:
   - Missile
   - Hand
   - Shoulder
-  - Equip
-  - Physics
   - EnergyBullet
   - Laser
   - Sub
@@ -24,6 +22,9 @@ TagManager:
   - 3DText
   - PlayerCanvas
   - Effect
+  - HandDash
+  - ShoulderDash
+  - BitPoint
   layers:
   - Default
   - TransparentFX

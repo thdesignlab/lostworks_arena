@@ -419,7 +419,7 @@ GameObject:
   - 4: {fileID: 409660}
   m_Layer: 0
   m_Name: Bit
-  m_TagString: Untagged
+  m_TagString: WeaponBit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1675,6 +1675,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bitMotionType: 3
+  bitMoveTime: 0
   reloadTime: 3
   fireEffect: {fileID: 0}
   bullet: {fileID: 122430, guid: b5924329171164744bc91770a18f9a63, type: 2}

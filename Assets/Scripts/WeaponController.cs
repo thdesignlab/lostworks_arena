@@ -12,6 +12,8 @@ public class WeaponController : Photon.MonoBehaviour
 
     [SerializeField]
     protected float bitMoveTime;   //発射までにかかる時間
+    [SerializeField]
+    protected bool isBitFixed = false;  //Bit固定FLG
     protected bool isBitMoved;
     protected Vector3 bitFromPos = default(Vector3);
     protected Vector3 bitToPos = default(Vector3);
@@ -49,10 +51,13 @@ public class WeaponController : Photon.MonoBehaviour
         bitAnimator = myTran.GetComponentInChildren<Animator>();
 
         //Bit移動用
-        myBitTran = myTran.FindChild("Bit");
-        if (myBitTran)
+        foreach (Transform child in myTran)
         {
-            bitFromPos = myBitTran.localPosition;
+            if (child.tag == Common.CO.TAG_WEAPON_BIT)
+            {
+                myBitTran = child;
+                bitFromPos = myBitTran.localPosition;
+            }
         }
     }
 
@@ -279,14 +284,15 @@ public class WeaponController : Photon.MonoBehaviour
 
     protected bool StartBitMove()
     {
-        if (bitFromPos == default(Vector3) || bitToPos == default(Vector3)) return true;
+        //Debug.Log(bitFromPos + " >> " + bitToPos + " : " + bitMoveTime);
+        if (bitFromPos == bitToPos) return true;
 
         if (photonView.isMine)
         {
             isBitMoved = false;
             if (bitMoveTime > 0)
             {
-                StartCoroutine(BitMoveProccess(bitFromPos, bitToPos, 0));
+                StartCoroutine(BitMoveProccess(bitFromPos, bitToPos, 0, true));
             }
             else
             {
@@ -298,13 +304,21 @@ public class WeaponController : Photon.MonoBehaviour
 
     protected void ReturnBitMove()
     {
-        if (bitFromPos == default(Vector3) || bitToPos == default(Vector3)) return;
+        if (bitFromPos == bitToPos) return;
 
         if (photonView.isMine)
         {
             if (bitMoveTime > 0)
             {
-                StartCoroutine(BitMoveProccess(bitToPos, bitFromPos, 180));
+                if (isBitFixed)
+                {
+                    //Bit固定解除
+                    isBitMoved = false;
+                }
+                else
+                {
+                    StartCoroutine(BitMoveProccess(bitToPos, bitFromPos, 180, false));
+                }
             }
             else
             {
@@ -313,7 +327,7 @@ public class WeaponController : Photon.MonoBehaviour
         }
     }
 
-    IEnumerator BitMoveProccess(Vector3 fromPos, Vector3 toPos, float startAngle)
+    IEnumerator BitMoveProccess(Vector3 fromPos, Vector3 toPos, float startAngle, bool afterFlg)
     {
         float time = 0;
         for (;;)
@@ -329,13 +343,43 @@ public class WeaponController : Photon.MonoBehaviour
             yield return null;
         }
 
-        if (isBitMoved)
+        isBitMoved = afterFlg;
+        if (!afterFlg)
         {
-            isBitMoved = false;
+            //帰り
+            myBitTran.rotation = myBitTran.root.rotation;
         }
         else
         {
-            isBitMoved = true;
+            //行き
+            if (isBitFixed)
+            {
+                //Bit固定
+                StartCoroutine(BitFixed());
+            }
+
+        }
+    }
+
+    IEnumerator BitFixed()
+    {
+        Vector3 fixedPos = myBitTran.position;
+        for (;;)
+        {
+            if (isBitMoved)
+            {
+                //固定
+                myBitTran.position = fixedPos;
+            }
+            else
+            {
+                //固定解除
+
+                Vector3 returnPos = myBitTran.localPosition;
+                StartCoroutine(BitMoveProccess(returnPos, bitFromPos, 180, false));
+                break;
+            }
+            yield return null;
         }
     }
 }

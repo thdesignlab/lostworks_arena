@@ -119,7 +119,7 @@ GameObject:
   - 114: {fileID: 11455404}
   m_Layer: 0
   m_Name: Beam
-  m_TagString: Laser
+  m_TagString: EnergyBullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -599,6 +599,7 @@ MonoBehaviour:
   knockBackRate: 0
   isPhysicsBulletBreak: 1
   isEnergyBulletBreak: 0
+  isHitBreak: 0
   safetyTime: 0
 --- !u!114 &11479168
 MonoBehaviour:

@@ -10,7 +10,7 @@ GameObject:
   - 4: {fileID: 482590}
   m_Layer: 0
   m_Name: Bit
-  m_TagString: Untagged
+  m_TagString: WeaponBit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1572,6 +1572,7 @@ MonoBehaviour:
   isCheckGrounded: 0
   glideGravityRate: 1
   isLockOn: 1
+  aimSpeed: 60
 --- !u!114 &11442458
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1584,6 +1585,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bitMotionType: 3
+  bitMoveTime: 0
   reloadTime: 3
   fireEffect: {fileID: 0}
   bullet: {fileID: 104904, guid: 15b3009b249af2f48b57a9adb3465adb, type: 2}

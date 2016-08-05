@@ -237,9 +237,27 @@ public abstract class BaseMoveController : Photon.MonoBehaviour
     {
         //Debug.Log("parent GetVelocity");
         float v = 0;
-        if (myTran.tag == Common.CO.TAG_WEAPON && weaponCtrl != null)
+        if (myTran.tag == Common.CO.TAG_WEAPON)
         {
-            v = weaponCtrl.GetBulletSpeed();
+            if (!weaponCtrl)
+            {
+                weaponCtrl = GetComponent<WeaponController>();
+            }
+            else
+            {
+                v = weaponCtrl.GetBulletSpeed();
+            }
+        }
+        else if (myTran.tag == Common.CO.TAG_WEAPON_BIT)
+        {
+            if (!weaponCtrl)
+            {
+                weaponCtrl = myTran.parent.GetComponent<WeaponController>();
+            }
+            else
+            {
+                v = weaponCtrl.GetBulletSpeed();
+            }
         }
         else
         {

@@ -33,6 +33,7 @@ public class BulletWeaponController : WeaponController
         base.Awake();
 
         //発射口取得
+        Transform bitPoint = null;
         foreach (Transform child in myTran)
         {
             if (child.tag == Common.CO.TAG_MUZZLE)
@@ -51,10 +52,21 @@ public class BulletWeaponController : WeaponController
                     }
                 }
             }
+            else if (child.tag == Common.CO.TAG_BIT_POINT)
+            {
+                bitPoint = child;
+            }
         }
 
         //Bit移動用
-        base.bitToPos = muzzles[0].localPosition;
+        if (bitPoint != null)
+        {
+            base.bitToPos = bitPoint.localPosition;
+        }
+        else
+        {
+            base.bitToPos = muzzles[0].localPosition;
+        }
         base.radius = Vector3.Distance(base.bitFromPos, base.bitToPos) / 2;
 
         if (rapidCount <= 0) rapidCount = 1;
@@ -82,13 +94,20 @@ public class BulletWeaponController : WeaponController
             aimingCtrl.SetTarget(target);
         }
 
-        foreach (Transform mzl in muzzles)
+        foreach (Transform child in myTran)
         {
-            AimingController aimCtrl = mzl.GetComponent<AimingController>();
-            if (aimCtrl != null)
+            switch (child.tag)
             {
-                aimCtrl.SetTarget(target);
+                case Common.CO.TAG_WEAPON_BIT:
+                case Common.CO.TAG_MUZZLE:
+                    AimingController aimCtrl = child.GetComponent<AimingController>();
+                    if (aimCtrl != null)
+                    {
+                        aimCtrl.SetTarget(target);
+                    }
+                    break;
             }
+
         }
     }
 

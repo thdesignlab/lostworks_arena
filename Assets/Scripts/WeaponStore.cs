@@ -59,27 +59,25 @@ public class WeaponStore : Photon.MonoBehaviour
         GameObject weapon = null;
         if (parts == null) return weapon;
 
-        switch (parts.name)
+        switch (parts.tag)
         {
-            case Common.CO.PARTS_LEFT_HAND:
-            case Common.CO.PARTS_RIGHT_HAND:
+            case Common.CO.PARTS_KIND_HAND:
                 weapon = SelectWeapon(handWeaponList, weaponNo);
                 break;
 
-            case Common.CO.PARTS_LEFT_HAND_DASH:
-            case Common.CO.PARTS_RIGHT_HAND_DASH:
+            case Common.CO.PARTS_KIND_HAND_DASH:
                 weapon = SelectWeapon(dashHandWeaponList, weaponNo);
                 break;
 
-            case Common.CO.PARTS_SHOULDER:
+            case Common.CO.PARTS_KIND_SHOULDER:
                 weapon = SelectWeapon(shoulderWeaponList, weaponNo);
                 break;
 
-            case Common.CO.PARTS_SHOULDER_DASH:
+            case Common.CO.PARTS_KIND_SHOULDER_DASH:
                 weapon = SelectWeapon(dashShoulderWeaponList, weaponNo);
                 break;
 
-            case Common.CO.PARTS_SUB:
+            case Common.CO.PARTS_KIND_SUB:
                 weapon = SelectWeapon(subWeaponList, weaponNo);
                 break;
         }
@@ -142,28 +140,28 @@ public class WeaponStore : Photon.MonoBehaviour
         cancelBtn.transform.SetParent(weaponListPanel.transform, false);
         cancelBtn.GetComponent<Button>().onClick.AddListener(() => OnCancelEquipButton());
 
-        switch (Common.CO.partsNameArray[partsNo])
+        switch (partsNo)
         {
-            case Common.CO.PARTS_LEFT_HAND:
-            case Common.CO.PARTS_RIGHT_HAND:
+            case Common.CO.PARTS_LEFT_HAND_NO:
+            case Common.CO.PARTS_RIGHT_HAND_NO:
                 selectableWeaponList = new List<GameObject>(handWeaponList);
                 break;
 
-            case Common.CO.PARTS_LEFT_HAND_DASH:
-            case Common.CO.PARTS_RIGHT_HAND_DASH:
+            case Common.CO.PARTS_LEFT_HAND_DASH_NO:
+            case Common.CO.PARTS_RIGHT_HAND_DASH_NO:
                 selectableWeaponList = new List<GameObject>(dashHandWeaponList);
                 break;
 
-            case Common.CO.PARTS_SHOULDER:
+            case Common.CO.PARTS_SHOULDER_NO:
                 selectableWeaponList = new List<GameObject>(shoulderWeaponList); ;
                 break;
 
-            case Common.CO.PARTS_SHOULDER_DASH:
-                selectableWeaponList = new List<GameObject>(dashShoulderWeaponList); ;
+            case Common.CO.PARTS_SHOULDER_DASH_NO:
+                selectableWeaponList = new List<GameObject>(dashShoulderWeaponList);
                 break;
 
-            case Common.CO.PARTS_SUB:
-                selectableWeaponList = new List<GameObject>(subWeaponList); ;
+            case Common.CO.PARTS_SUB_NO:
+                selectableWeaponList = new List<GameObject>(subWeaponList);
                 break;
         }
 
