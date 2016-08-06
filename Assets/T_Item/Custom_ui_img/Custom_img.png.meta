@@ -1,9 +1,25 @@
 fileFormatVersion: 2
 guid: 448fa39e20a754c49a39a1544c65cedd
-timeCreated: 1470413666
+timeCreated: 1470493199
 licenseType: Free
 TextureImporter:
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    21300000: Custom_img_0
+    21300002: Custom_img_1
+    21300004: Custom_img_2
+    21300006: Custom_img_3
+    21300008: Custom_img_4
+    21300010: Custom_img_5
+    21300012: Custom_img_6
+    21300014: Custom_img_7
+    21300016: Custom_img_8
+    21300018: Custom_img_9
+    21300020: Custom_img_10
+    21300022: Custom_img_11
+    21300024: Custom_img_12
+    21300026: Custom_img_13
+    21300028: Custom_img_14
+    21300030: Custom_img_15
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -30,26 +46,226 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     filterMode: -1
-    aniso: -1
+    aniso: 16
     mipBias: -1
-    wrapMode: -1
-  nPOTScale: 1
+    wrapMode: 1
+  nPOTScale: 0
   lightmap: 0
   rGBM: 0
   compressionQuality: 50
   allowsAlphaSplitting: 0
-  spriteMode: 0
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 100
-  alphaIsTransparency: 0
-  textureType: -1
+  alphaIsTransparency: 1
+  textureType: 8
   buildTargetSettings: []
   spriteSheet:
-    sprites: []
+    sprites:
+    - name: Custom_img_0
+      rect:
+        serializedVersion: 2
+        x: 14
+        y: 949
+        width: 360
+        height: 61
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -180, y: 30.5}
+        - {x: -180, y: -30.5}
+        - {x: 180, y: -30.5}
+        - {x: 180, y: 30.5}
+    - name: Custom_img_1
+      rect:
+        serializedVersion: 2
+        x: 403
+        y: 964
+        width: 14
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: Custom_img_2
+      rect:
+        serializedVersion: 2
+        x: 439
+        y: 972
+        width: 37
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: Custom_img_3
+      rect:
+        serializedVersion: 2
+        x: 644
+        y: 138
+        width: 377
+        height: 882
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -188.5, y: 441}
+        - {x: -188.5, y: -441}
+        - {x: 188.5, y: -441}
+        - {x: 188.5, y: 441}
+    - name: Custom_img_4
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 688
+        width: 355
+        height: 242
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -177.5, y: 121}
+        - {x: -177.5, y: -121}
+        - {x: 177.5, y: -121}
+        - {x: 177.5, y: 121}
+    - name: Custom_img_5
+      rect:
+        serializedVersion: 2
+        x: 388
+        y: 839
+        width: 92
+        height: 91
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -46, y: 45.5}
+        - {x: -46, y: -45.5}
+        - {x: 46, y: -45.5}
+        - {x: 46, y: 45.5}
+    - name: Custom_img_6
+      rect:
+        serializedVersion: 2
+        x: 501
+        y: 831
+        width: 107
+        height: 106
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -53.5, y: 53}
+        - {x: -53.5, y: -53}
+        - {x: 53.5, y: -53}
+        - {x: 53.5, y: 53}
+    - name: Custom_img_7
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 616
+        width: 19
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: Custom_img_8
+      rect:
+        serializedVersion: 2
+        x: 124
+        y: 616
+        width: 64
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: Custom_img_9
+      rect:
+        serializedVersion: 2
+        x: 227
+        y: 616
+        width: 21
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: Custom_img_10
+      rect:
+        serializedVersion: 2
+        x: 334
+        y: 616
+        width: 66
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: Custom_img_11
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 558
+        width: 22
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: Custom_img_12
+      rect:
+        serializedVersion: 2
+        x: 122
+        y: 556
+        width: 67
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: Custom_img_13
+      rect:
+        serializedVersion: 2
+        x: 226
+        y: 556
+        width: 35
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: Custom_img_14
+      rect:
+        serializedVersion: 2
+        x: 6
+        y: 124
+        width: 746
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: Custom_img_15
+      rect:
+        serializedVersion: 2
+        x: 8
+        y: 10
+        width: 750
+        height: 103
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -375, y: 51.5}
+        - {x: -375, y: -51.5}
+        - {x: 375, y: -51.5}
+        - {x: 375, y: 51.5}
     outline: []
   spritePackingTag: 
   userData: 

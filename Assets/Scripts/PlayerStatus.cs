@@ -82,6 +82,16 @@ public class PlayerStatus : Photon.MonoBehaviour {
 
     void Awake()
     {
+        if (shield != null)
+        {
+            shieldMat1 = shield.transform.FindChild("Sphere001").GetComponent<Renderer>().material;
+            shieldStartColor1 = shieldMat1.GetColor("_TintColor");
+            shieldLastColor1 = new Color(shieldStartColor1.r, shieldStartColor1.g, shieldStartColor1.b, 0);
+            shieldMat2 = shield.transform.FindChild("Sphere002").GetComponent<Renderer>().material;
+            shieldStartColor2 = shieldMat2.GetColor("_TintColor");
+            shieldLastColor2 = new Color(shieldStartColor2.r, shieldStartColor2.g, shieldStartColor2.b, 0);
+        }
+
         if (SceneManager.GetActiveScene().name == Common.CO.SCENE_CUSTOM)
         {
             //カスタム画面
@@ -154,16 +164,6 @@ public class PlayerStatus : Photon.MonoBehaviour {
         else
         {
             StartCoroutine(SetHpSlider(hpBarEnemy, hpBarEnemyImage));
-        }
-
-        if (shield != null)
-        {
-            shieldMat1 = shield.transform.FindChild("Sphere001").GetComponent<Renderer>().material;
-            shieldStartColor1 = shieldMat1.GetColor("_TintColor");
-            shieldLastColor1 = new Color(shieldStartColor1.r, shieldStartColor1.g, shieldStartColor1.b, 0);
-            shieldMat2 = shield.transform.FindChild("Sphere002").GetComponent<Renderer>().material;
-            shieldStartColor2 = shieldMat2.GetColor("_TintColor");
-            shieldLastColor2 = new Color(shieldStartColor2.r, shieldStartColor2.g, shieldStartColor2.b, 0);
         }
     }
 
