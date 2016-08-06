@@ -43,8 +43,14 @@ public class PlayerStatus : Photon.MonoBehaviour {
     public float invincibleTime = 0;
     [SerializeField]
     private GameObject shield;
-    private float leftShieldTIme = 0;
+    private float leftShieldTime = 0;
     private float shieldTime = 0.5f;
+    private Material shieldMat1;
+    private Color shieldStartColor1;
+    private Color shieldLastColor1;
+    private Material shieldMat2;
+    private Color shieldStartColor2;
+    private Color shieldLastColor2;
 
     //HP/SPゲージ
     private Slider hpBarMine;
@@ -149,6 +155,16 @@ public class PlayerStatus : Photon.MonoBehaviour {
         {
             StartCoroutine(SetHpSlider(hpBarEnemy, hpBarEnemyImage));
         }
+
+        if (shield != null)
+        {
+            shieldMat1 = shield.transform.FindChild("Sphere001").GetComponent<Renderer>().material;
+            shieldStartColor1 = shieldMat1.GetColor("_TintColor");
+            shieldLastColor1 = new Color(shieldStartColor1.r, shieldStartColor1.g, shieldStartColor1.b, 0);
+            shieldMat2 = shield.transform.FindChild("Sphere002").GetComponent<Renderer>().material;
+            shieldStartColor2 = shieldMat2.GetColor("_TintColor");
+            shieldLastColor2 = new Color(shieldStartColor2.r, shieldStartColor2.g, shieldStartColor2.b, 0);
+        }
     }
 
     public void Init()
@@ -229,11 +245,11 @@ public class PlayerStatus : Photon.MonoBehaviour {
     [PunRPC]
     private void OpenShieldRPC(float time)
     {
-        if (leftShieldTIme > 0)
+        if (leftShieldTime > 0)
         {
-            if (leftShieldTIme < time)
+            if (leftShieldTime < time)
             {
-                leftShieldTIme = time;
+                leftShieldTime = time;
             }
         }
         else
@@ -244,13 +260,18 @@ public class PlayerStatus : Photon.MonoBehaviour {
     IEnumerator OpenShield(float time)
     {
         //Debug.Log("OpenShield: "+ time.ToString());
-        leftShieldTIme = time;
+        leftShieldTime = time;
         shield.SetActive(true);
         for (;;)
         {
+            leftShieldTime -= Time.deltaTime;
+            float alpha = leftShieldTime / shieldTime;
+            if (alpha > 1) alpha = 1;
+            if (alpha < 0) alpha = 0;
+            shieldMat1.SetColor("_TintColor", Color.Lerp(shieldLastColor1, shieldStartColor1, alpha));
+            shieldMat2.SetColor("_TintColor", Color.Lerp(shieldLastColor2, shieldStartColor2, alpha));
+            if (leftShieldTime <= 0) break;
             yield return null;
-            leftShieldTIme -= Time.deltaTime;
-            if (leftShieldTIme <= 0) break;
         }
         shield.SetActive(false);
         //Debug.Log("OpenShield: false");
