@@ -288,8 +288,8 @@ public class PlayerController : MoveOfCharacter
     {
         if (isACtiveSceane) return;
 
-        weaponCtrl.Fire();
         weaponCtrl.SetEnable(true);
+        weaponCtrl.Fire();
     }
 
     //####################

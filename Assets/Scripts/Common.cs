@@ -204,27 +204,27 @@ namespace Common
         public static Dictionary<int, string[]> weaponLineUp = new Dictionary<int, string[]>()
         {
             //手
-            { 1000, new string[]{ "BeamCannon", "", "", OBTAIN_TYPE_INIT}},
-            { 1001, new string[]{ "BrasterLauncher", "", "", OBTAIN_TYPE_INIT}},
-            { 1002, new string[]{ "Rifle", "", "", OBTAIN_TYPE_INIT}},
-            { 1003, new string[]{ "RocketPunch", "", "", OBTAIN_TYPE_INIT}},
+            { 0, new string[]{ "BeamCannon", "", "", CO.PARTS_KIND_HAND_NO.ToString(), OBTAIN_TYPE_INIT}},
+            { 1, new string[]{ "BrasterLauncher", "", "", CO.PARTS_KIND_HAND_NO.ToString(), OBTAIN_TYPE_INIT}},
+            { 2, new string[]{ "Rifle", "", "", CO.PARTS_KIND_HAND_NO.ToString(), OBTAIN_TYPE_INIT}},
+            { 3, new string[]{ "RocketPunch", "", "", CO.PARTS_KIND_HAND_NO.ToString(), OBTAIN_TYPE_INIT}},
             //手(ダッシュ)
-            { 1100, new string[]{ "MachineGun", "マシンガン", "", OBTAIN_TYPE_INIT}},
-            { 1101, new string[]{ "GatlingGun", "", "", OBTAIN_TYPE_INIT}},
-            { 1102, new string[]{ "PulseGun", "", "", OBTAIN_TYPE_INIT}},
+            { 4, new string[]{ "MachineGun", "", "", CO.PARTS_KIND_HAND_DASH_NO.ToString(), OBTAIN_TYPE_INIT}},
+            { 5, new string[]{ "GatlingGun", "", "", CO.PARTS_KIND_HAND_DASH_NO.ToString(), OBTAIN_TYPE_INIT}},
+            { 6, new string[]{ "PulseGun", "", "", CO.PARTS_KIND_HAND_DASH_NO.ToString(), OBTAIN_TYPE_INIT}},
             //背中
-            { 2000, new string[]{ "CECannon", "", "", OBTAIN_TYPE_INIT}},
-            { 2001, new string[]{ "GatlingCannon", "", "", OBTAIN_TYPE_INIT}},
-            { 2002, new string[]{ "HugeLaser", "", "", OBTAIN_TYPE_INIT}},
+            { 7, new string[]{ "CECannon", "", "", CO.PARTS_KIND_SHOULDER_NO.ToString(), OBTAIN_TYPE_INIT }},
+            { 8, new string[]{ "GatlingCannon", "", "", CO.PARTS_KIND_SHOULDER_NO.ToString(), OBTAIN_TYPE_INIT}},
+            { 9, new string[]{ "HugeLaser", "", "", CO.PARTS_KIND_SHOULDER_NO.ToString(), OBTAIN_TYPE_INIT}},
             //背中(ダッシュ
-            { 2100, new string[]{ "ClusterLaser", "", "", OBTAIN_TYPE_INIT}},
-            { 2101, new string[]{ "MissileLauncher", "", "", OBTAIN_TYPE_INIT}},
-            { 2101, new string[]{ "SatelliteMissile", "", "", OBTAIN_TYPE_INIT}},
+            { 10, new string[]{ "ClusterLaser", "", "", CO.PARTS_KIND_SHOULDER_DASH_NO.ToString(), OBTAIN_TYPE_INIT}},
+            { 11, new string[]{ "MissileLauncher", "", "", CO.PARTS_KIND_SHOULDER_DASH_NO.ToString(), OBTAIN_TYPE_INIT}},
+            { 12, new string[]{ "SatelliteMissile", "", "", CO.PARTS_KIND_SHOULDER_DASH_NO.ToString(), OBTAIN_TYPE_INIT}},
             //サブ
-            { 3000, new string[]{ "AvoidBurst", "", "", OBTAIN_TYPE_INIT}},
-            { 3001, new string[]{ "BoostRecoverSp", "", "", OBTAIN_TYPE_INIT}},
-            { 3002, new string[]{ "InvincibleShield", "", "", OBTAIN_TYPE_INIT}},
-            { 3003, new string[]{ "SpeedBurst", "", "", OBTAIN_TYPE_INIT}},
+            { 13, new string[]{ "AvoidBurst", "", "", CO.PARTS_KIND_SUB_NO.ToString(), OBTAIN_TYPE_INIT}},
+            { 14, new string[]{ "BoostRecoverSp", "", "", CO.PARTS_KIND_SUB_NO.ToString(), OBTAIN_TYPE_INIT}},
+            { 15, new string[]{ "InvincibleShield", "", "", CO.PARTS_KIND_SUB_NO.ToString(), OBTAIN_TYPE_INIT}},
+            { 16, new string[]{ "SpeedBurst", "", "", CO.PARTS_KIND_SUB_NO.ToString(), OBTAIN_TYPE_INIT}},
         };
 
     }

@@ -92,6 +92,15 @@ public class PlayerStatus : Photon.MonoBehaviour {
             shieldLastColor2 = new Color(shieldStartColor2.r, shieldStartColor2.g, shieldStartColor2.b, 0);
         }
 
+        //初期値保管
+        defaultRunSpeed = runSpeed;
+        defaultJumpSpeed = jumpSpeed;
+        defaultBoostSpeed = boostSpeed;
+        defaultTurnSpeed = turnSpeed;
+        defaultBoostTurnSpeed = boostTurnSpeed;
+        defaultInvincibleTime = invincibleTime;
+        defaultRecoverSp = recoverSp;
+
         if (SceneManager.GetActiveScene().name == Common.CO.SCENE_CUSTOM)
         {
             //カスタム画面
@@ -104,15 +113,6 @@ public class PlayerStatus : Photon.MonoBehaviour {
         gameCtrl = GameObject.Find("GameController").GetComponent<GameController>();
 
         Init();
-
-        //初期値保管
-        defaultRunSpeed = runSpeed;
-        defaultJumpSpeed = jumpSpeed;
-        defaultBoostSpeed = boostSpeed;
-        defaultTurnSpeed = turnSpeed;
-        defaultBoostTurnSpeed = boostTurnSpeed;
-        defaultInvincibleTime = invincibleTime;
-        defaultRecoverSp = recoverSp;
     }
 
     void Start()

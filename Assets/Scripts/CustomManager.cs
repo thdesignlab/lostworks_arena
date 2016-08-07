@@ -50,6 +50,7 @@ public class CustomManager : Photon.MonoBehaviour
 
     //キャラテーブルステータス
     private int charaIndex = 0;
+    private int tableIndex = 0;
     private float charaChangeAngle = 120.0f;
     private float charaChangeTime = 1.0f;
     private float charaSideAngle = 10.0f;
@@ -68,33 +69,18 @@ public class CustomManager : Photon.MonoBehaviour
 
     void Awake()
     {
+        weaponStore = GameObject.Find("WeaponStore").GetComponent<WeaponStore>();
+
         //ユーザー情報取得
 
         //キャラ生成
-        GameObject charaObj = PhotonNetwork.Instantiate("Hero", spawnPoints[0].position, spawnPoints[0].rotation, 0);
-        Rigidbody charaBody = charaObj.GetComponent<Rigidbody>();
-        charaBody.useGravity = false;
-        charaBody.isKinematic = false;
-        charaTran = charaObj.transform;
-        charaTran.localScale = new Vector3(charaSize, charaSize, charaSize);
-        charaTran.parent = spawnPoints[0];
-
-        weaponStore = GameObject.Find("WeaponStore").GetComponent<WeaponStore>();
+        SpawnCharacter();
 
         //UI初期設定
         startWeaponListPos = weaponSelectArea.localPosition;
         lastWeaponListPos = startWeaponListPos + Vector3.right * weaponSelectArea.rect.width;
         startWeaponDetailPos = weaponDetailArea.localPosition;
         lastWeaponDetailPos = startWeaponDetailPos + Vector3.left * weaponDetailArea.rect.width;
-    }
-
-    void Start()
-    {
-        playerCtrl = charaTran.GetComponent<PlayerController>();
-
-        //装備を呼び出す
-        WeaponLoad();
-        equipWeapons = GameObject.FindGameObjectsWithTag(Common.CO.TAG_WEAPON);
     }
 
     void Update()
@@ -107,7 +93,6 @@ public class CustomManager : Photon.MonoBehaviour
             if (Physics.Raycast(ray, out raycastHit))
             {
                 Transform touchTran = raycastHit.transform;
-
                 WeaponController weaponCtrl = null;
                 if (touchTran == charaTran)
                 {
@@ -115,6 +100,7 @@ public class CustomManager : Photon.MonoBehaviour
                     if (equipWeapons.Length > 0)
                     {
                         weaponCtrl = equipWeapons[fireNo % equipWeapons.Length].GetComponent<WeaponController>();
+                        Debug.Log(weaponCtrl);
                         playerCtrl.CustomSceaneFire(weaponCtrl);
                         fireNo++;
                     }
@@ -141,6 +127,38 @@ public class CustomManager : Photon.MonoBehaviour
         charaTran.Rotate(charaTran.up, diff);
     }
 
+    //キャラ生成
+    private void SpawnCharacter()
+    {
+        //★キャラIndexからキャラ取得
+        string characterName = "Hero";
+
+        GameObject charaObj = PhotonNetwork.Instantiate(characterName, spawnPoints[tableIndex].position, spawnPoints[tableIndex].rotation, 0);
+        Rigidbody charaBody = charaObj.GetComponent<Rigidbody>();
+        charaBody.useGravity = false;
+        charaBody.isKinematic = false;
+        charaTran = charaObj.transform;
+        playerCtrl = charaTran.GetComponent<PlayerController>();
+        charaTran.localScale = new Vector3(charaSize, charaSize, charaSize);
+        charaTran.parent = spawnPoints[tableIndex];
+
+        //装備を呼び出す
+        WeaponLoad();
+        equipWeapons = GameObject.FindGameObjectsWithTag(Common.CO.TAG_WEAPON);
+
+        //非表示のキャラを削除
+        for (int i = 0; i < spawnPoints.Count; i++)
+        {
+            if (i != tableIndex)
+            {
+                foreach (Transform child in spawnPoints[i])
+                {
+                    Destroy(child.gameObject);
+                }
+            }
+        }
+    }
+
     //装備
     private void EquipWeapon(Transform parts, int weaponNo)
     {
@@ -161,6 +179,7 @@ public class CustomManager : Photon.MonoBehaviour
         playerCtrl.SetWeapon();
     }
 
+    //装備武器読み込み
     private void WeaponLoad()
     {
         foreach (Transform child in charaTran)
@@ -187,8 +206,10 @@ public class CustomManager : Photon.MonoBehaviour
     private float touchPosY = 0;
     private float prePosX = 0;
     private float prePosY = 0;
+    private bool isSwipe = false;
+    GameObject tapObj;
 
-        void OnEnable()
+    void OnEnable()
     {
         TouchManager.Instance.Drag += OnSwipe;
         TouchManager.Instance.TouchStart += OnTouchStart;
@@ -217,40 +238,45 @@ public class CustomManager : Photon.MonoBehaviour
         prePosY = touchPosY;
 
         //UIタッチチェック
-        GameObject tapObj = OnTapedObj(e.Input.ScreenPosition);
-        if (tapObj != null)
-        {
-            Debug.Log(tapObj.name+" : "+tapObj.tag);
-            if (tapObj == charaLeftArrow)
-            {
-                //キャラ変更左
-                CharaSelect(false);
-            }
-            else if (tapObj == charaRightArrow)
-            {
-                //キャラ変更右
-                CharaSelect(true);
-            }
-            else if (tapObj.tag == "PartsSelect")
-            {
-                //Parts選択
-                PartsSelectOn();
-            }
-            else if (tapObj.tag == "WeaponSelect")
-            {
-                //武器選択
-                WeaponSelect();
-            }
-            else if (tapObj == weaponCloseArrow)
-            {
-                //parts選択解除
-                PartsSelectOff();
-            }
-        }
+        tapObj = OnTapedObj(e.Input.ScreenPosition);
     }
 
     void OnTouchEnd(object sender, CustomInputEventArgs e)
     {
+        if (!isSwipe)
+        {
+            if (tapObj != null)
+            {
+                //Debug.Log(tapObj.name + " : " + tapObj.tag);
+                if (tapObj == charaLeftArrow)
+                {
+                    //キャラ変更左
+                    CharaSelect(false);
+                }
+                else if (tapObj == charaRightArrow)
+                {
+                    //キャラ変更右
+                    CharaSelect(true);
+                }
+                else if (tapObj.tag == "PartsSelect")
+                {
+                    //Parts選択
+                    PartsSelectOn();
+                }
+                else if (tapObj.tag == "WeaponSelect")
+                {
+                    //武器選択
+                    WeaponSelect();
+                }
+                else if (tapObj == weaponCloseArrow)
+                {
+                    //parts選択解除
+                    PartsSelectOff();
+                }
+            }
+        }
+        isSwipe = false;
+        tapObj = null;
     }
 
     void OnSwipe(object sender, CustomInputEventArgs e)
@@ -260,8 +286,15 @@ public class CustomManager : Photon.MonoBehaviour
         prePosX = e.Input.ScreenPosition.x;
         prePosY = e.Input.ScreenPosition.y;
 
-        //キャラ回転
-        CharacterRotate(preDiffX * -1);
+        float minSwitpeDiff = 1;
+        if (Mathf.Abs(preDiffX) < minSwitpeDiff && Mathf.Abs(preDiffY) < minSwitpeDiff) return;
+        isSwipe = true;
+
+        if (tapObj == null || tapObj.tag != "PartsSelect")
+        {
+            //キャラ回転
+            CharacterRotate(preDiffX * -1);
+        }
     }
 
     void OnFlickStart(object sender, FlickEventArgs e)
@@ -300,7 +333,7 @@ public class CustomManager : Photon.MonoBehaviour
     //parts選択
     private void PartsSelectOn()
     {
-        Debug.Log("PartsSelectOn");
+        //Debug.Log("PartsSelectOn");
         if (!isSelectedParts)
         {
             StartCoroutine(TurnCharaTable(charaSideAngle, charaSideTime));
@@ -315,7 +348,7 @@ public class CustomManager : Photon.MonoBehaviour
     //parts選択解除
     private void PartsSelectOff()
     {
-        Debug.Log("PartsSelectOff");
+        //Debug.Log("PartsSelectOff");
         if (isSelectedParts)
         {
             StartCoroutine(TurnCharaTable(charaSideAngle * -1, charaSideTime));
@@ -330,14 +363,14 @@ public class CustomManager : Photon.MonoBehaviour
     //武器選択
     private void WeaponSelect()
     {
-        Debug.Log("WeaponSelect");
+        //Debug.Log("WeaponSelect");
 
     }
 
     //武器選択リストオープン
     private void OpenWeaponList()
     {
-        Debug.Log("OpenWeaponList");
+        //Debug.Log("OpenWeaponList");
         StartCoroutine(MoveObject(weaponSelectArea, startWeaponListPos, lastWeaponListPos, selectModeTime));
         StartCoroutine(MoveObject(weaponDetailArea, startWeaponDetailPos, lastWeaponDetailPos, selectModeTime));
     }
@@ -345,7 +378,7 @@ public class CustomManager : Photon.MonoBehaviour
     //武器選択リストクローズ
     private void CloseWeaponList()
     {
-        Debug.Log("CloseWeaponList");
+        //Debug.Log("CloseWeaponList");
         StartCoroutine(MoveObject(weaponSelectArea, lastWeaponListPos, startWeaponListPos, selectModeTime));
         StartCoroutine(MoveObject(weaponDetailArea, lastWeaponDetailPos, startWeaponDetailPos, selectModeTime));
     }
@@ -353,11 +386,27 @@ public class CustomManager : Photon.MonoBehaviour
     //キャラ切り替え
     private void CharaSelect(bool isRight = true)
     {
-        Debug.Log("CharaSelect");
+        //Debug.Log("CharaSelect");
         float angle = charaChangeAngle;
-        if (isRight) angle *= -1;
 
-        StartCoroutine(TurnCharaTable(angle, charaChangeTime));
+        int factor = 1;
+        if (isRight) factor *= -1;
+
+        //テーブルIndex
+        tableIndex += factor;
+        if (tableIndex < 0)
+        {
+            tableIndex = spawnPoints.Count - 1;
+        }
+        else if (tableIndex <= spawnPoints.Count)
+        {
+            tableIndex = 0;
+        }
+
+        //★キャラIndex
+
+        StartCoroutine(TurnCharaTable(angle * factor, charaChangeTime));
+        SpawnCharacter();
     }
 
     //UI移動制御

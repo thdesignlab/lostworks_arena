@@ -35,11 +35,8 @@ public class WeaponStore : Photon.MonoBehaviour
     private bool isEnableSomeWeapon;
     private List<string> excludeWeapons = new List<string>();
 
-    public void SetMyTran()
-    {
-        myPlayerTran = GameObject.Find("GameController").GetComponent<GameController>().GetMyTran();
-    }
 
+    //武器ランダム取得
     public GameObject GetRandomWeapon(Transform parts, Dictionary<int, int> weaponMap)
     {
         if (weaponMap != null)
@@ -54,6 +51,7 @@ public class WeaponStore : Photon.MonoBehaviour
         return GetWeapon(parts);
     }
 
+    //武器取得
     public GameObject GetWeapon(Transform parts, int weaponNo = -1)
     {
         GameObject weapon = null;
@@ -85,6 +83,7 @@ public class WeaponStore : Photon.MonoBehaviour
         return weapon;
     }
 
+    //武器選択
     private GameObject SelectWeapon(List<GameObject> weaponList, int weaponNo)
     {
         if (weaponList == null || weaponList.Count == 0) return null;
@@ -110,22 +109,6 @@ public class WeaponStore : Photon.MonoBehaviour
             weaponNo = Random.Range(0, SelectableWeaponList.Count);
         }
         return SelectableWeaponList[weaponNo];
-    }
-
-    public void CustomMenuOpen()
-    {
-        weaponCanvas.SetActive(true);
-
-        //現在装備中の名前を表示
-        foreach (string parts in Common.CO.partsNameArray)
-        {
-            SetEquipWeaponName(parts);
-        }
-    }
-    public void CustomMenuClose()
-    {
-        weaponCanvas.SetActive(false);
-        myPlayerTran.gameObject.GetComponent<PlayerSetting>().CustomEnd();
     }
 
     //装備可能なリストを表示する
@@ -210,6 +193,37 @@ public class WeaponStore : Photon.MonoBehaviour
         SetEquipWeaponName(Common.CO.partsNameArray[customPartsNo], selectableWeaponList[index].name);
         weaponListPanel.SetActive(false);
     }
+
+
+    // ##### バトル用 #####
+
+    public void SetMyTran()
+    {
+        myPlayerTran = GameObject.Find("GameController").GetComponent<GameController>().GetMyTran();
+    }
+
+    public void CustomMenuOpen()
+    {
+        weaponCanvas.SetActive(true);
+
+        //現在装備中の名前を表示
+        foreach (string parts in Common.CO.partsNameArray)
+        {
+            SetEquipWeaponName(parts);
+        }
+    }
+
+    public void CustomMenuClose()
+    {
+        weaponCanvas.SetActive(false);
+        myPlayerTran.gameObject.GetComponent<PlayerSetting>().CustomEnd();
+    }
+
+    public void OnCancelEquipButton()
+    {
+        weaponListPanel.SetActive(false);
+    }
+
     private void SetEquipWeaponName(string partsName, string weaponName = "")
     {
         if (weaponName == "")
@@ -227,10 +241,5 @@ public class WeaponStore : Photon.MonoBehaviour
         if (weaponNameText == null) return;
 
         weaponNameText.gameObject.GetComponent<Text>().text = weaponName;
-    }
-
-    public void OnCancelEquipButton()
-    {
-        weaponListPanel.SetActive(false);
     }
 }
