@@ -76,7 +76,19 @@ public class WeaponController : Photon.MonoBehaviour
         isEnabledFire = false;
         for (;;)
         {
-            playerStatus = myTran.root.GetComponent<PlayerStatus>();
+            Transform child = myTran;
+            for (;;)
+            {
+                Transform parent = child.parent;
+                if (parent == null) break;
+                if (parent.tag == "Player")
+                {
+                    playerStatus = parent.GetComponent<PlayerStatus>();
+                    break;
+                }
+                child = parent;
+            }
+
             if (playerStatus != null)
             {
                 isNpc = playerStatus.IsNpc();

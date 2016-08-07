@@ -9,8 +9,9 @@ public class InvincibleShieldController : WeaponController
     protected override void Action()
     {
         if (effectTime <= 0) return;
+        if (base.playerStatus == null) return;
 
-        playerStatus.SetInvincible(true, effectTime, true);
+        base.playerStatus.SetInvincible(true, effectTime, true);
 
         base.StartReload(effectTime);
     }

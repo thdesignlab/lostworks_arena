@@ -17,7 +17,8 @@ public class BoostRecoverSpController : WeaponController
 
     protected override void Action()
     {
-        playerStatus.AccelerateRecoverSp(effectRate, effectTime, effect);
+        if (base.playerStatus == null) return;
+        base.playerStatus.AccelerateRecoverSp(effectRate, effectTime, effect);
         base.StartReload(effectTime);
     }
 }

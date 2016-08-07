@@ -17,6 +17,7 @@ public class AvoidBurstController : WeaponController
 
     protected override void Action()
     {
+        if (base.playerStatus == null) return;
         base.playerStatus.AvoidBurst(effectRate, effectTime, effect);
         base.StartReload(effectTime);
     }

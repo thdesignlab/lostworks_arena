@@ -99,9 +99,12 @@ public class CustomManager : Photon.MonoBehaviour
                     //キャラタッチ
                     if (equipWeapons.Length > 0)
                     {
-                        weaponCtrl = equipWeapons[fireNo % equipWeapons.Length].GetComponent<WeaponController>();
-                        Debug.Log(weaponCtrl);
-                        playerCtrl.CustomSceaneFire(weaponCtrl);
+                        GameObject weaponObj = equipWeapons[fireNo % equipWeapons.Length];
+                        if (weaponObj != null)
+                        {
+                            weaponCtrl = weaponObj.GetComponent<WeaponController>();
+                            playerCtrl.CustomSceaneFire(weaponCtrl);
+                        }
                         fireNo++;
                     }
                 }
@@ -173,6 +176,7 @@ public class CustomManager : Photon.MonoBehaviour
 
         //武器召喚
         GameObject ob = PhotonNetwork.Instantiate(Common.Func.GetResourceWeapon(weapon.name), parts.position, parts.rotation, 0);
+        ob.transform.localScale = new Vector3(charaSize, charaSize, charaSize);
         ob.name = ob.name.Replace("(Clone)", "");
         ob.transform.parent = parts;
 
@@ -387,7 +391,6 @@ public class CustomManager : Photon.MonoBehaviour
     private void CharaSelect(bool isRight = true)
     {
         //Debug.Log("CharaSelect");
-        float angle = charaChangeAngle;
 
         int factor = 1;
         if (isRight) factor *= -1;
@@ -398,14 +401,14 @@ public class CustomManager : Photon.MonoBehaviour
         {
             tableIndex = spawnPoints.Count - 1;
         }
-        else if (tableIndex <= spawnPoints.Count)
+        else if (tableIndex >= spawnPoints.Count)
         {
             tableIndex = 0;
         }
 
         //★キャラIndex
 
-        StartCoroutine(TurnCharaTable(angle * factor, charaChangeTime));
+        StartCoroutine(TurnCharaTable(charaChangeAngle * factor, charaChangeTime));
         SpawnCharacter();
     }
 
@@ -426,6 +429,8 @@ public class CustomManager : Photon.MonoBehaviour
     //キャラテーブル移動制御
     IEnumerator TurnCharaTable(float angle, float time)
     {
+        charaLeftArrow.SetActive(false);
+        charaRightArrow.SetActive(false);
         float totalTime = 0;
         for (;;)
         {
@@ -436,5 +441,7 @@ public class CustomManager : Photon.MonoBehaviour
             if (totalTime >= time) break;
             yield return null;
         }
+        charaLeftArrow.SetActive(true);
+        charaRightArrow.SetActive(true);
     }
 }

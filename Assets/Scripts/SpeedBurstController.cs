@@ -17,7 +17,8 @@ public class SpeedBurstController : WeaponController
 
     protected override void Action()
     {
-        playerStatus.AccelerateRunSpeed(effectRate, effectTime, effect);
+        if (base.playerStatus == null) return;
+        base.playerStatus.AccelerateRunSpeed(effectRate, effectTime, effect);
         base.StartReload(effectTime);
     }
 }
