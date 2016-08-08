@@ -13,14 +13,12 @@ public class ChangeEffectController : EffectController
     private float effectiveTime;
 
     private float activeTime = 0;
-    private Vector3 startScaleVector;
-    private Vector3 lastScaleVector;
 
     protected override void Awake()
     {
         base.Awake();
 
-        base.myTran.localScale = startScaleVector;
+        base.myTran.localScale = startScale;
     }
 	
 	void Update ()

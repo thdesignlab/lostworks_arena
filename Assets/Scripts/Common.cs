@@ -107,15 +107,15 @@ namespace Common
         public const int PARTS_SUB_NO = 6;
 
         //装備可能部位名
-        public static string[] partsNameArray = new string[]
+        public static Dictionary<int, string> partsNameArray = new Dictionary<int, string>()
         {
-            PARTS_LEFT_HAND,
-            PARTS_LEFT_HAND_DASH,
-            PARTS_RIGHT_HAND,
-            PARTS_RIGHT_HAND_DASH,
-            PARTS_SHOULDER,
-            PARTS_SHOULDER_DASH,
-            PARTS_SUB
+            { PARTS_LEFT_HAND_NO, PARTS_LEFT_HAND },
+            { PARTS_LEFT_HAND_DASH_NO, PARTS_LEFT_HAND_DASH },
+            { PARTS_RIGHT_HAND_NO, PARTS_RIGHT_HAND },
+            { PARTS_RIGHT_HAND_DASH_NO , PARTS_RIGHT_HAND_DASH },
+            { PARTS_SHOULDER_NO, PARTS_SHOULDER },
+            { PARTS_SHOULDER_DASH_NO, PARTS_SHOULDER_DASH },
+            { PARTS_SUB_NO, PARTS_SUB },
         };
 
         //武器タグ
@@ -191,42 +191,88 @@ namespace Common
     public static class Weapon
     {
         //獲得タイプ
+        public const string OBTAIN_TYPE_NONE = "NONE";
         public const string OBTAIN_TYPE_INIT = "INIT";
 
         //武器リストNo
         public const int DETAIL_PREFAB_NAME_NO = 0;     //プレハブ名
         public const int DETAIL_NAME_NO = 1;            //武器名
         public const int DETAIL_DESCRIPTION_NO = 2;     //説明
-        public const int DETAIL_EQUIP_PARTS_NO = 3;     //装備箇所
-        public const int DETAIL_OBTAIN_TYPE_NO = 4;     //取得タイプ
+        public const int DETAIL_OBTAIN_TYPE_NO = 3;     //取得タイプ
 
-        //武器リスト
-        public static Dictionary<int, string[]> weaponLineUp = new Dictionary<int, string[]>()
+        //ハンド武器リスト
+        public static Dictionary<int, string[]> handWeaponLineUp = new Dictionary<int, string[]>()
         {
-            //手
-            { 0, new string[]{ "BeamCannon", "", "", CO.PARTS_KIND_HAND_NO.ToString(), OBTAIN_TYPE_INIT}},
-            { 1, new string[]{ "BrasterLauncher", "", "", CO.PARTS_KIND_HAND_NO.ToString(), OBTAIN_TYPE_INIT}},
-            { 2, new string[]{ "Rifle", "", "", CO.PARTS_KIND_HAND_NO.ToString(), OBTAIN_TYPE_INIT}},
-            { 3, new string[]{ "RocketPunch", "", "", CO.PARTS_KIND_HAND_NO.ToString(), OBTAIN_TYPE_INIT}},
-            //手(ダッシュ)
-            { 4, new string[]{ "MachineGun", "", "", CO.PARTS_KIND_HAND_DASH_NO.ToString(), OBTAIN_TYPE_INIT}},
-            { 5, new string[]{ "GatlingGun", "", "", CO.PARTS_KIND_HAND_DASH_NO.ToString(), OBTAIN_TYPE_INIT}},
-            { 6, new string[]{ "PulseGun", "", "", CO.PARTS_KIND_HAND_DASH_NO.ToString(), OBTAIN_TYPE_INIT}},
-            //背中
-            { 7, new string[]{ "CECannon", "", "", CO.PARTS_KIND_SHOULDER_NO.ToString(), OBTAIN_TYPE_INIT }},
-            { 8, new string[]{ "GatlingCannon", "", "", CO.PARTS_KIND_SHOULDER_NO.ToString(), OBTAIN_TYPE_INIT}},
-            { 9, new string[]{ "HugeLaser", "", "", CO.PARTS_KIND_SHOULDER_NO.ToString(), OBTAIN_TYPE_INIT}},
-            //背中(ダッシュ
-            { 10, new string[]{ "ClusterLaser", "", "", CO.PARTS_KIND_SHOULDER_DASH_NO.ToString(), OBTAIN_TYPE_INIT}},
-            { 11, new string[]{ "MissileLauncher", "", "", CO.PARTS_KIND_SHOULDER_DASH_NO.ToString(), OBTAIN_TYPE_INIT}},
-            { 12, new string[]{ "SatelliteMissile", "", "", CO.PARTS_KIND_SHOULDER_DASH_NO.ToString(), OBTAIN_TYPE_INIT}},
-            //サブ
-            { 13, new string[]{ "AvoidBurst", "", "", CO.PARTS_KIND_SUB_NO.ToString(), OBTAIN_TYPE_INIT}},
-            { 14, new string[]{ "BoostRecoverSp", "", "", CO.PARTS_KIND_SUB_NO.ToString(), OBTAIN_TYPE_INIT}},
-            { 15, new string[]{ "InvincibleShield", "", "", CO.PARTS_KIND_SUB_NO.ToString(), OBTAIN_TYPE_INIT}},
-            { 16, new string[]{ "SpeedBurst", "", "", CO.PARTS_KIND_SUB_NO.ToString(), OBTAIN_TYPE_INIT}},
+            { 1000, new string[]{ "Rifle", "", "", OBTAIN_TYPE_INIT}},
+            { 1001, new string[]{ "BrasterLauncher", "", "", OBTAIN_TYPE_INIT}},
+            { 1002, new string[]{ "BeamCannon", "", "", OBTAIN_TYPE_INIT}},
+        };
+        //ハンド武器(ダッシュ)リスト
+        public static Dictionary<int, string[]> handDashWeaponLineUp = new Dictionary<int, string[]>()
+        {
+            { 2000, new string[]{ "MachineGun", "", "", OBTAIN_TYPE_INIT}},
+            { 2001, new string[]{ "GatlingGun", "", "", OBTAIN_TYPE_INIT}},
+            { 2002, new string[]{ "PulseGun", "", "", OBTAIN_TYPE_INIT}},
+        };
+        //背中武器リスト
+        public static Dictionary<int, string[]> shoulderWeaponLineUp = new Dictionary<int, string[]>()
+        {
+            { 3000, new string[]{ "CECannon", "", "", OBTAIN_TYPE_INIT }},
+            { 3001, new string[]{ "HugeLaser", "", "", OBTAIN_TYPE_INIT}},
+            { 3002, new string[]{ "SatelliteMissile", "", "", OBTAIN_TYPE_INIT}},
+            { 3003, new string[]{ "Cyclone", "", "", OBTAIN_TYPE_INIT}},
+        };
+        //背中武器(ダッシュ)リスト
+        public static Dictionary<int, string[]> shoulderDashWeaponLineUp = new Dictionary<int, string[]>()
+        {
+            { 4000, new string[]{ "MissileLauncher", "", "", OBTAIN_TYPE_INIT}},
+            { 4001, new string[]{ "ClusterLaser", "", "", OBTAIN_TYPE_INIT}},
+            { 4002, new string[]{ "GatlingCannon", "", "", OBTAIN_TYPE_INIT}},
+        };
+        //サブ武器リスト
+        public static Dictionary<int, string[]> subWeaponLineUp = new Dictionary<int, string[]>()
+        {
+            { 5000, new string[]{ "InvincibleShield", "", "", OBTAIN_TYPE_INIT}},
+            { 5001, new string[]{ "AvoidBurst", "", "", OBTAIN_TYPE_INIT}},
+            { 5002, new string[]{ "BoostRecoverSp", "", "", OBTAIN_TYPE_INIT}},
+            { 5003, new string[]{ "SpeedBurst", "", "", OBTAIN_TYPE_INIT}},
         };
 
+        //武器名を取得する
+        public static string GetWeaponName(int weaponNo)
+        {
+            string weaponName = "";
+            if (handWeaponLineUp.ContainsKey(weaponNo))
+            {
+                weaponName = GetWeaponName(handWeaponLineUp[weaponNo]);
+            }
+            else if (handDashWeaponLineUp.ContainsKey(weaponNo))
+            {
+                weaponName = GetWeaponName(handDashWeaponLineUp[weaponNo]);
+            }
+            else if (shoulderWeaponLineUp.ContainsKey(weaponNo))
+            {
+                weaponName = GetWeaponName(shoulderWeaponLineUp[weaponNo]);
+            }
+            else if (shoulderDashWeaponLineUp.ContainsKey(weaponNo))
+            {
+                weaponName = GetWeaponName(shoulderDashWeaponLineUp[weaponNo]);
+            }
+            else if (subWeaponLineUp.ContainsKey(weaponNo))
+            {
+                weaponName = GetWeaponName(subWeaponLineUp[weaponNo]);
+            }
+            return weaponName;
+        }
+        private static string GetWeaponName(string[] weaponInfo)
+        {
+            string weaponName = weaponInfo[DETAIL_NAME_NO];
+            if (weaponName == "")
+            {
+                weaponName = weaponInfo[DETAIL_PREFAB_NAME_NO];
+            }
+            return weaponName;
+        }
     }
 
     //### 端末保持情報 ###
@@ -234,7 +280,8 @@ namespace Common
     {
         public const string USER_INFO = "UserInfo";
         public const string USER_RESULT = "UserResult";
-        public const string USER_EQUIP = "UserEquip";
+        public const string USER_EQUIP = "UserEquipment";
+        public const string USER_CHARACTER = "UserCharacter";
         public const string OPEN_CHARACTERS = "OpenCharacters";
         public const string OPEN_WEAPONS = "OpenWeapons";
 
@@ -247,10 +294,6 @@ namespace Common
         public const string RESULT_BATTLE_RATE = "BattleRate";
 
         public const string EQUIP_CHARACTER_NO = "CharacterNo";
-        public const string EQUIP_LEFT_HAND = "LeftHandWeapon";
-        public const string EQUIP_RIGHT_HAND = "RightHandWeapon";
-        public const string EQUIP_SHOULDER = "ShoulderWeapon";
-        public const string EQUIP_SUB = "SubWeapon";
     }
 
     //### 共通関数 ###
@@ -259,27 +302,27 @@ namespace Common
         //リソース取得
         public static string GetResourceBullet(string name)
         {
-            return Common.CO.RESOURCE_BULLET + name;
+            return CO.RESOURCE_BULLET + name;
         }
         public static string GetResourceEffect(string name)
         {
-            return Common.CO.RESOURCE_EFFECT + name;
+            return CO.RESOURCE_EFFECT + name;
         }
         public static string GetResourceWeapon(string name)
         {
-            return Common.CO.RESOURCE_WEAPON + name;
+            return CO.RESOURCE_WEAPON + name;
         }
         public static string GetResourceStructure(string name)
         {
-            return Common.CO.RESOURCE_STRUCTURE + name;
+            return CO.RESOURCE_STRUCTURE + name;
         }
         public static string GetResourceAnimation(string name)
         {
-            return Common.CO.RESOURCE_ANIMATION_2D + name;
+            return CO.RESOURCE_ANIMATION_2D + name;
         }
         public static string GetResourceAnimation3D(string name)
         {
-            return Common.CO.RESOURCE_ANIMATION_3D + name;
+            return CO.RESOURCE_ANIMATION_3D + name;
         }
 
         //配列チェック
@@ -300,19 +343,19 @@ namespace Common
         //物理弾判定
         public static bool IsPhysicsBullet(string tag)
         {
-            return InArrayString(Common.CO.physicsBulletArray, tag);
+            return InArrayString(CO.physicsBulletArray, tag);
         }
 
         //弾判定
         public static bool IsBullet(string tag)
         {
-            return InArrayString(Common.CO.bulletTagArray, tag);
+            return InArrayString(CO.bulletTagArray, tag);
         }
 
         //ダメージオブジェクト判定
         public static bool IsDamageAffect(string tag)
         {
-            return InArrayString(Common.CO.DamageAffectTagArray, tag);
+            return InArrayString(CO.DamageAffectTagArray, tag);
         }
 
         //三角関数
@@ -331,27 +374,27 @@ namespace Common
 
             switch (motionType)
             {
-                case Common.CO.BIT_MOTION_TYPE_GUN:
-                    if (charaMotionName == Common.CO.MOTION_LEFT_ATTACK)
+                case CO.BIT_MOTION_TYPE_GUN:
+                    if (charaMotionName == CO.MOTION_LEFT_ATTACK)
                     {
-                        motionName = Common.CO.BIT_MOTION_LEFT_OPEN;
+                        motionName = CO.BIT_MOTION_LEFT_OPEN;
                     }
-                    else if (charaMotionName == Common.CO.MOTION_RIGHT_ATTACK)
+                    else if (charaMotionName == CO.MOTION_RIGHT_ATTACK)
                     {
-                        motionName = Common.CO.BIT_MOTION_RIGHT_OPEN;
+                        motionName = CO.BIT_MOTION_RIGHT_OPEN;
                     }
                     else
                     {
-                        motionName = Common.CO.BIT_MOTION_MISSILE_OPEN;
+                        motionName = CO.BIT_MOTION_MISSILE_OPEN;
                     }
                     break;
 
-                case Common.CO.BIT_MOTION_TYPE_MISSILE:
-                    motionName = Common.CO.BIT_MOTION_MISSILE_OPEN;
+                case CO.BIT_MOTION_TYPE_MISSILE:
+                    motionName = CO.BIT_MOTION_MISSILE_OPEN;
                     break;
 
-                case Common.CO.BIT_MOTION_TYPE_LASER:
-                    motionName = Common.CO.BIT_MOTION_LASER_OPEN;
+                case CO.BIT_MOTION_TYPE_LASER:
+                    motionName = CO.BIT_MOTION_LASER_OPEN;
                     break;
             }
             return motionName;
@@ -365,6 +408,21 @@ namespace Common
         public static string GetPartsStructure(int partsNo)
         {
             return GetPartsStructure(Common.CO.partsNameArray[partsNo]);
+        }
+
+        //パーツNo取得
+        public static int GetPartsNo(string partsName)
+        {
+            int partsNo = -1;
+            foreach (int key in CO.partsNameArray.Keys)
+            {
+                if (CO.partsNameArray[partsNo] == partsName)
+                {
+                    partsNo = key;
+                    break;
+                }
+            }
+            return partsNo;
         }
     }
 }

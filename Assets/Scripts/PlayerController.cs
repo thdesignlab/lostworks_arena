@@ -37,7 +37,7 @@ public class PlayerController : MoveOfCharacter
     private bool isAutoLock = true; //切り替え可能にする場合はAutoLockボタンを表示する
     //private Button autoLockButton;
     private Text autoLockText;
-    private string lockTextPrefix = "Lock\n";
+    //private string lockTextPrefix = "Lock\n";
 
     private bool isPC = false;
 

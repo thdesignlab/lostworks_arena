@@ -287,7 +287,7 @@ GameObject:
   - 114: {fileID: 11448244}
   - 114: {fileID: 11460058}
   m_Layer: 0
-  m_Name: RocketPunch
+  m_Name: Cyclone
   m_TagString: Weapon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1573,7 +1573,7 @@ MonoBehaviour:
   isBitFixed: 0
   reloadTime: 10
   fireEffect: {fileID: 0}
-  bullet: {fileID: 101162, guid: ad7cb826ad4cf3b41acd35e6eedc35ae, type: 2}
+  bullet: {fileID: 103338, guid: 506615edf43c51d4fabb4481c2445d0c, type: 2}
   rapidCount: 1
   rapidInterval: 0
   spreadCount: 0

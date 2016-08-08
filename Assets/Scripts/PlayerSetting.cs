@@ -55,6 +55,7 @@ public class PlayerSetting : Photon.MonoBehaviour
             if (isNpc)
             {
                 myTran.name = Common.CO.NPC_NAME;
+
                 playerStatus.enabled = true;
                 EquipWeaponRandom();
                 //Debug.Log("NPC: " + transform.name);
@@ -64,13 +65,16 @@ public class PlayerSetting : Photon.MonoBehaviour
             }
             else
             {
+                myTran.name = UserManager.userInfo[Common.PP.INFO_USER_NAME];
+
                 //コントローラーを有効
                 playerStatus.enabled = true;
                 playerCtrl.enabled = true;
                 motionCtrl.enabled = true;
                 playerCam.SetActive(true);
                 gameCtrl.SetMyTran(myTran);
-                EquipWeaponRandom();
+                //EquipWeaponRandom();
+                EquipWeaponUserInfo();
                 isCustomEnd = true;
                 //weaponStroe.CustomMenuOpen();
                 //StartCoroutine(CustomizeCountDown());
@@ -121,13 +125,33 @@ public class PlayerSetting : Photon.MonoBehaviour
         }
     }
 
+    private void EquipWeaponUserInfo()
+    {
+        foreach (string partsName in UserManager.userEquipment.Keys)
+        {
+            foreach (Transform child in myTran)
+            {
+                if (partsName == child.name)
+                {
+                    string weaponName = Common.Weapon.GetWeaponName(UserManager.userEquipment[partsName]);
+                    if (weaponName != "")
+                    {
+                        GameObject weapon = (GameObject)Resources.Load(Common.Func.GetResourceWeapon(weaponName));
+                        EquipWeapon(child, weapon);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
     private void EquipWeaponRandom()
     {
         foreach (Transform child in myTran)
         {
-            foreach (string partsName in Common.CO.partsNameArray)
+            foreach (int key in Common.CO.partsNameArray.Keys)
             {
-                if (child.name == partsName)
+                if (child.name == Common.CO.partsNameArray[key])
                 {
                     EquipWeapon(child);
                     break;
@@ -142,8 +166,8 @@ public class PlayerSetting : Photon.MonoBehaviour
 
         if (weapon == null)
         {
-            //ランダム取得
-            weapon = weaponStroe.GetRandomWeapon(partsTran, weaponMap);
+            //ランダム取得(NPC用)
+            weapon = weaponStroe.GetRandomWeaponForNpc(partsTran, weaponMap);
         }
         SpawnWeapon(partsTran, weapon);
     }

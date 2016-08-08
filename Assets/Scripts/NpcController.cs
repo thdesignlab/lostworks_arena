@@ -108,9 +108,9 @@ public class NpcController : MoveOfCharacter
         {
             foreach (Transform child in myTran)
             {
-                foreach (string partsName in Common.CO.partsNameArray)
+                foreach (int key in Common.CO.partsNameArray.Keys)
                 {
-                    if (child.name == partsName)
+                    if (child.name == Common.CO.partsNameArray[key])
                     {
                         child.gameObject.SetActive(true);
                         break;

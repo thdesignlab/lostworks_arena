@@ -121,6 +121,8 @@ public class CustomManager : Photon.MonoBehaviour
     //タイトルへ戻る
     public void GoToTitle()
     {
+        PlayerPrefsUtility.Save(Common.PP.USER_CHARACTER, UserManager.userSetCharacter);
+        PlayerPrefsUtility.SaveDict<string, int>(Common.PP.USER_EQUIP, UserManager.userEquipment);
         PhotonNetwork.LoadLevel(Common.CO.SCENE_TITLE);
     }
 
@@ -147,7 +149,6 @@ public class CustomManager : Photon.MonoBehaviour
 
         //装備を呼び出す
         WeaponLoad();
-        equipWeapons = GameObject.FindGameObjectsWithTag(Common.CO.TAG_WEAPON);
 
         //非表示のキャラを削除
         for (int i = 0; i < spawnPoints.Count; i++)
@@ -162,7 +163,14 @@ public class CustomManager : Photon.MonoBehaviour
         }
     }
 
-    //装備
+    //装備(partsNo指定)
+    private void EquipWeapon(int partsNo, int weaponNo)
+    {
+        Transform parts = charaTran.FindChild(Common.Func.GetPartsStructure(partsNo));
+        EquipWeapon(parts, weaponNo);
+    }
+
+    //装備(partsTransform指定)
     private void EquipWeapon(Transform parts, int weaponNo)
     {
         //すでに装備している場合は破棄
@@ -172,14 +180,19 @@ public class CustomManager : Photon.MonoBehaviour
         }
 
         //武器取得
-        GameObject weapon = weaponStore.GetWeapon(parts, weaponNo);
+        string weaponName = Common.Weapon.GetWeaponName(weaponNo);
 
         //武器召喚
-        GameObject ob = PhotonNetwork.Instantiate(Common.Func.GetResourceWeapon(weapon.name), parts.position, parts.rotation, 0);
+        GameObject ob = PhotonNetwork.Instantiate(Common.Func.GetResourceWeapon(weaponName), parts.position, parts.rotation, 0);
+        if (ob == null) return;
         ob.transform.localScale = new Vector3(charaSize, charaSize, charaSize);
         ob.name = ob.name.Replace("(Clone)", "");
         ob.transform.parent = parts;
 
+        //装備情報保存
+        UserManager.userEquipment[parts.name] = weaponNo;
+
+        //武器使用準備
         playerCtrl.SetWeapon();
     }
 
@@ -188,18 +201,16 @@ public class CustomManager : Photon.MonoBehaviour
     {
         foreach (Transform child in charaTran)
         {
-            foreach (string partsName in Common.CO.partsNameArray)
+            foreach (int key in Common.CO.partsNameArray.Keys)
             {
-                if (child.name == partsName)
+                if (child.name == Common.CO.partsNameArray[key])
                 {
-                    //装備箇所の武器No
-                    int weaponNo = -1;
-
-                    EquipWeapon(child, weaponNo);
+                    EquipWeapon(child, UserManager.userEquipment[child.name]);
                     break;
                 }
             }
         }
+        equipWeapons = GameObject.FindGameObjectsWithTag(Common.CO.TAG_WEAPON);
     }
 
 

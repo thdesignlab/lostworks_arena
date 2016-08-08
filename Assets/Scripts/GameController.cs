@@ -44,7 +44,6 @@ public class GameController : Photon.MonoBehaviour
 
     void Awake()
     {
-        UserManager.DispUserInfo();
         isDebugMode = GameObject.Find("Debug").GetComponent<MyDebug>().isDebugMode;
         spriteStudioCtrl = GameObject.Find("SpriteStudioController").GetComponent<SpriteStudioController>();
         SpawnMyPlayerEverywhere();
