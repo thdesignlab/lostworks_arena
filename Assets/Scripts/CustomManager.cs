@@ -42,9 +42,13 @@ public class CustomManager : Photon.MonoBehaviour
     private List<Sprite> bitTypeSprites;
 
     [SerializeField]
+    private GameObject selectedWeaponButton;
+    [SerializeField]
     private Color weaponSelectedColor = Color.gray;
     [SerializeField]
     private Color weaponNotSelectedColor = Color.yellow;
+    private int maxWeaponButtonCount = 8;
+    private float buttonHeight = 125;
 
     private WeaponStore weaponStore;
 
