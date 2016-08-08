@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 448fa39e20a754c49a39a1544c65cedd
-timeCreated: 1470493199
+timeCreated: 1470649708
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -74,7 +74,7 @@ TextureImporter:
         width: 360
         height: 61
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -180, y: 30.5}
@@ -89,7 +89,7 @@ TextureImporter:
         width: 14
         height: 30
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
     - name: Custom_img_2
@@ -100,7 +100,7 @@ TextureImporter:
         width: 37
         height: 12
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
     - name: Custom_img_3
@@ -111,7 +111,7 @@ TextureImporter:
         width: 377
         height: 882
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -188.5, y: 441}
@@ -126,7 +126,7 @@ TextureImporter:
         width: 355
         height: 242
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -177.5, y: 121}
@@ -138,31 +138,31 @@ TextureImporter:
         serializedVersion: 2
         x: 388
         y: 839
-        width: 92
-        height: 91
+        width: 90
+        height: 90
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -46, y: 45.5}
-        - {x: -46, y: -45.5}
-        - {x: 46, y: -45.5}
-        - {x: 46, y: 45.5}
+      - - {x: -45, y: 45}
+        - {x: -45, y: -45}
+        - {x: 45, y: -45}
+        - {x: 45, y: 45}
     - name: Custom_img_6
       rect:
         serializedVersion: 2
-        x: 501
-        y: 831
-        width: 107
-        height: 106
+        x: 509
+        y: 839
+        width: 90
+        height: 90
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -53.5, y: 53}
-        - {x: -53.5, y: -53}
-        - {x: 53.5, y: -53}
-        - {x: 53.5, y: 53}
+      - - {x: -45, y: 45}
+        - {x: -45, y: -45}
+        - {x: 45, y: -45}
+        - {x: 45, y: 45}
     - name: Custom_img_7
       rect:
         serializedVersion: 2
@@ -171,7 +171,7 @@ TextureImporter:
         width: 19
         height: 26
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
     - name: Custom_img_8
@@ -182,7 +182,7 @@ TextureImporter:
         width: 64
         height: 26
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
     - name: Custom_img_9
@@ -193,7 +193,7 @@ TextureImporter:
         width: 21
         height: 26
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
     - name: Custom_img_10
@@ -204,7 +204,7 @@ TextureImporter:
         width: 66
         height: 26
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
     - name: Custom_img_11
@@ -215,7 +215,7 @@ TextureImporter:
         width: 22
         height: 25
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
     - name: Custom_img_12
@@ -226,7 +226,7 @@ TextureImporter:
         width: 67
         height: 28
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
     - name: Custom_img_13
@@ -237,7 +237,7 @@ TextureImporter:
         width: 35
         height: 28
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
     - name: Custom_img_14
@@ -248,7 +248,7 @@ TextureImporter:
         width: 746
         height: 6
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
     - name: Custom_img_15
@@ -259,7 +259,7 @@ TextureImporter:
         width: 750
         height: 103
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -375, y: 51.5}

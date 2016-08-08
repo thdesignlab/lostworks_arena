@@ -395,4 +395,9 @@ public class WeaponController : Photon.MonoBehaviour
             yield return null;
         }
     }
+
+    public int GetBitMotion()
+    {
+        return bitMotionType;
+    }
 }

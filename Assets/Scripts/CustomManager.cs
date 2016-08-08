@@ -14,7 +14,11 @@ public class CustomManager : Photon.MonoBehaviour
     [SerializeField]
     private float charaSize;
     [SerializeField]
-    private List<RectTransform> partsSelectArea;
+    private Text partsNameText;
+    [SerializeField]
+    private Transform partsSelectArea;
+    //[SerializeField]
+    //private List<Image> bitImages;
     [SerializeField]
     private RectTransform weaponSelectArea;
     [SerializeField]
@@ -30,12 +34,12 @@ public class CustomManager : Photon.MonoBehaviour
     private GameObject weaponCloseArrow;
 
     [SerializeField]
-    private Sprite partsSelectedTexture;
+    private Sprite partsSelectedSprite;
     [SerializeField]
-    private Sprite partsNotSelectedTexture;
+    private Sprite partsNotSelectedSprite;
 
     [SerializeField]
-    private List<Texture> weaponTypeTextures;
+    private List<Sprite> bitTypeSprites;
 
     [SerializeField]
     private Color weaponSelectedColor = Color.gray;
@@ -55,32 +59,70 @@ public class CustomManager : Photon.MonoBehaviour
     private float charaChangeTime = 1.0f;
     private float charaSideAngle = 10.0f;
     private float charaSideTime = 0.2f;
+    private bool isTurnTable = false;
 
     //キャンバスステータス
-    private bool isSelectedParts = false;
+    //private bool isSelectedParts = false;
+    private Image selectedPartsImage;
     private float selectModeTime = 0.2f;
     private Vector3 startWeaponListPos;
     private Vector3 lastWeaponListPos;
     private Vector3 startWeaponDetailPos;
     private Vector3 lastWeaponDetailPos;
 
-
+    private Dictionary<int, List<Image>> bitImgMap = new Dictionary<int, List<Image>>();
     private int fireNo = 0;
+
+    private const string PARTS_AREA_NAME_LEFT = "Left-Weapon";
+    private const string PARTS_AREA_NAME_LEFT_DASH = "Left-Dash-Weapon";
+    private const string PARTS_AREA_NAME_RIGHT = "Shoulder-Weapon";
+    private const string PARTS_AREA_NAME_RIGHT_DASH = "Shoulder-Dash-Weapon";
+    private const string PARTS_AREA_NAME_SHOULDER = "Right-Weapon";
+    private const string PARTS_AREA_NAME_SHOULDER_DASH = "Right-Dash-Weapon";
+    private const string PARTS_AREA_NAME_SUB = "Sub-Weapon";
+
+    private const string BIT_IMG_AREA = "BitImg";
 
     void Awake()
     {
         weaponStore = GameObject.Find("WeaponStore").GetComponent<WeaponStore>();
-
-        //ユーザー情報取得
-
-        //キャラ生成
-        SpawnCharacter();
 
         //UI初期設定
         startWeaponListPos = weaponSelectArea.localPosition;
         lastWeaponListPos = startWeaponListPos + Vector3.right * weaponSelectArea.rect.width;
         startWeaponDetailPos = weaponDetailArea.localPosition;
         lastWeaponDetailPos = startWeaponDetailPos + Vector3.left * weaponDetailArea.rect.width;
+
+        partsNameText.text = "";
+
+    }
+
+    void Start()
+    {
+        //PartsNo紐付け
+        bitImgMap[Common.CO.PARTS_LEFT_HAND_NO] = new List<Image>();
+        bitImgMap[Common.CO.PARTS_LEFT_HAND_DASH_NO] = new List<Image>();
+        bitImgMap[Common.CO.PARTS_RIGHT_HAND_NO] = new List<Image>();
+        bitImgMap[Common.CO.PARTS_RIGHT_HAND_DASH_NO] = new List<Image>();
+        bitImgMap[Common.CO.PARTS_SHOULDER_NO] = new List<Image>();
+        bitImgMap[Common.CO.PARTS_SHOULDER_DASH_NO] = new List<Image>();
+        bitImgMap[Common.CO.PARTS_SUB_NO] = new List<Image>();
+        foreach (Transform partsAreaCopy in partsSelectArea)
+        {
+            bitImgMap[Common.CO.PARTS_LEFT_HAND_NO].Add(partsAreaCopy.FindChild(PARTS_AREA_NAME_LEFT + "/" + BIT_IMG_AREA).GetComponent<Image>());
+            bitImgMap[Common.CO.PARTS_LEFT_HAND_DASH_NO].Add(partsAreaCopy.FindChild(PARTS_AREA_NAME_LEFT_DASH + "/" + BIT_IMG_AREA).GetComponent<Image>());
+            bitImgMap[Common.CO.PARTS_RIGHT_HAND_NO].Add(partsAreaCopy.FindChild(PARTS_AREA_NAME_RIGHT + "/" + BIT_IMG_AREA).GetComponent<Image>());
+            bitImgMap[Common.CO.PARTS_RIGHT_HAND_DASH_NO].Add(partsAreaCopy.FindChild(PARTS_AREA_NAME_RIGHT_DASH + "/" + BIT_IMG_AREA).GetComponent<Image>());
+            bitImgMap[Common.CO.PARTS_SHOULDER_NO].Add(partsAreaCopy.FindChild(PARTS_AREA_NAME_SHOULDER + "/" + BIT_IMG_AREA).GetComponent<Image>());
+            bitImgMap[Common.CO.PARTS_SHOULDER_DASH_NO].Add(partsAreaCopy.FindChild(PARTS_AREA_NAME_SHOULDER_DASH + "/" + BIT_IMG_AREA).GetComponent<Image>());
+            bitImgMap[Common.CO.PARTS_SUB_NO].Add(partsAreaCopy.FindChild(PARTS_AREA_NAME_SUB + "/" + BIT_IMG_AREA).GetComponent<Image>());
+        }
+
+
+        //ユーザー情報取得
+
+        //キャラ生成
+        SpawnCharacter();
     }
 
     void Update()
@@ -164,14 +206,14 @@ public class CustomManager : Photon.MonoBehaviour
     }
 
     //装備(partsNo指定)
-    private void EquipWeapon(int partsNo, int weaponNo)
+    private GameObject EquipWeapon(int partsNo, int weaponNo)
     {
         Transform parts = charaTran.FindChild(Common.Func.GetPartsStructure(partsNo));
-        EquipWeapon(parts, weaponNo);
+        return EquipWeapon(parts, weaponNo);
     }
 
     //装備(partsTransform指定)
-    private void EquipWeapon(Transform parts, int weaponNo)
+    private GameObject EquipWeapon(Transform parts, int weaponNo)
     {
         //すでに装備している場合は破棄
         foreach (Transform child in parts)
@@ -184,7 +226,7 @@ public class CustomManager : Photon.MonoBehaviour
 
         //武器召喚
         GameObject ob = PhotonNetwork.Instantiate(Common.Func.GetResourceWeapon(weaponName), parts.position, parts.rotation, 0);
-        if (ob == null) return;
+        if (ob == null) return null;
         ob.transform.localScale = new Vector3(charaSize, charaSize, charaSize);
         ob.name = ob.name.Replace("(Clone)", "");
         ob.transform.parent = parts;
@@ -194,6 +236,8 @@ public class CustomManager : Photon.MonoBehaviour
 
         //武器使用準備
         playerCtrl.SetWeapon();
+
+        return ob;
     }
 
     //装備武器読み込み
@@ -201,11 +245,13 @@ public class CustomManager : Photon.MonoBehaviour
     {
         foreach (Transform child in charaTran)
         {
-            foreach (int key in Common.CO.partsNameArray.Keys)
+            foreach (int partsNo in Common.CO.partsNameArray.Keys)
             {
-                if (child.name == Common.CO.partsNameArray[key])
+                if (child.name == Common.CO.partsNameArray[partsNo])
                 {
-                    EquipWeapon(child, UserManager.userEquipment[child.name]);
+                    GameObject weaponObj = EquipWeapon(child, UserManager.userEquipment[child.name]);
+                    //Bit画像設定
+                    SetBitIcon(partsNo, weaponObj);
                     break;
                 }
             }
@@ -266,17 +312,17 @@ public class CustomManager : Photon.MonoBehaviour
                 if (tapObj == charaLeftArrow)
                 {
                     //キャラ変更左
-                    CharaSelect(false);
+                    if (!isTurnTable) CharaSelect(false);
                 }
                 else if (tapObj == charaRightArrow)
                 {
                     //キャラ変更右
-                    CharaSelect(true);
+                    if (!isTurnTable) CharaSelect(true);
                 }
                 else if (tapObj.tag == "PartsSelect")
                 {
                     //Parts選択
-                    PartsSelectOn();
+                    if (!isTurnTable) PartsSelectOn();
                 }
                 else if (tapObj.tag == "WeaponSelect")
                 {
@@ -349,13 +395,25 @@ public class CustomManager : Photon.MonoBehaviour
     private void PartsSelectOn()
     {
         //Debug.Log("PartsSelectOn");
-        if (!isSelectedParts)
+        //部位名表示
+        partsNameText.text = tapObj.name;
+
+
+        if (selectedPartsImage == null)
         {
-            StartCoroutine(TurnCharaTable(charaSideAngle, charaSideTime));
+            //部位未選択時キャラを脇へ移動
+            StartCoroutine(TurnCharaTable(charaSideAngle, charaSideTime, false));
         }
-        isSelectedParts = true;
-        charaLeftArrow.SetActive(false);
-        charaRightArrow.SetActive(false);
+        else
+        {
+            //選択していた部位背景元に戻す
+            selectedPartsImage.sprite = partsNotSelectedSprite;
+        }
+
+        //選択部位背景変更
+        selectedPartsImage = tapObj.GetComponent<Image>();
+        selectedPartsImage.sprite = partsSelectedSprite;
+
         partsUpArrow.SetActive(false);
         OpenWeaponList();
     }
@@ -364,13 +422,16 @@ public class CustomManager : Photon.MonoBehaviour
     private void PartsSelectOff()
     {
         //Debug.Log("PartsSelectOff");
-        if (isSelectedParts)
+        //部位名表示
+        partsNameText.text = "";
+
+        //キャラを中央へ移動
+        if (selectedPartsImage != null)
         {
-            StartCoroutine(TurnCharaTable(charaSideAngle * -1, charaSideTime));
+            StartCoroutine(TurnCharaTable(charaSideAngle * -1, charaSideTime, true));
+            selectedPartsImage.sprite = partsNotSelectedSprite;
+            selectedPartsImage = null;
         }
-        isSelectedParts = false;
-        charaLeftArrow.SetActive(true);
-        charaRightArrow.SetActive(true);
         partsUpArrow.SetActive(true);
         CloseWeaponList();
     }
@@ -419,13 +480,14 @@ public class CustomManager : Photon.MonoBehaviour
 
         //★キャラIndex
 
-        StartCoroutine(TurnCharaTable(charaChangeAngle * factor, charaChangeTime));
+        StartCoroutine(TurnCharaTable(charaChangeAngle * factor, charaChangeTime, true));
         SpawnCharacter();
     }
 
     //UI移動制御
     IEnumerator MoveObject(RectTransform rectTran, Vector3 startVector, Vector3 lastVector, float time)
     {
+        isTurnTable = true;
         float totalTime = 0;
         for (;;)
         {
@@ -435,11 +497,13 @@ public class CustomManager : Photon.MonoBehaviour
             if (totalTime >= time) break;
             yield return null;
         }
+        isTurnTable = false;
     }
 
     //キャラテーブル移動制御
-    IEnumerator TurnCharaTable(float angle, float time)
+    IEnumerator TurnCharaTable(float angle, float time, bool isArrowActive)
     {
+        isTurnTable = true;
         charaLeftArrow.SetActive(false);
         charaRightArrow.SetActive(false);
         float totalTime = 0;
@@ -452,7 +516,61 @@ public class CustomManager : Photon.MonoBehaviour
             if (totalTime >= time) break;
             yield return null;
         }
-        charaLeftArrow.SetActive(true);
-        charaRightArrow.SetActive(true);
+        isTurnTable = false;
+        charaLeftArrow.SetActive(isArrowActive);
+        charaRightArrow.SetActive(isArrowActive);
+    }
+
+    //Bitアイコンセット
+    private void SetBitIcon(int partsNo, GameObject weaponObj)
+    {
+        if (!bitImgMap.ContainsKey(partsNo)) return;
+        if (weaponObj == null) return;
+
+        int bitType = weaponObj.GetComponent<WeaponController>().GetBitMotion();
+        Sprite bitSprite = bitTypeSprites[0];
+        switch (bitType)
+        {
+            case Common.CO.BIT_MOTION_TYPE_GUN:
+                //銃タイプ
+                switch (partsNo)
+                {
+                    case Common.CO.PARTS_LEFT_HAND_NO:
+                    case Common.CO.PARTS_LEFT_HAND_DASH_NO:
+                        bitSprite = bitTypeSprites[1];
+                        break;
+
+                    case Common.CO.PARTS_RIGHT_HAND_NO:
+                    case Common.CO.PARTS_RIGHT_HAND_DASH_NO:
+                        bitSprite = bitTypeSprites[2];
+                        break;
+
+                    default:
+                        bitSprite = bitTypeSprites[3];
+                        break;
+                }
+                break;
+
+            case Common.CO.BIT_MOTION_TYPE_MISSILE:
+                //ミサイルタイプ
+                bitSprite = bitTypeSprites[3];
+                break;
+
+            case Common.CO.BIT_MOTION_TYPE_LASER:
+                //レーザータイプ
+                bitSprite = bitTypeSprites[4];
+                break;
+
+            default:
+                //その他
+                bitSprite = bitTypeSprites[0];
+                break;
+        }
+
+        foreach (Image img in bitImgMap[partsNo])
+        {
+            if (bitSprite == null) img.enabled = false;
+            img.sprite = bitSprite;
+        }
     }
 }
