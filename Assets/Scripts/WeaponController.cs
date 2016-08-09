@@ -400,4 +400,9 @@ public class WeaponController : Photon.MonoBehaviour
     {
         return bitMotionType;
     }
+
+    public virtual string GetDescriptionText()
+    {
+        return "";
+    }
 }

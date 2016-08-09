@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 448fa39e20a754c49a39a1544c65cedd
-timeCreated: 1470649708
+timeCreated: 1470715816
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -69,18 +69,18 @@ TextureImporter:
     - name: Custom_img_0
       rect:
         serializedVersion: 2
-        x: 14
-        y: 949
-        width: 360
-        height: 61
+        x: 16
+        y: 951
+        width: 356
+        height: 57
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 5, y: 5, z: 5, w: 5}
       outline:
-      - - {x: -180, y: 30.5}
-        - {x: -180, y: -30.5}
-        - {x: 180, y: -30.5}
-        - {x: 180, y: 30.5}
+      - - {x: -178, y: 28.5}
+        - {x: -178, y: -28.5}
+        - {x: 178, y: -28.5}
+        - {x: 178, y: 28.5}
     - name: Custom_img_1
       rect:
         serializedVersion: 2
@@ -124,15 +124,15 @@ TextureImporter:
         x: 16
         y: 688
         width: 355
-        height: 242
+        height: 241
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 12, y: 12, z: 10, w: 9}
       outline:
-      - - {x: -177.5, y: 121}
-        - {x: -177.5, y: -121}
-        - {x: 177.5, y: -121}
-        - {x: 177.5, y: 121}
+      - - {x: -177.5, y: 120.5}
+        - {x: -177.5, y: -120.5}
+        - {x: 177.5, y: -120.5}
+        - {x: 177.5, y: 120.5}
     - name: Custom_img_5
       rect:
         serializedVersion: 2

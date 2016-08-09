@@ -17,8 +17,6 @@ public class CustomManager : Photon.MonoBehaviour
     private Text partsNameText;
     [SerializeField]
     private Transform partsSelectArea;
-    //[SerializeField]
-    //private List<Image> bitImages;
     [SerializeField]
     private RectTransform weaponSelectArea;
     [SerializeField]
@@ -48,13 +46,13 @@ public class CustomManager : Photon.MonoBehaviour
     [SerializeField]
     private Color weaponNotSelectedColor = Color.yellow;
     private int maxWeaponButtonCount = 8;
-    private float buttonHeight = 125;
+    private float buttonHeight;
 
     private WeaponStore weaponStore;
 
     private Transform charaTran;
     private PlayerController playerCtrl;
-    private GameObject[] equipWeapons;
+    private List<WeaponController> equipWeaponCtrls = new List<WeaponController>();
 
     //キャラテーブルステータス
     private int charaIndex = 0;
@@ -74,6 +72,15 @@ public class CustomManager : Photon.MonoBehaviour
     private Vector3 startWeaponDetailPos;
     private Vector3 lastWeaponDetailPos;
 
+    //武器セレクトエリア
+    private ScrollRect weaponScrollView;
+    private LayoutElement weaponScrollViewLayout;
+    private RectTransform weaponButtonAreaRectTran;
+    private Transform weaponButtonArea;
+    private Text weaponDescriptionText;
+    private GameObject weaponArrowU;
+    private GameObject weaponArrowD;
+
     private Dictionary<int, List<Image>> partsFrameMap = new Dictionary<int, List<Image>>();
     private Dictionary<int, List<Image>> bitImgMap = new Dictionary<int, List<Image>>();
 
@@ -86,6 +93,7 @@ public class CustomManager : Photon.MonoBehaviour
     private const string PARTS_AREA_NAME_SHOULDER = "Shoulder-Weapon";
     private const string PARTS_AREA_NAME_SHOULDER_DASH = "Shoulder-Dash-Weapon";
     private const string PARTS_AREA_NAME_SUB = "Sub-Weapon";
+    private const string BIT_IMG_AREA = "BitImg";
 
     //partsフレームの設置順
     private Dictionary<int, string> partsSelectNameMap = new Dictionary<int, string>()
@@ -99,7 +107,6 @@ public class CustomManager : Photon.MonoBehaviour
         { Common.CO.PARTS_SUB_NO, PARTS_AREA_NAME_SUB },
     };
 
-    private const string BIT_IMG_AREA = "BitImg";
 
     void Awake()
     {
@@ -110,6 +117,17 @@ public class CustomManager : Photon.MonoBehaviour
         lastWeaponListPos = startWeaponListPos + Vector3.right * weaponSelectArea.rect.width;
         startWeaponDetailPos = weaponDetailArea.localPosition;
         lastWeaponDetailPos = startWeaponDetailPos + Vector3.left * weaponDetailArea.rect.width;
+
+        //武器リストエリア取得
+        Transform weaponScrollViewTran = weaponSelectArea.FindChild("ScrollView");
+        weaponScrollView = weaponScrollViewTran.GetComponent<ScrollRect>();
+        weaponScrollViewLayout = weaponScrollViewTran.GetComponent<LayoutElement>();
+        weaponButtonArea = weaponSelectArea.FindChild("ScrollView/Viewport/ButtonArea");
+        weaponButtonAreaRectTran = weaponButtonArea.GetComponent<RectTransform>();
+        weaponDescriptionText = weaponDetailArea.FindChild("ScrollView/Viewport/Text").GetComponent<Text>();
+        buttonHeight = selectedWeaponButton.GetComponent<LayoutElement>().preferredHeight + weaponButtonArea.GetComponent<VerticalLayoutGroup>().spacing;
+        weaponArrowU = weaponScrollViewTran.FindChild("WeaponArrowU").gameObject;
+        weaponArrowD = weaponScrollViewTran.FindChild("WeaponArrowD").gameObject;
 
         partsNameText.text = "";
 
@@ -138,42 +156,7 @@ public class CustomManager : Photon.MonoBehaviour
         //キャラ生成
         SpawnCharacter();
     }
-
-    void Update()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit raycastHit;
-            if (Physics.Raycast(ray, out raycastHit))
-            {
-                Transform touchTran = raycastHit.transform;
-                WeaponController weaponCtrl = null;
-                if (touchTran == charaTran)
-                {
-                    //キャラタッチ
-                    if (equipWeapons.Length > 0)
-                    {
-                        GameObject weaponObj = equipWeapons[fireNo % equipWeapons.Length];
-                        if (weaponObj != null)
-                        {
-                            weaponCtrl = weaponObj.GetComponent<WeaponController>();
-                            playerCtrl.CustomSceaneFire(weaponCtrl);
-                        }
-                        fireNo++;
-                    }
-                }
-                else if (touchTran.tag == Common.CO.TAG_WEAPON)
-                {
-                    //Bitタッチ
-                    weaponCtrl = touchTran.GetComponent<WeaponController>();
-                    playerCtrl.CustomSceaneFire(weaponCtrl);
-                }
-            }
-        }
-    }
-
+    
     //タイトルへ戻る
     public void GoToTitle()
     {
@@ -270,9 +253,18 @@ public class CustomManager : Photon.MonoBehaviour
                 }
             }
         }
-        equipWeapons = GameObject.FindGameObjectsWithTag(Common.CO.TAG_WEAPON);
+        ReadyWeaponCtrl();
     }
 
+    //装備使用準備
+    private void ReadyWeaponCtrl()
+    {
+        GameObject[] equipWeapons = GameObject.FindGameObjectsWithTag(Common.CO.TAG_WEAPON);
+        foreach (GameObject obj in equipWeapons)
+        {
+            equipWeaponCtrls.Add(obj.GetComponent<WeaponController>());
+        }
+    }
 
     //#########################
     //##### TourchManager #####
@@ -322,7 +314,7 @@ public class CustomManager : Photon.MonoBehaviour
         {
             if (tapObj != null)
             {
-                //Debug.Log(tapObj.name + " : " + tapObj.tag);
+                Debug.Log(tapObj.name + " : " + tapObj.tag);
                 if (tapObj == charaLeftArrow)
                 {
                     //キャラ変更左
@@ -341,12 +333,25 @@ public class CustomManager : Photon.MonoBehaviour
                 else if (tapObj.tag == "WeaponSelect")
                 {
                     //武器選択
-                    WeaponSelect();
+                    //WeaponSelect();
                 }
                 else if (tapObj == weaponCloseArrow)
                 {
                     //parts選択解除
                     PartsSelectOff();
+                }
+            }
+            else
+            {
+                //ためし撃ち
+                if (equipWeaponCtrls.Count > 0)
+                {
+                    WeaponController weaponCtrl = equipWeaponCtrls[fireNo % equipWeaponCtrls.Count];
+                    if (weaponCtrl != null)
+                    {
+                        playerCtrl.CustomSceaneFire(weaponCtrl);
+                    }
+                    fireNo++;
                 }
             }
         }
@@ -365,7 +370,18 @@ public class CustomManager : Photon.MonoBehaviour
         if (Mathf.Abs(preDiffX) < minSwitpeDiff && Mathf.Abs(preDiffY) < minSwitpeDiff) return;
         isSwipe = true;
 
-        if (tapObj == null || tapObj.tag != "PartsSelect")
+        bool isCharaRotate = true;
+        if (tapObj != null)
+        {
+            if (tapObj.tag == "PartsSelect"
+                || tapObj.tag == "WeaponSelect"
+                || tapObj.name == "WeaponDescription"
+            )
+            {
+                isCharaRotate = false;
+            }
+        }
+        if (isCharaRotate)
         {
             //キャラ回転
             CharacterRotate(preDiffX * -1);
@@ -452,18 +468,111 @@ public class CustomManager : Photon.MonoBehaviour
     }
 
     //武器選択
-    private void WeaponSelect()
+    private void WeaponSelect(int weaponNo)
     {
-        //Debug.Log("WeaponSelect");
+        Debug.Log("WeaponSelect:"+weaponNo);
 
+        //武器説明表示
+        SetWeaponDescription(weaponNo);
+
+        //装備中文字変更
+        foreach (Transform btn in weaponButtonArea)
+        {
+            Color col = weaponNotSelectedColor;
+            if (btn.name == weaponNo.ToString()) col = weaponSelectedColor;
+            btn.FindChild("Text").GetComponent<Text>().color = col;
+        }
+
+        //装備
+        GameObject weapon = EquipWeapon(selectedPartsNo, weaponNo);
+        ReadyWeaponCtrl();
+
+        //Fire
+        WeaponController ctrl = weapon.GetComponent<WeaponController>();
+        playerCtrl.CustomSceaneFire(ctrl);
     }
 
     //武器選択リストオープン
     private void OpenWeaponList()
     {
         //Debug.Log("OpenWeaponList");
+
+        //武器リスト初期化
+        initWeaponList();
+
+        //装備中武器取得
+        int nowWeaponNo = UserManager.userEquipment[Common.CO.partsNameArray[selectedPartsNo]];
+
+        //装備可能武器取得
+        List<int> weaponNoList = weaponStore.GetSelectableWeaponNoList(selectedPartsNo);
+        weaponNoList.Insert(0, nowWeaponNo);
+
+        //ボタン作成
+        foreach (int weaponNo in weaponNoList)
+        {
+            int paramWeaponNo = weaponNo;
+            string weaponName = Common.Weapon.GetWeaponName(paramWeaponNo);
+            GameObject btn = (GameObject)GameObject.Instantiate(selectedWeaponButton, Vector3.zero, Quaternion.identity);
+            btn.name = paramWeaponNo.ToString();
+            btn.transform.SetParent(weaponButtonArea, false);
+            btn.GetComponent<Button>().onClick.AddListener(() => WeaponSelect(paramWeaponNo));
+            Text btnText = btn.transform.FindChild("Text").GetComponent<Text>();
+            btnText.text = weaponName;
+            Color textColor = weaponNotSelectedColor;
+            if (weaponNo == nowWeaponNo) textColor = weaponSelectedColor;
+            btnText.color = textColor;
+        }
+
+        //装備中武器説明表示
+        SetWeaponDescription(nowWeaponNo);
+
+        //エリアサイズ変更
+        float dispWeaponCount = weaponNoList.Count;
+        if (dispWeaponCount > maxWeaponButtonCount) dispWeaponCount = maxWeaponButtonCount + 0.5f;
+        weaponScrollViewLayout.preferredHeight = dispWeaponCount * buttonHeight;
+        weaponButtonAreaRectTran.sizeDelta = new Vector2(weaponButtonAreaRectTran.rect.width, weaponNoList.Count * buttonHeight);
+
+        //エリア移動
         StartCoroutine(MoveObject(weaponSelectArea, startWeaponListPos, lastWeaponListPos, selectModeTime));
         StartCoroutine(MoveObject(weaponDetailArea, startWeaponDetailPos, lastWeaponDetailPos, selectModeTime));
+    }
+
+    //武器選択エリア初期
+    private void initWeaponList()
+    {
+        //ボタン削除
+        foreach (Transform child in weaponButtonArea)
+        {
+            Destroy(child.gameObject);
+        }
+
+        //エリア初期化
+        weaponScrollViewLayout.preferredHeight = 0;
+        weaponButtonAreaRectTran.sizeDelta = new Vector2(weaponButtonAreaRectTran.rect.width, 0);
+        weaponScrollView.verticalNormalizedPosition = 1;
+
+        //説明クリア
+        weaponDescriptionText.text = "";
+    }
+
+    //武器説明表示
+    private void SetWeaponDescription(int weaponNo, GameObject weaponObj = null)
+    {
+        string[] weaponInfo = Common.Weapon.GetWeaponInfo(weaponNo);
+        weaponDescriptionText.text = weaponInfo[Common.Weapon.DETAIL_DESCRIPTION_NO];
+
+        //武器詳細説明取得
+        if (weaponObj == null)
+        {
+            weaponObj = (GameObject)Resources.Load(Common.Func.GetResourceWeapon(weaponInfo[Common.Weapon.DETAIL_PREFAB_NAME_NO]));
+        }
+        
+        string detailDescription = weaponObj.GetComponent<WeaponController>().GetDescriptionText();
+        if (detailDescription != "")
+        {
+            if (weaponDescriptionText.text != "") weaponDescriptionText.text += "\n";
+            weaponDescriptionText.text += detailDescription;
+        }
     }
 
     //武器選択リストクローズ

@@ -258,4 +258,19 @@ public class BulletWeaponController : WeaponController
             bulletCtrl.SetTarget(base.targetTran);
         }
     }
+
+    public override string GetDescriptionText()
+    {
+        string description = "";
+        description += "武器のステータス出す?\n";
+        description += "Reload: " + base.reloadTime.ToString() + "s\n";
+        if (bullet != null)
+        {
+            BulletController bulletCtrl = bullet.GetComponent<BulletController>();
+            description += bulletCtrl.GetBulletDescription();
+            if (rapidCount > 0) description += "ShootCount: " + rapidCount.ToString() + "s";
+        }
+        description += "\n改行test\n改行test\n改行test\n改行test\n改行test\n改行test\n改行test\n改行test\n改行test\n";
+        return description;
+    }
 }

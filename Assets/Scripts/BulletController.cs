@@ -249,4 +249,14 @@ public class BulletController : MoveOfCharacter
             targetStatus = targetView.gameObject.GetComponent<PlayerStatus>();
         }
     }
+
+    public virtual string GetBulletDescription()
+    {
+        string description = "";
+        if (damage > 0) description += "Damage: " + damage.ToString()+"\n";
+        if (damagePerSecond > 0) description += "DOT: " + damagePerSecond.ToString() + "/s\n";
+        if (stuckTime > 0) description += "Stuck: " + stuckTime.ToString() + "\n";
+        if (knockBackRate > 0) description += "KnockBack: " + knockBackRate.ToString() + "\n";
+        return description;
+    }
 }

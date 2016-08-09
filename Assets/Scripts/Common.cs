@@ -238,29 +238,41 @@ namespace Common
             { 5003, new string[]{ "SpeedBurst", "", "", OBTAIN_TYPE_INIT}},
         };
 
+        //武器情報を取得する
+        public static string[] GetWeaponInfo(int weaponNo)
+        {
+            string[] weaponInfo = new string[] { };
+            if (handWeaponLineUp.ContainsKey(weaponNo))
+            {
+                weaponInfo = handWeaponLineUp[weaponNo];
+            }
+            else if (handDashWeaponLineUp.ContainsKey(weaponNo))
+            {
+                weaponInfo = handDashWeaponLineUp[weaponNo];
+            }
+            else if (shoulderWeaponLineUp.ContainsKey(weaponNo))
+            {
+                weaponInfo = shoulderWeaponLineUp[weaponNo];
+            }
+            else if (shoulderDashWeaponLineUp.ContainsKey(weaponNo))
+            {
+                weaponInfo = shoulderDashWeaponLineUp[weaponNo];
+            }
+            else if (subWeaponLineUp.ContainsKey(weaponNo))
+            {
+                weaponInfo = subWeaponLineUp[weaponNo];
+            }
+            return weaponInfo;
+        }
+
         //武器名を取得する
         public static string GetWeaponName(int weaponNo)
         {
             string weaponName = "";
-            if (handWeaponLineUp.ContainsKey(weaponNo))
+            string[] weaponInfo = GetWeaponInfo(weaponNo);
+            if (weaponInfo.Length > 0)
             {
-                weaponName = GetWeaponName(handWeaponLineUp[weaponNo]);
-            }
-            else if (handDashWeaponLineUp.ContainsKey(weaponNo))
-            {
-                weaponName = GetWeaponName(handDashWeaponLineUp[weaponNo]);
-            }
-            else if (shoulderWeaponLineUp.ContainsKey(weaponNo))
-            {
-                weaponName = GetWeaponName(shoulderWeaponLineUp[weaponNo]);
-            }
-            else if (shoulderDashWeaponLineUp.ContainsKey(weaponNo))
-            {
-                weaponName = GetWeaponName(shoulderDashWeaponLineUp[weaponNo]);
-            }
-            else if (subWeaponLineUp.ContainsKey(weaponNo))
-            {
-                weaponName = GetWeaponName(subWeaponLineUp[weaponNo]);
+                weaponName = GetWeaponName(weaponInfo);
             }
             return weaponName;
         }
