@@ -219,7 +219,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
 
     public void AddDamage(int damage)
     {
-        if (!gameCtrl.isGameStart) return;
+        if (gameCtrl == null || !gameCtrl.isGameStart) return;
 
         if (leftInvincibleTime > 0)
         {

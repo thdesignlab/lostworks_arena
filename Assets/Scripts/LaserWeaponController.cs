@@ -52,11 +52,11 @@ public class LaserWeaponController : WeaponController
 
     protected override void Action()
     {
-        if (base.playerStatus == null)
-        {
-            base.isEnabledFire = false;
-            return;
-        }
+        //if (base.playerStatus == null)
+        //{
+        //    base.isEnabledFire = false;
+        //    return;
+        //}
 
         //base.Action();
 
@@ -81,9 +81,12 @@ public class LaserWeaponController : WeaponController
         //モーション開始
         StartMotion();
 
-        //移動・回転制限
-        base.playerStatus.AccelerateRunSpeed(runSpeedRate, effectiveTime);
-        base.playerStatus.InterfareTurn(turnSpeedRate, effectiveTime);
+        if (base.playerStatus != null)
+        {
+            //移動・回転制限
+            base.playerStatus.AccelerateRunSpeed(runSpeedRate, effectiveTime);
+            base.playerStatus.InterfareTurn(turnSpeedRate, effectiveTime);
+        }
 
         //レーザー生成
         base.PlayAudio();
