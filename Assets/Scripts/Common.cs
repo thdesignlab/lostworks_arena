@@ -359,6 +359,7 @@ namespace Common
             { 1001, new string[]{ "BrasterLauncher", "", "", OBTAIN_TYPE_INIT}},
             { 1002, new string[]{ "BeamCannon", "", "", OBTAIN_TYPE_INIT}},
             { 1003, new string[]{ "PenetrateDagger", "", "", OBTAIN_TYPE_INIT}},
+            { 1004, new string[]{ "BlazePillar", "", "", OBTAIN_TYPE_INIT}},
         };
         //ハンド武器(ダッシュ)リスト
         public static Dictionary<int, string[]> handDashWeaponLineUp = new Dictionary<int, string[]>()

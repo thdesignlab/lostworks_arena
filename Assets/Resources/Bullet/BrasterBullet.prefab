@@ -1710,7 +1710,9 @@ MonoBehaviour:
   turnSpeed: 120
   lockStartTime: 0
   lockedSpeedRate: 1
+  lockedTurnSpeedRate: 1
   isNeedLock: 1
+  isLockFlat: 0
   chargeEffect: {fileID: 175020}
   maxChargeTime: 3
   maxSpeedRate: 5

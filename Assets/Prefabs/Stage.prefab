@@ -11,7 +11,7 @@ GameObject:
   - 33: {fileID: 3361452}
   - 23: {fileID: 2327200}
   - 65: {fileID: 6597992}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: bg2_2_pre
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -831,8 +831,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.254, y: 0.25400007, z: 0.25400007}
-  m_Center: {x: 0, y: 0, z: 0.12700003}
+  m_Size: {x: 0.254, y: 0.25400007, z: 5}
+  m_Center: {x: 0, y: 0, z: -2.3}
 --- !u!95 &9503404
 Animator:
   serializedVersion: 3
