@@ -34,6 +34,7 @@ public class BulletController : MoveOfCharacter
 
     protected const int MIN_SEND_DAMAGE = 5;
 
+    protected AudioController audioCtrl;
 
     protected override void Awake()
     {
@@ -42,6 +43,8 @@ public class BulletController : MoveOfCharacter
         //判定一時削除
         myCollider = myTran.GetComponentInChildren<Collider>();
         if (myCollider != null) myCollider.enabled = false;
+
+        audioCtrl = myTran.GetComponent<AudioController>();
     }
 
     protected override void Start()
@@ -201,6 +204,9 @@ public class BulletController : MoveOfCharacter
     //ターゲットを破壊する
     protected bool TargetDestory(GameObject hitObj)
     {
+        PhotonView pv = hitObj.GetPhotonView();
+        if (pv != null && pv.isMine) return false;
+
         if ((isEnergyBulletBreak && Common.Func.IsBullet(hitObj.tag))
             || (isPhysicsBulletBreak && Common.Func.IsPhysicsBullet(hitObj.tag)))
         {
@@ -259,4 +265,16 @@ public class BulletController : MoveOfCharacter
         if (knockBackRate > 0) description += "KnockBack: " + knockBackRate.ToString() + "\n";
         return description;
     }
+
+    protected void PlayAudio(int no = 0)
+    {
+        if (audioCtrl == null) return;
+        audioCtrl.Play(no);
+    }
+    protected void StopAudio(int no = 0)
+    {
+        if (audioCtrl == null) return;
+        audioCtrl.Stop(no);
+    }
+
 }

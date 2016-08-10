@@ -8,7 +8,9 @@ public class TrackingBulletController : BulletController
     [SerializeField]
     protected float lockStartTime; //発射後待機時間
     [SerializeField]
-    protected float lockedSpeedRate = 1; //ロック時のスピードRate
+    protected float lockedSpeedRate = 1; //ロック後のスピードRate
+    [SerializeField]
+    protected float lockedTurnSpeedRate = 1; //ロック後の旋回速度Rate
     [SerializeField]
     protected bool isNeedLock = false;    //誘導に要ロック(画面に捕らえている)
     [SerializeField]
@@ -16,6 +18,7 @@ public class TrackingBulletController : BulletController
 
     protected bool enableSetAngle = true;
     protected float defaultSpeed;
+    protected float defaultTurnSpeed;
     protected Vector3 lockVector = Vector3.one;
 
     protected override void Awake()
@@ -23,6 +26,7 @@ public class TrackingBulletController : BulletController
         base.Awake();
 
         defaultSpeed = base.speed;
+        defaultTurnSpeed = turnSpeed;
         if (isLockFlat) lockVector = new Vector3(1, 0, 1);
     }
 
@@ -51,6 +55,7 @@ public class TrackingBulletController : BulletController
                 {
                     //ロック時スピード
                     base.speed = defaultSpeed * lockedSpeedRate;
+                    turnSpeed = defaultTurnSpeed * lockedTurnSpeedRate;
                 }
             }
         }

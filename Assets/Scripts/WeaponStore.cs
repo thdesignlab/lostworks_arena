@@ -203,7 +203,7 @@ public class WeaponStore : Photon.MonoBehaviour
         cancelBtn.GetComponent<Button>().onClick.AddListener(() => OnCancelEquipButton());
 
         //装備可能武器No
-        List<int> selectableWeaponNoList = GetSelectableWeaponNoList(partsNo);
+        List<int> selectableWeaponNoList = GetSelectableWeaponNoList(partsNo, isEnableSomeWeapon);
         if (selectableWeaponNoList.Count == 0) return;
 
         weaponListPanel.SetActive(true);

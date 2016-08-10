@@ -449,7 +449,7 @@ MonoBehaviour:
   speed: 70
   damage: 50
   damagePerSecond: 0
-  stuckTime: 1
+  stuckTime: 0.5
   knockBackRate: 0
   isPhysicsBulletBreak: 0
   isEnergyBulletBreak: 0
@@ -459,6 +459,7 @@ MonoBehaviour:
   lockStartTime: 3
   lockedSpeedRate: 8
   isNeedLock: 0
+  isLockFlat: 0
 --- !u!136 &13630562
 CapsuleCollider:
   m_ObjectHideFlags: 1

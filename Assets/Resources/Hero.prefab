@@ -2111,7 +2111,6 @@ GameObject:
   - 114: {fileID: 11418220}
   - 114: {fileID: 11400020}
   - 114: {fileID: 11481054}
-  - 114: {fileID: 11436138}
   m_Layer: 0
   m_Name: Body
   m_TagString: Untagged
@@ -6644,22 +6643,6 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: "\u8A2D\u5B9A"
---- !u!114 &11436138
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 169446}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4fd7042ec41f20a4fa2c22231afca7bb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bitMotionType: 0
-  bitMoveTime: 0
-  isBitFixed: 0
-  reloadTime: 0
-  effectTime: 0
 --- !u!114 &11436142
 MonoBehaviour:
   m_ObjectHideFlags: 1

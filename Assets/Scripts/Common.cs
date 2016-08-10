@@ -168,126 +168,6 @@ namespace Common
         public static string LAYER_STRUCTURE = "Structure";
     }
 
-    //### キャラクター詳細 ###
-    public static class Character
-    {
-        //獲得タイプ
-        public const string OBTAIN_TYPE_NONE = "NONE";
-        public const string OBTAIN_TYPE_INIT = "INIT";
-
-        //武器リストNo
-        public const int DETAIL_PREFAB_NAME_NO = 0;     //プレハブ名
-        public const int DETAIL_NAME_NO = 1;            //キャラ名
-        public const int DETAIL_DESCRIPTION_NO = 2;     //説明
-        public const int DETAIL_OBTAIN_TYPE_NO = 3;     //取得タイプ
-
-        //キャラクターリスト
-        public static Dictionary<int, string[]> characterLineUp = new Dictionary<int, string[]>()
-        {
-            {0, new string[]{ "Hero", "るり", "せぶんないつ", OBTAIN_TYPE_INIT}},
-        };
-    }
-
-    //### 武器詳細 ###
-    public static class Weapon
-    {
-        //獲得タイプ
-        public const string OBTAIN_TYPE_NONE = "NONE";
-        public const string OBTAIN_TYPE_INIT = "INIT";
-
-        //武器リストNo
-        public const int DETAIL_PREFAB_NAME_NO = 0;     //プレハブ名
-        public const int DETAIL_NAME_NO = 1;            //武器名
-        public const int DETAIL_DESCRIPTION_NO = 2;     //説明
-        public const int DETAIL_OBTAIN_TYPE_NO = 3;     //取得タイプ
-
-        //ハンド武器リスト
-        public static Dictionary<int, string[]> handWeaponLineUp = new Dictionary<int, string[]>()
-        {
-            { 1000, new string[]{ "Rifle", "", "", OBTAIN_TYPE_INIT}},
-            { 1001, new string[]{ "BrasterLauncher", "", "", OBTAIN_TYPE_INIT}},
-            { 1002, new string[]{ "BeamCannon", "", "", OBTAIN_TYPE_INIT}},
-        };
-        //ハンド武器(ダッシュ)リスト
-        public static Dictionary<int, string[]> handDashWeaponLineUp = new Dictionary<int, string[]>()
-        {
-            { 2000, new string[]{ "MachineGun", "", "", OBTAIN_TYPE_INIT}},
-            { 2001, new string[]{ "GatlingGun", "", "", OBTAIN_TYPE_INIT}},
-            { 2002, new string[]{ "PulseGun", "", "", OBTAIN_TYPE_INIT}},
-        };
-        //背中武器リスト
-        public static Dictionary<int, string[]> shoulderWeaponLineUp = new Dictionary<int, string[]>()
-        {
-            { 3000, new string[]{ "CECannon", "", "", OBTAIN_TYPE_INIT }},
-            { 3001, new string[]{ "HugeLaser", "", "", OBTAIN_TYPE_INIT}},
-            { 3002, new string[]{ "SatelliteMissile", "", "", OBTAIN_TYPE_INIT}},
-            { 3003, new string[]{ "Cyclone", "", "", OBTAIN_TYPE_INIT}},
-        };
-        //背中武器(ダッシュ)リスト
-        public static Dictionary<int, string[]> shoulderDashWeaponLineUp = new Dictionary<int, string[]>()
-        {
-            { 4000, new string[]{ "MissileLauncher", "", "", OBTAIN_TYPE_INIT}},
-            { 4001, new string[]{ "ClusterLaser", "", "", OBTAIN_TYPE_INIT}},
-            { 4002, new string[]{ "GatlingCannon", "", "", OBTAIN_TYPE_INIT}},
-        };
-        //サブ武器リスト
-        public static Dictionary<int, string[]> subWeaponLineUp = new Dictionary<int, string[]>()
-        {
-            { 5000, new string[]{ "InvincibleShield", "", "", OBTAIN_TYPE_INIT}},
-            { 5001, new string[]{ "AvoidBurst", "", "", OBTAIN_TYPE_INIT}},
-            { 5002, new string[]{ "BoostRecoverSp", "", "", OBTAIN_TYPE_INIT}},
-            { 5003, new string[]{ "SpeedBurst", "", "", OBTAIN_TYPE_INIT}},
-        };
-
-        //武器情報を取得する
-        public static string[] GetWeaponInfo(int weaponNo)
-        {
-            string[] weaponInfo = new string[] { };
-            if (handWeaponLineUp.ContainsKey(weaponNo))
-            {
-                weaponInfo = handWeaponLineUp[weaponNo];
-            }
-            else if (handDashWeaponLineUp.ContainsKey(weaponNo))
-            {
-                weaponInfo = handDashWeaponLineUp[weaponNo];
-            }
-            else if (shoulderWeaponLineUp.ContainsKey(weaponNo))
-            {
-                weaponInfo = shoulderWeaponLineUp[weaponNo];
-            }
-            else if (shoulderDashWeaponLineUp.ContainsKey(weaponNo))
-            {
-                weaponInfo = shoulderDashWeaponLineUp[weaponNo];
-            }
-            else if (subWeaponLineUp.ContainsKey(weaponNo))
-            {
-                weaponInfo = subWeaponLineUp[weaponNo];
-            }
-            return weaponInfo;
-        }
-
-        //武器名を取得する
-        public static string GetWeaponName(int weaponNo)
-        {
-            string weaponName = "";
-            string[] weaponInfo = GetWeaponInfo(weaponNo);
-            if (weaponInfo.Length > 0)
-            {
-                weaponName = GetWeaponName(weaponInfo);
-            }
-            return weaponName;
-        }
-        private static string GetWeaponName(string[] weaponInfo)
-        {
-            string weaponName = weaponInfo[DETAIL_NAME_NO];
-            if (weaponName == "")
-            {
-                weaponName = weaponInfo[DETAIL_PREFAB_NAME_NO];
-            }
-            return weaponName;
-        }
-    }
-
     //### 端末保持情報 ###
     public static class PP
     {
@@ -436,6 +316,128 @@ namespace Common
                 }
             }
             return partsNo;
+        }
+    }
+
+    //### キャラクター詳細 ###
+    public static class Character
+    {
+        //獲得タイプ
+        public const string OBTAIN_TYPE_NONE = "NONE";
+        public const string OBTAIN_TYPE_INIT = "INIT";
+
+        //武器リストNo
+        public const int DETAIL_PREFAB_NAME_NO = 0;     //プレハブ名
+        public const int DETAIL_NAME_NO = 1;            //キャラ名
+        public const int DETAIL_DESCRIPTION_NO = 2;     //説明
+        public const int DETAIL_OBTAIN_TYPE_NO = 3;     //取得タイプ
+
+        //キャラクターリスト
+        public static Dictionary<int, string[]> characterLineUp = new Dictionary<int, string[]>()
+        {
+            {0, new string[]{ "Hero", "るり", "せぶんないつ", OBTAIN_TYPE_INIT}},
+        };
+    }
+
+    //### 武器詳細 ###
+    public static class Weapon
+    {
+        //獲得タイプ
+        public const string OBTAIN_TYPE_NONE = "NONE";
+        public const string OBTAIN_TYPE_INIT = "INIT";
+
+        //武器リストNo
+        public const int DETAIL_PREFAB_NAME_NO = 0;     //プレハブ名
+        public const int DETAIL_NAME_NO = 1;            //武器名
+        public const int DETAIL_DESCRIPTION_NO = 2;     //説明
+        public const int DETAIL_OBTAIN_TYPE_NO = 3;     //取得タイプ
+
+        //ハンド武器リスト
+        public static Dictionary<int, string[]> handWeaponLineUp = new Dictionary<int, string[]>()
+        {
+            { 1000, new string[]{ "Rifle", "", "", OBTAIN_TYPE_INIT}},
+            { 1001, new string[]{ "BrasterLauncher", "", "", OBTAIN_TYPE_INIT}},
+            { 1002, new string[]{ "BeamCannon", "", "", OBTAIN_TYPE_INIT}},
+            { 1003, new string[]{ "PenetrateDagger", "", "", OBTAIN_TYPE_INIT}},
+        };
+        //ハンド武器(ダッシュ)リスト
+        public static Dictionary<int, string[]> handDashWeaponLineUp = new Dictionary<int, string[]>()
+        {
+            { 2000, new string[]{ "MachineGun", "", "", OBTAIN_TYPE_INIT}},
+            { 2001, new string[]{ "GatlingGun", "", "", OBTAIN_TYPE_INIT}},
+            { 2002, new string[]{ "PulseGun", "", "", OBTAIN_TYPE_INIT}},
+            { 2003, new string[]{ "ThrowingDagger", "", "", OBTAIN_TYPE_INIT}},
+        };
+        //背中武器リスト
+        public static Dictionary<int, string[]> shoulderWeaponLineUp = new Dictionary<int, string[]>()
+        {
+            { 3000, new string[]{ "CECannon", "", "", OBTAIN_TYPE_INIT }},
+            { 3001, new string[]{ "HugeLaser", "", "", OBTAIN_TYPE_INIT}},
+            { 3002, new string[]{ "SatelliteMissile", "", "", OBTAIN_TYPE_INIT}},
+            { 3003, new string[]{ "Cyclone", "", "", OBTAIN_TYPE_INIT}},
+        };
+        //背中武器(ダッシュ)リスト
+        public static Dictionary<int, string[]> shoulderDashWeaponLineUp = new Dictionary<int, string[]>()
+        {
+            { 4000, new string[]{ "MissileLauncher", "", "", OBTAIN_TYPE_INIT}},
+            { 4001, new string[]{ "ClusterLaser", "", "", OBTAIN_TYPE_INIT}},
+            { 4002, new string[]{ "GatlingCannon", "", "", OBTAIN_TYPE_INIT}},
+        };
+        //サブ武器リスト
+        public static Dictionary<int, string[]> subWeaponLineUp = new Dictionary<int, string[]>()
+        {
+            { 5000, new string[]{ "InvincibleShield", "", "", OBTAIN_TYPE_INIT}},
+            { 5001, new string[]{ "AvoidBurst", "", "", OBTAIN_TYPE_INIT}},
+            { 5002, new string[]{ "BoostRecoverSp", "", "", OBTAIN_TYPE_INIT}},
+            { 5003, new string[]{ "SpeedBurst", "", "", OBTAIN_TYPE_INIT}},
+        };
+
+        //武器情報を取得する
+        public static string[] GetWeaponInfo(int weaponNo)
+        {
+            string[] weaponInfo = new string[] { };
+            if (handWeaponLineUp.ContainsKey(weaponNo))
+            {
+                weaponInfo = handWeaponLineUp[weaponNo];
+            }
+            else if (handDashWeaponLineUp.ContainsKey(weaponNo))
+            {
+                weaponInfo = handDashWeaponLineUp[weaponNo];
+            }
+            else if (shoulderWeaponLineUp.ContainsKey(weaponNo))
+            {
+                weaponInfo = shoulderWeaponLineUp[weaponNo];
+            }
+            else if (shoulderDashWeaponLineUp.ContainsKey(weaponNo))
+            {
+                weaponInfo = shoulderDashWeaponLineUp[weaponNo];
+            }
+            else if (subWeaponLineUp.ContainsKey(weaponNo))
+            {
+                weaponInfo = subWeaponLineUp[weaponNo];
+            }
+            return weaponInfo;
+        }
+
+        //武器名を取得する
+        public static string GetWeaponName(int weaponNo)
+        {
+            string weaponName = "";
+            string[] weaponInfo = GetWeaponInfo(weaponNo);
+            if (weaponInfo.Length > 0)
+            {
+                weaponName = GetWeaponName(weaponInfo);
+            }
+            return weaponName;
+        }
+        private static string GetWeaponName(string[] weaponInfo)
+        {
+            string weaponName = weaponInfo[DETAIL_NAME_NO];
+            if (weaponName == "")
+            {
+                weaponName = weaponInfo[DETAIL_PREFAB_NAME_NO];
+            }
+            return weaponName;
         }
     }
 }

@@ -430,10 +430,11 @@ MonoBehaviour:
   isEnergyBulletBreak: 0
   isHitBreak: 1
   safetyTime: 0.2
-  turnSpeed: 180
+  turnSpeed: 120
   lockStartTime: 0
-  lockedSpeedRate: 1.3
+  lockedSpeedRate: 1.5
   isNeedLock: 1
+  isLockFlat: 0
 --- !u!114 &11478710
 MonoBehaviour:
   m_ObjectHideFlags: 1

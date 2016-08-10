@@ -22,6 +22,8 @@ public class BulletWeaponController : WeaponController
     protected List<Transform> muzzles = new List<Transform>();   //発射口
     protected List<Quaternion> defaultMuzzleQuaternions = new List<Quaternion>();
 
+    protected List<GameObject> shootBullets = new List<GameObject>();
+
     protected AimingController aimingCtrl;
 
     protected float startMuzzleAngle = 0;
@@ -113,6 +115,8 @@ public class BulletWeaponController : WeaponController
 
     protected override void Action()
     {
+        shootBullets = new List<GameObject>();
+
         if (base.bitMoveTime > 0)
         {
             StartCoroutine(WaitBitMove());
@@ -145,14 +149,14 @@ public class BulletWeaponController : WeaponController
         if (rapidCount <= 1 && spreadCount <= 1)
         {
             SpawnBullet(muzzles[0].position, muzzles[0].rotation, 0);
-            base.EndAction();
+            EndAction();
             return;
         }
 
         if (rapidCount <= 1)
         {
             SpreadFire();
-            base.EndAction();
+            EndAction();
         }
         else
         {
@@ -176,7 +180,7 @@ public class BulletWeaponController : WeaponController
             muzzleNo = GetNextMuzzleNo(muzzleNo);
             yield return new WaitForSeconds(rapidInterval);
         }
-        base.EndAction();
+        EndAction();
     }
 
     private void SpreadFire(int muzzleNo = 0, int rapidNo = 1)
@@ -225,6 +229,8 @@ public class BulletWeaponController : WeaponController
         GameObject ob = PhotonNetwork.Instantiate(Common.Func.GetResourceBullet(bullet.name), pos, quat, groupId);
         SetBulletTarget(ob);
         base.PlayAudio();
+
+        shootBullets.Add(ob);
         return ob;
     }
 

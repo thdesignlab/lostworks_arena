@@ -182,12 +182,13 @@ public abstract class BaseMoveController : Photon.MonoBehaviour
         GetComponent<ObjectController>().DestoryObject(isSendRpc);
     }
 
-    private Vector3 DifferentialCorrection(Transform targetTran)
+    protected Vector3 DifferentialCorrection(Transform targetTran, float mySpeed = -1)
     {
         //CheckNpc();
 
         float distance = Vector3.Distance(targetTran.position, myTran.position);
-        float myVelocity = GetVelocity();
+        float myVelocity = mySpeed;
+        if (myVelocity < 0) myVelocity = GetVelocity();
         BaseMoveController targetCtrl = targetTran.gameObject.GetComponent<BaseMoveController>();
         Vector3 targetVelocityVector = Vector3.zero;
         if (targetCtrl != null)
@@ -209,7 +210,7 @@ public abstract class BaseMoveController : Photon.MonoBehaviour
         //到達するまでにターゲットが移動するベクトル
         Vector3 targetMoveVector = targetVelocityVector * arriveTime;
         //if (!isNpc) Debug.Log("moveVector=" + targetMoveVector.ToString());
-
+        //Debug.Log(myTran.name+" >> "+targetMoveVector);
         return targetMoveVector;
     }
     private void DebugLog(Vector3 vec)
