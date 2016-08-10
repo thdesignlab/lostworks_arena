@@ -284,12 +284,41 @@ public class PlayerController : MoveOfCharacter
         if (isSetBodyAngle) motionCtrl.SetBodyAngle();
     }
 
-    public void CustomSceaneFire(WeaponController weaponCtrl)
+    public bool CustomSceaneFire(int partsNo)
     {
-        if (isACtiveSceane) return;
+        if (isACtiveSceane) return false;
 
-        weaponCtrl.SetEnable(true);
-        weaponCtrl.Fire();
+        WeaponController ctrl = null;
+        switch (partsNo)
+        {
+            case Common.CO.PARTS_LEFT_HAND_NO:
+                ctrl = leftHandCtrls[Common.CO.WEAPON_NORMAL];
+                break;
+            case Common.CO.PARTS_LEFT_HAND_DASH_NO:
+                ctrl = leftHandCtrls[Common.CO.WEAPON_DASH];
+                break;
+            case Common.CO.PARTS_RIGHT_HAND_NO:
+                ctrl = rightHandCtrls[Common.CO.WEAPON_NORMAL];
+                break;
+            case Common.CO.PARTS_RIGHT_HAND_DASH_NO:
+                ctrl = rightHandCtrls[Common.CO.WEAPON_DASH];
+                break;
+            case Common.CO.PARTS_SHOULDER_NO:
+                ctrl = shoulderCtrls[Common.CO.WEAPON_NORMAL];
+                break;
+            case Common.CO.PARTS_SHOULDER_DASH_NO:
+                ctrl = shoulderCtrls[Common.CO.WEAPON_DASH];
+                break;
+            case Common.CO.PARTS_SUB_NO:
+                ctrl = subCtrl;
+                break;
+        }
+        if (ctrl == null) return false;
+
+        ctrl.SetEnable(true);
+        ctrl.Fire();
+
+        return true;
     }
 
     //####################

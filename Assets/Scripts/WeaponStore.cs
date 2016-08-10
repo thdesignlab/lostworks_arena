@@ -25,7 +25,7 @@ public class WeaponStore : Photon.MonoBehaviour
 
 
     //装備可能な武器番号を取得する(ユーザー用)
-    public List<int> GetSelectableWeaponNoList(int partsNo)
+    public List<int> GetSelectableWeaponNoList(int partsNo, bool isEquipedAllow = true)
     {
         List<int> selectableWeaponNoList = new List<int>();
 
@@ -59,53 +59,88 @@ public class WeaponStore : Photon.MonoBehaviour
         //装備可能かチェック
         foreach (int weaponNo in weaponList.Keys)
         {
-            bool isEnabled = true;
-
-            //重複チェック
-            if (!isEnableSomeWeapon)
+            if (!IsEnabledEquip(weaponNo, isEquipedAllow, weaponList[weaponNo]))
             {
-                //重複装備不可排除
-                foreach (string partsName in UserManager.userEquipment.Keys)
-                {
-                    if (UserManager.userEquipment[partsName] == weaponNo)
-                    {
-                        //装備済み
-                        isEnabled = false;
-                    }
-                }
+                //装備不可
+                continue;
             }
-
-            if (isEnabled)
-            {
-                //取得済みチェック
-                switch (weaponList[weaponNo][Common.Weapon.DETAIL_OBTAIN_TYPE_NO])
-                {
-                    case Common.Weapon.OBTAIN_TYPE_INIT:
-                        //初期所持
-                        break;
-
-                    case Common.Weapon.OBTAIN_TYPE_NONE:
-                        //使用不可
-                        isEnabled = false;
-                        break;
-
-                    default:
-                        if (!UserManager.userOpenWeapons.Contains(weaponNo))
-                        {
-                            //未所持
-                            isEnabled = false;
-                        }
-                        break;
-                }
-            }
-
-            if (!isEnabled) continue;
             selectableWeaponNoList.Add(weaponNo);
         }
 
         return selectableWeaponNoList;
     }
 
+    //装備可能武器かチェック
+    public bool IsEnabledEquip(int weaponNo, bool isEquipedAllow = false, string[] weaponInfo = null)
+    {
+        if (weaponInfo == null)
+        {
+            //武器情報取得
+            weaponInfo = GetWeaponInfo(weaponNo);
+        }
+
+        //重複チェック
+        if (!isEnableSomeWeapon && !isEquipedAllow)
+        {
+            //重複装備不可排除
+            if (UserManager.userEquipment.ContainsValue(weaponNo))
+            {
+                //装備済み
+                return false;
+            }
+        }
+
+        //取得済みチェック
+        switch (weaponInfo[Common.Weapon.DETAIL_OBTAIN_TYPE_NO])
+        {
+            case Common.Weapon.OBTAIN_TYPE_INIT:
+                //初期所持
+                break;
+
+            case Common.Weapon.OBTAIN_TYPE_NONE:
+                //使用不可
+                return false;
+
+            default:
+                if (!UserManager.userOpenWeapons.Contains(weaponNo))
+                {
+                    //未所持
+                    return false;
+                }
+                break;
+        }
+
+        return true;
+    }
+
+    //武器情報取得
+    public string[] GetWeaponInfo(int weaponNo)
+    {
+        string[] weaponInfo = null;
+
+        if (Common.Weapon.handWeaponLineUp.ContainsKey(weaponNo))
+        {
+            weaponInfo = Common.Weapon.handWeaponLineUp[weaponNo];
+        }
+        else if (Common.Weapon.handDashWeaponLineUp.ContainsKey(weaponNo))
+        {
+            weaponInfo = Common.Weapon.handDashWeaponLineUp[weaponNo];
+        }
+        else if (Common.Weapon.shoulderWeaponLineUp.ContainsKey(weaponNo))
+        {
+            weaponInfo = Common.Weapon.shoulderWeaponLineUp[weaponNo];
+        }
+        else if (Common.Weapon.shoulderDashWeaponLineUp.ContainsKey(weaponNo))
+        {
+            weaponInfo = Common.Weapon.shoulderDashWeaponLineUp[weaponNo];
+        }
+        else if (Common.Weapon.subWeaponLineUp.ContainsKey(weaponNo))
+        {
+            weaponInfo = Common.Weapon.subWeaponLineUp[weaponNo];
+        }
+
+        return weaponInfo;
+    }
 
     // ##### バトル用 #####
 

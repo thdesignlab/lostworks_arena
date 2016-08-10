@@ -172,6 +172,7 @@ namespace Common
     public static class Character
     {
         //獲得タイプ
+        public const string OBTAIN_TYPE_NONE = "NONE";
         public const string OBTAIN_TYPE_INIT = "INIT";
 
         //武器リストNo
