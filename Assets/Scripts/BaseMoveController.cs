@@ -308,10 +308,14 @@ public abstract class BaseMoveController : Photon.MonoBehaviour
                 }
                 else
                 {
-                    if (isBoost) return;
-
                     //ブースト
-                    StartCoroutine(Boost(moveDirection, limit));
+                    leftBoostTime = limit;
+                    boostLimitTime = limit;
+                    boostVector = moveDirection;
+                    if (!isBoost)
+                    {
+                        StartCoroutine(Boost());
+                    }
                 }
             }
             else
@@ -368,25 +372,27 @@ public abstract class BaseMoveController : Photon.MonoBehaviour
 
     //ブースト(重複不可)
     private float leftBoostTime = 0;
+    private float boostLimitTime = 0;
+    private Vector3 boostVector = Vector3.zero;
     private float startAngle = 45;
     private float totalAngle = 120;
-    IEnumerator Boost(Vector3 v, float limit)
+    IEnumerator Boost()
     {
-        if (v == Vector3.zero) yield break;
+        if (boostVector == Vector3.zero) yield break;
+        if (leftBoostTime < 0) yield break;
+        if (boostLimitTime < 0) yield break;
 
         isBoost = true;
-
-        leftBoostTime = limit;
         for (;;)
         {
             //時間
-            float processTime = limit - leftBoostTime;
+            float processTime = boostLimitTime - leftBoostTime;
 
             //速度係数
-            float sinVal = Common.Func.GetSin(processTime, totalAngle / limit, startAngle);
+            float sinVal = Common.Func.GetSin(processTime, totalAngle / boostLimitTime, startAngle);
 
             //移動
-            MoveProcess(v * sinVal * Time.deltaTime);
+            MoveProcess(boostVector * sinVal * Time.deltaTime);
 
             //残り時間チェック
             leftBoostTime -= Time.deltaTime;
