@@ -359,7 +359,7 @@ namespace Common
             { 1000, new string[]{ "Rifle", "", "", OBTAIN_TYPE_INIT}},
             { 1001, new string[]{ "BrasterLauncher", "", "", OBTAIN_TYPE_INIT}},
             { 1002, new string[]{ "BeamCannon", "", "", OBTAIN_TYPE_INIT}},
-            { 1003, new string[]{ "PenetrateDagger", "", "", OBTAIN_TYPE_INIT}},
+            { 1003, new string[]{ "PlasmaGun", "", "", OBTAIN_TYPE_INIT}},
             { 1004, new string[]{ "BlazePillar", "", "", OBTAIN_TYPE_INIT}},
         };
         //ハンド武器(ダッシュ)リスト
@@ -369,6 +369,7 @@ namespace Common
             { 2001, new string[]{ "GatlingGun", "", "", OBTAIN_TYPE_INIT}},
             { 2002, new string[]{ "PulseGun", "", "", OBTAIN_TYPE_INIT}},
             { 2003, new string[]{ "ThrowingDagger", "", "", OBTAIN_TYPE_INIT}},
+            { 2004, new string[]{ "PenetrateDagger", "", "", OBTAIN_TYPE_INIT}},
         };
         //背中武器リスト
         public static Dictionary<int, string[]> shoulderWeaponLineUp = new Dictionary<int, string[]>()
