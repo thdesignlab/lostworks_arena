@@ -14,10 +14,9 @@ public class NpcController : MoveOfCharacter
 
     private PlayerStatus status;
     private Transform targetTran;
+    private float walkRadius = 100.0f;
+    private Vector3 randomDirection;
 
-    //private WeaponController rightHandCtrl;
-    //private WeaponController leftHandCtrl;
-    //private WeaponController shoulderCtrl;
     private WeaponController[] weapons;
 
     private float preBoostTime = 0;
@@ -29,7 +28,7 @@ public class NpcController : MoveOfCharacter
     private float runSpeedRate;
     private float invincibleTimeRate;
 
-    private Transform randomMoveTarget;
+    private Vector3 randomMoveTarget;
 
     private int preHp = 0;
 
@@ -127,9 +126,10 @@ public class NpcController : MoveOfCharacter
 
     IEnumerator RandomMoveTarget()
     {
-        GameObject[] spawnPoint = GameObject.FindGameObjectsWithTag("SpawnPoint");
-        int targetNo = 0;
+        //GameObject[] spawnPoint = GameObject.FindGameObjectsWithTag("SpawnPoint");
+        //int targetNo = 0;
         leftTargetSearch = 0;
+
         for (;;)
         {
             leftTargetSearch -= Time.deltaTime;
@@ -140,16 +140,26 @@ public class NpcController : MoveOfCharacter
                 continue;
             }
 
-            targetNo = Random.Range(0, spawnPoint.Length + 2);
-            if (targetNo >= spawnPoint.Length)
+            //targetNo = Random.Range(0, spawnPoint.Length + 2);
+            //if (targetNo >= spawnPoint.Length)
+            //{
+            //    randomMoveTarget = targetTran;
+            //}
+            //else
+            //{
+            //    randomMoveTarget = spawnPoint[targetNo].transform;
+            //}
+            randomDirection = Random.insideUnitSphere * walkRadius + myTran.position;
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(randomDirection, out hit, walkRadius, 1))
             {
-                randomMoveTarget = targetTran;
+                randomMoveTarget = hit.position;
             }
             else
             {
-                randomMoveTarget = spawnPoint[targetNo].transform;
+                randomMoveTarget = targetTran.position;
             }
-            leftTargetSearch = 3.0f;
+            leftTargetSearch = 5.0f;
         }
     }
 
@@ -367,7 +377,7 @@ public class NpcController : MoveOfCharacter
         if (!base.isGrounded && myTran.position.y < 0.5f)
         {
             //落下防止
-            randomMoveTarget = null;
+            randomMoveTarget = Vector3.zero;
             leftTargetSearch = 5;
             Jump(0, 0);
         }
@@ -375,14 +385,13 @@ public class NpcController : MoveOfCharacter
         {
             if (randomMoveTarget != null)
             {
-                targetPos = randomMoveTarget.position;
+                targetPos = randomMoveTarget;
             }
         }
 
         float distance = Vector3.Distance(targetPos, myTran.position);
         if (distance < 10)
         {
-            randomMoveTarget = null;
             leftTargetSearch = 0;
             return;
         }

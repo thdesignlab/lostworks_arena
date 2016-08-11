@@ -33,6 +33,7 @@ public class WeaponController : Photon.MonoBehaviour
     protected Transform myTran;
     protected Transform myBitTran;
 
+    protected Transform playerTran;
     protected PlayerStatus playerStatus;
     protected bool isNpc = false;
 
@@ -83,6 +84,7 @@ public class WeaponController : Photon.MonoBehaviour
                 if (parent == null) break;
                 if (parent.tag == "Player")
                 {
+                    playerTran = parent;
                     playerStatus = parent.GetComponent<PlayerStatus>();
                     break;
                 }

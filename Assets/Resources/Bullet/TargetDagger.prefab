@@ -13,6 +13,7 @@ GameObject:
   - 114: {fileID: 11403170}
   - 114: {fileID: 11416076}
   - 114: {fileID: 11479012}
+  - 54: {fileID: 5464414}
   m_Layer: 0
   m_Name: TargetDagger
   m_TagString: Bullet
@@ -75,7 +76,7 @@ Transform:
   m_GameObject: {fileID: 170762}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 3, y: 3, z: 3}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 497442}
@@ -128,6 +129,21 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 190730}
   m_Mesh: {fileID: 4300000, guid: dbb40fa87000fc04dab1abcb1fcd1522, type: 3}
+--- !u!54 &5464414
+Rigidbody:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 170762}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 2
 --- !u!82 &8283176
 AudioSource:
   m_ObjectHideFlags: 1
@@ -215,8 +231,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effectSpawn: {fileID: 0}
-  activeLimitTime: 0
-  activeLimitDistance: 300
+  activeLimitTime: 8
+  activeLimitDistance: 0
 --- !u!114 &11412470
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -254,7 +270,8 @@ MonoBehaviour:
   isEnergyBulletBreak: 0
   isHitBreak: 0
   safetyTime: 1
-  fixTime: 0.5
+  fixTime: 1
+  rollBody: {fileID: 497442}
   rollSpeed: 3600
   rollVector: {x: 0, y: 0, z: 0}
   fixedSpeed: 200
@@ -306,9 +323,9 @@ CapsuleCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   m_Radius: 0.4
-  m_Height: 4
+  m_Height: 3
   m_Direction: 2
-  m_Center: {x: 0, y: 0, z: 0.25}
+  m_Center: {x: 0, y: 0, z: -0.5}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

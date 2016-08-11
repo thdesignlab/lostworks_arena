@@ -88,8 +88,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 0}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 1
-  instantiationId: 1
+  viewIdField: 0
+  instantiationId: -1
   isRuntimeInstantiated: 0
 --- !u!114 &11454100
 MonoBehaviour:
@@ -122,7 +122,7 @@ MonoBehaviour:
   lockedTurnSpeedRate: 1
   isNeedLock: 0
   isLockFlat: 0
-  chainObject: {fileID: 173074, guid: 778411ae7d4a6bb49a7b4c3e82eaaecf, type: 2}
+  chainObject: {fileID: 109874, guid: 45752b7016b587141a9cc7a60c12fe4b, type: 2}
   chainCount: 10
   chainTime: 0.3
   chainDistance: 0

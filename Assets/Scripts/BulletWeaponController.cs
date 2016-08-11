@@ -256,12 +256,13 @@ public class BulletWeaponController : WeaponController
 
     protected void SetBulletTarget(GameObject bulletObj)
     {
-        if (base.targetTran == null) return;
+        if (targetTran == null) return;
 
         BulletController bulletCtrl = bulletObj.GetComponent<BulletController>();
         if (bulletCtrl != null)
         {
-            bulletCtrl.SetTarget(base.targetTran);
+            bulletCtrl.SetTarget(targetTran);
+            bulletCtrl.SetOwner(playerTran);
         }
     }
 

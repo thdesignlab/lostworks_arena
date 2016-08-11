@@ -165,6 +165,7 @@ namespace Common
         public static string TAG_STRUCTURE = "Structure";
 
         //レイヤー
+        public static string LAYER_FLOOR = "Floor";
         public static string LAYER_STRUCTURE = "Structure";
     }
 

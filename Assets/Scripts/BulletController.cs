@@ -16,11 +16,11 @@ public class BulletController : MoveOfCharacter
     [SerializeField]
     protected float knockBackRate; //ノックバック係数
     [SerializeField]
-    private bool isPhysicsBulletBreak;  //物理弾破壊FLG
+    protected bool isPhysicsBulletBreak;  //物理弾破壊FLG
     [SerializeField]
-    private bool isEnergyBulletBreak;   //エネルギー弾破壊FLG
+    protected bool isEnergyBulletBreak;   //エネルギー弾破壊FLG
     [SerializeField]
-    private bool isHitBreak;   //衝突時消滅FLG
+    protected bool isHitBreak;   //衝突時消滅FLG
 
     [SerializeField]
     protected float safetyTime = 0.05f;
@@ -31,6 +31,7 @@ public class BulletController : MoveOfCharacter
     protected Transform targetTran;
     protected PlayerStatus targetStatus;
     protected Collider myCollider;
+    protected Transform ownerTran;
 
     protected const int MIN_SEND_DAMAGE = 5;
 
@@ -88,7 +89,7 @@ public class BulletController : MoveOfCharacter
     }
 
     //衝突時処理(共通)
-    protected void OnHit(GameObject otherObj)
+    protected virtual void OnHit(GameObject otherObj)
     {
         if (photonView.isMine)
         {
@@ -106,7 +107,7 @@ public class BulletController : MoveOfCharacter
     }
 
     //接触時処理(共通)
-    protected void OnStay(GameObject otherObj)
+    protected virtual void OnStay(GameObject otherObj)
     {
         if (photonView.isMine)
         {
@@ -133,12 +134,18 @@ public class BulletController : MoveOfCharacter
                 {
                     status = hitObj.GetComponent<PlayerStatus>();
                 }
-                status.AddDamage(damage);
 
-                //ダメージエフェクト
-                if (hitEffect != null)
+                if (damage > 0)
                 {
-                    PhotonNetwork.Instantiate(Common.Func.GetResourceEffect(hitEffect.name), myTran.position, hitEffect.transform.rotation, 0);
+                    //ダメージ
+                    status.AddDamage(damage);
+                    //Debug.Log(hitObj.name + " >> " + myTran.name + "(" + damage + ")");
+
+                    //ダメージエフェクト
+                    if (hitEffect != null)
+                    {
+                        PhotonNetwork.Instantiate(Common.Func.GetResourceEffect(hitEffect.name), myTran.position, hitEffect.transform.rotation, 0);
+                    }
                 }
 
                 //スタック
@@ -177,26 +184,23 @@ public class BulletController : MoveOfCharacter
                 if (dmg * 100 > Random.Range(0, 100)) addDmg += 1;
             }
 
-            if (hitObj.CompareTag("Player"))
+            if (addDmg > 0)
             {
-                //プレイヤーステータス
-                PlayerStatus status = targetStatus;
-                if (hitObj.transform != targetTran)
+                if (hitObj.CompareTag("Player"))
                 {
-                    status = hitObj.GetComponent<PlayerStatus>();
+                    //プレイヤーステータス
+                    PlayerStatus status = targetStatus;
+                    if (hitObj.transform != targetTran)
+                    {
+                        status = hitObj.GetComponent<PlayerStatus>();
+                    }
+                    status.AddDamage(addDmg);
+                    //Debug.Log(hitObj.name + " >> " + myTran.name + "(slip:" + addDmg + ")");
                 }
-                status.AddDamage(addDmg);
-
-                //totalDamage += dmg * Time.deltaTime;
-                //if (totalDamage >= MIN_SEND_DAMAGE)
-                //{
-                //    status.AddDamage((int)totalDamage);
-                //    totalDamage = totalDamage % 1;
-                //}
-            }
-            else if (hitObj.CompareTag(Common.CO.TAG_STRUCTURE))
-            {
-                hitObj.GetComponent<StructureController>().AddDamage(addDmg);
+                else if (hitObj.CompareTag(Common.CO.TAG_STRUCTURE))
+                {
+                    hitObj.GetComponent<StructureController>().AddDamage(addDmg);
+                }
             }
         }
     }
@@ -225,7 +229,10 @@ public class BulletController : MoveOfCharacter
 
         //エフェクトはスルー
         //HIT判定はエフェクト側で行う
-        if (hitObj.tag == Common.CO.TAG_EFFECT) return false;
+        if (hitObj.tag == Common.CO.TAG_EFFECT) return true;
+
+        //持ち主に当たった場合無視
+        if (hitObj.transform == ownerTran) return true;
 
         if (isHitCheck) isHit = true;
 
@@ -254,6 +261,12 @@ public class BulletController : MoveOfCharacter
             targetTran = targetView.gameObject.transform;
             targetStatus = targetView.gameObject.GetComponent<PlayerStatus>();
         }
+    }
+
+    //持ち主設定
+    public void SetOwner(Transform owner)
+    {
+        ownerTran = owner;
     }
 
     public virtual string GetBulletDescription()

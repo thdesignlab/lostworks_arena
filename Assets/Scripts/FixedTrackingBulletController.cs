@@ -6,6 +6,8 @@ public class FixedTrackingBulletController : BulletController
     [SerializeField]
     protected float fixTime;    //固定するまでの時間
     [SerializeField]
+    private Transform rollBody;   //回転する場所
+    [SerializeField]
     private float rollSpeed;   //回転速度
     [SerializeField]
     private Vector3 rollVector; //回転軸
@@ -20,10 +22,24 @@ public class FixedTrackingBulletController : BulletController
     protected float defaultSpeed;
     protected float defaultRollSpeed;
     protected float defaultTurnSpeed;
+    protected Quaternion defaultBodyRot;
 
     protected bool isFix = false;
     protected bool isShoot = false;
 
+    protected override void Awake()
+    {
+        base.Awake();
+
+        if (rollBody == null)
+        {
+            rollBody = myTran;
+        }
+        else
+        {
+            defaultBodyRot = rollBody.localRotation;
+        }
+    }
     protected override void Update()
     {
         base.Update();
@@ -72,7 +88,7 @@ public class FixedTrackingBulletController : BulletController
                     float z = Random.Range(0, 1.0f);
                     rollVector = new Vector3(x, y, z);
                 }
-                myTran.Rotate(rollVector, rollSpeed * Time.deltaTime);
+                rollBody.Rotate(rollVector, rollSpeed * Time.deltaTime);
             }
         }
     }
@@ -99,12 +115,32 @@ public class FixedTrackingBulletController : BulletController
         if (isSetAngle)
         {
             Vector3 diffVector = base.DifferentialCorrection(base.targetTran, fixedSpeed);
-            base.myTran.LookAt(base.targetTran.position + diffVector);
+            myTran.LookAt(base.targetTran.position + diffVector);
         }
+        if (rollBody != myTran) rollBody.localRotation = defaultBodyRot;
 
         PlayAudio();
         base.speed = fixedSpeed;
         isShoot = true;
         isFix = false;
     }
+
+
+    //衝突時処理(共通)
+    protected override void OnHit(GameObject otherObj)
+    {
+        //床に刺さる
+        if (otherObj.layer == LayerMask.NameToLayer(Common.CO.LAYER_STRUCTURE)
+            || otherObj.layer == LayerMask.NameToLayer(Common.CO.LAYER_FLOOR)
+        )
+        {
+            base.speed = 0;
+            fixedTurnSpeed = 0;
+        }
+
+        base.OnHit(otherObj);
+
+        base.isHit = false;
+    }
+
 }

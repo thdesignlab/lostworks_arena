@@ -63,6 +63,10 @@ public class PlayerStatus : Photon.MonoBehaviour {
     private Color defaultHpColor;
     private Color hitHpColor = Color.red;
     private int totalDamage = 0;
+    [SerializeField]
+    private Image hitEffect;
+    private float leftHitEffectTime = 0;
+    private const float HIT_EFFECT_TIME = 1.0f;
 
     //private CameraController camCtrl;
     private bool isLocked = false;
@@ -311,10 +315,21 @@ public class PlayerStatus : Photon.MonoBehaviour {
                 }
             }
             slider.value += diff;
-            if (diff < 0) image.color = hitHpColor;
+            //if (diff < 0) SwitchDamageEffect(image, hitHpColor);
+            if (diff < 0) SwitchDamageEffect();
             yield return null;
-            image.color = defaultHpColor;
+            //SwitchDamageEffect(image, defaultHpColor);
         }
+    }
+
+    private void SwitchDamageEffect(Image img, Color col)
+    {
+        img.color = col;
+    }
+    private void SwitchDamageEffect()
+    {
+        if (hitEffect == null) return;
+        hitEffect.color *= new Vector4(0, 0, 0, 1); 
     }
 
     public void UseSp(int sp)
@@ -403,6 +418,11 @@ public class PlayerStatus : Photon.MonoBehaviour {
             {
                 //エリアアウト
                 AddDamage(11);
+            }
+
+            if (hitEffect != null && hitEffect.color.a > 0)
+            {
+                hitEffect.color *= new Vector4(0,0,0,-1) / HIT_EFFECT_TIME * Time.deltaTime;
             }
         }
 

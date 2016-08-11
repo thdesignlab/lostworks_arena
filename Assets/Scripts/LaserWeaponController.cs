@@ -231,19 +231,15 @@ public class LaserWeaponController : WeaponController
         return true;
     }
 
-    private void SetBulletTarget(GameObject bulletObj)
+    protected void SetBulletTarget(GameObject bulletObj)
     {
-        if (base.targetTran == null) return;
+        if (targetTran == null) return;
 
-        LaserBulletController lb = bulletObj.GetComponent<LaserBulletController>();
-        if (lb != null)
+        BulletController bulletCtrl = bulletObj.GetComponent<BulletController>();
+        if (bulletCtrl != null)
         {
-            lb.SetTarget(base.targetTran);
-        }
-        EnergyBulletController eb = bulletObj.GetComponent<EnergyBulletController>();
-        if (eb != null)
-        {
-            eb.SetTarget(base.targetTran);
+            bulletCtrl.SetTarget(targetTran);
+            bulletCtrl.SetOwner(playerTran);
         }
     }
 }
