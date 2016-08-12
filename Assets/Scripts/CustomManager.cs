@@ -12,8 +12,7 @@ public class CustomManager : Photon.MonoBehaviour
     private Transform charaTable;
     [SerializeField]
     private List<Transform> spawnPoints;
-    [SerializeField]
-    private float charaSize;
+    public float charaSize;
     [SerializeField]
     private Text partsNameText;
     [SerializeField]
@@ -196,22 +195,28 @@ public class CustomManager : Photon.MonoBehaviour
         string[] charaInfo = CharacterManager.GetCharacterInfo(charaNo);
         if (charaInfo == null) return;
 
-        GameObject charaObj = PhotonNetwork.Instantiate(charaInfo[Common.Character.DETAIL_PREFAB_NAME_NO], spawnPoints[tableIndex].position, spawnPoints[tableIndex].rotation, 0);
-        Rigidbody charaBody = charaObj.GetComponent<Rigidbody>();
+        //キャラセット情報更新
+        UserManager.userSetCharacter = charaNo;
+
+        //ベースボディ生成
+        GameObject charaBaseObj = PhotonNetwork.Instantiate(Common.CO.CHARACTER_BASE, spawnPoints[tableIndex].position, spawnPoints[tableIndex].rotation, 0);
+        charaTran = charaBaseObj.transform;
+        Rigidbody charaBody = charaBaseObj.GetComponent<Rigidbody>();
         charaBody.useGravity = false;
         charaBody.isKinematic = false;
-        charaTran = charaObj.transform;
+
+        //メインボディ生成
+        //PlayerSettingで生成
+        
+        //キャラ設定
         playerCtrl = charaTran.GetComponent<PlayerController>();
         charaTran.localScale = new Vector3(charaSize, charaSize, charaSize);
         charaTran.parent = spawnPoints[tableIndex];
         charaAnimator = charaTran.GetComponentInChildren<Animator>();
 
-        //キャラセット情報更新
-        UserManager.userSetCharacter = charaNo;
-
         //装備を呼び出す
         WeaponLoad();
-
+        
         //非表示のキャラを削除
         for (int i = 0; i < spawnPoints.Count; i++)
         {
@@ -264,21 +269,22 @@ public class CustomManager : Photon.MonoBehaviour
     //装備武器読み込み
     private void WeaponLoad()
     {
-        foreach (Transform child in charaTran)
+        foreach (int partsNo in Common.CO.partsNameArray.Keys)
         {
-            foreach (int partsNo in Common.CO.partsNameArray.Keys)
+            string partsName = Common.Func.GetPartsStructure(Common.CO.partsNameArray[partsNo]);
+
+            Transform parts = charaTran.FindChild(partsName);
+            if (parts != null)
             {
-                if (child.name == Common.CO.partsNameArray[partsNo])
-                {
-                    GameObject weaponObj = EquipWeapon(child, UserManager.userEquipment[child.name]);
-                    //Bit画像設定
-                    SetBitIcon(partsNo, weaponObj);
-                    break;
-                }
+                //装備
+                GameObject weaponObj = EquipWeapon(parts, UserManager.userEquipment[parts.name]);
+
+                //Bit画像設定
+                SetBitIcon(partsNo, weaponObj);
             }
         }
     }
-    
+
     //武器試射可否チェック
     private bool IsEnabledFire()
     {
@@ -643,12 +649,14 @@ public class CustomManager : Photon.MonoBehaviour
             if (totalTime >= time) break;
             yield return null;
         }
+        rectTran.localPosition = lastVector;
         isTurnTable = false;
     }
 
     //キャラテーブル移動制御
     IEnumerator TurnCharaTable(float angle, float time, bool isArrowActive)
     {
+        Quaternion startQuat = charaTable.localRotation;
         isTurnTable = true;
         charaLeftArrow.SetActive(false);
         charaRightArrow.SetActive(false);
@@ -662,6 +670,7 @@ public class CustomManager : Photon.MonoBehaviour
             if (totalTime >= time) break;
             yield return null;
         }
+        charaTable.localRotation = startQuat * Quaternion.AngleAxis(angle, Vector3.up);
         isTurnTable = false;
         charaLeftArrow.SetActive(isArrowActive);
         charaRightArrow.SetActive(isArrowActive);

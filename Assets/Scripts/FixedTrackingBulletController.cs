@@ -117,6 +117,13 @@ public class FixedTrackingBulletController : BulletController
             Vector3 diffVector = base.DifferentialCorrection(base.targetTran, fixedSpeed);
             myTran.LookAt(base.targetTran.position + diffVector);
         }
+        else
+        {
+            //とりあえず下に向ける
+            Vector3 floorPos = new Vector3(myTran.position.x, 0 , myTran.position.z);
+            myTran.LookAt(floorPos);
+        }
+
         if (rollBody != myTran) rollBody.localRotation = defaultBodyRot;
 
         PlayAudio();

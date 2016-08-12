@@ -30,7 +30,6 @@ public class LockOnController : Photon.MonoBehaviour
         }
 
         myTran = transform;
-        status = myTran.root.gameObject.GetComponent<PlayerStatus>();
         //GameObject targetObj = GameObject.Find(Common.CO.SCREEN_CANVAS+"TargetMark");
 	}
     void Start()
@@ -44,11 +43,16 @@ public class LockOnController : Photon.MonoBehaviour
             targetMarkImg = targetObj.GetComponent<RawImage>();
             targetMarkRectTran = targetObj.GetComponent<RectTransform>();
         }
+
+        //ステータス取得
+        StartCoroutine(SetStatus());
     }
 
     void OnBecameInvisible()
     {
         if (!isACtiveSceane) return;
+
+        if (status == null) return;
 
         if (!photonView.isMine || status.IsNpc())
         {
@@ -61,6 +65,8 @@ public class LockOnController : Photon.MonoBehaviour
     void OnBecameVisible()
     {
         if (!isACtiveSceane) return;
+
+        if (status == null) return;
 
         if (!photonView.isMine || status.IsNpc())
         {
@@ -103,6 +109,16 @@ public class LockOnController : Photon.MonoBehaviour
                 ((ViewportPosition.x * CanvasRect.sizeDelta.x) - (CanvasRect.sizeDelta.x * 0.5f)),
                 ((ViewportPosition.y * CanvasRect.sizeDelta.y) - (CanvasRect.sizeDelta.y * 0.5f)));
             targetMarkRectTran.anchoredPosition = WorldObject_ScreenPosition;
+        }
+    }
+
+    IEnumerator SetStatus()
+    {
+        for (;;)
+        {
+            status = myTran.root.GetComponent<PlayerStatus>();
+            if (status != null) break;
+            yield return null;
         }
     }
 }

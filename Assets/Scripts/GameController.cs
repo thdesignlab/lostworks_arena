@@ -325,17 +325,18 @@ public class GameController : Photon.MonoBehaviour
         CleanNpc();
         ResetGame();
 
-        //セット中キャラ取得
-        int charaNo = UserManager.userSetCharacter;
-        string charaName = Common.Character.characterLineUp[charaNo][Common.Character.DETAIL_PREFAB_NAME_NO];
-
+        //ベースボディ生成
+        string charaName = Common.CO.CHARACTER_BASE;
         GameObject player = SpawnProcess(charaName);
+
         playerSetting = player.GetComponent<PlayerSetting>();
     }
+
     private void CleanNpc()
     {
         photonView.RPC("CleanNpcRPC", PhotonTargets.All);
     }
+
     [PunRPC]
     private void CleanNpcRPC()
     {

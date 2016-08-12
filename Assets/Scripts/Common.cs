@@ -21,6 +21,7 @@ namespace Common
         public const string RESOURCE_STRUCTURE = "Structure/";
         public const string RESOURCE_ANIMATION_2D = "Animation2D/";
         public const string RESOURCE_ANIMATION_3D = "Animation3D/";
+        public const string RESOURCE_CHARACTER = "Character/";
 
         //スクリーンUI
         public const string SCREEN_CANVAS = "ScreenCanvas/";
@@ -56,7 +57,7 @@ namespace Common
         public const string MOTION_DASH = "Dash";
         public const string MOTION_JUMP = "Jump";
         public const string MOTION_DOWN = "Down";
-        public const string MOTION_LANDING = "Landing";
+        //public const string MOTION_LANDING = "Landing";
 
         //攻撃モーション
         public const string MOTION_LEFT_ATTACK = "LeftAttack";
@@ -64,13 +65,13 @@ namespace Common
         public const string MOTION_SHOULDER_ATTACK = "ShoulderAttack";
         public const string MOTION_CROSS_RANGE_ATTACK = "CrossRangeAttack";
         public const string MOTION_SPECIAL_ATTACK = "SpecialAttack";
+        public const string MOTION_EXTRA_ATTACK = "ExtraAttack";
         public const string MOTION_USE_SUB = "UseSub";
         public static string[] attackMotionArray = new string[]
         {
             MOTION_LEFT_ATTACK,
             MOTION_RIGHT_ATTACK,
             MOTION_SHOULDER_ATTACK,
-            MOTION_SPECIAL_ATTACK,
         };
 
         //BITモーション
@@ -81,6 +82,12 @@ namespace Common
         public const int BIT_MOTION_TYPE_GUN = 1;
         public const int BIT_MOTION_TYPE_MISSILE = 2;
         public const int BIT_MOTION_TYPE_LASER = 3;
+
+        //キャラベース
+        public const string CHARACTER_BASE = "BaseHero";
+        public const string PARTS_BODY = "Body";
+        public const string PARTS_MAIN_BODY = "MainBody";
+        public const string PARTS_GROUNDED = "Grounded";
 
         //パーツ分類No
         public const int PARTS_KIND_HAND_NO = 1;
@@ -95,10 +102,10 @@ namespace Common
         public const string PARTS_KIND_SHOULDER = "Shoulder";
         public const string PARTS_KIND_SHOULDER_DASH = "ShoulderDash";
         public const string PARTS_KIND_SUB = "Sub";
+        public const string PARTS_KIND_EXTRA = "Extra";
 
         //パーツ名称(名前)
-        public const string PARTS_BODY = "Body";
-        public const string PARTS_GROUNDED = "Grounded";
+        public const string PARTS_JOINT = "Parts";
         public const string PARTS_LEFT_HAND = "LeftHand";
         public const string PARTS_LEFT_HAND_DASH = "LeftHandDash";
         public const string PARTS_RIGHT_HAND = "RightHand";
@@ -106,6 +113,7 @@ namespace Common
         public const string PARTS_SHOULDER = "Shoulder";
         public const string PARTS_SHOULDER_DASH = "ShoulderDash";
         public const string PARTS_SUB = "Sub";
+        public const string PARTS_EXTRA = "Extra";
 
         public const int WEAPON_NORMAL = 0;
         public const int WEAPON_DASH = 1;
@@ -118,6 +126,7 @@ namespace Common
         public const int PARTS_SHOULDER_NO = 4;
         public const int PARTS_SHOULDER_DASH_NO = 5;
         public const int PARTS_SUB_NO = 6;
+        public const int PARTS_EXTRA_NO = 7;
 
         //装備可能部位名
         public static Dictionary<int, string> partsNameArray = new Dictionary<int, string>()
@@ -231,6 +240,10 @@ namespace Common
         {
             return CO.RESOURCE_ANIMATION_3D + name;
         }
+        public static string GetResourceCharacter(string name)
+        {
+            return CO.RESOURCE_CHARACTER + name;
+        }
 
         //配列チェック
         private static bool InArrayString(string[] tags, string tagName)
@@ -310,11 +323,11 @@ namespace Common
         //パーツ構造取得
         public static string GetPartsStructure(string partsName)
         {
-            return partsName;
+            return CO.PARTS_JOINT + "/" + partsName;
         }
         public static string GetPartsStructure(int partsNo)
         {
-            return GetPartsStructure(Common.CO.partsNameArray[partsNo]);
+            return GetPartsStructure(CO.partsNameArray[partsNo]);
         }
 
         //パーツNo取得
@@ -331,6 +344,13 @@ namespace Common
             }
             return partsNo;
         }
+
+        //アニメーションボディ構造取得
+        public static string GetBodyStructure()
+        {
+            return CO.PARTS_BODY + "/" + CO.PARTS_MAIN_BODY; 
+        }
+
     }
 
     //### キャラクター詳細 ###
@@ -349,7 +369,7 @@ namespace Common
         //キャラクターリスト
         public static Dictionary<int, string[]> characterLineUp = new Dictionary<int, string[]>()
         {
-            {0, new string[]{ "Hero", "るり", "", OBTAIN_TYPE_INIT}},
+            {0, new string[]{ "Hero1", "るり", "", OBTAIN_TYPE_INIT}},
             {1, new string[]{ "Hero2", "おだんご", "", OBTAIN_TYPE_INIT}},
         };
     }

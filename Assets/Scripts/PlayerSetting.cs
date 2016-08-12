@@ -13,6 +13,7 @@ public class PlayerSetting : Photon.MonoBehaviour
     private PlayerStatus playerStatus;
     private PlayerController playerCtrl;
     private PlayerMotionController motionCtrl;
+    private int bodyViewId;
 
     public bool isNpc = false;
 
@@ -44,6 +45,9 @@ public class PlayerSetting : Photon.MonoBehaviour
             playerCtrl.enabled = true;
             motionCtrl.enabled = true;
             playerCam.SetActive(false);
+
+            //メインボディ生成
+            CreateMainBody();
             return;
         }
 
@@ -54,26 +58,41 @@ public class PlayerSetting : Photon.MonoBehaviour
             //Debug.Log("isMine:"+transform.name);
             if (isNpc)
             {
+                //##### NPCの場合 #####
+                //NPC名変更
                 myTran.name = Common.CO.NPC_NAME;
 
+                //コントローラー設定
                 playerStatus.enabled = true;
+
+                //装備設定
                 EquipWeaponRandom();
-                //Debug.Log("NPC: " + transform.name);
+                
+                //NPC情報設定
                 gameCtrl.SetTarget(myTran);
                 gameCtrl.SetNpcTran(myTran);
+
+                //カスタマイズ完了FLG
                 isCustomEnd = true;
             }
             else
             {
+                //##### 自分のキャラクターの場合 #####
                 myTran.name = UserManager.userInfo[Common.PP.INFO_USER_NAME];
 
-                //コントローラーを有効
+                //コントローラーを有効化
                 playerStatus.enabled = true;
                 playerCtrl.enabled = true;
                 motionCtrl.enabled = true;
                 playerCam.SetActive(true);
+
+                //自分の情報を保存
                 gameCtrl.SetMyTran(myTran);
-                //EquipWeaponRandom();
+
+                //メインボディ生成
+                CreateMainBody();
+
+                //装備設定
                 EquipWeaponUserInfo();
                 isCustomEnd = true;
                 //weaponStroe.CustomMenuOpen();
@@ -83,7 +102,9 @@ public class PlayerSetting : Photon.MonoBehaviour
         }
         else
         {
+            //##### 対戦相手のキャラクターの場合 #####
             //Debug.Log("target:" + transform.name);
+            //コントローラーを無効化
             playerStatus.enabled = true;
             playerCtrl.enabled = false;
             motionCtrl.enabled = false;
@@ -91,7 +112,12 @@ public class PlayerSetting : Photon.MonoBehaviour
 
             //ターゲットを登録
             gameCtrl.SetTarget(myTran);
+
+            //親子設定
+            SetMainBodyParent();
             SetWeaponParent();
+
+            //カスタマイズ完了FLG
             isCustomEnd = true;
             SetCustomStatus();
             //StartCoroutine(CustomizeCountDown());
@@ -107,6 +133,46 @@ public class PlayerSetting : Photon.MonoBehaviour
             gameCtrl.ResetGame();
         }
     }
+
+    private void CreateMainBody()
+    {
+        //キャラ情報取得
+        int charaNo = UserManager.userSetCharacter;
+        string[] charaInfo = CharacterManager.GetCharacterInfo(charaNo);
+        if (charaInfo == null)
+        {
+            charaInfo = CharacterManager.GetCharacterInfo(0);
+        }
+
+        //メインボディ生成
+        GameObject charaMainObj = PhotonNetwork.Instantiate(Common.Func.GetResourceCharacter(charaInfo[Common.Character.DETAIL_PREFAB_NAME_NO]), Vector3.zero, Quaternion.identity, 0);
+        charaMainObj.name = Common.CO.PARTS_BODY;
+        Transform charaMainTran = charaMainObj.transform;
+
+        //メインボディ紐付け
+        charaMainTran.SetParent(myTran, false);
+        charaMainTran.localPosition = Vector3.zero;
+        charaMainTran.rotation = myTran.rotation;
+
+        //parent紐付け用
+        bodyViewId = PhotonView.Get(charaMainObj).viewID;
+    }
+
+    private void SetMainBodyParent()
+    {
+        photonView.RPC("SetMainBodyParentRPC", PhotonTargets.Others);
+    }
+    [PunRPC]
+    private void SetMainBodyParentRPC()
+    {
+        if (photonView.isMine)
+        {
+            Debug.Log(myTran.name+" : "+PhotonView.Get(gameObject).viewID+" >> "+ bodyViewId);
+            object[] args = new object[] { PhotonView.Get(gameObject).viewID, bodyViewId };
+            photonView.RPC("SetParentRPC", PhotonTargets.Others, args);
+        }
+    }
+
 
     IEnumerator CustomizeCountDown()
     {
@@ -127,20 +193,19 @@ public class PlayerSetting : Photon.MonoBehaviour
 
     private void EquipWeaponUserInfo()
     {
-        foreach (string partsName in UserManager.userEquipment.Keys)
+        foreach (int partsNo in Common.CO.partsNameArray.Keys)
         {
-            foreach (Transform child in myTran)
+            //部位取得
+            string partsName = Common.Func.GetPartsStructure(Common.CO.partsNameArray[partsNo]);
+            Transform parts = myTran.FindChild(partsName);
+            if (parts != null)
             {
-                if (partsName == child.name)
-                {
-                    string weaponName = Common.Weapon.GetWeaponName(UserManager.userEquipment[partsName]);
-                    if (weaponName != "")
-                    {
-                        GameObject weapon = (GameObject)Resources.Load(Common.Func.GetResourceWeapon(weaponName));
-                        EquipWeapon(child, weapon);
-                        break;
-                    }
-                }
+                //武器取得
+                string weaponName = Common.Weapon.GetWeaponName(UserManager.userEquipment[parts.name]);
+                GameObject weapon = (GameObject)Resources.Load(Common.Func.GetResourceWeapon(weaponName));
+
+                //装備
+                EquipWeapon(parts, weapon);
             }
         }
     }
@@ -193,7 +258,7 @@ public class PlayerSetting : Photon.MonoBehaviour
         //Debug.Log(partsViewId.ToString()+" : "+ weaponViewId.ToString());
         object[] args = new object[] { partsViewId, weaponViewId };
         photonView.RPC("SetParentRPC", PhotonTargets.Others, args);
-        ob.transform.parent = parts.transform;
+        ob.transform.SetParent(parts.transform, true);
 
         //装備再セット
         StartCoroutine(SetWeapon(parts));
@@ -207,7 +272,7 @@ public class PlayerSetting : Photon.MonoBehaviour
         PhotonView parent = PhotonView.Find(parentViewId);
         PhotonView child = PhotonView.Find(childViewId);
         if (parent == null || child == null) return;
-        child.gameObject.transform.parent = parent.gameObject.transform;
+        child.gameObject.transform.SetParent(parent.gameObject.transform, false);
         child.gameObject.transform.localPosition = Vector3.zero;
     }
 
@@ -221,7 +286,7 @@ public class PlayerSetting : Photon.MonoBehaviour
             if (weaponCtrl != null)
             {
                 playerCtrl.SetWeapon();
-                if (photonView.isMine)
+                if (photonView.isMine && isActiveSceane)
                 {
                     if (gameCtrl.isDebugMode)
                     {

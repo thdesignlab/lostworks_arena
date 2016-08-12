@@ -43,7 +43,7 @@ public class PlayerController : MoveOfCharacter
 
     private Vector3 setAngleVector = new Vector3(1, 0, 1);
 
-    private bool isACtiveSceane = true;
+    private bool isActiveSceane = true;
 
     // Use this for initialization
     protected override void Awake()
@@ -53,15 +53,15 @@ public class PlayerController : MoveOfCharacter
         if (SceneManager.GetActiveScene().name == Common.CO.SCENE_CUSTOM)
         {
             //カスタム画面
-            isACtiveSceane = false;
+            isActiveSceane = false;
         }
 
         if (photonView.isMine)
         {
             motionCtrl = GetComponent<PlayerMotionController>();
-            animator = base.myTran.FindChild(Common.CO.PARTS_BODY).gameObject.GetComponent<Animator>();
+            
 
-            if (isACtiveSceane)
+            if (isActiveSceane)
             {
                 gameCtrl = GameObject.Find("GameController").GetComponent<GameController>();
                 status = GetComponent<PlayerStatus>();
@@ -87,7 +87,7 @@ public class PlayerController : MoveOfCharacter
 
     protected override void Start()
     {
-        if (!isACtiveSceane) return;
+        if (!isActiveSceane) return;
 
         base.Start();
         if (photonView.isMine)
@@ -113,7 +113,7 @@ public class PlayerController : MoveOfCharacter
 
     protected override void Update()
     {
-        if (!isACtiveSceane) return;
+        if (!isActiveSceane) return;
 
         base.Update();
 
@@ -186,15 +186,23 @@ public class PlayerController : MoveOfCharacter
 
     public void SetWeapon()
     {
+        //アニメーション用
+        animator = myTran.FindChild(Common.Func.GetBodyStructure()).GetComponent<Animator>();
+
         WeaponController wepCtrl;
-        foreach (Transform child in base.myTran)
+        foreach (int partsNo in Common.CO.partsNameArray.Keys)
         {
-            wepCtrl = child.GetComponentInChildren<WeaponController>();
+            string partsName = Common.Func.GetPartsStructure(Common.CO.partsNameArray[partsNo]);
+            Transform parts = myTran.FindChild(partsName);
+            if (parts == null) continue;
+            //foreach (Transform child in base.myTran)
+            //{
+            wepCtrl = parts.GetComponentInChildren<WeaponController>();
             if (wepCtrl == null) continue;
 
             wepCtrl.SetTarget(targetTran);
 
-            switch (child.name)
+            switch (parts.name)
             {
                 case Common.CO.PARTS_LEFT_HAND:
                     //通常時左武器
@@ -286,7 +294,7 @@ public class PlayerController : MoveOfCharacter
 
     public bool CustomSceaneFire(int partsNo)
     {
-        if (isACtiveSceane) return false;
+        if (isActiveSceane) return false;
 
         WeaponController ctrl = null;
         switch (partsNo)
@@ -560,7 +568,7 @@ public class PlayerController : MoveOfCharacter
 
     void OnEnable()
     {
-        if (!isACtiveSceane) return;
+        if (!isActiveSceane) return;
 
         if (photonView.isMine)
         {
@@ -574,7 +582,7 @@ public class PlayerController : MoveOfCharacter
 
     void OnDisable()
     {
-        if (!isACtiveSceane) return;
+        if (!isActiveSceane) return;
 
         if (TouchManager.Instance != null)
         {

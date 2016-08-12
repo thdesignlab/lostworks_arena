@@ -3,7 +3,7 @@ using System.Collections;
 
 public class PlayerMotionController : MonoBehaviour
 {
-    [SerializeField]
+    //[SerializeField]
     private Animator animator;
     [SerializeField]
     private GameObject boostEffect;
@@ -24,7 +24,7 @@ public class PlayerMotionController : MonoBehaviour
     void Awake()
     {
         myPlayerTran = transform;
-        myBodyTran = myPlayerTran.FindChild(Common.CO.PARTS_BODY);
+        
         //myRigidbody = GetComponent<Rigidbody>();
         playerCtrl = GetComponent<PlayerController>();
 
@@ -44,6 +44,8 @@ public class PlayerMotionController : MonoBehaviour
     {
         ////ジャンプモーションチェック
         //StartCoroutine(CheckJumpMotion());
+        myBodyTran = myPlayerTran.FindChild(Common.Func.GetBodyStructure());
+        animator = myBodyTran.GetComponent<Animator>();
     }
 
     void Update()
