@@ -54,7 +54,7 @@ public class CustomManager : Photon.MonoBehaviour
     private Transform charaTran;
     private PlayerController playerCtrl;
     private Animator charaAnimator;
-	private int waitHash = Animator.StringToHash("Base Layer.body14_wait");
+	private int waitHash = Animator.StringToHash("Base Layer.Wait");
     private List<int> selectableCharaNoList = new List<int>();
 
     //キャラテーブルステータス
@@ -205,6 +205,9 @@ public class CustomManager : Photon.MonoBehaviour
         charaTran.localScale = new Vector3(charaSize, charaSize, charaSize);
         charaTran.parent = spawnPoints[tableIndex];
         charaAnimator = charaTran.GetComponentInChildren<Animator>();
+
+        //キャラセット情報更新
+        UserManager.userSetCharacter = charaNo;
 
         //装備を呼び出す
         WeaponLoad();
@@ -614,6 +617,14 @@ public class CustomManager : Photon.MonoBehaviour
 
         //キャラIndex
         charaIndex += factor;
+        if (charaIndex < 0)
+        {
+            charaIndex = selectableCharaNoList.Count - 1;
+        }
+        else if (charaIndex >= selectableCharaNoList.Count)
+        {
+            charaIndex = 0;
+        }
 
         StartCoroutine(TurnCharaTable(charaChangeAngle * factor, charaChangeTime, true));
         SpawnCharacter();

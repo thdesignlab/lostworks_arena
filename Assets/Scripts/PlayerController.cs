@@ -375,7 +375,7 @@ public class PlayerController : MoveOfCharacter
     {
         Vector3 moveDirection = new Vector3(x, 0, y).normalized;
         base.Move(moveDirection, status.runSpeed);
-        motionCtrl.SetRunMotion(x, y);
+        //motionCtrl.SetRunMotion(x, y);
     }
 
     private void Jump(float x = 0, float y = 0)

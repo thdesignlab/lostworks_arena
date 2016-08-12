@@ -7,10 +7,11 @@ public class PlayerMotionController : MonoBehaviour
     private Animator animator;
     [SerializeField]
     private GameObject boostEffect;
+    [SerializeField]
+    private bool isBodyRotate;
 
-    //private float runAnimationVelocity = 0.1f;  //モーションを適用するスピード
+    private float runAnimationVelocity = 0.1f;  //モーションを適用するスピード
     //private float backAnimationVelocity = -0.3f;  //Backモーションに移行するスピード
-    private string[] runMotionNames = new string[] { Common.CO.MOTION_RUN, Common.CO.MOTION_BACK };
 
     private Transform myPlayerTran;
     private Transform myBodyTran;   //向きを変えるBody部分
@@ -47,8 +48,14 @@ public class PlayerMotionController : MonoBehaviour
 
     void Update()
     {
+        Vector3 moveDiff = playerCtrl.GetMoveDiff();
+        Vector3 localMoveDiff = myPlayerTran.InverseTransformDirection(moveDiff).normalized;
+
         //ジャンプモーションチェック
-        CheckJumpMotion();
+        CheckJumpMotion(localMoveDiff.y);
+
+        //移動モーション
+        CheckMoveMotion(localMoveDiff.x, localMoveDiff.z);
 
         if (IsAttack())
         {
@@ -58,9 +65,7 @@ public class PlayerMotionController : MonoBehaviour
         else if (playerCtrl.IsMoving())
         {
             //移動中は移動方向へ
-            Vector3 diffVector = playerCtrl.GetMoveDiff();
-            diffVector = myPlayerTran.InverseTransformDirection(diffVector).normalized;
-            SetBodyAngle(diffVector.x, diffVector.z);
+            SetBodyAngle(localMoveDiff.x, localMoveDiff.z);
         }
     }
 
@@ -69,7 +74,10 @@ public class PlayerMotionController : MonoBehaviour
         if (x == 0 && y == 0)
         {
             //体を正面に向ける
-            myBodyTran.rotation = myPlayerTran.rotation;
+            if (isBodyRotate)
+            {
+                myBodyTran.rotation = myPlayerTran.rotation;
+            }
         }
         else
         {
@@ -82,83 +90,133 @@ public class PlayerMotionController : MonoBehaviour
             //    y *= -1;
             //}
             Vector3 lookPos = myBodyTran.root.forward * y + myBodyTran.root.right * x;
-            myBodyTran.LookAt(myBodyTran.position + lookPos);
+            if (isBodyRotate)
+            {
+                myBodyTran.LookAt(myBodyTran.position + lookPos);
+            }
+            boostEffectTran.LookAt(myBodyTran.position + lookPos);
         }
     }
 
     //### 走る ###
 
-    public void SetRunMotion(float x = 0, float y = 0)
+    private void CheckMoveMotion(float x = 0, float z = 0)
     {
-        ////体の方向変換
-        //SetBodyAngle(x, y);
-
-        if (x == 0 && y == 0)
+        bool isRun = true;
+        if (Mathf.Abs(x) < runAnimationVelocity && Mathf.Abs(z) < runAnimationVelocity)
         {
-            leftBoostEffectTime = 0;
-            return;
+            isRun = false;
+            x = 0;
+            z = 0;
         }
 
-        string motionName = Common.CO.MOTION_RUN;
-        //if (y < backAnimationVelocity)
-        //{
-        //    //後退時
-        //    motionName = Common.CO.MOTION_BACK;
-        //}
-
-        //モーション設定
-        if (!animator.GetBool(motionName))
-        {
-            InitRunMotion(motionName);
-        }
+        animator.SetBool(Common.CO.MOTION_RUN, isRun);
+        animator.SetFloat(Common.CO.MOTION_RUN_VERTICAL, z);
+        animator.SetFloat(Common.CO.MOTION_RUN_HORIZONTAL, x);
     }
 
-    private void InitRunMotion(string setMotion = "")
-    {
-        bool isStartMotion = false;
-        foreach (string motionName in runMotionNames)
-        {
-            if (setMotion == motionName)
-            {
-                animator.SetBool(motionName, true);
-                isStartMotion = true;
-            }
-            else
-            {
-                animator.SetBool(motionName, false);
-            }
-        }
+    //public void SetRunMotion(float x = 0, float y = 0)
+    //{
+    //    ////体の方向変換
+    //    //SetBodyAngle(x, y);
 
-        if (isStartMotion) StartCoroutine(CheckRunEnd());
-    }
+    //    if (x == 0 && y == 0)
+    //    {
+    //        leftBoostEffectTime = 0;
+    //        return;
+    //    }
 
-    private string GetRunningMotion()
-    {
-        string motion = "";
-        foreach (string motionName in runMotionNames)
-        {
-            if (animator.GetBool(motionName))
-            {
-                motion = motionName;
-                break;
-            }
-        }
-        return motion;
-    }
+    //    string motionName = "";
+    //    if (y > 0)
+    //    {
+    //        motionName = Common.CO.MOTION_RUN;
+    //    }
+    //    else if (y < 0)
+    //    {
+    //        motionName = Common.CO.MOTION_BACK;
+    //    }
+    //    InitRunMotion(motionName);
 
-    IEnumerator CheckRunEnd()
-    {
-        for (;;)
-        {
-            if (GetRunningMotion() == "") break;
-            if (!playerCtrl.IsGrounded() || !playerCtrl.IsMoving())
-            {
-                InitRunMotion();
-                break;
-            }
-            yield return null;
-        }
-    }
+    //    motionName = "";
+    //    if (x < 0)
+    //    {
+    //        motionName = Common.CO.MOTION_LEFT_RUN;
+    //    }
+    //    else if (x < 0)
+    //    {
+    //        motionName = Common.CO.MOTION_RIGHT_RUN;
+    //    }
+    //    InitRunMotion(motionName);
+
+    //    //if (y < backAnimationVelocity)
+    //    //{
+    //    //    //後退時
+    //    //    motionName = Common.CO.MOTION_BACK;
+    //    //}
+
+    //    //モーション設定
+    //    if (!animator.GetBool(motionName))
+    //    {
+    //        InitRunMotion(motionName);
+    //    }
+    //}
+
+    //private void InitRunMotion(string setMotion = "")
+    //{
+    //    bool isStartMotion = false;
+    //    if (setMotion != "" && GetRunningMotion() == "")
+    //    {
+    //        isStartMotion = true;
+    //    }
+
+    //    foreach (string motionName in Common.CO.runMotionArray)
+    //    {
+    //        if (setMotion == motionName)
+    //        {
+    //            animator.SetBool(motionName, true);
+    //        }
+    //        else
+    //        {
+    //            if (setMotion != "" && motionName == Common.CO.MOTION_RUN)
+    //            {
+    //                animator.SetBool(motionName, true);
+    //            }
+    //            else
+    //            {
+    //                animator.SetBool(motionName, false);
+    //            }
+    //        }
+    //    }
+
+    //    if (isStartMotion) StartCoroutine(CheckRunEnd());
+    //}
+
+    //private string GetRunningMotion()
+    //{
+    //    string motion = "";
+    //    foreach (string motionName in Common.CO.runMotionArray)
+    //    {
+    //        if (animator.GetBool(motionName))
+    //        {
+    //            motion = motionName;
+    //        }
+    //    }
+    //    return motion;
+    //}
+
+    //IEnumerator CheckRunEnd()
+    //{
+    //    for (;;)
+    //    {
+    //        if (GetRunningMotion() == "") break;
+    //        if (!playerCtrl.IsGrounded() || !playerCtrl.IsMoving())
+    //        {
+    //            InitRunMotion();
+    //            break;
+    //        }
+    //        yield return null;
+    //    }
+    //}
 
     //### ブースト ###
 
@@ -187,7 +245,7 @@ public class PlayerMotionController : MonoBehaviour
             {
                 break;
             }
-            boostEffectTran.rotation = myBodyTran.rotation;
+            //boostEffectTran.rotation = myBodyTran.rotation;
             yield return null;
         }
         boostEffect.SetActive(false);
@@ -200,6 +258,7 @@ public class PlayerMotionController : MonoBehaviour
     {
         //Debug.Log("Jump on");
         animator.SetBool(Common.CO.MOTION_JUMP, true);
+        animator.SetBool(Common.CO.MOTION_DOWN, false);
         shadow.enabled = false;
     }
 
@@ -207,12 +266,12 @@ public class PlayerMotionController : MonoBehaviour
     {
         //Debug.Log("Jump off");
         animator.SetBool(Common.CO.MOTION_JUMP, false);
-        //animator.SetBool(Common.CO.MOTION_LANDING, true);
+        animator.SetBool(Common.CO.MOTION_DOWN, false);
         shadow.enabled = true;
     }
 
     private bool preIsGrounded;
-    private void CheckJumpMotion()
+    private void CheckJumpMotion(float y)
     {
         bool isGrounded = playerCtrl.IsGrounded();
         //Debug.Log(preIsGrounded.ToString()+" / "+ isGrounded.ToString());
@@ -226,6 +285,16 @@ public class PlayerMotionController : MonoBehaviour
             {
                 SetJumpMotion();
             }
+        }
+        else
+        {
+            bool isDown = false;
+            if (y < runAnimationVelocity * -1)
+            {
+                //降下中
+                isDown = true;
+            }
+            animator.SetBool(Common.CO.MOTION_DOWN, isDown);
         }
         preIsGrounded = isGrounded;
     }

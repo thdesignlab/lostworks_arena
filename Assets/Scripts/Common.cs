@@ -39,10 +39,23 @@ namespace Common
 
 
         //移動モーション
+        public const string MOTION_RUN_VERTICAL = "VerticalMove";
+        public const string MOTION_RUN_HORIZONTAL = "HorizontalMove";
         public const string MOTION_RUN = "Run";
+        //public const string MOTION_BACK = "Back";
+        //public const string MOTION_LEFT_RUN = "LeftRun";
+        //public const string MOTION_RIGHT_RUN = "RightRun";
+        //public static string[] runMotionArray = new string[]
+        //{
+        //    MOTION_RUN,
+        //    MOTION_BACK,
+        //    MOTION_LEFT_RUN,
+        //    MOTION_RIGHT_RUN,
+        //};
+
         public const string MOTION_DASH = "Dash";
-        public const string MOTION_BACK = "Back";
         public const string MOTION_JUMP = "Jump";
+        public const string MOTION_DOWN = "Down";
         public const string MOTION_LANDING = "Landing";
 
         //攻撃モーション
@@ -50,14 +63,14 @@ namespace Common
         public const string MOTION_RIGHT_ATTACK = "RightAttack";
         public const string MOTION_SHOULDER_ATTACK = "ShoulderAttack";
         public const string MOTION_CROSS_RANGE_ATTACK = "CrossRangeAttack";
+        public const string MOTION_SPECIAL_ATTACK = "SpecialAttack";
         public const string MOTION_USE_SUB = "UseSub";
         public static string[] attackMotionArray = new string[]
         {
             MOTION_LEFT_ATTACK,
             MOTION_RIGHT_ATTACK,
             MOTION_SHOULDER_ATTACK,
-            MOTION_CROSS_RANGE_ATTACK,
-            MOTION_USE_SUB
+            MOTION_SPECIAL_ATTACK,
         };
 
         //BITモーション
@@ -336,7 +349,8 @@ namespace Common
         //キャラクターリスト
         public static Dictionary<int, string[]> characterLineUp = new Dictionary<int, string[]>()
         {
-            {0, new string[]{ "Hero", "るり", "せぶんないつ", OBTAIN_TYPE_INIT}},
+            {0, new string[]{ "Hero", "るり", "", OBTAIN_TYPE_INIT}},
+            {1, new string[]{ "Hero2", "おだんご", "", OBTAIN_TYPE_INIT}},
         };
     }
 

@@ -5145,7 +5145,7 @@ Animator:
   m_GameObject: {fileID: 169446}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: e0cfc1463eef1194eaa62620a9d72cb0, type: 3}
-  m_Controller: {fileID: 9100000, guid: abeb983d7580678479ebfb5f021760f9, type: 2}
+  m_Controller: {fileID: 9100000, guid: 642ea186448c9c144900680f43fd653c, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -5418,6 +5418,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 9501406}
   boostEffect: {fileID: 193408}
+  isBodyRotate: 0
 --- !u!114 &11404714
 MonoBehaviour:
   m_ObjectHideFlags: 1

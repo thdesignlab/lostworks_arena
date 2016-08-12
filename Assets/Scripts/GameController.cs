@@ -324,7 +324,12 @@ public class GameController : Photon.MonoBehaviour
     {
         CleanNpc();
         ResetGame();
-        GameObject player = SpawnProcess("Hero");
+
+        //セット中キャラ取得
+        int charaNo = UserManager.userSetCharacter;
+        string charaName = Common.Character.characterLineUp[charaNo][Common.Character.DETAIL_PREFAB_NAME_NO];
+
+        GameObject player = SpawnProcess(charaName);
         playerSetting = player.GetComponent<PlayerSetting>();
     }
     private void CleanNpc()
