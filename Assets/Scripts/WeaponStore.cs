@@ -30,31 +30,7 @@ public class WeaponStore : Photon.MonoBehaviour
         List<int> selectableWeaponNoList = new List<int>();
 
         //部位ごとの武器リスト取得
-        Dictionary<int, string[]> weaponList = new Dictionary<int, string[]>();
-        switch (partsNo)
-        {
-            case Common.CO.PARTS_LEFT_HAND_NO:
-            case Common.CO.PARTS_RIGHT_HAND_NO:
-                weaponList = Common.Weapon.handWeaponLineUp;
-                break;
-
-            case Common.CO.PARTS_LEFT_HAND_DASH_NO:
-            case Common.CO.PARTS_RIGHT_HAND_DASH_NO:
-                weaponList = Common.Weapon.handDashWeaponLineUp;
-                break;
-
-            case Common.CO.PARTS_SHOULDER_NO:
-                weaponList = Common.Weapon.shoulderWeaponLineUp;
-                break;
-
-            case Common.CO.PARTS_SHOULDER_DASH_NO:
-                weaponList = Common.Weapon.shoulderDashWeaponLineUp;
-                break;
-
-            case Common.CO.PARTS_SUB_NO:
-                weaponList = Common.Weapon.subWeaponLineUp;
-                break;
-        }
+        Dictionary<int, string[]> weaponList = Common.Weapon.GetWeaponList(partsNo);
 
         //装備可能かチェック
         foreach (int weaponNo in weaponList.Keys)
@@ -76,7 +52,7 @@ public class WeaponStore : Photon.MonoBehaviour
         if (weaponInfo == null)
         {
             //武器情報取得
-            weaponInfo = GetWeaponInfo(weaponNo);
+            weaponInfo = Common.Weapon.GetWeaponInfo(weaponNo);
         }
 
         //重複チェック
@@ -110,37 +86,18 @@ public class WeaponStore : Photon.MonoBehaviour
                 break;
         }
 
+        //特別武器チェック
+        if (Common.Weapon.isExtraWeapon(weaponNo))
+        {
+            if (!Common.Weapon.IsEnabledEquipExtraWeapon(weaponNo, weaponNo))
+            {
+                return false;
+            }
+        }
+
         return true;
     }
 
-    //武器情報取得
-    public string[] GetWeaponInfo(int weaponNo)
-    {
-        string[] weaponInfo = null;
-
-        if (Common.Weapon.handWeaponLineUp.ContainsKey(weaponNo))
-        {
-            weaponInfo = Common.Weapon.handWeaponLineUp[weaponNo];
-        }
-        else if (Common.Weapon.handDashWeaponLineUp.ContainsKey(weaponNo))
-        {
-            weaponInfo = Common.Weapon.handDashWeaponLineUp[weaponNo];
-        }
-        else if (Common.Weapon.shoulderWeaponLineUp.ContainsKey(weaponNo))
-        {
-            weaponInfo = Common.Weapon.shoulderWeaponLineUp[weaponNo];
-        }
-        else if (Common.Weapon.shoulderDashWeaponLineUp.ContainsKey(weaponNo))
-        {
-            weaponInfo = Common.Weapon.shoulderDashWeaponLineUp[weaponNo];
-        }
-        else if (Common.Weapon.subWeaponLineUp.ContainsKey(weaponNo))
-        {
-            weaponInfo = Common.Weapon.subWeaponLineUp[weaponNo];
-        }
-
-        return weaponInfo;
-    }
 
     // ##### バトル用 #####
 

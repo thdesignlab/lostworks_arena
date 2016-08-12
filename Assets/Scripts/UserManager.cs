@@ -92,6 +92,7 @@ public class UserManager
                 }
                 break;
             }
+            userEquipment[Common.CO.PARTS_EXTRA] = Common.Weapon.GetExtraWeaponNo(userSetCharacter);
             PlayerPrefsUtility.SaveDict<string, int>(Common.PP.USER_EQUIP, userEquipment);
         }
 

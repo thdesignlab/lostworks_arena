@@ -43,28 +43,16 @@ namespace Common
         public const string MOTION_RUN_VERTICAL = "VerticalMove";
         public const string MOTION_RUN_HORIZONTAL = "HorizontalMove";
         public const string MOTION_RUN = "Run";
-        //public const string MOTION_BACK = "Back";
-        //public const string MOTION_LEFT_RUN = "LeftRun";
-        //public const string MOTION_RIGHT_RUN = "RightRun";
-        //public static string[] runMotionArray = new string[]
-        //{
-        //    MOTION_RUN,
-        //    MOTION_BACK,
-        //    MOTION_LEFT_RUN,
-        //    MOTION_RIGHT_RUN,
-        //};
 
         public const string MOTION_DASH = "Dash";
         public const string MOTION_JUMP = "Jump";
         public const string MOTION_DOWN = "Down";
-        //public const string MOTION_LANDING = "Landing";
 
         //攻撃モーション
         public const string MOTION_LEFT_ATTACK = "LeftAttack";
         public const string MOTION_RIGHT_ATTACK = "RightAttack";
         public const string MOTION_SHOULDER_ATTACK = "ShoulderAttack";
         public const string MOTION_CROSS_RANGE_ATTACK = "CrossRangeAttack";
-        public const string MOTION_SPECIAL_ATTACK = "SpecialAttack";
         public const string MOTION_EXTRA_ATTACK = "ExtraAttack";
         public const string MOTION_USE_SUB = "UseSub";
         public static string[] attackMotionArray = new string[]
@@ -72,6 +60,8 @@ namespace Common
             MOTION_LEFT_ATTACK,
             MOTION_RIGHT_ATTACK,
             MOTION_SHOULDER_ATTACK,
+            MOTION_USE_SUB,
+            MOTION_EXTRA_ATTACK,
         };
 
         //BITモーション
@@ -95,6 +85,7 @@ namespace Common
         public const int PARTS_KIND_SHOULDER_NO = 3;
         public const int PARTS_KIND_SHOULDER_DASH_NO = 4;
         public const int PARTS_KIND_SUB_NO = 5;
+        public const int PARTS_KIND_EXTRA_NO = 6;
 
         //パーツ分類(タグ)
         public const string PARTS_KIND_HAND = "Hand";
@@ -138,6 +129,7 @@ namespace Common
             { PARTS_SHOULDER_NO, PARTS_SHOULDER },
             { PARTS_SHOULDER_DASH_NO, PARTS_SHOULDER_DASH },
             { PARTS_SUB_NO, PARTS_SUB },
+            { PARTS_EXTRA_NO, PARTS_EXTRA },
         };
 
         //武器タグ
@@ -365,12 +357,13 @@ namespace Common
         public const int DETAIL_NAME_NO = 1;            //キャラ名
         public const int DETAIL_DESCRIPTION_NO = 2;     //説明
         public const int DETAIL_OBTAIN_TYPE_NO = 3;     //取得タイプ
+        public const int DETAIL_EXTRA_WEAPON_NO = 4;     //必殺技武器No
 
         //キャラクターリスト
         public static Dictionary<int, string[]> characterLineUp = new Dictionary<int, string[]>()
         {
-            {0, new string[]{ "Hero1", "るり", "", OBTAIN_TYPE_INIT}},
-            {1, new string[]{ "Hero2", "おだんご", "", OBTAIN_TYPE_INIT}},
+            {0, new string[]{ "Hero1", "るり", "", OBTAIN_TYPE_INIT, "0"}},
+            {1, new string[]{ "Hero2", "おだんご", "", OBTAIN_TYPE_INIT, "10001"}},
         };
     }
 
@@ -392,7 +385,6 @@ namespace Common
         {
             { 1000, new string[]{ "Rifle", "", "", OBTAIN_TYPE_INIT}},
             { 1001, new string[]{ "BrasterLauncher", "", "", OBTAIN_TYPE_INIT}},
-            { 1002, new string[]{ "BeamCannon", "", "", OBTAIN_TYPE_INIT}},
             { 1003, new string[]{ "PlasmaGun", "", "", OBTAIN_TYPE_INIT}},
             { 1004, new string[]{ "BlazePillar", "", "", OBTAIN_TYPE_INIT}},
         };
@@ -423,11 +415,53 @@ namespace Common
         //サブ武器リスト
         public static Dictionary<int, string[]> subWeaponLineUp = new Dictionary<int, string[]>()
         {
-            { 5000, new string[]{ "InvincibleShield", "", "", OBTAIN_TYPE_INIT}},
+            { 5000, new string[]{ "InvincibleShield", "", "", OBTAIN_TYPE_NONE}},
             { 5001, new string[]{ "AvoidBurst", "", "", OBTAIN_TYPE_INIT}},
             { 5002, new string[]{ "BoostRecoverSp", "", "", OBTAIN_TYPE_INIT}},
             { 5003, new string[]{ "SpeedBurst", "", "", OBTAIN_TYPE_INIT}},
         };
+        //スペシャル武器リスト
+        public static Dictionary<int, string[]> extraWeaponLineUp = new Dictionary<int, string[]>()
+        {
+            { 10001, new string[]{ "BeamCannon", "", "", OBTAIN_TYPE_INIT}},
+        };
+
+        //部位ごとの武器リスト取得
+        public static Dictionary<int, string[]> GetWeaponList(int partsNo)
+        {
+            Dictionary<int, string[]> weaponList = new Dictionary<int, string[]>();
+            switch (partsNo)
+            {
+                case CO.PARTS_LEFT_HAND_NO:
+                case CO.PARTS_RIGHT_HAND_NO:
+                    weaponList = handWeaponLineUp;
+                    break;
+
+                case CO.PARTS_LEFT_HAND_DASH_NO:
+                case CO.PARTS_RIGHT_HAND_DASH_NO:
+                    weaponList = handDashWeaponLineUp;
+                    break;
+
+                case CO.PARTS_SHOULDER_NO:
+                    weaponList = shoulderWeaponLineUp;
+                    break;
+
+                case CO.PARTS_SHOULDER_DASH_NO:
+                    weaponList = shoulderDashWeaponLineUp;
+                    break;
+
+                case CO.PARTS_SUB_NO:
+                    weaponList = subWeaponLineUp;
+                    break;
+
+                case CO.PARTS_EXTRA_NO:
+                    //特別武器
+                    weaponList = extraWeaponLineUp;
+                    break;
+            }
+
+            return weaponList;
+        }
 
         //武器情報を取得する
         public static string[] GetWeaponInfo(int weaponNo)
@@ -453,7 +487,41 @@ namespace Common
             {
                 weaponInfo = subWeaponLineUp[weaponNo];
             }
+            else if (extraWeaponLineUp.ContainsKey(weaponNo))
+            {
+                weaponInfo = extraWeaponLineUp[weaponNo];
+            }
             return weaponInfo;
+        }
+
+        //特別武器装備可能チェック
+        public static bool IsEnabledEquipExtraWeapon(int charaNo, int weaponNo)
+        {
+            bool isEnabled = false;
+            if (Character.characterLineUp.ContainsKey(charaNo))
+            {
+                if (weaponNo.ToString() == Character.characterLineUp[charaNo][Character.DETAIL_EXTRA_WEAPON_NO])
+                {
+                    isEnabled = true;
+                }
+            }
+            return isEnabled;
+        }
+
+        //特別武器チェック
+        public static bool isExtraWeapon(int weaponNo)
+        {
+            if (extraWeaponLineUp.ContainsKey(weaponNo))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        //特別武器取得
+        public static int GetExtraWeaponNo(int charaNo)
+        {
+            return int.Parse(Common.Character.characterLineUp[charaNo][Character.DETAIL_EXTRA_WEAPON_NO]);
         }
 
         //武器名を取得する

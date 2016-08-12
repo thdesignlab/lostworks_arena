@@ -95,6 +95,7 @@ public class CustomManager : Photon.MonoBehaviour
     private const string PARTS_AREA_NAME_SHOULDER = "Shoulder-Weapon";
     private const string PARTS_AREA_NAME_SHOULDER_DASH = "Shoulder-Dash-Weapon";
     private const string PARTS_AREA_NAME_SUB = "Sub-Weapon";
+    private const string PARTS_AREA_NAME_EXTRA = "Extra-Weapon";
     private const string BIT_IMG_AREA = "BitImg";
 
     private const float SHOOT_INTERVAL = 1.0f;
@@ -110,6 +111,7 @@ public class CustomManager : Photon.MonoBehaviour
         { Common.CO.PARTS_RIGHT_HAND_NO, PARTS_AREA_NAME_RIGHT },
         { Common.CO.PARTS_RIGHT_HAND_DASH_NO, PARTS_AREA_NAME_RIGHT_DASH },
         { Common.CO.PARTS_SUB_NO, PARTS_AREA_NAME_SUB },
+        //{ Common.CO.PARTS_EXTRA_NO, PARTS_AREA_NAME_EXTRA },
     };
 
 
@@ -198,6 +200,9 @@ public class CustomManager : Photon.MonoBehaviour
         //キャラセット情報更新
         UserManager.userSetCharacter = charaNo;
 
+        //特別武器更新
+        UserManager.userEquipment[Common.CO.PARTS_EXTRA] = Common.Weapon.GetExtraWeaponNo(charaNo);
+
         //ベースボディ生成
         GameObject charaBaseObj = PhotonNetwork.Instantiate(Common.CO.CHARACTER_BASE, spawnPoints[tableIndex].position, spawnPoints[tableIndex].rotation, 0);
         charaTran = charaBaseObj.transform;
@@ -249,6 +254,7 @@ public class CustomManager : Photon.MonoBehaviour
 
         //武器取得
         string weaponName = Common.Weapon.GetWeaponName(weaponNo);
+        if (weaponName == "") return null;
 
         //武器召喚
         GameObject ob = PhotonNetwork.Instantiate(Common.Func.GetResourceWeapon(weaponName), parts.position, parts.rotation, 0);
@@ -278,9 +284,11 @@ public class CustomManager : Photon.MonoBehaviour
             {
                 //装備
                 GameObject weaponObj = EquipWeapon(parts, UserManager.userEquipment[parts.name]);
-
-                //Bit画像設定
-                SetBitIcon(partsNo, weaponObj);
+                if (weaponObj != null)
+                {
+                    //Bit画像設定
+                    SetBitIcon(partsNo, weaponObj);
+                }
             }
         }
     }
@@ -490,7 +498,6 @@ public class CustomManager : Photon.MonoBehaviour
 
         //装備
         GameObject weapon = EquipWeapon(selectedPartsNo, weaponNo);
-        //ReadyWeaponCtrl();
 
         //武器文字色変更
         foreach (Transform btn in weaponButtonArea)

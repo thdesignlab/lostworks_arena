@@ -200,6 +200,8 @@ public class PlayerSetting : Photon.MonoBehaviour
             Transform parts = myTran.FindChild(partsName);
             if (parts != null)
             {
+                if (!UserManager.userEquipment.ContainsKey(parts.name)) continue;
+
                 //武器取得
                 string weaponName = Common.Weapon.GetWeaponName(UserManager.userEquipment[parts.name]);
                 GameObject weapon = (GameObject)Resources.Load(Common.Func.GetResourceWeapon(weaponName));
