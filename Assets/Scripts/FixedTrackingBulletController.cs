@@ -120,7 +120,7 @@ public class FixedTrackingBulletController : BulletController
         else
         {
             //とりあえず下に向ける
-            Vector3 floorPos = new Vector3(myTran.position.x, 0 , myTran.position.z);
+            Vector3 floorPos = new Vector3(myTran.position.x, 0, myTran.position.z);
             myTran.LookAt(floorPos);
         }
 
@@ -143,6 +143,7 @@ public class FixedTrackingBulletController : BulletController
         {
             base.speed = 0;
             fixedTurnSpeed = 0;
+            photonView.RPC("StopStructure", PhotonTargets.Others);
         }
 
         base.OnHit(otherObj);
@@ -150,4 +151,10 @@ public class FixedTrackingBulletController : BulletController
         base.isHit = false;
     }
 
+    [PunRPC]
+    private void StopStructure()
+    {
+        base.speed = 0;
+        fixedTurnSpeed = 0;
+    }
 }

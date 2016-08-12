@@ -385,6 +385,7 @@ namespace Common
         {
             { 1000, new string[]{ "Rifle", "", "", OBTAIN_TYPE_INIT}},
             { 1001, new string[]{ "BrasterLauncher", "", "", OBTAIN_TYPE_INIT}},
+            { 1002, new string[]{ "BeamCannon", "", "", OBTAIN_TYPE_INIT}},
             { 1003, new string[]{ "PlasmaGun", "", "", OBTAIN_TYPE_INIT}},
             { 1004, new string[]{ "BlazePillar", "", "", OBTAIN_TYPE_INIT}},
         };
@@ -423,7 +424,7 @@ namespace Common
         //スペシャル武器リスト
         public static Dictionary<int, string[]> extraWeaponLineUp = new Dictionary<int, string[]>()
         {
-            { 10001, new string[]{ "BeamCannon", "", "", OBTAIN_TYPE_INIT}},
+            { 10001, new string[]{ "ExtraBeam", "", "", OBTAIN_TYPE_INIT}},
         };
 
         //部位ごとの武器リスト取得
