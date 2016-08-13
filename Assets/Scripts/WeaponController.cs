@@ -8,7 +8,7 @@ public class WeaponController : Photon.MonoBehaviour
     [SerializeField]
     protected int bitMotionType;   //Bitのモーション(1:Gun, 2:Missile, 3:Laser)
     protected Animator bitAnimator;
-    protected string bitMotionParam;
+    protected string bitMotionParam = "";
 
     [SerializeField]
     protected float bitMoveTime;   //発射までにかかる時間
@@ -183,7 +183,10 @@ public class WeaponController : Photon.MonoBehaviour
         charaAnimator = a;
         motionParam = s;
 
-        bitMotionParam = Common.Func.GetBitMotionName(bitMotionType, s);
+        if (bitMotionType > 0)
+        {
+            bitMotionParam = Common.Func.GetBitMotionName(bitMotionType, s);
+        }
     }
 
     public void SetBtn(Button btn, bool isExtra = false)
@@ -261,6 +264,7 @@ public class WeaponController : Photon.MonoBehaviour
         }
         if (bitAnimator != null && bitMotionParam != "")
         {
+            Debug.Log(myTran.name+" >> "+ bitMotionParam);
             bitAnimator.SetBool(bitMotionParam, true);
         }
     }

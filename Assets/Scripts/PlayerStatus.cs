@@ -66,7 +66,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
     [SerializeField]
     private Image hitEffect;
     private float leftHitEffectTime = 0;
-    private const float HIT_EFFECT_TIME = 1.0f;
+    private const float HIT_EFFECT_TIME = 0.5f;
 
     //private CameraController camCtrl;
     private bool isLocked = false;
@@ -329,7 +329,8 @@ public class PlayerStatus : Photon.MonoBehaviour {
     private void SwitchDamageEffect()
     {
         if (hitEffect == null) return;
-        hitEffect.color *= new Vector4(0, 0, 0, 1); 
+        hitEffect.color = Vector4.one;
+        leftHitEffectTime = HIT_EFFECT_TIME;
     }
 
     public void UseSp(int sp)
@@ -420,9 +421,13 @@ public class PlayerStatus : Photon.MonoBehaviour {
                 AddDamage(11);
             }
 
+
             if (hitEffect != null && hitEffect.color.a > 0)
             {
-                hitEffect.color *= new Vector4(0,0,0,-1) / HIT_EFFECT_TIME * Time.deltaTime;
+                leftHitEffectTime -= Time.deltaTime;
+                float a = leftHitEffectTime / HIT_EFFECT_TIME;
+                if (leftHitEffectTime <= 0) a = 0;
+                hitEffect.color = new Vector4(1, 1, 1, a);
             }
         }
 

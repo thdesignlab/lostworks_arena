@@ -335,19 +335,10 @@ public class NpcController : MoveOfCharacter
     {
         if (preBoostTime < boostIntervalTime || boostIntervalTime == 0) return;
 
-        bool isBullet = false;
-        foreach (string bulletTag in Common.CO.bulletTagArray)
+        if (Common.Func.IsDamageAffect(other.gameObject.tag))
         {
-            if (other.gameObject.CompareTag(bulletTag))
-            {
-                isBullet = true;
-                break;
-            }
+            AvoidBoost();
         }
-
-        if (!isBullet) return;
-
-        AvoidBoost();
     }
 
     private void AvoidBoost()
@@ -362,10 +353,9 @@ public class NpcController : MoveOfCharacter
         }
         else
         {
-            int x = Random.Range(0, 2);
-            int y = Random.Range(-1, 2);
+            int x = Random.Range(-1, 2);
+            int y = Random.Range(0, 2);
             Jump(x, y);
-            preBoostTime = 0;
         }
     }
 
