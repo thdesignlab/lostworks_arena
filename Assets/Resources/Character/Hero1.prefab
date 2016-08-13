@@ -451,6 +451,7 @@ GameObject:
   - 114: {fileID: 11447204}
   - 114: {fileID: 11445934}
   - 114: {fileID: 11406400}
+  - 114: {fileID: 11427800}
   m_Layer: 0
   m_Name: MainBody
   m_TagString: Untagged
@@ -2653,7 +2654,7 @@ Animator:
   m_GameObject: {fileID: 134266}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: e0cfc1463eef1194eaa62620a9d72cb0, type: 3}
-  m_Controller: {fileID: 9100000, guid: 642ea186448c9c144900680f43fd653c, type: 2}
+  m_Controller: {fileID: 9100000, guid: 62383da0a1ba47743b1ad5168d12311c, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -2722,6 +2723,19 @@ MonoBehaviour:
     InterpolateOption: 0
     InterpolateMoveTowardsSpeed: 1
     InterpolateLerpSpeed: 0
+--- !u!114 &11427800
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 134266}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9fab0cff8dbc4ad428570c6eeed5935d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  extraCam: {fileID: 0}
+  fireTimeInAnim: 1
 --- !u!114 &11445934
 MonoBehaviour:
   m_ObjectHideFlags: 1

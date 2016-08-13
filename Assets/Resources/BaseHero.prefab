@@ -2245,7 +2245,7 @@ Transform:
   m_GameObject: {fileID: 137132}
   m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 10, y: 10, z: 10}
+  m_LocalScale: {x: 10, y: 10, z: 8}
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 411664}
@@ -2758,7 +2758,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6f730876e853834ea898ae911db1f8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scrollSpeedX: 0
+  scrollSpeedX: 0.1
   scrollSpeedY: 0.1
 --- !u!114 &11400832
 MonoBehaviour:
@@ -2931,11 +2931,10 @@ MonoBehaviour:
   onSerializeTransformOption: 3
   onSerializeRigidBodyOption: 2
   ownershipTransfer: 0
-  ObservedComponents:
-  - {fileID: 0}
+  ObservedComponents: []
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 0
-  instantiationId: -1
+  viewIdField: 2
+  instantiationId: 2
   isRuntimeInstantiated: 0
 --- !u!114 &11404676
 MonoBehaviour:
@@ -3338,8 +3337,8 @@ MonoBehaviour:
   npcMenu: {fileID: 184226}
   debugButton: {fileID: 185648}
   debugMenu: {fileID: 105554}
-  switchTime: 0.2
-  slideLength: -400
+  switchTime: 0.3
+  isRight: 0
 --- !u!114 &11411558
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3352,7 +3351,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: 49613b833533c084eb4fc42255ca3997, type: 2}
-  m_Color: {r: 0.90344834, g: 1, b: 0, a: 0.634}
+  m_Color: {r: 1, g: 1, b: 0, a: 0.703}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -4115,8 +4114,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6f730876e853834ea898ae911db1f8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scrollSpeedX: 0
-  scrollSpeedY: -0.1
+  scrollSpeedX: 0.1
+  scrollSpeedY: 0.1
 --- !u!114 &11426506
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4562,11 +4561,10 @@ MonoBehaviour:
   onSerializeTransformOption: 3
   onSerializeRigidBodyOption: 2
   ownershipTransfer: 0
-  ObservedComponents:
-  - {fileID: 0}
+  ObservedComponents: []
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 0
-  instantiationId: -1
+  viewIdField: 3
+  instantiationId: 3
   isRuntimeInstantiated: 0
 --- !u!114 &11431724
 MonoBehaviour:
@@ -4772,11 +4770,10 @@ MonoBehaviour:
   onSerializeTransformOption: 3
   onSerializeRigidBodyOption: 2
   ownershipTransfer: 0
-  ObservedComponents:
-  - {fileID: 0}
+  ObservedComponents: []
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 0
-  instantiationId: -1
+  viewIdField: 4
+  instantiationId: 4
   isRuntimeInstantiated: 0
 --- !u!114 &11434182
 MonoBehaviour:
@@ -5129,12 +5126,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_PositionModel:
-    SynchronizeEnabled: 1
+    SynchronizeEnabled: 0
     TeleportEnabled: 1
     TeleportIfDistanceGreaterThan: 3
-    InterpolateOption: 3
+    InterpolateOption: 2
     InterpolateMoveTowardsSpeed: 1
-    InterpolateLerpSpeed: 10
+    InterpolateLerpSpeed: 1
     InterpolateMoveTowardsAcceleration: 2
     InterpolateMoveTowardsDeceleration: 2
     InterpolateSpeedCurve:
@@ -5167,10 +5164,10 @@ MonoBehaviour:
     ExtrapolateSpeed: 1
     ExtrapolateIncludingRoundTripTime: 1
     ExtrapolateNumberOfStoredPositions: 1
-    DrawErrorGizmo: 0
+    DrawErrorGizmo: 1
   m_RotationModel:
-    SynchronizeEnabled: 1
-    InterpolateOption: 2
+    SynchronizeEnabled: 0
+    InterpolateOption: 1
     InterpolateRotateTowardsSpeed: 180
     InterpolateLerpSpeed: 5
   m_ScaleModel:
@@ -5532,11 +5529,10 @@ MonoBehaviour:
   onSerializeTransformOption: 3
   onSerializeRigidBodyOption: 2
   ownershipTransfer: 0
-  ObservedComponents:
-  - {fileID: 0}
+  ObservedComponents: []
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 0
-  instantiationId: -1
+  viewIdField: 5
+  instantiationId: 5
   isRuntimeInstantiated: 0
 --- !u!114 &11459958
 MonoBehaviour:
@@ -5584,11 +5580,10 @@ MonoBehaviour:
   onSerializeTransformOption: 3
   onSerializeRigidBodyOption: 2
   ownershipTransfer: 0
-  ObservedComponents:
-  - {fileID: 0}
+  ObservedComponents: []
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 0
-  instantiationId: -1
+  viewIdField: 1
+  instantiationId: 1
   isRuntimeInstantiated: 0
 --- !u!114 &11460202
 MonoBehaviour:
@@ -5667,15 +5662,14 @@ MonoBehaviour:
   group: 0
   prefixBackup: -1
   observed: {fileID: 0}
-  synchronization: 1
+  synchronization: 0
   onSerializeTransformOption: 3
   onSerializeRigidBodyOption: 2
   ownershipTransfer: 0
-  ObservedComponents:
-  - {fileID: 11444772}
+  ObservedComponents: []
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 0
-  instantiationId: -1
+  viewIdField: 6
+  instantiationId: 6
   isRuntimeInstantiated: 0
 --- !u!114 &11460962
 MonoBehaviour:
@@ -5775,11 +5769,10 @@ MonoBehaviour:
   onSerializeTransformOption: 3
   onSerializeRigidBodyOption: 2
   ownershipTransfer: 0
-  ObservedComponents:
-  - {fileID: 0}
+  ObservedComponents: []
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 0
-  instantiationId: -1
+  viewIdField: 7
+  instantiationId: 7
   isRuntimeInstantiated: 0
 --- !u!114 &11462814
 MonoBehaviour:
@@ -5844,8 +5837,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6f730876e853834ea898ae911db1f8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scrollSpeedX: 0
-  scrollSpeedY: 0.5
+  scrollSpeedX: 0.1
+  scrollSpeedY: 0.1
 --- !u!114 &11462970
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6123,7 +6116,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6f730876e853834ea898ae911db1f8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scrollSpeedX: 10
+  scrollSpeedX: 5
   scrollSpeedY: 0
 --- !u!114 &11471444
 MonoBehaviour:
@@ -6246,11 +6239,10 @@ MonoBehaviour:
   onSerializeTransformOption: 3
   onSerializeRigidBodyOption: 2
   ownershipTransfer: 0
-  ObservedComponents:
-  - {fileID: 0}
+  ObservedComponents: []
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 0
-  instantiationId: -1
+  viewIdField: 8
+  instantiationId: 8
   isRuntimeInstantiated: 0
 --- !u!114 &11472864
 MonoBehaviour:
@@ -6453,7 +6445,7 @@ MonoBehaviour:
   isAttackAndTurn: 0
   attackPreserveSpeedTime: 1
   movePreserveSpeedTime: 0
-  circleArrow: {fileID: 180480}
+  circleArrow: {fileID: 140164, guid: 45841c8ff1dd4ca4a9d01e332d165810, type: 2}
 --- !u!114 &11477682
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6579,11 +6571,10 @@ MonoBehaviour:
   onSerializeTransformOption: 3
   onSerializeRigidBodyOption: 2
   ownershipTransfer: 0
-  ObservedComponents:
-  - {fileID: 0}
+  ObservedComponents: []
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 0
-  instantiationId: -1
+  viewIdField: 9
+  instantiationId: 9
   isRuntimeInstantiated: 0
 --- !u!114 &11481492
 MonoBehaviour:
@@ -7174,7 +7165,7 @@ MonoBehaviour:
   maxHp: 1000
   maxSp: 1000
   recoverSp: 30
-  bonusRecoverSpRate: 2
+  bonusRecoverSpRate: 3
   bonusRecoverSpTime: 1
   boostCost: 100
   invincibleTime: 0.3

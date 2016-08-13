@@ -28,11 +28,13 @@ public class PlayerController : MoveOfCharacter
     private Dictionary<int, WeaponController> leftHandCtrls = new Dictionary<int, WeaponController>();
     private Dictionary<int, WeaponController> shoulderCtrls = new Dictionary<int, WeaponController>();
     private WeaponController subCtrl;
+    private ExtraWeaponController extraCtrl;
 
     private Button leftHandBtn;
     private Button rightHandBtn;
     private Button shoulderBtn;
     private Button subBtn;
+    private Button extraBtn;
 
     private bool isAutoLock = true; //切り替え可能にする場合はAutoLockボタンを表示する
     //private Button autoLockButton;
@@ -99,6 +101,7 @@ public class PlayerController : MoveOfCharacter
             rightHandBtn = screenInputBtnTran.FindChild(Common.CO.BUTTON_RIGHT_ATTACK).GetComponent<Button>();
             shoulderBtn = screenInputBtnTran.FindChild(Common.CO.BUTTON_SHOULDER_ATTACK).GetComponent<Button>();
             subBtn = screenInputBtnTran.FindChild(Common.CO.BUTTON_USE_SUB).GetComponent<Button>();
+            extraBtn = screenInputBtnTran.FindChild(Common.CO.BUTTON_EXTRA_ATTACK).GetComponent<Button>();
 
             //GameObject autoLockObj = GameObject.Find(screenBtn + Common.CO.BUTTON_AUTO_LOCK);
             //if (autoLockObj != null)
@@ -251,6 +254,18 @@ public class PlayerController : MoveOfCharacter
                     wepCtrl.SetMotionCtrl(animator, Common.CO.MOTION_USE_SUB);
                     wepCtrl.SetBtn(subBtn);
                     subCtrl = wepCtrl;
+                    break;
+
+                case Common.CO.PARTS_EXTRA:
+                    //専用武器
+                    Transform mainBody = myTran.FindChild(Common.CO.PARTS_BODY + "/" + Common.CO.PARTS_MAIN_BODY);
+                    extraCtrl = mainBody.GetComponent<ExtraWeaponController>();
+                    if (extraCtrl != null)
+                    {
+                        //wepCtrl.SetMotionCtrl(animator, Common.CO.MOTION_EXTRA_ATTACK);
+                        wepCtrl.SetBtn(extraBtn, true);
+                        extraCtrl.SetInit(wepCtrl, animator);
+                    }
                     break;
             }
         }
@@ -486,6 +501,13 @@ public class PlayerController : MoveOfCharacter
         }
     }
 
+    public void FireExtra()
+    {
+        if (!photonView.isMine) return;
+        if (extraCtrl == null) return;
+        extraCtrl.Fire(targetTran);
+    }
+
     public void FireRightHand()
     {
         Fire(rightHandCtrls);
@@ -618,6 +640,9 @@ public class PlayerController : MoveOfCharacter
                     break;
                 case Common.CO.BUTTON_USE_SUB:
                     UseSub();
+                    break;
+                case Common.CO.BUTTON_EXTRA_ATTACK:
+                    FireExtra();
                     break;
             }
             return;

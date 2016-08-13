@@ -45,7 +45,10 @@ public class WeaponController : Photon.MonoBehaviour
     //リロードゲージカラー
     private Color RELOAD_GAGE_COLOR = Color.red;
     private Color NORMAL_GAGE_COLOR = new Color(0.000f, 1.000f, 0.834f, 0.634f);
+    private Color EXTRA_GAGE_COLOR = new Color(1.000f, 1.000f, 0.000f, 0.634f);
     //public static string normalGageHexColor = "0695EA4E";
+    private Color reloadColor;
+    private Color normalColor;
 
     protected virtual void Awake()
     {
@@ -183,9 +186,13 @@ public class WeaponController : Photon.MonoBehaviour
         bitMotionParam = Common.Func.GetBitMotionName(bitMotionType, s);
     }
 
-    public void SetBtn(Button btn)
+    public void SetBtn(Button btn, bool isExtra = false)
     {
         if (btn == null) return;
+
+        reloadColor = RELOAD_GAGE_COLOR;
+        normalColor = NORMAL_GAGE_COLOR;
+        if (isExtra) normalColor = EXTRA_GAGE_COLOR;
 
         myBtn = btn;
         Transform imgGageTran = myBtn.transform.FindChild("ImgGage");
@@ -194,16 +201,7 @@ public class WeaponController : Photon.MonoBehaviour
             //Debug.Log("first:" + imgGage.color);
             imgGage = imgGageTran.GetComponent<Image>();
             imgGage.fillAmount = 1;
-            imgGage.color = NORMAL_GAGE_COLOR;
-            //Color color = default(Color);
-            //if (ColorUtility.TryParseHtmlString(normalGageHexColor, out color))
-            //{
-            //    normalGageColor = color;
-            //}
-            //else
-            //{
-            //normalGageColor = imgGage.color;
-            //}
+            imgGage.color = normalColor;
         }
         spriteStudioCtrl = GameObject.Find("SpriteStudioController").GetComponent<SpriteStudioController>();
         if (spriteStudioCtrl != null)
@@ -229,7 +227,7 @@ public class WeaponController : Photon.MonoBehaviour
             {
                 //クールゲージ切り替え
                 imgGage.fillAmount = 1;
-                imgGage.color = NORMAL_GAGE_COLOR;
+                imgGage.color = normalColor;
             }
         }
         else
@@ -239,7 +237,7 @@ public class WeaponController : Photon.MonoBehaviour
             {
                 //クールゲージ切り替え
                 imgGage.fillAmount = 0;
-                imgGage.color = RELOAD_GAGE_COLOR;
+                imgGage.color = reloadColor;
             }
             if (reloadFlg)
             {
@@ -261,7 +259,7 @@ public class WeaponController : Photon.MonoBehaviour
         {
             charaAnimator.SetBool(motionParam, true);
         }
-        if (bitMotionParam != null && bitMotionParam != "")
+        if (bitAnimator != null && bitMotionParam != "")
         {
             bitAnimator.SetBool(bitMotionParam, true);
         }
@@ -274,7 +272,7 @@ public class WeaponController : Photon.MonoBehaviour
         {
             StartCoroutine(WaitAnimatorEnd(charaAnimator, motionParam));
         }
-        if (bitMotionParam != null && bitMotionParam != "")
+        if (bitAnimator != null && bitMotionParam != "")
         {
             StartCoroutine(WaitAnimatorEnd(bitAnimator, bitMotionParam));
         }
@@ -406,5 +404,19 @@ public class WeaponController : Photon.MonoBehaviour
     public virtual string GetDescriptionText()
     {
         return "";
+    }
+
+    public float GetActionTime()
+    {
+        float time = 1;
+        if (motionParam == "" || charaAnimator == null) return time;
+
+        int waitHash = Animator.StringToHash(motionParam);
+        int nowAnimHash = charaAnimator.GetCurrentAnimatorStateInfo(0).fullPathHash;
+        if (waitHash == nowAnimHash)
+        {
+            time = charaAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+        }
+        return time;
     }
 }

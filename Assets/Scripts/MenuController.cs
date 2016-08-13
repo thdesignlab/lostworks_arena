@@ -10,9 +10,11 @@ public class MenuController : Photon.MonoBehaviour
     [SerializeField]
     private GameObject debugMenu;
     [SerializeField]
-    private float switchTime = 1.0f;
+    private float switchTime = 0.3f;
+    //[SerializeField]
+    //private float slideLength = -400;
     [SerializeField]
-    private float slideLength = 400;
+    private bool isRight = false;
 
     private Transform myTran;
     private GameController gameCtrl;
@@ -23,10 +25,10 @@ public class MenuController : Photon.MonoBehaviour
     void Awake()
     {
         myTran = transform;
-        if (slideLength == 0)
-        {
-            myTran.gameObject.SetActive(false); 
-        }
+        //if (slideLength == 0)
+        //{
+        //    myTran.gameObject.SetActive(false); 
+        //}
 
         gameCtrl = GameObject.Find("GameController").GetComponent<GameController>();
     }
@@ -59,6 +61,8 @@ public class MenuController : Photon.MonoBehaviour
     IEnumerator MenuSlide()
     {
         enableMenuAction = false;
+        float slideLength = debugButton.GetComponent<RectTransform>().rect.width;
+        if (!isRight) slideLength *= -1;
 
         float totalSlide = 0;
         Vector3 slideVector = Vector3.left;

@@ -70,7 +70,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 145322}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 2}
+  m_LocalPosition: {x: 0, y: 1, z: 2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
@@ -228,7 +228,7 @@ MonoBehaviour:
   bitMotionType: 3
   bitMoveTime: 0
   isBitFixed: 0
-  reloadTime: 10
+  reloadTime: 5
   laserPrefab: {fileID: 168918, guid: c1d63694744a12645834d0ef1c62400f, type: 2}
   effectiveLength: 400
   effectiveWidth: 2
