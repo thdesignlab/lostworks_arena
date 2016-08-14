@@ -264,7 +264,7 @@ public class PlayerController : MoveOfCharacter
                     {
                         //wepCtrl.SetMotionCtrl(animator, Common.CO.MOTION_EXTRA_ATTACK);
                         wepCtrl.SetBtn(extraBtn, true);
-                        extraCtrl.SetInit(wepCtrl, animator);
+                        extraCtrl.SetInit(wepCtrl, animator, status);
                     }
                     break;
             }

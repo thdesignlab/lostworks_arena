@@ -8,15 +8,17 @@ public class ExtraWeaponController : Photon.MonoBehaviour
     [SerializeField]
     private float fireTimeInAnim = 1;
 
-    private GameObject mainCam;
+    private Camera mainCam;
     private WeaponController wepCtrl;
     private Animator charaAnimator;
+    private PlayerStatus playerStatus;
 
-    public void SetInit(WeaponController wep, Animator anim)
+    public void SetInit(WeaponController wep, Animator anim, PlayerStatus status)
     {
-        mainCam = Camera.main.gameObject;
+        mainCam = Camera.main.gameObject.GetComponent<Camera>();
         wepCtrl = wep;
         charaAnimator = anim;
+        playerStatus = status;
     }
 
     public void Fire(Transform targetTran)
@@ -28,7 +30,8 @@ public class ExtraWeaponController : Photon.MonoBehaviour
 
     IEnumerator FireProccess(Transform targetTran)
     {
-        mainCam.SetActive(false);
+        playerStatus.SetForceInvincible(true);
+        //mainCam.enabled = false;
         extraCam.SetActive(true);
 
         charaAnimator.SetBool(Common.CO.MOTION_EXTRA_ATTACK, true);
@@ -38,7 +41,7 @@ public class ExtraWeaponController : Photon.MonoBehaviour
         for (;;)
         {
             float animTime = GetActionTime();
-            if (animTime <= 1) isReady = true;
+            if (animTime < 1) isReady = true;
             if (isReady)
             {
                 if (!isFire && animTime >= fireTimeInAnim)
@@ -51,16 +54,18 @@ public class ExtraWeaponController : Photon.MonoBehaviour
             yield return null;
         }
         charaAnimator.SetBool(Common.CO.MOTION_EXTRA_ATTACK, false);
+
         extraCam.SetActive(false);
-        mainCam.SetActive(true);
+        //mainCam.enabled = true;
+        playerStatus.SetForceInvincible(false);
     }
 
     private float GetActionTime()
     {
-        if (charaAnimator == null) return 1;
-
-        int waitHash = Animator.StringToHash(Common.CO.MOTION_EXTRA_ATTACK);
-        int nowAnimHash = charaAnimator.GetCurrentAnimatorStateInfo(0).fullPathHash;
+        //int targetHash = Animator.StringToHash("Base Layer."+Common.CO.MOTION_EXTRA_ATTACK);
+        //AnimatorStateInfo stateInfo = charaAnimator.GetCurrentAnimatorStateInfo(0);
+        ////Debug.Log(targetHash + " >> "+ nowAnimHash);
+        //if (stateInfo.IsName("Base Layer."+Common.CO.MOTION_EXTRA_ATTACK)) return -1;
         return charaAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime;
     }
 

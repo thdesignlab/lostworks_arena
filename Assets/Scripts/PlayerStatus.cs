@@ -82,7 +82,10 @@ public class PlayerStatus : Photon.MonoBehaviour {
     private int defaultRecoverSp;
 
     private GameController gameCtrl;
-    private bool isACtiveSceane = true;
+    private bool isActiveSceane = true;
+
+    //強制無敵状態
+    private bool isForceInvincible = false; 
 
     void Awake()
     {
@@ -108,7 +111,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
         if (SceneManager.GetActiveScene().name == Common.CO.SCENE_CUSTOM)
         {
             //カスタム画面
-            isACtiveSceane = false;
+            isActiveSceane = false;
             return;
         }
 
@@ -121,7 +124,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
 
     void Start()
     {
-        if (!isACtiveSceane) return;
+        if (!isActiveSceane) return;
 
         //ステータス構造
         //string screenStatus = Common.CO.SCREEN_CANVAS + Common.CO.SCREEN_STATUS;
@@ -223,7 +226,9 @@ public class PlayerStatus : Photon.MonoBehaviour {
 
     public void AddDamage(int damage)
     {
-        if (gameCtrl == null || !gameCtrl.isGameStart) return;
+        if (gameCtrl == null || !gameCtrl.isGameStart || gameCtrl.isGameEnd) return;
+
+        if (isForceInvincible) return;
 
         if (leftInvincibleTime > 0)
         {
@@ -401,7 +406,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
 
     void Update()
     {
-        if (!isACtiveSceane) return;
+        if (!isActiveSceane) return;
         //statusCanvas.rotation = Camera.main.transform.rotation;
 
         if (photonView.isMine)
@@ -659,5 +664,15 @@ public class PlayerStatus : Photon.MonoBehaviour {
         yield return new WaitForSeconds(limit);
         if (effect != null) effect.SetActive(false);
         invincibleTime = defaultInvincibleTime;
+    }
+
+    public void SetForceInvincible(bool flg)
+    {
+        photonView.RPC("SetForceInvincibleRPC", PhotonTargets.All, flg);
+    }
+    [PunRPC]
+    private void SetForceInvincibleRPC(bool flg)
+    {
+        isForceInvincible = flg;
     }
 }

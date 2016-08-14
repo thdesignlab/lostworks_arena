@@ -26,7 +26,8 @@ public class GameController : Photon.MonoBehaviour
 
     [HideInInspector]
     public bool isGameStart = false;
-    private bool isGameEnd = false;
+    [HideInInspector]
+    public bool isGameEnd = false;
     private List<PlayerStatus> playerStatuses = new List<PlayerStatus>();
     private PlayerSetting playerSetting;
     private SpriteStudioController spriteStudioCtrl;
