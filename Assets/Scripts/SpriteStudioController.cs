@@ -90,33 +90,22 @@ public class SpriteStudioController : MonoBehaviour
         scriptRoot.AnimationStop();
     }
 
-    private Vector3 GetObjPos(GameObject obj)
+    private Vector3 GetObjPos(GameObject targetObj)
     {
-        Vector3 pos = obj.transform.position;
-        RectTransform objRectTran = obj.GetComponent<RectTransform>();
-        if (objRectTran != null)
+        //Vector3 pos = targetObj.transform.position;
+        RectTransform objRectTran = targetObj.GetComponent<RectTransform>();
+        Vector3 pos = objRectTran.position;
+        if (objRectTran != null && objRectTran.pivot != new Vector2(0.5f, 0.5f))
         {
-            //中心を求める
-            //Debug.Log("pos: " + pos);
-            //Vector3 center = Camera.main.ScreenToWorldPoint(objRectTran.rect.center);
-            //pos = new Vector3(center.x, center.y, pos.z);
-            //Debug.Log("pos: " + pos);
-            //Vector2 pivot = objRectTran.pivot;
-            //Debug.Log("center: " + objRectTran.rect.center);
-            //Debug.Log("world: " + );
-            ////Debug.Log(objRectTran.sizeDelta);
-            //////if (pivot.x != 0.5f)
-            //////{
-            ////Debug.Log("x: " + objRectTran.rect.x.ToString());
-            ////Debug.Log("y: " + objRectTran.rect.y.ToString());
-            //////    Debug.Log(pos);
-            //////}
-            //////if (pivot.y != 0.5f)
-            //////{
-            //////    pos += (pivot.y - 0.5f) * objRectTran.up * objRectTran.sizeDelta.y;
-            //////    Debug.Log("height: " + objRectTran.rect.height.ToString());
-            //////    Debug.Log(pos);
-            //////}
+            RectTransform canvasRect = Camera.main.transform.GetComponentInChildren<RectTransform>();
+
+            Vector2 defaultAncPos = objRectTran.anchoredPosition;
+            Vector2 spritePos = defaultAncPos;
+            spritePos.x += objRectTran.rect.width * (0.5f - objRectTran.pivot.x) * objRectTran.localScale.x;
+            spritePos.y += objRectTran.rect.height * (0.5f - objRectTran.pivot.y) * objRectTran.localScale.y;
+            objRectTran.anchoredPosition = spritePos;
+            pos = objRectTran.position;
+            objRectTran.anchoredPosition = defaultAncPos;
         }
 
         return pos;
@@ -127,16 +116,16 @@ public class SpriteStudioController : MonoBehaviour
     //ボタンFlash
     public Script_SpriteStudio_Root CreateButtonFlash(GameObject targetBtn)
     {
-        Vector3 pos = GetObjPos(targetBtn);
         GameObject obj = (GameObject)Resources.Load(Common.Func.GetResourceAnimation(ANIMATION_BUTTON_FLASH));
+        Vector3 pos = GetObjPos(targetBtn);
         return CreateAnimation(obj, targetBtn.name, pos);
     }
 
     //メッセージ
     public Script_SpriteStudio_Root DispMessage(GameObject targetObj, string text)
     {
-        Vector3 pos = GetObjPos(targetObj);
         GameObject obj = (GameObject)Resources.Load(Common.Func.GetResourceAnimation(text));
+        Vector3 pos = GetObjPos(targetObj);
         if (obj == null) return null;
 
         return CreateAnimation(obj, text, pos);

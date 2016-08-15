@@ -152,6 +152,7 @@ namespace Common
 
         //弾の種類(特殊系)
         public const string TAG_BULLET_EXTRA = "ExtraBullet";
+        public const int EXTRA_BULLET_BREAK_RATE = 10;
 
         //エフェクト
         public const string TAG_EFFECT = "Effect";

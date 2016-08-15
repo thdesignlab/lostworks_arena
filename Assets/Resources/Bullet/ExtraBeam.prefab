@@ -565,8 +565,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 11457222}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 0
-  instantiationId: -1
+  viewIdField: 2
+  instantiationId: 2
   isRuntimeInstantiated: 0
 --- !u!114 &11403494
 MonoBehaviour:
@@ -607,7 +607,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effectSpawn: {fileID: 0}
-  activeLimitTime: 3
+  activeLimitTime: 5
   activeLimitDistance: 0
 --- !u!114 &11422066
 MonoBehaviour:
@@ -621,7 +621,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effectSpawn: {fileID: 0}
-  activeLimitTime: 3
+  activeLimitTime: 5
   activeLimitDistance: 0
 --- !u!114 &11422366
 MonoBehaviour:
@@ -648,14 +648,15 @@ MonoBehaviour:
   isEnergyBulletBreak: 0
   isHitBreak: 1
   safetyTime: 0
-  turnSpeed: 360
-  lockStartTime: 0.3
+  turnSpeed: 120
+  lockStartTime: 0.2
   lockedSpeedRate: 1
   lockedTurnSpeedRate: 1
   isNeedLock: 1
   isLockFlat: 0
+  purgeTargetDistance: 50
   purgeDistance: 0
-  purgeTime: 1
+  purgeTime: 0
 --- !u!114 &11428630
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -678,8 +679,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 0}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 0
-  instantiationId: -1
+  viewIdField: 3
+  instantiationId: 3
   isRuntimeInstantiated: 0
 --- !u!114 &11446022
 MonoBehaviour:
@@ -703,8 +704,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 0}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 0
-  instantiationId: -1
+  viewIdField: 6
+  instantiationId: 6
   isRuntimeInstantiated: 0
 --- !u!114 &11446780
 MonoBehaviour:
@@ -731,14 +732,15 @@ MonoBehaviour:
   isEnergyBulletBreak: 0
   isHitBreak: 1
   safetyTime: 0
-  turnSpeed: 360
-  lockStartTime: 0.3
+  turnSpeed: 120
+  lockStartTime: 0.2
   lockedSpeedRate: 1
   lockedTurnSpeedRate: 1
   isNeedLock: 1
   isLockFlat: 0
+  purgeTargetDistance: 50
   purgeDistance: 0
-  purgeTime: 1
+  purgeTime: 0
 --- !u!114 &11448716
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -777,14 +779,15 @@ MonoBehaviour:
   isEnergyBulletBreak: 0
   isHitBreak: 1
   safetyTime: 0
-  turnSpeed: 360
-  lockStartTime: 0.3
+  turnSpeed: 120
+  lockStartTime: 0.2
   lockedSpeedRate: 1
   lockedTurnSpeedRate: 1
   isNeedLock: 1
   isLockFlat: 0
+  purgeTargetDistance: 50
   purgeDistance: 0
-  purgeTime: 1
+  purgeTime: 0
 --- !u!114 &11457044
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -810,14 +813,15 @@ MonoBehaviour:
   isEnergyBulletBreak: 0
   isHitBreak: 1
   safetyTime: 0
-  turnSpeed: 360
-  lockStartTime: 0.3
+  turnSpeed: 120
+  lockStartTime: 0.2
   lockedSpeedRate: 1
   lockedTurnSpeedRate: 1
   isNeedLock: 1
   isLockFlat: 0
+  purgeTargetDistance: 50
   purgeDistance: 0
-  purgeTime: 1
+  purgeTime: 0
 --- !u!114 &11457222
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -901,8 +905,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 0}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 0
-  instantiationId: -1
+  viewIdField: 4
+  instantiationId: 4
   isRuntimeInstantiated: 0
 --- !u!114 &11460844
 MonoBehaviour:
@@ -1000,8 +1004,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 11460844}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 0
-  instantiationId: -1
+  viewIdField: 1
+  instantiationId: 1
   isRuntimeInstantiated: 0
 --- !u!114 &11468584
 MonoBehaviour:
@@ -1015,7 +1019,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effectSpawn: {fileID: 0}
-  activeLimitTime: 3
+  activeLimitTime: 5
   activeLimitDistance: 0
 --- !u!114 &11474058
 MonoBehaviour:
@@ -1039,8 +1043,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 0}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 0
-  instantiationId: -1
+  viewIdField: 5
+  instantiationId: 5
   isRuntimeInstantiated: 0
 --- !u!114 &11476714
 MonoBehaviour:
@@ -1080,7 +1084,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effectSpawn: {fileID: 0}
-  activeLimitTime: 3
+  activeLimitTime: 5
   activeLimitDistance: 0
 --- !u!114 &11493906
 MonoBehaviour:
@@ -1154,7 +1158,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.75
+  m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!135 &13577694
 SphereCollider:
@@ -1438,7 +1442,7 @@ ParticleSystem:
         rgba: 4287184127
       minMaxState: 0
     startSize:
-      scalar: 1
+      scalar: 2
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -2917,7 +2921,7 @@ ParticleSystem:
         rgba: 4287184127
       minMaxState: 0
     startSize:
-      scalar: 1
+      scalar: 2
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -4396,7 +4400,7 @@ ParticleSystem:
         rgba: 4287184127
       minMaxState: 0
     startSize:
-      scalar: 1
+      scalar: 2
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -5875,7 +5879,7 @@ ParticleSystem:
         rgba: 4287184127
       minMaxState: 0
     startSize:
-      scalar: 1
+      scalar: 2
       maxCurve:
         serializedVersion: 2
         m_Curve:
