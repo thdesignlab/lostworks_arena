@@ -290,4 +290,8 @@ public class BulletController : MoveOfCharacter
         audioCtrl.Stop(no);
     }
 
+    public Transform GetTarget()
+    {
+        return targetTran;
+    }
 }

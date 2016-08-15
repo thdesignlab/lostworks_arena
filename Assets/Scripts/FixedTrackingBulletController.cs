@@ -8,9 +8,9 @@ public class FixedTrackingBulletController : BulletController
     [SerializeField]
     private Transform rollBody;   //回転する場所
     [SerializeField]
-    private float rollSpeed;   //回転速度
+    private float fixedRollSpeed;   //回転速度
     [SerializeField]
-    private Vector3 rollVector; //回転軸
+    private Vector3 fixedRollVector; //回転軸
     [SerializeField]
     protected float fixedSpeed; //固定解除後のスピード
     [SerializeField]
@@ -79,16 +79,16 @@ public class FixedTrackingBulletController : BulletController
         {
             //固定解除前
             //回転
-            if (rollSpeed > 0)
+            if (fixedRollSpeed > 0)
             {
-                if (rollVector == Vector3.zero)
+                if (fixedRollVector == Vector3.zero)
                 {
                     float x = Random.Range(0, 1.0f);
                     float y = Random.Range(0, 1.0f);
                     float z = Random.Range(0, 1.0f);
-                    rollVector = new Vector3(x, y, z);
+                    fixedRollVector = new Vector3(x, y, z);
                 }
-                rollBody.Rotate(rollVector, rollSpeed * Time.deltaTime);
+                rollBody.Rotate(fixedRollVector, fixedRollSpeed * Time.deltaTime);
             }
         }
     }

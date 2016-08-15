@@ -266,14 +266,16 @@ MonoBehaviour:
   damagePerSecond: 0
   stuckTime: 0
   knockBackRate: 0
+  rollSpeed: 0
+  rollAxis: {x: 0, y: 0, z: 1}
   isPhysicsBulletBreak: 0
   isEnergyBulletBreak: 0
   isHitBreak: 0
   safetyTime: 1
   fixTime: 1
   rollBody: {fileID: 497442}
-  rollSpeed: 3600
-  rollVector: {x: 0, y: 0, z: 0}
+  fixedRollSpeed: 3600
+  fixedRollVector: {x: 0, y: 0, z: 0}
   fixedSpeed: 200
   fixedTurnSpeed: 0
   isNeedLock: 1

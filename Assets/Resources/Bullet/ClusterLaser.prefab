@@ -105,10 +105,13 @@ MonoBehaviour:
   turnSpeed: 90
   lockStartTime: 0
   lockedSpeedRate: 1
+  lockedTurnSpeedRate: 1
   isNeedLock: 1
+  isLockFlat: 0
   childBullet: {fileID: 155844, guid: cb76ca07cf378824ab81ece6bc293aa1, type: 2}
   childeBulletCount: 4
   purgeDistance: 50
+  isPurgeDestroy: 1
 --- !u!114 &11484936
 MonoBehaviour:
   m_ObjectHideFlags: 1

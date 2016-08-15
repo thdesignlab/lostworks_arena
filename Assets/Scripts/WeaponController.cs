@@ -14,7 +14,7 @@ public class WeaponController : Photon.MonoBehaviour
     protected float bitMoveTime;   //発射までにかかる時間
     [SerializeField]
     protected bool isBitFixed = false;  //Bit固定FLG
-    protected bool isBitMoved;
+    protected bool isBitMoved = false;
     protected Vector3 bitFromPos = default(Vector3);
     protected Vector3 bitToPos = default(Vector3);
     protected float radius;
@@ -264,7 +264,6 @@ public class WeaponController : Photon.MonoBehaviour
         }
         if (bitAnimator != null && bitMotionParam != "")
         {
-            Debug.Log(myTran.name+" >> "+ bitMotionParam);
             bitAnimator.SetBool(bitMotionParam, true);
         }
     }

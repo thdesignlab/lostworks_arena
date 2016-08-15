@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ClusterLaserController : TrackingBulletController
+public class ClusterBulletController : TrackingBulletController
 {
     [SerializeField]
     private GameObject childBullet;
@@ -9,6 +9,8 @@ public class ClusterLaserController : TrackingBulletController
     private int childeBulletCount;
     [SerializeField]
     private float purgeDistance;
+    [SerializeField]
+    private bool isPurgeDestroy = true;
 
     protected override void Update()
     {
