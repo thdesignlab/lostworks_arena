@@ -123,8 +123,6 @@ public class PlayerSetting : Photon.MonoBehaviour
             isCustomEnd = true;
             SetCustomStatus();
             //StartCoroutine(CustomizeCountDown());
-
-            gameCtrl.ResetGame();
         }
     }
 

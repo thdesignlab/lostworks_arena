@@ -180,7 +180,10 @@ public class GameController : Photon.MonoBehaviour
     {
         isGameStart = false;
         isGameEnd = false;
-        StageObjReset();
+        if (PhotonNetwork.player == PhotonNetwork.masterClient)
+        {
+            StageObjReset();
+        }
     }
 
     private void StageObjReset()

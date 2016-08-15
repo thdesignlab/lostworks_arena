@@ -55,10 +55,11 @@ public class ObjectController : Photon.MonoBehaviour {
 
     public void DestoryObject(bool isSendRpc = false)
     {
+        //Debug.Log(myTran.name+" >>"+ photonView);
         //if (!photonView) return;
         if (photonView.isMine)
         {
-            //Debug.Log(transform.name+" >> "+PhotonNetwork.player);
+            //Debug.Log("DestroyProccess >> " + PhotonNetwork.player);
             DestroyProccess();
         }
         else

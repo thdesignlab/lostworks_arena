@@ -41,8 +41,7 @@ public class ExtraWeaponController : Photon.MonoBehaviour
         //攻撃モーション開始
         charaAnimator.SetBool(Common.CO.MOTION_EXTRA_ATTACK, true);
         //追加エフェクト
-        
-        if (extraEffect != null) extraEffect.SetActive(true);
+        SwitchExtraEffect(true);
 
         bool isReady = false;
         bool isFire = false;
@@ -86,6 +85,24 @@ public class ExtraWeaponController : Photon.MonoBehaviour
 
         //無敵解除
         playerStatus.SetForceInvincible(false);
+    }
+
+    private void SwitchExtraEffect(bool flg, bool isSendRPC = true)
+    {
+        if (photonView.isMine)
+        {
+            if (extraEffect != null) extraEffect.SetActive(flg);
+        }
+        else
+        {
+            if (isSendRPC) photonView.RPC("SwitchExtraEffectRPC", PhotonTargets.Others, flg);
+        }
+    }
+
+    [PunRPC]
+    private void SwitchExtraEffectRPC(bool flg)
+    {
+        SwitchExtraEffect(flg, false);
     }
 
     private float GetActionTime()
