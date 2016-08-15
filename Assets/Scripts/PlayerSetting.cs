@@ -52,7 +52,7 @@ public class PlayerSetting : Photon.MonoBehaviour
         }
 
         gameCtrl = GameObject.Find("GameController").GetComponent<GameController>();
-        
+
         if (photonView.isMine)
         {
             //Debug.Log("isMine:"+transform.name);
@@ -74,6 +74,8 @@ public class PlayerSetting : Photon.MonoBehaviour
 
                 //カスタマイズ完了FLG
                 isCustomEnd = true;
+
+                gameCtrl.ResetGame();
             }
             else
             {
@@ -121,18 +123,20 @@ public class PlayerSetting : Photon.MonoBehaviour
             isCustomEnd = true;
             SetCustomStatus();
             //StartCoroutine(CustomizeCountDown());
-        }
-    }
 
-    void Start()
-    {
-        if (!isActiveSceane) return;
-
-        if (isNpc || !photonView.isMine)
-        {
             gameCtrl.ResetGame();
         }
     }
+
+    //void Start()
+    //{
+    //    if (!isActiveSceane) return;
+
+    //    if (isNpc || !photonView.isMine)
+    //    {
+    //        gameCtrl.ResetGame();
+    //    }
+    //}
 
     private void CreateMainBody()
     {

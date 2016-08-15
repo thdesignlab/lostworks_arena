@@ -326,12 +326,13 @@ GameObject:
   m_IsActive: 1
 --- !u!1 &120784
 GameObject:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 423406}
+  - 95: {fileID: 9583884}
   m_Layer: 0
   m_Name: chara2_sp_efe_pre
   m_TagString: Untagged
@@ -1647,12 +1648,12 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 120784}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -3, z: 0}
-  m_LocalScale: {x: 6.5, y: 6.5, z: 6.5}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 457156}
-  m_Father: {fileID: 446920}
+  m_Father: {fileID: 473182}
   m_RootOrder: 2
 --- !u!4 &424872
 Transform:
@@ -1873,7 +1874,6 @@ Transform:
   m_Children:
   - {fileID: 473182}
   - {fileID: 415450}
-  - {fileID: 423406}
   m_Father: {fileID: 0}
   m_RootOrder: 0
 --- !u!4 &447992
@@ -2255,6 +2255,7 @@ Transform:
   m_Children:
   - {fileID: 413810}
   - {fileID: 428846}
+  - {fileID: 423406}
   m_Father: {fileID: 446920}
   m_RootOrder: 0
 --- !u!4 &475836
@@ -2900,6 +2901,23 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!95 &9583884
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 120784}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!95 &9587228
 Animator:
   serializedVersion: 3
@@ -3018,8 +3036,8 @@ MonoBehaviour:
   - {fileID: 11466440}
   - {fileID: 11414812}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 1
-  instantiationId: 1
+  viewIdField: 0
+  instantiationId: -1
   isRuntimeInstantiated: 0
 --- !u!114 &11466440
 MonoBehaviour:
@@ -3104,8 +3122,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 0}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 2
-  instantiationId: 2
+  viewIdField: 0
+  instantiationId: -1
   isRuntimeInstantiated: 0
 --- !u!114 &11474576
 MonoBehaviour:

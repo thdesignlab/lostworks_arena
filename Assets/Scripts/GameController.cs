@@ -185,19 +185,24 @@ public class GameController : Photon.MonoBehaviour
 
     private void StageObjReset()
     {
-        if (PhotonNetwork.player == PhotonNetwork.masterClient)
+        //ステージオブジェ破壊
+        GameObject[] objes = GameObject.FindGameObjectsWithTag(Common.CO.TAG_STRUCTURE);
+        foreach (GameObject obj in objes)
         {
-            //ステージオブジェ破壊
-            GameObject[] objes = GameObject.FindGameObjectsWithTag(Common.CO.TAG_STRUCTURE);
-            foreach (GameObject obj in objes)
+            PhotonView pv = PhotonView.Get(obj);
+            if (pv != null && pv.isMine)
             {
                 ObjectController objCtrl = obj.GetComponent<ObjectController>();
                 if (objCtrl != null)
                 {
-                    objCtrl.DestoryObject(true);
+                    objCtrl.DestoryObject();
                 }
             }
+        }
 
+        //Debug.Log(PhotonNetwork.player +" >> "+ PhotonNetwork.masterClient);
+        if (PhotonNetwork.player == PhotonNetwork.masterClient)
+        {
             //ステージオブジェ生成
             GameObject spawns = GameObject.Find("StructureSpawns");
             if (!spawns) return;

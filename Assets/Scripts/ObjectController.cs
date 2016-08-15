@@ -55,9 +55,10 @@ public class ObjectController : Photon.MonoBehaviour {
 
     public void DestoryObject(bool isSendRpc = false)
     {
-        if (!photonView) return;
+        //if (!photonView) return;
         if (photonView.isMine)
         {
+            //Debug.Log(transform.name+" >> "+PhotonNetwork.player);
             DestroyProccess();
         }
         else
@@ -74,13 +75,6 @@ public class ObjectController : Photon.MonoBehaviour {
     {
         DestoryObject();
     }
-
-    //IEnumerator DelayDestroy(float delay)
-    //{
-    //    yield return new WaitForSeconds(delay);
-    //    if (photonView == null) yield break;
-    //    DestroyProccess();
-    //}
 
     private void DestroyProccess()
     {

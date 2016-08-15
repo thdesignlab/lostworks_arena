@@ -124,6 +124,10 @@ Prefab:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 11420614, guid: 99c343064dbcc2b4eab31e3d8a6780b1, type: 2}
+      propertyPath: DebugMode
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 99c343064dbcc2b4eab31e3d8a6780b1, type: 2}
   m_IsPrefabParent: 0
@@ -571,8 +575,8 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 2139782456}
-  - 114: {fileID: 2139782457}
   - 114: {fileID: 2139782455}
+  - 114: {fileID: 2139782457}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -593,6 +597,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stageStructure: {fileID: 135448, guid: 5070ea255e713fb4b8ab1efb8a072d72, type: 2}
   isGameStart: 0
+  isGameEnd: 0
   isDebugMode: 0
 --- !u!4 &2139782456
 Transform:
