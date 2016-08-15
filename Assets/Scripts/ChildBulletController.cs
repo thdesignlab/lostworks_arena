@@ -76,6 +76,18 @@ public class ChildBulletController : TrackingBulletController
 
     private void Purge()
     {
-        myTran.parent = null;
+        if (photonView.isMine)
+        {
+            photonView.RPC("PurgeRPC", PhotonTargets.All);
+        }
+    }
+
+    [PunRPC]
+    private void PurgeRPC()
+    {
+        if (photonView.isMine)
+        {
+            myTran.parent = null;
+        }
     }
 }
