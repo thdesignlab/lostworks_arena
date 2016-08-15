@@ -6,6 +6,8 @@ public class ExtraWeaponController : Photon.MonoBehaviour
     [SerializeField]
     private GameObject extraCam;
     [SerializeField]
+    private GameObject extraEffect;
+    [SerializeField]
     private float fireTimeInAnim = 1;
 
     private WeaponController wepCtrl;
@@ -38,6 +40,7 @@ public class ExtraWeaponController : Photon.MonoBehaviour
 
         //攻撃モーション開始
         charaAnimator.SetBool(Common.CO.MOTION_EXTRA_ATTACK, true);
+        if (extraEffect != null) extraEffect.SetActive(true);
 
         bool isReady = false;
         bool isFire = false;
@@ -77,6 +80,7 @@ public class ExtraWeaponController : Photon.MonoBehaviour
         }
         //攻撃モーション終了
         charaAnimator.SetBool(Common.CO.MOTION_EXTRA_ATTACK, false);
+        if (extraEffect != null) extraEffect.SetActive(false);
 
         //無敵解除
         playerStatus.SetForceInvincible(false);
