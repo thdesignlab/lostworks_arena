@@ -32,6 +32,7 @@ public class BulletController : MoveOfCharacter
     protected PlayerStatus targetStatus;
     protected Collider myCollider;
     protected Transform ownerTran;
+    protected int ownerId = -1;
 
     protected const int MIN_SEND_DAMAGE = 5;
 
@@ -233,8 +234,14 @@ public class BulletController : MoveOfCharacter
         //HIT判定はエフェクト側で行う
         if (hitObj.tag == Common.CO.TAG_EFFECT) return true;
 
-        //持ち主に当たった場合無視
-        if (hitObj.transform == ownerTran) return true;
+        //ターゲットにあたった場合は有効
+        if (hitObj.transform != targetTran)
+        {
+            //持ち主に当たった場合無視
+            if (hitObj.transform == ownerTran) return true;
+            PhotonView pv = PhotonView.Get(hitObj);
+            if (pv != null && pv.ownerId == ownerId) return true;
+        }
 
         if (isHitCheck) isHit = true;
 
@@ -269,6 +276,7 @@ public class BulletController : MoveOfCharacter
     public void SetOwner(Transform owner)
     {
         ownerTran = owner;
+        ownerId = PhotonView.Get(ownerTran.gameObject).ownerId;
     }
 
     public virtual string GetBulletDescription()

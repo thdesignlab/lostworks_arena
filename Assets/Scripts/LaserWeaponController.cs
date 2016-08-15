@@ -229,8 +229,6 @@ public class LaserWeaponController : WeaponController
 
     protected void SetBulletTarget(GameObject bulletObj)
     {
-        if (targetTran == null) return;
-
         BulletController bulletCtrl = bulletObj.GetComponent<BulletController>();
         if (bulletCtrl != null)
         {

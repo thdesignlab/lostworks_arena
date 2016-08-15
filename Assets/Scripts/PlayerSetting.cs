@@ -167,7 +167,7 @@ public class PlayerSetting : Photon.MonoBehaviour
     {
         if (photonView.isMine)
         {
-            Debug.Log(myTran.name+" : "+PhotonView.Get(gameObject).viewID+" >> "+ bodyViewId);
+            //Debug.Log(myTran.name+" : "+PhotonView.Get(gameObject).viewID+" >> "+ bodyViewId);
             object[] args = new object[] { PhotonView.Get(gameObject).viewID, bodyViewId };
             photonView.RPC("SetParentRPC", PhotonTargets.Others, args);
         }
