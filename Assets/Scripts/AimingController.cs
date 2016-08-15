@@ -9,11 +9,12 @@ public class AimingController: BaseMoveController
 
     [SerializeField]
     private float aimSpeed = 60;
-    
+    private float defaultAimSpeed;
 
     protected override void Awake()
     {
         base.Awake();
+        defaultAimSpeed = aimSpeed;
     }
 
     protected override void Start()
@@ -31,6 +32,7 @@ public class AimingController: BaseMoveController
     protected override void Update()
     {
         if (targetStatus == null) return;
+        if (aimSpeed <= 0) return;
 
         if (targetStatus.IsLocked() || base.isNpc)
         {
@@ -47,9 +49,18 @@ public class AimingController: BaseMoveController
         if (target == null) return;
 
         targetStatus = target.GetComponent<PlayerStatus>();
-        //if (targetStatus == null) return;
         targetTran = target;
     }
-
-    //protected override void Move(Vector3 vector, float speed, float limit = 0){}
+    
+    public void SetAimSpeed(float rate = -1)
+    {
+        if (rate < 0)
+        {
+            aimSpeed = defaultAimSpeed;
+        }
+        else
+        {
+            aimSpeed *= rate;
+        }
+    }
 }

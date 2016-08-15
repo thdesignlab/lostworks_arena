@@ -50,6 +50,9 @@ public class WeaponController : Photon.MonoBehaviour
     private Color reloadColor;
     private Color normalColor;
 
+    protected AimingController aimingCtrl;
+    protected bool isAction = false;
+
     protected virtual void Awake()
     {
         myTran = transform;
@@ -72,6 +75,8 @@ public class WeaponController : Photon.MonoBehaviour
         if (photonView.isMine)
         {
             StartCoroutine(CheckPlayerStatus());
+
+            aimingCtrl = GetComponent<AimingController>();
         }
     }
 
@@ -107,6 +112,11 @@ public class WeaponController : Photon.MonoBehaviour
     public virtual void SetTarget(Transform target = null)
     {
         targetTran = target;
+
+        if (aimingCtrl != null)
+        {
+            aimingCtrl.SetTarget(target);
+        }
     }
 
     public virtual void Fire(Transform target = null)
@@ -125,11 +135,15 @@ public class WeaponController : Photon.MonoBehaviour
 
     protected virtual void Action()
     {
+        isAction = true;
+
         //モーション開始
         StartMotion();
     }
     protected virtual void EndAction()
     {
+        isAction = false;
+
         //Bit位置を戻す
         ReturnBitMove();
 
@@ -414,12 +428,17 @@ public class WeaponController : Photon.MonoBehaviour
         float time = 1;
         if (motionParam == "" || charaAnimator == null) return time;
 
-        int waitHash = Animator.StringToHash(motionParam);
-        int nowAnimHash = charaAnimator.GetCurrentAnimatorStateInfo(0).fullPathHash;
-        if (waitHash == nowAnimHash)
+        //int waitHash = Animator.StringToHash(motionParam);
+        //int nowAnimHash = charaAnimator.GetCurrentAnimatorStateInfo(0).fullPathHash;
+        if (charaAnimator.GetCurrentAnimatorStateInfo(0).IsName(motionParam))
         {
             time = charaAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime;
         }
         return time;
+    }
+
+    public bool IsAction()
+    {
+        return isAction;
     }
 }

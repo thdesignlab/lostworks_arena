@@ -54,6 +54,8 @@ public class ChargeWeaponController : BulletWeaponController
     {
         if (isCharge) return;
 
+        isAction = true;
+
         //モーション開始
         StartMotion();
 

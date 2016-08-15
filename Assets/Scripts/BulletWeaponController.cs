@@ -24,8 +24,6 @@ public class BulletWeaponController : WeaponController
 
     protected List<GameObject> shootBullets = new List<GameObject>();
 
-    protected AimingController aimingCtrl;
-
     protected float startMuzzleAngle = 0;
     //protected List<float> startMuzzleAngles = new List<float>();
 
@@ -80,21 +78,9 @@ public class BulletWeaponController : WeaponController
         }
     }
 
-    protected override void Start()
-    {
-        base.Start();
-
-        aimingCtrl = GetComponent<AimingController>();
-    }
-
     public override void SetTarget(Transform target = null)
     {
         base.SetTarget(target);
-
-        if (aimingCtrl != null)
-        {
-            aimingCtrl.SetTarget(target);
-        }
 
         foreach (Transform child in myTran)
         {

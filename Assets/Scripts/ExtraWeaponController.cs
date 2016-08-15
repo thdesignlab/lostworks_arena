@@ -8,17 +8,17 @@ public class ExtraWeaponController : Photon.MonoBehaviour
     [SerializeField]
     private float fireTimeInAnim = 1;
 
-    private Camera mainCam;
     private WeaponController wepCtrl;
     private Animator charaAnimator;
     private PlayerStatus playerStatus;
+    private Transform myParentTran;
 
     public void SetInit(WeaponController wep, Animator anim, PlayerStatus status)
     {
-        mainCam = Camera.main.gameObject.GetComponent<Camera>();
         wepCtrl = wep;
         charaAnimator = anim;
         playerStatus = status;
+        myParentTran = playerStatus.transform;
     }
 
     public void Fire(Transform targetTran)
@@ -30,10 +30,13 @@ public class ExtraWeaponController : Photon.MonoBehaviour
 
     IEnumerator FireProccess(Transform targetTran)
     {
+        //無敵開始
         playerStatus.SetForceInvincible(true);
-        //mainCam.enabled = false;
+
+        //カメラ切り替え
         extraCam.SetActive(true);
 
+        //攻撃モーション開始
         charaAnimator.SetBool(Common.CO.MOTION_EXTRA_ATTACK, true);
 
         bool isReady = false;
@@ -44,19 +47,38 @@ public class ExtraWeaponController : Photon.MonoBehaviour
             if (animTime < 1) isReady = true;
             if (isReady)
             {
+                //攻撃タイミングチェック
                 if (!isFire && animTime >= fireTimeInAnim)
                 {
                     isFire = true;
                     wepCtrl.Fire(targetTran);
                 }
+
+                //カメラアニメーション終了チェック
                 if (isFire && animTime >= 1) break;
+            }
+            if (!isFire && targetTran != null)
+            {
+                //攻撃開始までターゲットへ向ける
+                Vector3 targetPos = new Vector3(targetTran.position.x, myParentTran.position.y, targetTran.position.z);
+                myParentTran.LookAt(targetPos);
             }
             yield return null;
         }
+
+        //カメラ戻し
+        extraCam.SetActive(false);
+
+        for (;;)
+        {
+            //攻撃モーション終了チェック
+            if (!wepCtrl.IsAction()) break;
+            yield return null;
+        }
+        //攻撃モーション終了
         charaAnimator.SetBool(Common.CO.MOTION_EXTRA_ATTACK, false);
 
-        extraCam.SetActive(false);
-        //mainCam.enabled = true;
+        //無敵解除
         playerStatus.SetForceInvincible(false);
     }
 

@@ -27,6 +27,7 @@ public class LaserWeaponController : WeaponController
     private float laserSwitchTime = 0;
 
     private Transform muzzle;
+    
 
     protected override void Awake()
     {
@@ -52,13 +53,8 @@ public class LaserWeaponController : WeaponController
 
     protected override void Action()
     {
-        //if (base.playerStatus == null)
-        //{
-        //    base.isEnabledFire = false;
-        //    return;
-        //}
-
         //base.Action();
+        isAction = true;
 
         //発射
         StartCoroutine(LaserShoot());
@@ -86,6 +82,7 @@ public class LaserWeaponController : WeaponController
             //移動・回転制限
             base.playerStatus.AccelerateRunSpeed(runSpeedRate, effectiveTime);
             base.playerStatus.InterfareTurn(turnSpeedRate, effectiveTime);
+            if (aimingCtrl != null) aimingCtrl.SetAimSpeed(turnSpeedRate);
         }
 
         //レーザー生成
@@ -165,10 +162,7 @@ public class LaserWeaponController : WeaponController
                 {
                     //太くする
                     nowWidth += effectiveWidth * Time.deltaTime / effectiveWidthTime;
-                    if (nowWidth >= effectiveWidth)
-                    {
-                        nowWidth = effectiveWidth;
-                    }
+                    if (nowWidth >= effectiveWidth) nowWidth = effectiveWidth;
                 }
                 else if (laserSwitchTime >= effectiveTime - effectiveWidthTime)
                 {
@@ -193,6 +187,8 @@ public class LaserWeaponController : WeaponController
 
         //照射終了
         laserTran.GetComponent<ObjectController>().DestoryObject();
+
+        if (aimingCtrl != null) aimingCtrl.SetAimSpeed();
 
         base.StopAudio();
         base.EndAction();
