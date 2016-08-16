@@ -75,7 +75,7 @@ public class StructureController : Photon.MonoBehaviour
             }
 
             //破壊
-            GetComponent<ObjectController>().DestoryObject();
+            PhotonNetwork.Destroy(gameObject);
         }
     }
 }

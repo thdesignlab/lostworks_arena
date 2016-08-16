@@ -2637,7 +2637,7 @@ Animator:
   m_GameObject: {fileID: 118866}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: abeb983d7580678479ebfb5f021760f9, type: 2}
+  m_Controller: {fileID: 0}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -2832,7 +2832,8 @@ MonoBehaviour:
   onSerializeTransformOption: 3
   onSerializeRigidBodyOption: 2
   ownershipTransfer: 0
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 0}
   ObservedComponentsFoldoutOpen: 1
   viewIdField: 0
   instantiationId: -1

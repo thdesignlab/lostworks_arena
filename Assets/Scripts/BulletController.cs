@@ -279,6 +279,7 @@ public class BulletController : MoveOfCharacter
     //持ち主設定
     public void SetOwner(Transform owner)
     {
+        if (owner == null) return;
         ownerTran = owner;
         PhotonView pv = PhotonView.Get(ownerTran.gameObject);
         if (pv != null) ownerId = pv.ownerId;

@@ -15,6 +15,7 @@ public class ExtraWeaponController : Photon.MonoBehaviour
     private PlayerStatus playerStatus;
     private Transform myParentTran;
 
+    private const string TAG_ANIMATION_WAIT = "Wait";
     private const string TAG_ANIMATION_EXTRA = "Extra";
 
     public void SetInit(WeaponController wep, Animator anim, PlayerStatus status)
@@ -38,17 +39,17 @@ public class ExtraWeaponController : Photon.MonoBehaviour
         playerStatus.SetForceInvincible(true);
         //カメラ切り替え
         extraCam.SetActive(true);
-        //攻撃モーション開始
-        charaAnimator.SetBool(Common.CO.MOTION_EXTRA_ATTACK, true);
         //追加エフェクト
         SwitchExtraEffect(true);
+        //攻撃モーション開始
+        charaAnimator.SetBool(Common.CO.MOTION_EXTRA_ATTACK, true);
 
         bool isReady = false;
         bool isFire = false;
         for (;;)
         {
             float animTime = GetActionTime();
-            if (0 < animTime && animTime < 1)
+            if (!isReady && 0 < animTime && animTime < 1)
             {
                 isReady = true;
             }
@@ -123,7 +124,8 @@ public class ExtraWeaponController : Photon.MonoBehaviour
     {
         if (extraCam == null || wepCtrl == null || charaAnimator == null) return false;
         if (!wepCtrl.IsEnableFire()) return false;
-
+        AnimatorStateInfo stateInfo = charaAnimator.GetCurrentAnimatorStateInfo(0);
+        if (!stateInfo.IsTag(TAG_ANIMATION_WAIT)) return false;
         return true;
     }
 }

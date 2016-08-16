@@ -198,7 +198,7 @@ public class GameController : Photon.MonoBehaviour
                 ObjectController objCtrl = obj.GetComponent<ObjectController>();
                 if (objCtrl != null)
                 {
-                    objCtrl.DestoryObject();
+                    objCtrl.DestoryObject(false);
                 }
             }
         }
