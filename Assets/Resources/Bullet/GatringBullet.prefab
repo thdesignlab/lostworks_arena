@@ -8,8 +8,6 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 491486}
-  - 33: {fileID: 3363960}
-  - 23: {fileID: 2343108}
   - 114: {fileID: 11461518}
   - 114: {fileID: 11491066}
   - 114: {fileID: 11474612}
@@ -22,6 +20,36 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &197706
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 430452}
+  - 33: {fileID: 3337720}
+  - 23: {fileID: 2329292}
+  m_Layer: 0
+  m_Name: Bullet_pre
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &430452
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 197706}
+  m_LocalRotation: {x: 0.00000008146034, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.009120287, y: -0.009120287, z: 0.48}
+  m_LocalScale: {x: 3, y: 3, z: 7}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 491486}
+  m_RootOrder: 0
 --- !u!4 &491486
 Transform:
   m_ObjectHideFlags: 1
@@ -32,27 +60,28 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_Children: []
+  m_Children:
+  - {fileID: 430452}
   m_Father: {fileID: 0}
   m_RootOrder: 0
---- !u!23 &2343108
+--- !u!23 &2329292
 MeshRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 162386}
+  m_GameObject: {fileID: 197706}
   m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
   m_Materials:
-  - {fileID: 2100000, guid: bd4ded9c1b9718f439f9857f2d2b0788, type: 2}
+  - {fileID: 2100000, guid: 85cf25a7d76f89b40aa41db07517d921, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 1
   m_ReflectionProbeUsage: 1
   m_ProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
-  m_PreserveUVs: 1
+  m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
   m_MinimumChartSize: 4
@@ -61,13 +90,13 @@ MeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
---- !u!33 &3363960
+--- !u!33 &3337720
 MeshFilter:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 162386}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+  m_GameObject: {fileID: 197706}
+  m_Mesh: {fileID: 4300000, guid: 32833f2efe38f7240ae004cbbd044a39, type: 3}
 --- !u!54 &5470802
 Rigidbody:
   m_ObjectHideFlags: 1
