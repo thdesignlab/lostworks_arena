@@ -407,7 +407,7 @@ public class GameController : Photon.MonoBehaviour
     private GameObject SpawnProcess(string name, int groupId = 0)
     {
         Transform spawnPoint = GetSpawnPoint();
-        Vector3 pos = new Vector3(0, 10, 0);
+        Vector3 pos = new Vector3(0, 15, 0);
         Quaternion qua = Quaternion.identity;
         if (spawnPoint != null)
         {
@@ -420,10 +420,11 @@ public class GameController : Photon.MonoBehaviour
     private Transform GetSpawnPoint()
     {
         GameObject[] spawnPoints = GameObject.FindGameObjectsWithTag("SpawnPoint");
-        if (spawnPoints == null) return null;
+        if (spawnPoints.Length <= 0) return null;
 
         //int index = Random.Range(0, spawnPoints.Length);
-        int index = GameObject.FindGameObjectsWithTag("Player").Length;
+        //int index = GameObject.FindGameObjectsWithTag("Player").Length;
+        int index = PhotonNetwork.countOfPlayersInRooms;
         return spawnPoints[index].transform;
     }
 

@@ -15,6 +15,7 @@ public class LockOnController : Photon.MonoBehaviour
     private float markLastSizeRate = 0.7f;
     private float markResizeTime = 0.3f;
 
+    private bool isVisible = false;
     private bool isLockOn = false;
     private float lockOnTime = 0;
 
@@ -45,6 +46,8 @@ public class LockOnController : Photon.MonoBehaviour
         }
 
         //ステータス取得
+        //status = myTran.root.GetComponent<PlayerStatus>();
+        //Debug.Log(myTran.name+" >> "+status);
         StartCoroutine(SetStatus());
     }
 
@@ -52,28 +55,48 @@ public class LockOnController : Photon.MonoBehaviour
     {
         if (!isACtiveSceane) return;
 
-        if (status == null) return;
+        //Debug.Log(myTran.name + " >> OnBecameInvisible");
 
-        if (!photonView.isMine || status.IsNpc())
-        {
-            //Debug.Log("Invisible" + transform.root.name);
-            isLockOn = false;
-            status.SetLocked(false);
-            SetTargetMark(false);
-        }
+        SwitchLockOn(false);
+
+        //if (status == null) return;
+
+        //if (!photonView.isMine || status.IsNpc())
+        //{
+        //    //Debug.Log("Invisible" + transform.root.name);
+        //    isLockOn = false;
+        //    status.SetLocked(false);
+        //    SetTargetMark(false);
+        //}
     }
     void OnBecameVisible()
     {
         if (!isACtiveSceane) return;
 
-        if (status == null) return;
+        //Debug.Log(myTran.name + " >> OnBecameVisible");
 
+        SwitchLockOn(true);
+        //if (status == null) return;
+
+        //if (!photonView.isMine || status.IsNpc())
+        //{
+        //    Debug.Log("Visible: " + myTran.root.name);
+        //    isLockOn = true;
+        //    status.SetLocked(true);
+        //    SetTargetMark(true);
+        //}
+    }
+
+    private void SwitchLockOn(bool flg)
+    {
+        isVisible = flg;
+
+        if (status == null) return;
         if (!photonView.isMine || status.IsNpc())
         {
-            //Debug.Log("Visible: " + myTran.root.name);
-            isLockOn = true;
-            status.SetLocked(true);
-            SetTargetMark(true);
+            isLockOn = flg;
+            status.SetLocked(flg);
+            SetTargetMark(flg);
         }
     }
 
@@ -117,7 +140,11 @@ public class LockOnController : Photon.MonoBehaviour
         for (;;)
         {
             status = myTran.root.GetComponent<PlayerStatus>();
-            if (status != null) break;
+            if (status != null)
+            {
+                SwitchLockOn(isVisible);
+                break;
+            }
             yield return null;
         }
     }

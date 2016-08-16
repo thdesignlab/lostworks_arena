@@ -155,6 +155,7 @@ public class PlayerSetting : Photon.MonoBehaviour
         charaMainTran.SetParent(myTran, false);
         charaMainTran.localPosition = Vector3.zero;
         charaMainTran.rotation = myTran.rotation;
+        //lockonCtrl.enabled = true;
 
         //parent紐付け用
         bodyViewId = PhotonView.Get(charaMainObj).viewID;

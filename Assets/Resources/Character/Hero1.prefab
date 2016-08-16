@@ -2735,6 +2735,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   extraCam: {fileID: 0}
+  extraEffect: {fileID: 0}
   fireTimeInAnim: 1
 --- !u!114 &11445934
 MonoBehaviour:
@@ -2748,7 +2749,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowLayerWeightsInspector: 1
-  ShowParameterInspector: 1
+  ShowParameterInspector: 0
   m_SynchronizeParameters:
   - Type: 4
     SynchronizeType: 1
@@ -2771,6 +2772,18 @@ MonoBehaviour:
   - Type: 4
     SynchronizeType: 1
     Name: UseSub
+  - Type: 4
+    SynchronizeType: 0
+    Name: Down
+  - Type: 4
+    SynchronizeType: 0
+    Name: ExtraAttack
+  - Type: 1
+    SynchronizeType: 0
+    Name: VerticalMove
+  - Type: 1
+    SynchronizeType: 0
+    Name: HorizontalMove
   m_SynchronizeLayers:
   - SynchronizeType: 1
     LayerIndex: 0

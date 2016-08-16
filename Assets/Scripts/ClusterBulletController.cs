@@ -10,7 +10,10 @@ public class ClusterBulletController : TrackingBulletController
     [SerializeField]
     private float purgeDistance;
     [SerializeField]
+    private float purgeTime;
+    [SerializeField]
     private bool isPurgeDestroy = true;
+    private bool isPurge = false;
 
     protected override void Update()
     {
@@ -18,18 +21,38 @@ public class ClusterBulletController : TrackingBulletController
 
         if (photonView.isMine)
         {
-            if (base.targetTran != null && childBullet != null && base.activeTime >= 1.0f)
-            {
-                if (Vector3.Distance(myTran.position, base.targetTran.position) <= purgeDistance)
-                {
-                    Purge();
-                }
-            }
+            if (CheckPurge()) Purge();
         }
     }
 
-    private void Purge()
+    protected bool CheckPurge()
     {
+        bool purge = false;
+        if (!isPurge && childBullet != null && activeTime >= safetyTime)
+        {
+            if (purgeDistance > 0 && targetTran != null)
+            {
+                //ターゲットまでの距離チェック
+                if (Vector3.Distance(myTran.position, targetTran.position) <= purgeDistance)
+                {
+                    purge = true;
+                }
+
+            }
+            if (purgeTime > 0)
+            {
+                //経過時間チェック
+                if (activeTime >= purgeTime) purge = true;
+            }
+        }
+        return purge;
+    }
+
+
+    protected void Purge()
+    {
+        isPurge = true;
+
         //発射口
         Transform muzzle = null;
         foreach (Transform child in myTran)
@@ -40,6 +63,7 @@ public class ClusterBulletController : TrackingBulletController
                 break;
             }
         }
+        if (muzzle == null) muzzle = myTran;
 
         if (muzzle != null)
         {
@@ -53,7 +77,10 @@ public class ClusterBulletController : TrackingBulletController
             }
         }
 
-        //本体破棄
-        base.DestoryObject();
+        if (isPurgeDestroy)
+        {
+            //本体破棄
+            base.DestoryObject();
+        }
     }
 }

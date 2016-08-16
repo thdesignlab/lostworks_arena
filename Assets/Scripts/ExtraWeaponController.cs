@@ -15,6 +15,8 @@ public class ExtraWeaponController : Photon.MonoBehaviour
     private PlayerStatus playerStatus;
     private Transform myParentTran;
 
+    private const string TAG_ANIMATION_EXTRA = "Extra";
+
     public void SetInit(WeaponController wep, Animator anim, PlayerStatus status)
     {
         wepCtrl = wep;
@@ -34,10 +36,8 @@ public class ExtraWeaponController : Photon.MonoBehaviour
     {
         //無敵開始
         playerStatus.SetForceInvincible(true);
-
         //カメラ切り替え
         extraCam.SetActive(true);
-
         //攻撃モーション開始
         charaAnimator.SetBool(Common.CO.MOTION_EXTRA_ATTACK, true);
         //追加エフェクト
@@ -48,7 +48,10 @@ public class ExtraWeaponController : Photon.MonoBehaviour
         for (;;)
         {
             float animTime = GetActionTime();
-            if (animTime < 1) isReady = true;
+            if (0 < animTime && animTime < 1)
+            {
+                isReady = true;
+            }
             if (isReady)
             {
                 //攻撃タイミングチェック
@@ -81,13 +84,13 @@ public class ExtraWeaponController : Photon.MonoBehaviour
         }
         //攻撃モーション終了
         charaAnimator.SetBool(Common.CO.MOTION_EXTRA_ATTACK, false);
-        if (extraEffect != null) extraEffect.SetActive(false);
+        SwitchExtraEffect(false);
 
         //無敵解除
         playerStatus.SetForceInvincible(false);
     }
 
-    private void SwitchExtraEffect(bool flg, bool isSendRPC = true)
+    private void SwitchExtraEffect(bool flg)
     {
         if (photonView.isMine)
         {
@@ -95,22 +98,24 @@ public class ExtraWeaponController : Photon.MonoBehaviour
         }
         else
         {
-            if (isSendRPC) photonView.RPC("SwitchExtraEffectRPC", PhotonTargets.Others, flg);
+            photonView.RPC("SwitchExtraEffectRPC", PhotonTargets.Others, flg);
         }
     }
 
     [PunRPC]
     private void SwitchExtraEffectRPC(bool flg)
     {
-        SwitchExtraEffect(flg, false);
+        if (extraEffect != null) extraEffect.SetActive(flg);
     }
 
     private float GetActionTime()
     {
         //int targetHash = Animator.StringToHash("Base Layer."+Common.CO.MOTION_EXTRA_ATTACK);
-        //AnimatorStateInfo stateInfo = charaAnimator.GetCurrentAnimatorStateInfo(0);
-        ////Debug.Log(targetHash + " >> "+ nowAnimHash);
-        //if (stateInfo.IsName("Base Layer."+Common.CO.MOTION_EXTRA_ATTACK)) return -1;
+        AnimatorStateInfo stateInfo = charaAnimator.GetCurrentAnimatorStateInfo(0);
+        if (!stateInfo.IsTag(TAG_ANIMATION_EXTRA))
+        {
+            return -1;
+        }
         return charaAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime;
     }
 

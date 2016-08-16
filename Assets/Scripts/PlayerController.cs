@@ -61,12 +61,11 @@ public class PlayerController : MoveOfCharacter
         if (photonView.isMine)
         {
             motionCtrl = GetComponent<PlayerMotionController>();
-            
+            status = GetComponent<PlayerStatus>();
 
             if (isActiveSceane)
             {
                 gameCtrl = GameObject.Find("GameController").GetComponent<GameController>();
-                status = GetComponent<PlayerStatus>();
 
                 if (circleArrow != null)
                 {

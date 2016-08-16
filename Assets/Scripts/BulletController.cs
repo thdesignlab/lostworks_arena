@@ -94,7 +94,7 @@ public class BulletController : MoveOfCharacter
     {
         if (photonView.isMine)
         {
-            //Debug.Log(otherObj.name);
+            //Debug.Log("OnHit:" + otherObj.name);
             if (IsSafety(otherObj)) return;
 
             //ダメージを与える
@@ -112,6 +112,8 @@ public class BulletController : MoveOfCharacter
     {
         if (photonView.isMine)
         {
+            if (damage <= 0) return;
+            //Debug.Log("OnStay:"+otherObj.name);
             if (IsSafety(otherObj, false)) return;
 
             //ダメージを与える
@@ -229,16 +231,18 @@ public class BulletController : MoveOfCharacter
     {
         //一度衝突しているものは無視
         if (isHit && isHitCheck) return true;
-
+        
         //エフェクトはスルー
         //HIT判定はエフェクト側で行う
         if (hitObj.tag == Common.CO.TAG_EFFECT) return true;
-
+        
         //ターゲットにあたった場合は有効
-        if (hitObj.transform != targetTran)
+        if (hitObj.transform != targetTran && hitObj.tag != Common.CO.TAG_STRUCTURE)
         {
+            
             //持ち主に当たった場合無視
             if (hitObj.transform == ownerTran) return true;
+            
             PhotonView pv = PhotonView.Get(hitObj);
             if (pv != null && pv.ownerId == ownerId) return true;
         }
@@ -276,7 +280,8 @@ public class BulletController : MoveOfCharacter
     public void SetOwner(Transform owner)
     {
         ownerTran = owner;
-        ownerId = PhotonView.Get(ownerTran.gameObject).ownerId;
+        PhotonView pv = PhotonView.Get(ownerTran.gameObject);
+        if (pv != null) ownerId = pv.ownerId;
     }
 
     public virtual string GetBulletDescription()

@@ -13,6 +13,8 @@ public class StructureController : Photon.MonoBehaviour
     private int maxHp;
     private int nowHp;
 
+    private int stockDamage = 0;
+
     void Awake ()
     {
         myTran = transform;
@@ -25,7 +27,7 @@ public class StructureController : Photon.MonoBehaviour
         nowHp = maxHp;
     }
     
-    public void AddDamage(int damage)
+    public void AddDamage(int damage, bool isSendRPC = true)
     {
         if (PhotonNetwork.player == PhotonNetwork.masterClient)
         {
@@ -39,6 +41,24 @@ public class StructureController : Photon.MonoBehaviour
                 if (nowHp <= 0) Break();
             }
         }
+        else
+        {
+            if (isSendRPC)
+            {
+                stockDamage += damage;
+                if (stockDamage >= maxHp / 10)
+                {
+                    photonView.RPC("AddDamageRPC", PhotonTargets.Others, stockDamage);
+                    stockDamage = 0;
+                }
+            }
+        }
+    }
+
+    [PunRPC]
+    private void AddDamageRPC(int damage)
+    {
+        AddDamage(damage, false);
     }
 
     private void Break()
