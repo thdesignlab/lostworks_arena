@@ -510,9 +510,9 @@ public class PlayerStatus : Photon.MonoBehaviour {
     IEnumerator CheckAccelerateRecoverSp(float rate, float limit, GameObject effect = null)
     {
         recoverSp = (int)(recoverSp * rate);
-        if (effect != null) effect.SetActive(true);
+        SwitchEffect(effect, true);
         yield return new WaitForSeconds(limit);
-        if (effect != null) effect.SetActive(false);
+        SwitchEffect(effect, false);
         recoverSp = defaultRecoverSp;
     }
 
@@ -558,7 +558,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
         runSpeed *= rate;
         jumpSpeed *= rate;
         boostSpeed *= rate;
-        if (effect != null) effect.SetActive(true);
+        SwitchEffect(effect, true);
 
         for (;;)
         {
@@ -568,7 +568,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
             if (nowSpeedRate != rate) break;
         }
 
-        if (effect != null) effect.SetActive(false);
+        SwitchEffect(effect, false);
         if (interfareMoveTime <= 0 && nowSpeedRate == rate)
         {
             runSpeed = defaultRunSpeed;
@@ -617,7 +617,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
         runSpeed = 0;
         jumpSpeed = 0;
         boostSpeed = 0;
-        if (effect != null) effect.SetActive(true);
+        SwitchEffect(effect, true);
         for (;;)
         {
             yield return null;
@@ -629,7 +629,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
                 break;
             }
         }
-        if (effect != null) effect.SetActive(false);
+        SwitchEffect(effect, false);
         runSpeed = defaultRunSpeed * nowSpeedRate;
         jumpSpeed = defaultJumpSpeed * nowSpeedRate;
         boostSpeed = defaultBoostSpeed * nowSpeedRate;
@@ -660,9 +660,9 @@ public class PlayerStatus : Photon.MonoBehaviour {
     IEnumerator CheckAvoidBurst(float rate, float limit, GameObject effect = null)
     {
         invincibleTime *= rate;
-        if (effect != null) effect.SetActive(true);
+        SwitchEffect(effect, true);
         yield return new WaitForSeconds(limit);
-        if (effect != null) effect.SetActive(false);
+        SwitchEffect(effect, false);
         invincibleTime = defaultInvincibleTime;
     }
 
@@ -674,5 +674,22 @@ public class PlayerStatus : Photon.MonoBehaviour {
     private void SetForceInvincibleRPC(bool flg)
     {
         isForceInvincible = flg;
+    }
+
+    //エフェクト切り替え
+    private void SwitchEffect(GameObject effect, bool flg)
+    {
+        if (effect == null) return;
+        PhotonView pv = PhotonView.Get(effect);
+        if (pv == null) return;
+        object[] arg = new object[] { pv.viewID, flg };
+        photonView.RPC("SwitchEffectRPC", PhotonTargets.All, arg);
+    }
+    [PunRPC]
+    private void SwitchEffectRPC(int effectViewId, bool flg)
+    {
+        PhotonView pv = PhotonView.Find(effectViewId);
+        if (pv == null) return;
+        pv.gameObject.SetActive(flg);
     }
 }

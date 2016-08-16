@@ -424,8 +424,8 @@ namespace Common
         //サブ武器リスト
         public static Dictionary<int, string[]> subWeaponLineUp = new Dictionary<int, string[]>()
         {
-            { 5000, new string[]{ "InvincibleShield", "", "", OBTAIN_TYPE_NONE}},
             { 5001, new string[]{ "AvoidBurst", "", "", OBTAIN_TYPE_INIT}},
+            { 5000, new string[]{ "InvincibleShield", "", "", OBTAIN_TYPE_NONE}},
             { 5002, new string[]{ "BoostRecoverSp", "", "", OBTAIN_TYPE_INIT}},
             { 5003, new string[]{ "SpeedBurst", "", "", OBTAIN_TYPE_INIT}},
         };
