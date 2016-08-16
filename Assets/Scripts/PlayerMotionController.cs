@@ -117,109 +117,6 @@ public class PlayerMotionController : MonoBehaviour
         animator.SetFloat(Common.CO.MOTION_RUN_HORIZONTAL, x);
     }
 
-    //public void SetRunMotion(float x = 0, float y = 0)
-    //{
-    //    ////体の方向変換
-    //    //SetBodyAngle(x, y);
-
-    //    if (x == 0 && y == 0)
-    //    {
-    //        leftBoostEffectTime = 0;
-    //        return;
-    //    }
-
-    //    string motionName = "";
-    //    if (y > 0)
-    //    {
-    //        motionName = Common.CO.MOTION_RUN;
-    //    }
-    //    else if (y < 0)
-    //    {
-    //        motionName = Common.CO.MOTION_BACK;
-    //    }
-    //    InitRunMotion(motionName);
-
-    //    motionName = "";
-    //    if (x < 0)
-    //    {
-    //        motionName = Common.CO.MOTION_LEFT_RUN;
-    //    }
-    //    else if (x < 0)
-    //    {
-    //        motionName = Common.CO.MOTION_RIGHT_RUN;
-    //    }
-    //    InitRunMotion(motionName);
-
-    //    //if (y < backAnimationVelocity)
-    //    //{
-    //    //    //後退時
-    //    //    motionName = Common.CO.MOTION_BACK;
-    //    //}
-
-    //    //モーション設定
-    //    if (!animator.GetBool(motionName))
-    //    {
-    //        InitRunMotion(motionName);
-    //    }
-    //}
-
-    //private void InitRunMotion(string setMotion = "")
-    //{
-    //    bool isStartMotion = false;
-    //    if (setMotion != "" && GetRunningMotion() == "")
-    //    {
-    //        isStartMotion = true;
-    //    }
-
-    //    foreach (string motionName in Common.CO.runMotionArray)
-    //    {
-    //        if (setMotion == motionName)
-    //        {
-    //            animator.SetBool(motionName, true);
-    //        }
-    //        else
-    //        {
-    //            if (setMotion != "" && motionName == Common.CO.MOTION_RUN)
-    //            {
-    //                animator.SetBool(motionName, true);
-    //            }
-    //            else
-    //            {
-    //                animator.SetBool(motionName, false);
-    //            }
-    //        }
-    //    }
-
-    //    if (isStartMotion) StartCoroutine(CheckRunEnd());
-    //}
-
-    //private string GetRunningMotion()
-    //{
-    //    string motion = "";
-    //    foreach (string motionName in Common.CO.runMotionArray)
-    //    {
-    //        if (animator.GetBool(motionName))
-    //        {
-    //            motion = motionName;
-    //        }
-    //    }
-    //    return motion;
-    //}
-
-    //IEnumerator CheckRunEnd()
-    //{
-    //    for (;;)
-    //    {
-    //        if (GetRunningMotion() == "") break;
-    //        if (!playerCtrl.IsGrounded() || !playerCtrl.IsMoving())
-    //        {
-    //            InitRunMotion();
-    //            break;
-    //        }
-    //        yield return null;
-    //    }
-    //}
-
     //### ブースト ###
 
     public void StartBoostEffect(float limit)
@@ -240,6 +137,7 @@ public class PlayerMotionController : MonoBehaviour
         leftBoostEffectTime = limit;
 
         boostEffect.SetActive(true);
+        animator.speed = 1.5f;
         for (;;)
         {
             leftBoostEffectTime -= Time.deltaTime;
@@ -250,6 +148,7 @@ public class PlayerMotionController : MonoBehaviour
             //boostEffectTran.rotation = myBodyTran.rotation;
             yield return null;
         }
+        animator.speed = 1.0f;
         boostEffect.SetActive(false);
     }
 

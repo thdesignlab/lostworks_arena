@@ -97,15 +97,16 @@ public class ExtraWeaponController : Photon.MonoBehaviour
         {
             if (extraEffect != null) extraEffect.SetActive(flg);
         }
-        else
-        {
-            photonView.RPC("SwitchExtraEffectRPC", PhotonTargets.Others, flg);
-        }
+        //else
+        //{
+        //    photonView.RPC("SwitchExtraEffectRPC", PhotonTargets.Others, flg);
+        //}
     }
 
     [PunRPC]
     private void SwitchExtraEffectRPC(bool flg)
     {
+        Debug.Log(extraEffect);
         if (extraEffect != null) extraEffect.SetActive(flg);
     }
 
