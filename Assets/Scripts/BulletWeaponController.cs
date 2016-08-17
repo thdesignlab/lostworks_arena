@@ -222,7 +222,7 @@ public class BulletWeaponController : WeaponController
 
     public override bool IsEnableFire()
     {
-        if (!isEnabledFire) return false;
+        if (!base.IsEnableFire()) return false;
         if (muzzles.Count == 0 || bullet == null) return false;
         return true;
     }

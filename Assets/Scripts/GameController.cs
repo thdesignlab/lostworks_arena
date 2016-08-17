@@ -25,6 +25,8 @@ public class GameController : Photon.MonoBehaviour
     private Transform npcTran;
 
     [HideInInspector]
+    public bool isGameReady = false;
+    [HideInInspector]
     public bool isGameStart = false;
     [HideInInspector]
     public bool isGameEnd = false;
@@ -276,6 +278,7 @@ public class GameController : Photon.MonoBehaviour
                         if (playerStatuses.Count == needPlayerCount)
                         {
                             //カウントダウン
+                            isGameReady = true;
                             SetTextUp();
                             SetTextCenter(MESSAGE_READY, colorReady, 3);
                             yield return new WaitForSeconds(3);
@@ -288,6 +291,7 @@ public class GameController : Photon.MonoBehaviour
 
                             //対戦スタート
                             GameStart();
+                            isGameReady = false;
                         }
                     }
                     else
@@ -296,6 +300,7 @@ public class GameController : Photon.MonoBehaviour
                         {
                             //SetWaitMessage(MESSAGE_WAITING);
                             SetTextUp(MESSAGE_WAITING, colorWait);
+                            isGameReady = false;
                         }
                     }
                 }
@@ -304,7 +309,7 @@ public class GameController : Photon.MonoBehaviour
                     //装備設定中
                     //SetWaitMessage(MESSAGE_CUSTOMIZE + playerSetting.GetLeftCustomTime().ToString());
                     SetTextUp(MESSAGE_CUSTOMIZE + playerSetting.GetLeftCustomTime().ToString(), colorWait);
-
+                    isGameReady = true;
                 }
             }
 

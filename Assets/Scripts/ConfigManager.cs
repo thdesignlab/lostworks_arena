@@ -4,13 +4,11 @@ using UnityEngine.SceneManagement;
 
 public class ConfigManager : MonoBehaviour
 {
-    private Transform myTran;
     [SerializeField]
     private GameObject configCanvas;
 
     void Awake()
     {
-        myTran = transform;
         configCanvas.SetActive(false);
     }
 

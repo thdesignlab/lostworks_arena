@@ -29,7 +29,7 @@ public class StructureController : Photon.MonoBehaviour
     
     public void AddDamage(int damage, bool isSendRPC = true)
     {
-        if (PhotonNetwork.player == PhotonNetwork.masterClient)
+        if (photonView.isMine)
         {
             if (parentCtrl != null)
             {
@@ -63,7 +63,7 @@ public class StructureController : Photon.MonoBehaviour
 
     private void Break()
     {
-        if (PhotonNetwork.player == PhotonNetwork.masterClient)
+        if (photonView.isMine)
         {
             //子供がいる場合パージ
             if (myTran.childCount > 0) myTran.DetachChildren();

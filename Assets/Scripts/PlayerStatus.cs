@@ -60,8 +60,8 @@ public class PlayerStatus : Photon.MonoBehaviour {
 
     private Image hpBarMineImage;
     private Image hpBarEnemyImage;
-    private Color defaultHpColor;
-    private Color hitHpColor = Color.red;
+    //private Color defaultHpColor;
+    //private Color hitHpColor = Color.red;
     private int totalDamage = 0;
     [SerializeField]
     private Image hitEffect;
@@ -143,7 +143,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
         //HPバーイメージ
         hpBarMineImage = hpBarMineTran.FindChild("Fill Area/Fill").GetComponent<Image>();
         hpBarEnemyImage = hpBarEnemyTran.FindChild("Fill Area/Fill").GetComponent<Image>();
-        defaultHpColor = hpBarMineImage.color;
+        //defaultHpColor = hpBarMineImage.color;
 
         //SPバー
         spBarMine = screenStatusTran.FindChild("SpLine/SpBar").GetComponent<Slider>();

@@ -221,7 +221,7 @@ public class LaserWeaponController : WeaponController
 
     public override bool IsEnableFire()
     {
-        if (!isEnabledFire) return false;
+        if (!base.IsEnableFire()) return false;
         if (laserPrefab == null) return false;
         if (effectiveTime <= 0) return false;
         return true;

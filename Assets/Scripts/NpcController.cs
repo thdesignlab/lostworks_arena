@@ -28,7 +28,7 @@ public class NpcController : MoveOfCharacter
     private float runSpeedRate;
     private float invincibleTimeRate;
 
-    private Vector3 randomMoveTarget;
+    private Vector3 randomMoveTarget = Vector3.zero;
 
     private int preHp = 0;
 
@@ -373,10 +373,7 @@ public class NpcController : MoveOfCharacter
         }
         else
         {
-            if (randomMoveTarget != null)
-            {
-                targetPos = randomMoveTarget;
-            }
+            targetPos = randomMoveTarget;
         }
 
         float distance = Vector3.Distance(targetPos, myTran.position);

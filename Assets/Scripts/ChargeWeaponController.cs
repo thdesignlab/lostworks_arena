@@ -17,14 +17,16 @@ public class ChargeWeaponController : BulletWeaponController
         {
             if (isCharge)
             {
-                if (bulletCtrl == null)
+                if (bulletTran == null || bulletCtrl == null)
                 {
                     isCharge = false;
                     base.EndAction();
                     return;
                 }
 
-                if ((Input.GetMouseButton(0) && !base.isNpc) || (chargeTime <= npcChargeTime && base.isNpc))
+                if (!gameCtrl.isGameReady
+                    && ((Input.GetMouseButton(0) && !base.isNpc) || (chargeTime <= npcChargeTime && base.isNpc))
+                )
                 {
                     //チャージ中
                     chargeTime += Time.deltaTime;

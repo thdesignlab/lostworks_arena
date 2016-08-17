@@ -450,7 +450,6 @@ public class PhotonManager : MonoBehaviour
     public void OnDisconnectedFromPhoton()
     {
         SwitchMessageArea();
-        isConnectFailed = true;
         Debug.Log("Disconnected from Photon.");
     }
 

@@ -80,8 +80,8 @@ public class CustomManager : Photon.MonoBehaviour
     private RectTransform weaponButtonAreaRectTran;
     private Transform weaponButtonArea;
     private Text weaponDescriptionText;
-    private GameObject weaponArrowU;
-    private GameObject weaponArrowD;
+    //private GameObject weaponArrowU;
+    //private GameObject weaponArrowD;
 
     private Dictionary<int, List<Image>> partsFrameMap = new Dictionary<int, List<Image>>();
     private Dictionary<int, List<Image>> bitImgMap = new Dictionary<int, List<Image>>();
@@ -133,8 +133,8 @@ public class CustomManager : Photon.MonoBehaviour
         weaponButtonAreaRectTran = weaponButtonArea.GetComponent<RectTransform>();
         weaponDescriptionText = weaponDetailArea.FindChild("ScrollView/Viewport/Text").GetComponent<Text>();
         buttonHeight = selectedWeaponButton.GetComponent<LayoutElement>().preferredHeight + weaponButtonArea.GetComponent<VerticalLayoutGroup>().spacing;
-        weaponArrowU = weaponScrollViewTran.FindChild("WeaponArrowU").gameObject;
-        weaponArrowD = weaponScrollViewTran.FindChild("WeaponArrowD").gameObject;
+        //weaponArrowU = weaponScrollViewTran.FindChild("WeaponArrowU").gameObject;
+        //weaponArrowD = weaponScrollViewTran.FindChild("WeaponArrowD").gameObject;
 
         partsNameText.text = "";
     }
@@ -497,7 +497,7 @@ public class CustomManager : Photon.MonoBehaviour
         SetWeaponDescription(weaponNo);
 
         //装備
-        GameObject weapon = EquipWeapon(selectedPartsNo, weaponNo);
+        EquipWeapon(selectedPartsNo, weaponNo);
 
         //武器文字色変更
         foreach (Transform btn in weaponButtonArea)

@@ -13,8 +13,8 @@ public class SpriteStudioController : MonoBehaviour
 
     private GameObject view3D;
     public Dictionary<string, Script_SpriteStudio_Root> scriptRoots = new Dictionary<string, Script_SpriteStudio_Root>();
-	
-	void Update ()
+
+    void Update ()
     {
         if (view3D == null)
         {
@@ -35,6 +35,16 @@ public class SpriteStudioController : MonoBehaviour
         }
     }
 
+    public Script_SpriteStudio_Root CreateAnimation(GameObject animation, GameObject targetObj)
+    {
+        string key = targetObj.name;
+        if (scriptRoots.ContainsKey(key))
+        {
+            return scriptRoots[key];
+        }
+        Vector3 pos = GetObjPos(targetObj);
+        return CreateAnimation(animation, key, pos);
+    }
     public Script_SpriteStudio_Root CreateAnimation(GameObject animation, string key, Vector3 worldPos)
     {
         if (scriptRoots.ContainsKey(key))
@@ -90,7 +100,7 @@ public class SpriteStudioController : MonoBehaviour
         scriptRoot.AnimationStop();
     }
 
-    private Vector3 GetObjPos(GameObject targetObj)
+    public Vector3 GetObjPos(GameObject targetObj)
     {
         //Vector3 pos = targetObj.transform.position;
         RectTransform objRectTran = targetObj.GetComponent<RectTransform>();
@@ -117,8 +127,7 @@ public class SpriteStudioController : MonoBehaviour
     public Script_SpriteStudio_Root CreateButtonFlash(GameObject targetBtn)
     {
         GameObject obj = (GameObject)Resources.Load(Common.Func.GetResourceAnimation(ANIMATION_BUTTON_FLASH));
-        Vector3 pos = GetObjPos(targetBtn);
-        return CreateAnimation(obj, targetBtn.name, pos);
+        return CreateAnimation(obj, targetBtn);
     }
 
     //メッセージ
@@ -127,7 +136,6 @@ public class SpriteStudioController : MonoBehaviour
         GameObject obj = (GameObject)Resources.Load(Common.Func.GetResourceAnimation(text));
         Vector3 pos = GetObjPos(targetObj);
         if (obj == null) return null;
-
         return CreateAnimation(obj, text, pos);
     }
 
