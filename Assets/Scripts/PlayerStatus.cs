@@ -680,16 +680,19 @@ public class PlayerStatus : Photon.MonoBehaviour {
     private void SwitchEffect(GameObject effect, bool flg)
     {
         if (effect == null) return;
-        PhotonView pv = PhotonView.Get(effect);
-        if (pv == null) return;
-        object[] arg = new object[] { pv.viewID, flg };
+        effect.SetActive(flg);
+        PhotonView parentPv = PhotonView.Get(effect.transform.parent);
+        if (parentPv == null) return;
+        object[] arg = new object[] { parentPv.viewID, effect.name, flg };
         photonView.RPC("SwitchEffectRPC", PhotonTargets.All, arg);
     }
     [PunRPC]
-    private void SwitchEffectRPC(int effectViewId, bool flg)
+    private void SwitchEffectRPC(int parentViewId, string effectName, bool flg)
     {
-        PhotonView pv = PhotonView.Find(effectViewId);
+        PhotonView pv = PhotonView.Find(parentViewId);
         if (pv == null) return;
-        pv.gameObject.SetActive(flg);
+        Transform effect = pv.transform.FindChild(effectName);
+        if (effect == null) return;
+        effect.gameObject.SetActive(flg);
     }
 }

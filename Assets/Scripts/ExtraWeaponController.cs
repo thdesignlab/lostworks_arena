@@ -93,21 +93,15 @@ public class ExtraWeaponController : Photon.MonoBehaviour
 
     private void SwitchExtraEffect(bool flg)
     {
-        if (photonView.isMine)
-        {
-            if (extraEffect != null) extraEffect.SetActive(flg);
-        }
-        //else
-        //{
-        //    photonView.RPC("SwitchExtraEffectRPC", PhotonTargets.Others, flg);
-        //}
+        if (extraEffect == null) return;
+        extraEffect.SetActive(flg);
+        photonView.RPC("SwitchExtraEffectRPC", PhotonTargets.Others, flg);
     }
 
     [PunRPC]
     private void SwitchExtraEffectRPC(bool flg)
     {
-        Debug.Log(extraEffect);
-        if (extraEffect != null) extraEffect.SetActive(flg);
+        extraEffect.SetActive(flg);
     }
 
     private float GetActionTime()
