@@ -38,7 +38,7 @@ public class ExtraWeaponController : Photon.MonoBehaviour
         //無敵開始
         playerStatus.SetForceInvincible(true);
         //カメラ切り替え
-        extraCam.SetActive(true);
+        if (extraCam != null) extraCam.SetActive(true);
         //追加エフェクト
         SwitchExtraEffect(true);
         //攻撃モーション開始
@@ -75,7 +75,7 @@ public class ExtraWeaponController : Photon.MonoBehaviour
         }
 
         //カメラ戻し
-        extraCam.SetActive(false);
+        if (extraCam != null) extraCam.SetActive(false);
 
         for (;;)
         {
@@ -117,7 +117,7 @@ public class ExtraWeaponController : Photon.MonoBehaviour
 
     private bool isEnabled()
     {
-        if (extraCam == null || wepCtrl == null || charaAnimator == null) return false;
+        if (wepCtrl == null || charaAnimator == null) return false;
         if (!wepCtrl.IsEnableFire()) return false;
         AnimatorStateInfo stateInfo = charaAnimator.GetCurrentAnimatorStateInfo(0);
         if (!stateInfo.IsTag(TAG_ANIMATION_WAIT)) return false;

@@ -11,7 +11,10 @@ public class ChangeEffectController : EffectController
     private float scaleTime;
     [SerializeField]
     private float effectiveTime;
+    [SerializeField]
+    private float scaleLateTime;
 
+    private float waitTime = 0;
     private float activeTime = 0;
 
     protected override void Awake()
@@ -23,6 +26,12 @@ public class ChangeEffectController : EffectController
 	
 	void Update ()
     {
+        if (scaleLateTime > 0)
+        {
+            waitTime += Time.deltaTime;
+            if (scaleLateTime >= waitTime) return;
+        }
+
         activeTime += Time.deltaTime;
 
         float rate = activeTime / scaleTime;

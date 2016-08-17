@@ -107,12 +107,6 @@ public class LaserWeaponController : WeaponController
         }
         CapsuleCollider laserCollider = laser.GetComponent<CapsuleCollider>();
 
-        if (laserEndTran == null)
-        {
-            base.EndAction();
-            yield break;
-        }
-
         float nowWidth = 0;
         float nowLength = 0;
         for (;;)
@@ -140,7 +134,10 @@ public class LaserWeaponController : WeaponController
             nowLength = GetLaserLength(nowLength, laserMuzzle);
 
             //レーザーの長さ設定
-            laserEndTran.localPosition = new Vector3(0, 0, nowLength);
+            if (laserEndTran != null)
+            {
+                laserEndTran.localPosition = new Vector3(0, 0, nowLength);
+            }
 
             //コライダーの長さ設定
             if (laserCollider != null)
@@ -154,6 +151,7 @@ public class LaserWeaponController : WeaponController
             if (effectiveWidthTime == 0)
             {
                 nowWidth = effectiveWidth;
+                if (nowWidth == 0) nowWidth = laserTran.localScale.z;
             }
             else
             {

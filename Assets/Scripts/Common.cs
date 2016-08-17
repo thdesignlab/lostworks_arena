@@ -369,7 +369,7 @@ namespace Common
         //キャラクターリスト
         public static Dictionary<int, string[]> characterLineUp = new Dictionary<int, string[]>()
         {
-            {0, new string[]{ "Hero1", "るり", "", OBTAIN_TYPE_INIT, "0"}},
+            {0, new string[]{ "Hero1", "るり", "", OBTAIN_TYPE_INIT, "10000"}},
             {1, new string[]{ "Hero2", "おだんご", "", OBTAIN_TYPE_INIT, "10001"}},
         };
     }
@@ -432,6 +432,7 @@ namespace Common
         //スペシャル武器リスト
         public static Dictionary<int, string[]> extraWeaponLineUp = new Dictionary<int, string[]>()
         {
+            { 10000, new string[]{ "ExtraArmor", "", "", OBTAIN_TYPE_INIT}},
             { 10001, new string[]{ "ExtraBeam", "", "", OBTAIN_TYPE_INIT}},
         };
 
