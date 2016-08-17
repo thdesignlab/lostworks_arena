@@ -95,9 +95,9 @@ public class SpriteStudioController : MonoBehaviour
         //Vector3 pos = targetObj.transform.position;
         RectTransform objRectTran = targetObj.GetComponent<RectTransform>();
         Vector3 pos = objRectTran.position;
-        if (objRectTran != null && objRectTran.pivot != new Vector2(0.5f, 0.5f))
+        if (objRectTran.pivot != new Vector2(0.5f, 0.5f))
         {
-            RectTransform canvasRect = Camera.main.transform.GetComponentInChildren<RectTransform>();
+            //RectTransform canvasRect = Camera.main.transform.GetComponentInChildren<RectTransform>();
 
             Vector2 defaultAncPos = objRectTran.anchoredPosition;
             Vector2 spritePos = defaultAncPos;

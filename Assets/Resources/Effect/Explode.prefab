@@ -19,7 +19,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &420490
 Transform:
   m_ObjectHideFlags: 1
@@ -29,7 +29,7 @@ Transform:
   m_LocalRotation: {x: 0.0063899774, y: -0.24349368, z: 0.0016042384, w: 0.96988016}
   m_LocalPosition: {x: 162.517, y: 4.5333686, z: -111.162346}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0.755, y: -28.186298, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -176,7 +176,7 @@ ParticleSystem:
         m_RotationOrder: 4
       minMaxState: 0
     startSpeed:
-      scalar: 1
+      scalar: 2
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -305,29 +305,19 @@ ParticleSystem:
         rgba: 4278190335
       minMaxState: 0
     startSize:
-      scalar: 1
+      scalar: 5
       maxCurve:
         serializedVersion: 2
         m_Curve:
         - time: 0
           value: 0
-          inSlope: 0
-          outSlope: 0
+          inSlope: 0.4981061
+          outSlope: 0.4981061
           tangentMode: 0
-        - time: 0.15393338
-          value: 0.21428528
-          inSlope: 0
-          outSlope: 0
-          tangentMode: 0
-        - time: 0.5088087
-          value: 0.7857141
-          inSlope: 0
-          outSlope: 0
-          tangentMode: 0
-        - time: 0.991453
-          value: 0.21428525
-          inSlope: 0
-          outSlope: 0
+        - time: 1
+          value: 0
+          inSlope: -6.1305366
+          outSlope: -6.1305366
           tangentMode: 0
         m_PreInfinity: 2
         m_PostInfinity: 2
@@ -452,7 +442,7 @@ ParticleSystem:
     serializedVersion: 2
     enabled: 1
     type: 0
-    radius: 0.1
+    radius: 2.5
     angle: 25
     length: 5
     boxX: 1

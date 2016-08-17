@@ -192,14 +192,10 @@ public class GameController : Photon.MonoBehaviour
         GameObject[] objes = GameObject.FindGameObjectsWithTag(Common.CO.TAG_STRUCTURE);
         foreach (GameObject obj in objes)
         {
-            PhotonView pv = PhotonView.Get(obj);
-            if (pv != null && pv.isMine)
+            ObjectController objCtrl = obj.GetComponent<ObjectController>();
+            if (objCtrl != null)
             {
-                ObjectController objCtrl = obj.GetComponent<ObjectController>();
-                if (objCtrl != null)
-                {
-                    objCtrl.DestoryObject(false);
-                }
+                objCtrl.DestoryObject();
             }
         }
 
@@ -218,13 +214,12 @@ public class GameController : Photon.MonoBehaviour
 
     IEnumerator ChceckGame()
     {
-        float waitTime = 3.0f;
         for (;;)
         {
             if (isGameEnd)
             {
                 //Debug.Log("GameEnd");
-                yield return new WaitForSeconds(waitTime);
+                yield return new WaitForSeconds(1.0f);
                 continue;
             }
 
@@ -240,7 +235,6 @@ public class GameController : Photon.MonoBehaviour
                         GameEnd();
                     }
                 }
-                waitTime = 3.0f;
             }
             else
             {
@@ -265,7 +259,6 @@ public class GameController : Photon.MonoBehaviour
                             {
                                 //SetWaitMessage(MESSAGE_CUSTOMIZE + setting.GetLeftCustomTime().ToString());
                                 SetTextUp(MESSAGE_CUSTOMIZE + setting.GetLeftCustomTime().ToString(), colorWait);
-                                waitTime = 1;
                                 break;
                             }
 
@@ -303,7 +296,6 @@ public class GameController : Photon.MonoBehaviour
                         {
                             //SetWaitMessage(MESSAGE_WAITING);
                             SetTextUp(MESSAGE_WAITING, colorWait);
-                            waitTime = 1;
                         }
                     }
                 }
@@ -314,11 +306,9 @@ public class GameController : Photon.MonoBehaviour
                     SetTextUp(MESSAGE_CUSTOMIZE + playerSetting.GetLeftCustomTime().ToString(), colorWait);
 
                 }
-
-                waitTime = 0.5f;
             }
 
-            yield return new WaitForSeconds(waitTime);
+            yield return new WaitForSeconds(0.1f);
         }
     }
 

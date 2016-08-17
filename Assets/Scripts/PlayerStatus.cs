@@ -67,6 +67,8 @@ public class PlayerStatus : Photon.MonoBehaviour {
     private Image hitEffect;
     private float leftHitEffectTime = 0;
     private const float HIT_EFFECT_TIME = 0.5f;
+    private Color hitNoiseStart = new Color(0, 1, 1, 0.25f);
+    private Color hitNoiseEnd = new Color(0, 1, 1, 0);
 
     //private CameraController camCtrl;
     private bool isLocked = false;
@@ -333,8 +335,8 @@ public class PlayerStatus : Photon.MonoBehaviour {
     }
     private void SwitchDamageEffect()
     {
-        if (hitEffect == null) return;
-        hitEffect.color = Vector4.one;
+        //if (hitEffect == null) return;
+        //hitEffect.color = Vector4.one;
         leftHitEffectTime = HIT_EFFECT_TIME;
     }
 
@@ -426,13 +428,13 @@ public class PlayerStatus : Photon.MonoBehaviour {
                 AddDamage(11);
             }
 
-
-            if (hitEffect != null && hitEffect.color.a > 0)
+            //ヒット時ノイズ
+            if (hitEffect != null && (leftHitEffectTime > 0 || hitEffect.color.a > 0))
             {
                 leftHitEffectTime -= Time.deltaTime;
-                float a = leftHitEffectTime / HIT_EFFECT_TIME;
-                if (leftHitEffectTime <= 0) a = 0;
-                hitEffect.color = new Vector4(1, 1, 1, a);
+                float rate = 1 - leftHitEffectTime / HIT_EFFECT_TIME;
+                if (rate > 1) rate = 1;
+                hitEffect.color = Color.Lerp(hitNoiseStart, hitNoiseEnd, rate);
             }
         }
 
