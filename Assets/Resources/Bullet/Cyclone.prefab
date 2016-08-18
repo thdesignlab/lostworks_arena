@@ -150,7 +150,7 @@ Transform:
   m_GameObject: {fileID: 103338}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 10, y: 10, z: 10}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 424536}
@@ -443,10 +443,12 @@ MonoBehaviour:
   damagePerSecond: 0
   isPhysicsBulletBreak: 0
   isEnergyBulletBreak: 0
+  isParticleCollision: 0
   startScale: {x: 1, y: 1, z: 1}
-  endScale: {x: 30, y: 30, z: 30}
+  endScale: {x: 10, y: 10, z: 10}
   scaleTime: 6
   effectiveTime: 6
+  scaleLateTime: 0
 --- !u!114 &11437082
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -539,8 +541,8 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.75
-  m_Center: {x: 0, y: 0.5, z: 0}
+  m_Radius: 0.6
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
