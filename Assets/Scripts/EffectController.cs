@@ -21,9 +21,20 @@ public class EffectController : Photon.MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
+        GameObject otherObj = other.gameObject;
+        OnHit(otherObj);
+    }
+
+    //void OnParticleCollision(GameObject otherObj)
+    //{
+    //    Debug.Log(otherObj);
+    //    OnHit(otherObj);
+    //}
+
+    protected void OnHit(GameObject otherObj)
+    {
         if (photonView.isMine)
         {
-            GameObject otherObj = other.gameObject;
             if (otherObj.tag == "Player")
             {
                 if (damage > 0)
@@ -44,10 +55,15 @@ public class EffectController : Photon.MonoBehaviour
 
     void OnTriggerStay(Collider other)
     {
+        GameObject otherObj = other.gameObject;
+        OnStay(otherObj);
+    }
+
+    protected void OnStay(GameObject otherObj)
+    {
         if (photonView.isMine)
         {
-            Transform otherTran = other.transform;
-            if (otherTran.tag == "Player")
+            if (otherObj.tag == "Player")
             {
                 if (damagePerSecond > 0)
                 {
@@ -62,7 +78,7 @@ public class EffectController : Photon.MonoBehaviour
                     }
                     if (addDmg > 0)
                     {
-                        otherTran.GetComponent<PlayerStatus>().AddDamage(addDmg);
+                        otherObj.GetComponent<PlayerStatus>().AddDamage(addDmg);
                     }
                 }
             }
