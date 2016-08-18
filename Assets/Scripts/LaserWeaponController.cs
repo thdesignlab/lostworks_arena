@@ -63,7 +63,7 @@ public class LaserWeaponController : WeaponController
     IEnumerator LaserShoot()
     {
         //Bit移動
-        if (!base.StartBitMove())
+        if (!base.StartBitMove(bitFromPos, bitToPos))
         {
             //Bit移動まち
             for (;;)

@@ -17,7 +17,7 @@ public class WeaponController : Photon.MonoBehaviour
     protected bool isBitMoved = false;
     protected Vector3 bitFromPos = default(Vector3);
     protected Vector3 bitToPos = default(Vector3);
-    protected float radius;
+    protected float radius = 0;
 
     [SerializeField]
     protected float reloadTime;   //再装填時間
@@ -151,7 +151,7 @@ public class WeaponController : Photon.MonoBehaviour
         isAction = false;
 
         //Bit位置を戻す
-        ReturnBitMove();
+        ReturnBitMove(bitToPos, bitFromPos);
 
         //モーション終了
         StopMotion();
@@ -325,17 +325,17 @@ public class WeaponController : Photon.MonoBehaviour
         audioCtrl.Stop(no);
     }
 
-    protected bool StartBitMove()
+    protected bool StartBitMove(Vector3 fromPos, Vector3 toPos)
     {
         //Debug.Log(bitFromPos + " >> " + bitToPos + " : " + bitMoveTime);
-        if (bitFromPos == bitToPos) return true;
+        if (fromPos == toPos) return true;
 
         if (photonView.isMine)
         {
             isBitMoved = false;
             if (bitMoveTime > 0)
             {
-                StartCoroutine(BitMoveProccess(bitFromPos, bitToPos, 0, true));
+                StartCoroutine(BitMoveProccess(fromPos, toPos, 0, true));
             }
             else
             {
@@ -345,7 +345,7 @@ public class WeaponController : Photon.MonoBehaviour
         return isBitMoved;
     }
 
-    protected void ReturnBitMove()
+    protected void ReturnBitMove(Vector3 fromPos, Vector3 toPos)
     {
         if (bitFromPos == bitToPos) return;
 
@@ -360,7 +360,7 @@ public class WeaponController : Photon.MonoBehaviour
                 }
                 else
                 {
-                    StartCoroutine(BitMoveProccess(bitToPos, bitFromPos, 180, false));
+                    StartCoroutine(BitMoveProccess(fromPos, toPos, 180, false));
                 }
             }
             else

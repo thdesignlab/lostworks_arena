@@ -116,7 +116,7 @@ public class BulletWeaponController : WeaponController
     IEnumerator WaitBitMove()
     {
         //Bit移動
-        if (!base.StartBitMove())
+        if (!base.StartBitMove(bitFromPos, bitToPos))
         {
             //Bit移動まち
             for (;;)

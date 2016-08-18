@@ -9,8 +9,8 @@ public class ChangeEffectController : EffectController
     private Vector3 endScale;
     [SerializeField]
     private float scaleTime;
-    [SerializeField]
-    private float effectiveTime;
+    //[SerializeField]
+    //private float effectiveTime;
     [SerializeField]
     private float scaleLateTime;
     [SerializeField]
@@ -26,7 +26,6 @@ public class ChangeEffectController : EffectController
         myCollider = GetComponent<SphereCollider>();
 
         //base.myTran.localScale = startScale;
-        ChangeScale(startScale);
     }
 	
 	void Update ()
@@ -43,7 +42,13 @@ public class ChangeEffectController : EffectController
         if (rate > 1) rate = 1;
 
         ChangeScale(Vector3.Lerp(startScale, endScale, rate));
-        //myTran.localScale = Vector3.Lerp(startScale, endScale, rate);
+    }
+
+    void OnEnable()
+    {
+        ChangeScale(startScale);
+        activeTime = 0;
+        waitTime = 0;
     }
 
     private void ChangeScale(Vector3 scale)
