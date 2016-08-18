@@ -7,15 +7,21 @@ public class DialogController : MonoBehaviour
 {
     //ダイアログ
     private static GameObject dialog;
-    //private static Text textMessage;
-    //private static Button buttonOk;
-    //private static GameObject buttonCancelObj;
+    private static Text textMessage;
 
     //メッセージ
     private static GameObject message;
 
     const string RESOURCE_DIALOG = "UI/Dialog";
     const string RESOURCE_MESSAGE = "UI/Message";
+
+    //メッセージ
+    public const string MESSAGE_TOP = "Tap to Start";
+    public const string MESSAGE_CONNECT = "Connecting...";
+    public const string MESSAGE_LOADING = "Now Loading...";
+    public const string MESSAGE_CREATE_ROOM = "Create Room";
+    public const string MESSAGE_JOIN_ROOM = "Join Room";
+    public const string MESSAGE_SEARCH_ROOM = "Search Room";
 
     public static void OpenDialog(string text, bool isCancel = false)
     {
@@ -73,20 +79,28 @@ public class DialogController : MonoBehaviour
         CloseDialog();
     }
 
-    public static GameObject OpenMessage(string text, int kind = 0)
+    public static GameObject OpenMessage(string text)
     {
-        if (message != null) CloseMessage();
-        message = Instantiate((GameObject)Resources.Load(RESOURCE_MESSAGE));
-        //Image label = message.transform.FindChild("Label").GetComponent<Image>();
-        Text textMessage = message.transform.FindChild("Label/Text").GetComponent<Text>();
-        textMessage.text = text;
+        if (text == "")
+        {
+            CloseMessage();
+            return null;
+        }
 
-        //kindで色変える？
+        if (message == null)
+        {
+            message = Instantiate((GameObject)Resources.Load(RESOURCE_MESSAGE));
+            textMessage = message.transform.FindChild("Label/Text").GetComponent<Text>();
+        }
+        textMessage.text = text;
 
         return message;
     }
+
     public static void CloseMessage()
     {
+        if (message == null) return;
         Destroy(message);
     }
+    
 }

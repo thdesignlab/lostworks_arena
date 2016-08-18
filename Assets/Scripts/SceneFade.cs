@@ -4,13 +4,14 @@ using UnityEngine.UI;
 
 public class SceneFade : Photon.MonoBehaviour
 {
-    Transform myTran;
-    Image fadeImg;
+    private Transform myTran;
+    private Image fadeImg;
+    private Text messageText;
 
     [SerializeField]
     private float fadeTime = 0.5f;
 
-    void Start()
+    void Awake()
     {
         myTran = transform;
         Transform fadeTran = myTran.FindChild("FadeImage");
@@ -20,13 +21,16 @@ public class SceneFade : Photon.MonoBehaviour
         }
     }
 
-    public void Load(string sceneName)
+    public void Load(string sceneName, string message = "")
     {
-        StartCoroutine(LoadProccess(sceneName));
+        StartCoroutine(LoadProccess(sceneName, message));
     }
 
-    IEnumerator LoadProccess(string sceneName)
+    IEnumerator LoadProccess(string sceneName, string message = "")
     {
+        //メッセージ表示
+        if (message != "") DialogController.OpenMessage(message);
+
         //フェードアウト
         Coroutine fadeOut = StartCoroutine(Fade(false));
         yield return fadeOut;
@@ -36,6 +40,10 @@ public class SceneFade : Photon.MonoBehaviour
 
         //フェードイン
         Coroutine fadeIn = StartCoroutine(Fade(true));
+        yield return fadeIn;
+
+        //メッセージ非表示
+        if (message != "") DialogController.CloseMessage();
     }
 
     IEnumerator Fade(bool isFadeIn)

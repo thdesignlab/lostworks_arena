@@ -41,7 +41,7 @@ public class PhotonManager : MonoBehaviour
     private bool isConnectFailed = false;
     private bool isDialogOpen = false;
     private bool isNetworkMode = false;
-    
+
     private float processTime = 0;
 
     private Text messageAreaText;
@@ -51,14 +51,7 @@ public class PhotonManager : MonoBehaviour
 
     private SceneFade fadeCtrl;
     private string moveScene = "";
-
-    //メッセージ
-    const string MESSAGE_TOP = "Tap to Start";
-    const string MESSAGE_CONNECT = "Connecting";
-    const string MESSAGE_LOADING = "Now Loading";
-    const string MESSAGE_CREATE_ROOM = "Create Room";
-    const string MESSAGE_JOIN_ROOM = "Join Room";
-    const string MESSAGE_SEARCH_ROOM = "Search Room";
+    private string loadmessage = "";
 
     const string MESSAGE_CONNECT_FAILED = "ネットワーク接続に失敗しました\n通信状況をご確認の上\n再度お試しください";
     const string MESSAGE_CREATE_ROOM_FAILED = "Room作成に失敗しました\n既に存在するRoom名です";
@@ -95,28 +88,31 @@ public class PhotonManager : MonoBehaviour
 
     void Update()
     {
-        processTime += Time.deltaTime;
+        //processTime += Time.deltaTime;
 
         if (isTapToStart)
         {
-            SwitchMessageArea(MESSAGE_TOP);
+            GameObject message = DialogController.OpenMessage(DialogController.MESSAGE_TOP);
+            Text textMessage = message.transform.FindChild("Label/Text").GetComponent<Text>();
             if (Input.GetMouseButtonDown(0))
             {
                 TapToStart();
             }
-        }
-        if (messageAreaText != null)
-        {
-            if (processTime > 1.0f)
+            if (textMessage != null)
             {
-                //一定時間ごとに点滅
-                float alpha = Common.Func.GetSin(processTime, 270, 45);
-                messageAreaText.color = new Color(messageAreaText.color.r, messageAreaText.color.g, messageAreaText.color.b, alpha);
+                processTime += Time.deltaTime;
+
+                if (processTime > 1.0f)
+                {
+                    //一定時間ごとに点滅
+                    float alpha = Common.Func.GetSin(processTime, 270, 45);
+                    textMessage.color = new Color(textMessage.color.r, textMessage.color.g, textMessage.color.b, alpha);
+                }
             }
-        }
-        else
-        {
-            processTime = 0;
+            else
+            {
+                processTime = 0;
+            }
         }
 
         if (isNetworkMode)
@@ -136,7 +132,7 @@ public class PhotonManager : MonoBehaviour
                 }
                 else
                 {
-                    SwitchMessageArea();
+                    DialogController.CloseMessage();
 
                     //部屋選択表示
                     SwitchNetworkArea(true);
@@ -156,11 +152,11 @@ public class PhotonManager : MonoBehaviour
                 if (PhotonNetwork.connecting)
                 {
                     // *** 接続中 ***
-                    SwitchMessageArea(MESSAGE_CONNECT);
+                    DialogController.OpenMessage(DialogController.MESSAGE_CONNECT);
                 }
                 else
                 {
-                    SwitchMessageArea();
+                    DialogController.CloseMessage();
                 }
 
                 if (isConnectFailed && !isDialogOpen)
@@ -177,7 +173,7 @@ public class PhotonManager : MonoBehaviour
     public void Init()
     {
         SwitchModeSelectArea(false);
-        SwitchMessageArea();
+        DialogController.CloseMessage();
         SwitchNetworkArea(false);
         isTapToStart = true;
         isConnectFailed = false;
@@ -200,27 +196,28 @@ public class PhotonManager : MonoBehaviour
         modeSelectArea.SetActive(flg);
     }
 
-    //メッセージ切り替え
-    private void SwitchMessageArea(string text = "")
-    {
-        //Debug.Log("SwitchMessageArea: " + text);
-        //messageAreaText.text = text;
+    ////メッセージ切り替え
+    //private void SwitchMessageArea(string text = "")
+    //{
+    //    //Debug.Log("SwitchMessageArea: " + text);
 
-        if (text == "")
-        {
-            //messageArea.SetActive(false);
-            DialogController.CloseMessage();
-        }
-        else
-        {
-            //messageArea.SetActive(true);
-            if (!messageArea)
-            {
-                messageArea = DialogController.OpenMessage(text);
-                messageAreaText = messageArea.transform.GetComponentInChildren<Text>();
-            }
-        }
-    }
+    //    if (text == "")
+    //    {
+    //        DialogController.CloseMessage();
+    //    }
+    //    else
+    //    {
+    //        if (!messageArea)
+    //        {
+    //            messageArea = DialogController.OpenMessage(text);
+    //            messageAreaText = messageArea.transform.GetComponentInChildren<Text>();
+    //        }
+    //        else
+    //        {
+    //            messageAreaText.text = text;
+    //        }
+    //    }
+    //}
 
     //ネットワークダイアログ切り替え
     private void SwitchNetworkArea(bool flg)
@@ -288,19 +285,17 @@ public class PhotonManager : MonoBehaviour
         {
             case SELECTABLE_MODE_LOCAL:
                 //ローカルのみ
-                //LocalModeSelect();
-                SwitchMessageArea();
+                DialogController.CloseMessage();
                 break;
 
             case SELECTABLE_MODE_NETWORK:
                 //ネットワークのみ
-                //NetworkModeSelect();
-                SwitchMessageArea();
+                DialogController.CloseMessage();
                 break;
 
             case SELECTABLE_MODE_BOTH:
                 //ローカル+ネットワーク
-                SwitchMessageArea();
+                DialogController.CloseMessage();
                 break;
         }
     }
@@ -310,7 +305,7 @@ public class PhotonManager : MonoBehaviour
     //ローカルモード選択
     public void LocalModeSelect()
     {
-        SwitchMessageArea(MESSAGE_LOADING);
+        DialogController.OpenMessage(DialogController.MESSAGE_LOADING);
         SwitchModeSelectArea(false);
 
         PhotonNetwork.offlineMode = true;
@@ -321,7 +316,7 @@ public class PhotonManager : MonoBehaviour
     //ネットワークモード選択
     public void NetworkModeSelect()
     {
-        SwitchMessageArea(MESSAGE_LOADING);
+        DialogController.OpenMessage(DialogController.MESSAGE_LOADING);
         SwitchModeSelectArea(false);
 
         PhotonNetwork.offlineMode = false;
@@ -355,12 +350,11 @@ public class PhotonManager : MonoBehaviour
     //カスタマイズ
     public void CustomSelect()
     {
-        SwitchMessageArea(MESSAGE_LOADING);
+        DialogController.OpenMessage(DialogController.MESSAGE_LOADING);
+
         PhotonNetwork.offlineMode = true;
         moveScene = Common.CO.SCENE_CUSTOM;
-        PhotonNetwork.CreateRoom(ROOM_NAME_PREFIX+ UserManager.userInfo[Common.PP.INFO_USER_ID]);
-        //PhotonNetwork.LoadLevel(Common.CO.SCENE_CUSTOM);
-        //fadeCtrl.Load(Common.CO.SCENE_CUSTOM);
+        PhotonNetwork.CreateRoom(ROOM_NAME_PREFIX);
     }
 
     //コンフィグ
@@ -389,10 +383,10 @@ public class PhotonManager : MonoBehaviour
     //Room作成
     public void CreateRoom()
     {
-        SwitchMessageArea(MESSAGE_CREATE_ROOM);
+        DialogController.OpenMessage(DialogController.MESSAGE_CREATE_ROOM);
         if (PhotonNetwork.countOfRooms >= 10)
         {
-            SwitchMessageArea();
+            DialogController.CloseMessage();
             DialogController.OpenDialog(MESSAGE_ROOM_LIMIT_FAILED);
             return;
         }
@@ -402,7 +396,7 @@ public class PhotonManager : MonoBehaviour
     //入室
     public void JoinRoom(string roomName = "")
     {
-        SwitchMessageArea(MESSAGE_JOIN_ROOM);
+        DialogController.OpenMessage(DialogController.MESSAGE_JOIN_ROOM);
         if (roomName == "")
         {
             roomName = roomNameIF.text;
@@ -413,7 +407,7 @@ public class PhotonManager : MonoBehaviour
     //ランダム入室
     public void RandomJoinRoom()
     {
-        SwitchMessageArea(MESSAGE_SEARCH_ROOM);
+        DialogController.OpenMessage(DialogController.MESSAGE_SEARCH_ROOM);
         PhotonNetwork.JoinRandomRoom();
     }
 
@@ -428,7 +422,7 @@ public class PhotonManager : MonoBehaviour
 
     public void OnPhotonCreateRoomFailed()
     {
-        SwitchMessageArea();
+        DialogController.CloseMessage();
         DialogController.OpenDialog(MESSAGE_CREATE_ROOM_FAILED);
         //ErrorDialog = "Error: Can't create room (room name maybe already used).";
         Debug.Log("OnPhotonCreateRoomFailed got called. This can happen if the room exists (even if not visible). Try another room name.");
@@ -436,7 +430,7 @@ public class PhotonManager : MonoBehaviour
 
     public void OnPhotonJoinRoomFailed(object[] cause)
     {
-        SwitchMessageArea();
+        DialogController.CloseMessage();
         DialogController.OpenDialog(MESSAGE_JOIN_ROOM_FAILED);
         //ErrorDialog = "Error: Can't join room (full or unknown room name). " + cause[1];
         Debug.Log("OnPhotonJoinRoomFailed got called. This can happen if the room is not existing or full or closed.");
@@ -444,7 +438,7 @@ public class PhotonManager : MonoBehaviour
 
     public void OnPhotonRandomJoinFailed()
     {
-        SwitchMessageArea();
+        DialogController.CloseMessage();
         DialogController.OpenDialog(MESSAGE_JOIN_ROOM_FAILED);
         //ErrorDialog = "Error: Can't join random room (none found).";
         Debug.Log("OnPhotonRandomJoinFailed got called. Happens if no room is available (or all full or invisible or closed). JoinrRandom filter-options can limit available rooms.");
@@ -453,19 +447,19 @@ public class PhotonManager : MonoBehaviour
     public void OnCreatedRoom()
     {
         //Debug.Log("OnCreatedRoom");
-        //PhotonNetwork.LoadLevel(Common.CO.SCENE_BATTLE);
+        //PhotonNetwork.LoadLevel(moveScene);
         fadeCtrl.Load(moveScene);
     }
 
     public void OnDisconnectedFromPhoton()
     {
-        SwitchMessageArea();
+        DialogController.CloseMessage();
         //Debug.Log("Disconnected from Photon.");
     }
 
     public void OnFailedToConnectToPhoton(object parameters)
     {
-        SwitchMessageArea();
+        DialogController.CloseMessage();
         isConnectFailed = true;
         Debug.Log("OnFailedToConnectToPhoton. StatusCode: " + parameters + " ServerAddress: " + PhotonNetwork.ServerAddress);
     }

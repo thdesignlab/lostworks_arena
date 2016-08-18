@@ -390,7 +390,7 @@ public class GameController : Photon.MonoBehaviour
     {
         PhotonNetwork.LeaveRoom();
         //PhotonNetwork.LoadLevel(Common.CO.SCENE_TITLE);
-        GameObject.Find("Fade").GetComponent<SceneFade>().Load(Common.CO.SCENE_TITLE);
+        GameObject.Find("Fade").GetComponent<SceneFade>().Load(Common.CO.SCENE_TITLE, DialogController.MESSAGE_LOADING);
     }
 
     public void NpcSpawn(int level = 0)
