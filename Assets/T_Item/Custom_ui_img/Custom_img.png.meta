@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 448fa39e20a754c49a39a1544c65cedd
-timeCreated: 1470715816
+timeCreated: 1471526039
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -84,25 +84,39 @@ TextureImporter:
     - name: Custom_img_1
       rect:
         serializedVersion: 2
-        x: 403
-        y: 964
-        width: 14
-        height: 30
+        x: 198
+        y: 525
+        width: 55
+        height: 111
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
+      outline:
+      - - {x: -24.5, y: 50.5}
+        - {x: -24.5, y: -51.5}
+        - {x: 6.5, y: -51.5}
+        - {x: 24.5, y: -7.5}
+        - {x: 24.5, y: 11.5}
+        - {x: 0.5, y: 50.5}
     - name: Custom_img_2
       rect:
         serializedVersion: 2
-        x: 439
-        y: 972
-        width: 37
-        height: 12
+        x: 322
+        y: 545
+        width: 135
+        height: 65
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
+      outline:
+      - - {x: 13.5, y: 18.5}
+        - {x: -13.5, y: 18.5}
+        - {x: -62.5, y: 2.5}
+        - {x: -62.5, y: -14.5}
+        - {x: -61.5, y: -16.5}
+        - {x: 64.5, y: -16.5}
+        - {x: 64.5, y: 3.5}
+        - {x: 63.5, y: 8.5}
     - name: Custom_img_3
       rect:
         serializedVersion: 2
@@ -166,80 +180,143 @@ TextureImporter:
     - name: Custom_img_7
       rect:
         serializedVersion: 2
-        x: 16
-        y: 616
-        width: 19
-        height: 26
+        x: 22
+        y: 290
+        width: 49
+        height: 65
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
+      outline:
+      - - {x: -21.5, y: -24.5}
+        - {x: -18.5, y: -27.5}
+        - {x: 15.5, y: -27.5}
+        - {x: 15.5, y: 18.5}
+        - {x: 12.5, y: 26.5}
+        - {x: -20.5, y: 26.5}
+        - {x: -21.5, y: 23.5}
     - name: Custom_img_8
       rect:
         serializedVersion: 2
-        x: 124
-        y: 616
-        width: 64
-        height: 26
+        x: 286
+        y: 289
+        width: 164
+        height: 65
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
+      outline:
+      - - {x: 64, y: 17.5}
+        - {x: -31, y: 17.5}
+        - {x: -31, y: -27.5}
+        - {x: 75, y: -27.5}
+        - {x: 76, y: -25.5}
+        - {x: 76, y: 4.5}
+      - - {x: -74, y: -23.5}
+        - {x: -71, y: -26.5}
+        - {x: -37, y: -26.5}
+        - {x: -37, y: 19.5}
+        - {x: -40, y: 27.5}
+        - {x: -73, y: 27.5}
+        - {x: -74, y: 24.5}
     - name: Custom_img_9
       rect:
         serializedVersion: 2
-        x: 227
-        y: 616
-        width: 21
-        height: 26
+        x: 22
+        y: 551
+        width: 50
+        height: 65
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
+      outline:
+      - - {x: -23, y: 28.5}
+        - {x: -23, y: -27.5}
+        - {x: 14, y: -27.5}
+        - {x: 20, y: -21.5}
+        - {x: 20, y: 24.5}
+        - {x: 12, y: 28.5}
     - name: Custom_img_10
       rect:
         serializedVersion: 2
-        x: 334
-        y: 616
-        width: 66
-        height: 26
+        x: 22
+        y: 373
+        width: 164
+        height: 65
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
+      outline:
+      - - {x: -80, y: 29.5}
+        - {x: -80, y: -26.5}
+        - {x: -43, y: -26.5}
+        - {x: -37, y: -20.5}
+        - {x: -37, y: 25.5}
+        - {x: -45, y: 29.5}
+      - - {x: -30, y: 18.5}
+        - {x: -30, y: -26.5}
+        - {x: 77, y: -26.5}
+        - {x: 77, y: 9.5}
+        - {x: 65, y: 18.5}
     - name: Custom_img_11
       rect:
         serializedVersion: 2
-        x: 16
-        y: 558
-        width: 22
-        height: 25
+        x: 22
+        y: 202
+        width: 54
+        height: 64
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
+      outline:
+      - - {x: -21, y: 26}
+        - {x: -24, y: 25}
+        - {x: -24, y: -28}
+        - {x: 21, y: -28}
+        - {x: 21, y: 17}
+        - {x: 17, y: 26}
     - name: Custom_img_12
       rect:
         serializedVersion: 2
-        x: 122
-        y: 556
-        width: 67
-        height: 28
+        x: 284
+        y: 199
+        width: 170
+        height: 65
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
+      outline:
+      - - {x: 67, y: 18.5}
+        - {x: -28, y: 18.5}
+        - {x: -28, y: -26.5}
+        - {x: 78, y: -26.5}
+        - {x: 79, y: -24.5}
+        - {x: 79, y: 5.5}
+      - - {x: -42, y: 28.5}
+        - {x: -80, y: 28.5}
+        - {x: -80, y: -22.5}
+        - {x: -79, y: -25.5}
+        - {x: -35, y: -25.5}
+        - {x: -35, y: 20.5}
+        - {x: -40, y: 26.5}
     - name: Custom_img_13
       rect:
         serializedVersion: 2
-        x: 226
-        y: 556
-        width: 35
-        height: 28
+        x: 22
+        y: 462
+        width: 85
+        height: 65
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
+      outline:
+      - - {x: -35.5, y: 28.5}
+        - {x: -40.5, y: 24.5}
+        - {x: -40.5, y: -27.5}
+        - {x: 34.5, y: -27.5}
+        - {x: 39.5, y: -24.5}
+        - {x: 39.5, y: 10.5}
+        - {x: 27.5, y: 28.5}
     - name: Custom_img_14
       rect:
         serializedVersion: 2
