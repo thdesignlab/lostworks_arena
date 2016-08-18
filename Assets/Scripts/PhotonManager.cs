@@ -49,6 +49,9 @@ public class PhotonManager : MonoBehaviour
     private InputField roomNameIF;
     private Text roomStatusText;
 
+    private SceneFade fadeCtrl;
+    private string moveScene = "";
+
     //メッセージ
     const string MESSAGE_TOP = "Tap to Start";
     const string MESSAGE_CONNECT = "Connecting";
@@ -78,6 +81,9 @@ public class PhotonManager : MonoBehaviour
             ReturnModeSelect();
         }
 
+        GameObject fadeObj = GameObject.Find("Fade");
+        fadeCtrl = fadeObj.GetComponent<SceneFade>();
+        DontDestroyOnLoad(fadeObj);
         DontDestroyOnLoad(GameObject.Find("Config"));
         DontDestroyOnLoad(GameObject.Find("WeaponStore"));
         DontDestroyOnLoad(GameObject.Find("Debug"));
@@ -308,6 +314,7 @@ public class PhotonManager : MonoBehaviour
         SwitchModeSelectArea(false);
 
         PhotonNetwork.offlineMode = true;
+        moveScene = Common.CO.SCENE_BATTLE;
         PhotonNetwork.CreateRoom(ROOM_NAME_PREFIX);
     }
 
@@ -317,10 +324,10 @@ public class PhotonManager : MonoBehaviour
         SwitchMessageArea(MESSAGE_LOADING);
         SwitchModeSelectArea(false);
 
-        // this makes sure we can use PhotonNetwork.LoadLevel() on the master client and all clients in the same room sync their level automatically
         PhotonNetwork.offlineMode = false;
         PhotonNetwork.automaticallySyncScene = true;
         PhotonNetwork.autoJoinLobby = true;
+        moveScene = Common.CO.SCENE_BATTLE;
 
         // the following line checks if this client was just created (and not yet online). if so, we connect
         if (PhotonNetwork.connectionStateDetailed == PeerState.PeerCreated)
@@ -350,8 +357,10 @@ public class PhotonManager : MonoBehaviour
     {
         SwitchMessageArea(MESSAGE_LOADING);
         PhotonNetwork.offlineMode = true;
+        moveScene = Common.CO.SCENE_CUSTOM;
         PhotonNetwork.CreateRoom(ROOM_NAME_PREFIX+ UserManager.userInfo[Common.PP.INFO_USER_ID]);
-        PhotonNetwork.LoadLevel(Common.CO.SCENE_CUSTOM);
+        //PhotonNetwork.LoadLevel(Common.CO.SCENE_CUSTOM);
+        //fadeCtrl.Load(Common.CO.SCENE_CUSTOM);
     }
 
     //コンフィグ
@@ -414,7 +423,7 @@ public class PhotonManager : MonoBehaviour
     // We have two options here: we either joined(by title, list or random) or created a room.
     public void OnJoinedRoom()
     {
-        Debug.Log("OnJoinedRoom");
+        //Debug.Log("OnJoinedRoom");
     }
 
     public void OnPhotonCreateRoomFailed()
@@ -444,13 +453,14 @@ public class PhotonManager : MonoBehaviour
     public void OnCreatedRoom()
     {
         //Debug.Log("OnCreatedRoom");
-        PhotonNetwork.LoadLevel(Common.CO.SCENE_BATTLE);
+        //PhotonNetwork.LoadLevel(Common.CO.SCENE_BATTLE);
+        fadeCtrl.Load(moveScene);
     }
 
     public void OnDisconnectedFromPhoton()
     {
         SwitchMessageArea();
-        Debug.Log("Disconnected from Photon.");
+        //Debug.Log("Disconnected from Photon.");
     }
 
     public void OnFailedToConnectToPhoton(object parameters)

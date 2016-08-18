@@ -14,10 +14,8 @@ public class ConfigManager : MonoBehaviour
 
     public void OpenConfig()
     {
-        Debug.Log("OpenConfig");
         //ダイアログ表示
         configCanvas.SetActive(true);
-        Debug.Log(configCanvas.GetActive());
 
         //シーンごとの処理
         switch (SceneManager.GetActiveScene().name)

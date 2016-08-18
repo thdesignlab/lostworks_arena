@@ -147,7 +147,6 @@ public class MenuController : Photon.MonoBehaviour
     {
         OnDebugMenuButton(false);
         if (!gameCtrl.isDebugMode) return;
-        //PhotonNetwork.LoadLevel("Battle");
         if (gameCtrl.GetMyTran() != null) return;
 
         Destroy(Camera.main.gameObject);
