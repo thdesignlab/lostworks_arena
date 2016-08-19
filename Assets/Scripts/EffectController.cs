@@ -4,6 +4,8 @@ using System.Collections;
 public class EffectController : Photon.MonoBehaviour
 {
     [SerializeField]
+    protected GameObject damageEffect;
+    [SerializeField]
     protected int damage;
     [SerializeField]
     protected int damagePerSecond;
@@ -11,8 +13,12 @@ public class EffectController : Photon.MonoBehaviour
     protected bool isPhysicsBulletBreak;
     [SerializeField]
     protected bool isEnergyBulletBreak;
+    [SerializeField]
+    protected float ownDamageRate = 1.0f;
 
     protected Transform myTran;
+    protected Transform ownerTran;
+
 
     protected virtual void Awake()
     {
@@ -37,10 +43,25 @@ public class EffectController : Photon.MonoBehaviour
         {
             if (otherObj.tag == "Player")
             {
-                if (damage > 0)
+                int dmg = damage;
+                if (ownerTran == otherObj.transform)
                 {
+                    dmg = (int)(dmg * ownDamageRate);
+                }
+
+                if (dmg > 0)
+                {
+                    PlayerStatus status = otherObj.GetComponent<PlayerStatus>();
+
                     //ダメージ
-                    otherObj.GetComponent<PlayerStatus>().AddDamage(damage);
+                    status.AddDamage(dmg);
+
+                    //エフェクト
+                    if (damageEffect != null)
+                    {
+                        GameObject effectObj = PhotonNetwork.Instantiate(Common.Func.GetResourceEffect(damageEffect.name), otherObj.transform.position, damageEffect.transform.rotation, 0);
+                        effectObj.GetComponent<EffectController>().SetOwner(ownerTran);
+                    }
                 }
             }
 
@@ -65,10 +86,13 @@ public class EffectController : Photon.MonoBehaviour
         {
             if (otherObj.tag == "Player")
             {
-                if (damagePerSecond > 0)
+                int dmgPS = damagePerSecond;
+                if (ownerTran == otherObj.transform) dmgPS = (int)(dmgPS * ownDamageRate);
+
+                if (dmgPS > 0)
                 {
                     //ダメージ
-                    float dmg = damagePerSecond * Time.deltaTime;
+                    float dmg = dmgPS * Time.deltaTime;
                     int addDmg = (int)Mathf.Floor(dmg);
                     dmg -= addDmg;
                     if (dmg > 0)
@@ -83,5 +107,14 @@ public class EffectController : Photon.MonoBehaviour
                 }
             }
         }
+    }
+
+    public void SetOwner(Transform owner)
+    {
+        ownerTran = owner;
+    }
+    public Transform GetOwner()
+    {
+        return ownerTran;
     }
 }

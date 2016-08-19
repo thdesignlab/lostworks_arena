@@ -113,7 +113,11 @@ public class WeaponStore : Photon.MonoBehaviour
         //現在装備中の名前を表示
         foreach (int key in Common.CO.partsNameArray.Keys)
         {
-            SetEquipWeaponName(Common.CO.partsNameArray[key]);
+            //装備中武器取得
+            int nowWeaponNo = UserManager.userEquipment[Common.CO.partsNameArray[key]];
+            string weaponName = Common.Weapon.GetWeaponName(nowWeaponNo);
+            SetEquipWeaponName(Common.CO.partsNameArray[key], weaponName);
+            //SetEquipWeaponName(Common.CO.partsNameArray[key]);
         }
     }
 
@@ -182,7 +186,7 @@ public class WeaponStore : Photon.MonoBehaviour
     //装備する
     public void OnEquipButton(int weaponNo)
     {
-        string weaponName = Common.Weapon.GetWeaponName(weaponNo);
+        string weaponName = Common.Weapon.GetWeaponName(weaponNo, true);
         if (weaponName == "") return;
 
         Transform partsTran = myPlayerTran.FindChild(Common.Func.GetPartsStructure(customPartsNo));

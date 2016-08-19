@@ -206,7 +206,7 @@ public class PlayerSetting : Photon.MonoBehaviour
                 if (!UserManager.userEquipment.ContainsKey(parts.name)) continue;
 
                 //武器取得
-                string weaponName = Common.Weapon.GetWeaponName(UserManager.userEquipment[parts.name]);
+                string weaponName = Common.Weapon.GetWeaponName(UserManager.userEquipment[parts.name], true);
                 GameObject weapon = (GameObject)Resources.Load(Common.Func.GetResourceWeapon(weaponName));
 
                 //装備

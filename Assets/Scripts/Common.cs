@@ -395,7 +395,6 @@ namespace Common
             { 1002, new string[]{ "BeamCannon", "", "", OBTAIN_TYPE_INIT}},
             { 1003, new string[]{ "PlasmaGun", "", "", OBTAIN_TYPE_INIT}},
             { 1004, new string[]{ "BlazePillar", "", "", OBTAIN_TYPE_INIT}},
-            { 1005, new string[]{ "LaserBlade", "", "", OBTAIN_TYPE_INIT}},
         };
         //ハンド武器(ダッシュ)リスト
         public static Dictionary<int, string[]> handDashWeaponLineUp = new Dictionary<int, string[]>()
@@ -405,6 +404,8 @@ namespace Common
             { 2002, new string[]{ "PulseGun", "", "", OBTAIN_TYPE_INIT}},
             { 2003, new string[]{ "ThrowingDagger", "", "", OBTAIN_TYPE_INIT}},
             { 2004, new string[]{ "PenetrateDagger", "", "", OBTAIN_TYPE_INIT}},
+            { 2005, new string[]{ "LaserBlade", "LaserBlade-α", "", OBTAIN_TYPE_INIT}},
+            { 2006, new string[]{ "LaserBlade", "LaserBlade-β", "", OBTAIN_TYPE_INIT}},
         };
         //背中武器リスト
         public static Dictionary<int, string[]> shoulderWeaponLineUp = new Dictionary<int, string[]>()
@@ -536,19 +537,23 @@ namespace Common
         }
 
         //武器名を取得する
-        public static string GetWeaponName(int weaponNo)
+        public static string GetWeaponName(int weaponNo, bool isPrefab = false)
         {
             string weaponName = "";
             string[] weaponInfo = GetWeaponInfo(weaponNo);
             if (weaponInfo.Length > 0)
             {
-                weaponName = GetWeaponName(weaponInfo);
+                weaponName = GetWeaponName(weaponInfo, isPrefab);
             }
             return weaponName;
         }
-        private static string GetWeaponName(string[] weaponInfo)
+        private static string GetWeaponName(string[] weaponInfo, bool isPrefab = false)
         {
-            string weaponName = weaponInfo[DETAIL_NAME_NO];
+            string weaponName = "";
+            if (!isPrefab)
+            {
+                weaponName = weaponInfo[DETAIL_NAME_NO];
+            }
             if (weaponName == "")
             {
                 weaponName = weaponInfo[DETAIL_PREFAB_NAME_NO];

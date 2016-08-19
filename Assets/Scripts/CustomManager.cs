@@ -254,7 +254,7 @@ public class CustomManager : Photon.MonoBehaviour
         }
 
         //武器取得
-        string weaponName = Common.Weapon.GetWeaponName(weaponNo);
+        string weaponName = Common.Weapon.GetWeaponName(weaponNo, true);
         if (weaponName == "") return null;
 
         //武器召喚

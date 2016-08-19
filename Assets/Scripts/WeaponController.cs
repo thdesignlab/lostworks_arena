@@ -58,20 +58,20 @@ public class WeaponController : Photon.MonoBehaviour
     {
         myTran = transform;
         audioCtrl = myTran.GetComponent<AudioController>();
-        bitAnimator = myTran.GetComponentInChildren<Animator>();
         GameObject gameObj = GameObject.Find("GameController");
         if (gameObj != null)
         {
             gameCtrl = gameObj.GetComponent<GameController>();
         }
 
-        //Bit移動用
+        //Bit用
         foreach (Transform child in myTran)
         {
             if (child.tag == Common.CO.TAG_WEAPON_BIT)
             {
                 myBitTran = child;
                 bitFromPos = myBitTran.localPosition;
+                bitAnimator = myBitTran.GetComponent<Animator>();
             }
         }
     }
@@ -205,7 +205,7 @@ public class WeaponController : Photon.MonoBehaviour
         return isEnabledFire;
     }
 
-    public void SetMotionCtrl(Animator a, string s)
+    public virtual void SetMotionCtrl(Animator a, string s)
     {
         charaAnimator = a;
         motionParam = s;

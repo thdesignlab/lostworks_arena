@@ -61,7 +61,8 @@ public class ChainBulletController : TrackingBulletController
         if (Physics.Raycast(ray, out hit, 10.0f, layerMask))
         {
             Vector3 pos = new Vector3(myTran.position.x, 0, myTran.position.z);
-            PhotonNetwork.Instantiate(Common.Func.GetResourceEffect(chainObject.name), pos, chainObject.transform.rotation, 0);
+            GameObject effectObj = PhotonNetwork.Instantiate(Common.Func.GetResourceEffect(chainObject.name), pos, chainObject.transform.rotation, 0);
+            effectObj.GetComponent<EffectController>().SetOwner(ownerTran);
         }
         nowChainCount++;
 

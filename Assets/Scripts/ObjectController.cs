@@ -81,9 +81,21 @@ public class ObjectController : Photon.MonoBehaviour {
     {
         if (effectSpawn != null)
         {
-            //PhotonNetwork.Instantiate(Common.Func.GetResourceEffect(effectSpawn.name), myTran.position, myTran.rotation, effectSpawnGroupId);
-            PhotonNetwork.Instantiate(Common.Func.GetResourceEffect(effectSpawn.name), myTran.position, effectSpawn.transform.rotation, effectSpawnGroupId);
+            GameObject effectObj = PhotonNetwork.Instantiate(Common.Func.GetResourceEffect(effectSpawn.name), myTran.position, effectSpawn.transform.rotation, effectSpawnGroupId);
+            Transform ownerTran = GetOwnerTran();
+            effectObj.GetComponent<EffectController>().SetOwner(ownerTran);
         }
         PhotonNetwork.Destroy(gameObject);
+    }
+
+    private Transform GetOwnerTran()
+    {
+        EffectController effectCtrl = myTran.GetComponent<EffectController>();
+        if (effectCtrl != null) return effectCtrl.GetOwner();
+
+        BulletController bulletCtrl = myTran.GetComponent<BulletController>();
+        if (bulletCtrl != null) return bulletCtrl.GetOwner();
+
+        return null;
     }
 }

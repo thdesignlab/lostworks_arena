@@ -8,25 +8,41 @@ public class CrossRangeWeaponController : WeaponController
     [SerializeField]
     protected GameObject blade;
     [SerializeField]
-    protected Vector3 attackStartPos;
-    [SerializeField]
-    protected Vector3 attackEndPos;
-    [SerializeField]
     protected float attackTime;
+    [SerializeField]
+    protected float readyTime;
 
-    private Vector3 bitPos;
+    private Animator weaponAnimator;
+    private string animationName = "";
 
-    private Transform parentTran;
+    private const string MOTION_RIGHT_SLASH = "SlashR";
+    private const string MOTION_LEFT_SLASH = "SlashL";
 
     protected override void Awake()
     {
         base.Awake();
-        bitPos = myBitTran.localPosition;
+        //bitPos = myBitTran.localPosition;
+        weaponAnimator = myTran.GetComponent<Animator>();
     }
 
     protected override void Start()
     {
         base.Start();
+        StartCoroutine(SetOwner());
+    }
+
+    IEnumerator SetOwner()
+    {
+        for (;;)
+        {
+            if (playerTran == null)
+            {
+                yield return null;
+                continue;
+            }
+            blade.GetComponent<EffectController>().SetOwner(playerTran);
+            break;
+        }
     }
 
     protected override void Action()
@@ -37,38 +53,45 @@ public class CrossRangeWeaponController : WeaponController
 
     IEnumerator BladeOn()
     {
-        //ブレードON
-        blade.SetActive(true);
+        bool isBladeOn = false;
+        bool isBladeOff = false;
+        float readyProcTime = 0;
+        float attackProcTime = 0;
 
-        //初期位置＞振り始め位置
-        StartBitMove(bitFromPos, attackStartPos);
+        //斬戟モーション
+        weaponAnimator.SetBool(animationName, true);
 
-        float procTime = 0;
         for (;;)
         {
-            if (!isBitMoved)
+            if (!isBladeOn)
             {
-                Debug.Log("isBitMoved:false");
+                //準備期間
+                readyProcTime += Time.deltaTime;
+                if (readyProcTime >= readyTime)
+                {
+                    //ブレードON
+                    blade.SetActive(true);
+                    isBladeOn = true;
+                }
                 yield return null;
                 continue;
             }
-            procTime += Time.deltaTime;
-            Debug.Log("procTime:"+ procTime);
-            float posRate = procTime / attackTime;
-            if (posRate > 1) posRate = 1;
 
-            //振り始め位置＞振り終わり位置
-            myBitTran.localPosition = Vector3.Lerp(attackStartPos, attackEndPos, posRate);
+            attackProcTime += Time.deltaTime;
 
-            if (procTime >= attackTime) break;
+            if (!isBladeOff && attackProcTime >= attackTime)
+            {
+                //ブレードOFF
+                blade.SetActive(false);
+                isBladeOff = true;
+            }
+
+            if (isBladeOff && attackProcTime >= attackTime + readyTime) break;
+
             yield return null;
         }
 
-        //ブレードOFF
-        blade.SetActive(false);
-
-        //振り終わり位置＞初期位置
-        StartBitMove(attackEndPos, bitFromPos);
+        weaponAnimator.SetBool(animationName, false);
 
         base.EndAction();
     }
@@ -76,8 +99,28 @@ public class CrossRangeWeaponController : WeaponController
     public override bool IsEnableFire()
     {
         if (!base.IsEnableFire()) return false;
-        if (blade == null) return false;
+        if (blade == null || animationName == "") return false;
         return true;
     }
-    
+
+    public override void SetMotionCtrl(Animator a, string s)
+    {
+        base.SetMotionCtrl(a, s);
+
+        //近接モーション名設定
+        switch (s)
+        {
+            case Common.CO.MOTION_LEFT_ATTACK:
+                animationName = MOTION_LEFT_SLASH;
+                break;
+
+            case Common.CO.MOTION_RIGHT_ATTACK:
+                animationName = MOTION_RIGHT_SLASH;
+                break;
+
+            default:
+                animationName = MOTION_RIGHT_SLASH;
+                break;
+        }
+    }
 }

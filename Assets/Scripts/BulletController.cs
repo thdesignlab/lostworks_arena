@@ -147,7 +147,8 @@ public class BulletController : MoveOfCharacter
                     //ダメージエフェクト
                     if (hitEffect != null)
                     {
-                        PhotonNetwork.Instantiate(Common.Func.GetResourceEffect(hitEffect.name), myTran.position, hitEffect.transform.rotation, 0);
+                        GameObject effectObj = PhotonNetwork.Instantiate(Common.Func.GetResourceEffect(hitEffect.name), myTran.position, hitEffect.transform.rotation, 0);
+                        effectObj.GetComponent<EffectController>().SetOwner(ownerTran);
                     }
                 }
 
@@ -309,5 +310,9 @@ public class BulletController : MoveOfCharacter
     public Transform GetTarget()
     {
         return targetTran;
+    }
+    public Transform GetOwner()
+    {
+        return ownerTran;
     }
 }

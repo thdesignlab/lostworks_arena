@@ -2,7 +2,7 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!1 &106938
 GameObject:
-  m_ObjectHideFlags: 1
+  m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 4
@@ -261,6 +261,7 @@ GameObject:
   - 114: {fileID: 11455672}
   - 114: {fileID: 11441268}
   - 114: {fileID: 11483810}
+  - 95: {fileID: 9558884}
   m_Layer: 0
   m_Name: LaserBlade
   m_TagString: Weapon
@@ -342,7 +343,6 @@ GameObject:
   - 4: {fileID: 408388}
   - 114: {fileID: 11422540}
   - 114: {fileID: 11449254}
-  - 114: {fileID: 11476548}
   m_Layer: 0
   m_Name: Bit
   m_TagString: WeaponBit
@@ -610,9 +610,8 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 403032}
-  - {fileID: 432872}
   m_Father: {fileID: 438846}
-  m_RootOrder: 0
+  m_RootOrder: 1
 --- !u!4 &408966
 Transform:
   m_ObjectHideFlags: 1
@@ -664,7 +663,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 438846}
-  m_RootOrder: 1
+  m_RootOrder: 2
 --- !u!4 &423090
 Transform:
   m_ObjectHideFlags: 1
@@ -716,8 +715,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
-  m_Father: {fileID: 408388}
-  m_RootOrder: 1
+  m_Father: {fileID: 438846}
+  m_RootOrder: 0
 --- !u!4 &437596
 Transform:
   m_ObjectHideFlags: 1
@@ -752,10 +751,11 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 160928}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -10.99, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
+  - {fileID: 432872}
   - {fileID: 408388}
   - {fileID: 420122}
   m_Father: {fileID: 0}
@@ -1561,6 +1561,23 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
+--- !u!95 &9558884
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 160928}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 8d14a03a55dd3a9428d2682b82d31cbb, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!95 &9567306
 Animator:
   serializedVersion: 3
@@ -1700,14 +1717,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29cf0b4c082df5e4c897e394e3e81ed3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bitMotionType: 3
-  bitMoveTime: 0.5
+  bitMotionType: 1
+  bitMoveTime: 0
   isBitFixed: 0
   reloadTime: 1
   blade: {fileID: 106938}
-  attackStartPos: {x: 2, y: 0, z: -2}
-  attackEndPos: {x: 2, y: 0, z: 2}
   attackTime: 1
+  readyTime: 0.25
 --- !u!114 &11444040
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1817,30 +1833,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1d600a14ff695d4f9c4f4a7d7101de8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damageEffect: {fileID: 109874, guid: 45752b7016b587141a9cc7a60c12fe4b, type: 2}
   damage: 100
   damagePerSecond: 0
   isPhysicsBulletBreak: 0
   isEnergyBulletBreak: 0
-  startScale: {x: 0.2, y: 0.2, z: 0.2}
-  endScale: {x: 2, y: 2, z: 1.5}
-  scaleTime: 0.3
-  scaleLateTime: 0.5
+  ownDamageRate: 0
+  startScale: {x: 0.5, y: 0.5, z: 0.5}
+  endScale: {x: 3, y: 3, z: 2}
+  scaleTime: 0.1
+  scaleLateTime: 0.2
   isParticle: 1
---- !u!114 &11476548
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 175468}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2bf824a3d499c32439fa2f967ffd296c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isCheckGrounded: 0
-  glideGravityRate: 1
-  isLockOn: 1
-  aimSpeed: 360
 --- !u!114 &11483810
 MonoBehaviour:
   m_ObjectHideFlags: 1
