@@ -82,7 +82,7 @@ GameObject:
   - 114: {fileID: 11470708}
   m_Layer: 0
   m_Name: CEShell
-  m_TagString: Missile
+  m_TagString: Bullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -415,12 +415,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isCheckGrounded: 0
-  glideGravityRate: 0.2
+  glideGravityRate: 0.4
   isLockOn: 0
   UseGravity: 1
   hitEffect: {fileID: 0}
-  speed: 80
-  damage: 50
+  speed: 120
+  damage: 30
   damagePerSecond: 0
   stuckTime: 0
   knockBackRate: 0
@@ -440,7 +440,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effectSpawn: {fileID: 152264, guid: 71ae5fab8e0c38e49b9113bacaa1c171, type: 2}
-  activeLimitTime: 10
+  activeLimitTime: 5
   activeLimitDistance: 0
 --- !u!114 &11495440
 MonoBehaviour:

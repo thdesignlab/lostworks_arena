@@ -6,8 +6,9 @@ public class MoveOfCharacter : BaseMoveController
     protected CharacterController charaCtrl;
     [SerializeField]
     protected bool UseGravity = false;
-
-    private float glideTime = 0;
+    
+    private float preGlideGRate = 0.85f;
+    private Vector3 preGlideG = Vector3.zero;
     private Vector3 moveVector = Vector3.zero;
 
     private bool isCharacterController = false;
@@ -76,17 +77,16 @@ public class MoveOfCharacter : BaseMoveController
         if (base.isGrounded)
         {
             //接地時
-            glideTime = 0;
             g *= Time.deltaTime;
+            preGlideG = Vector3.zero;
         }
         else
         {
             //滞空時
-            glideTime += Time.deltaTime / 4;
-            g = glideG * glideTime;
-
+            g = glideG * Time.deltaTime + preGlideG * preGlideGRate;
+            if (g.y > preGlideG.y) g = glideG * Time.deltaTime + preGlideG;
+            preGlideG = g;
         }
-
         return g;
     }
 

@@ -19,7 +19,7 @@ public abstract class BaseMoveController : Photon.MonoBehaviour
 
     //地面接地判定用
     protected Transform groundCheckTran;
-    private float groundLimit = 1.0f;
+    private float groundLimit = 0.5f;
     protected bool isGrounded = false;
 
     //移動判定用

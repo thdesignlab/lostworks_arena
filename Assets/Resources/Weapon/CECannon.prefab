@@ -621,10 +621,10 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 132418}
-  m_LocalRotation: {x: -0.08715575, y: 0, z: 0, w: 0.9961947}
+  m_LocalRotation: {x: -0.38268346, y: 0, z: 0, w: 0.9238795}
   m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: -10, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -45, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 412886}
   m_RootOrder: 2
@@ -738,10 +738,10 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 108150}
-  m_LocalRotation: {x: -0.043619394, y: 0, z: 0, w: 0.99904823}
+  m_LocalRotation: {x: -0.30070582, y: 0, z: 0, w: 0.95371693}
   m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: -5, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -35, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 412886}
   m_RootOrder: 1
@@ -892,10 +892,10 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 129164}
-  m_LocalRotation: {x: -0.13052621, y: 0, z: 0, w: 0.9914449}
+  m_LocalRotation: {x: -0.46174866, y: 0, z: 0, w: 0.8870108}
   m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: -15, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -55, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 412886}
   m_RootOrder: 3
@@ -1681,9 +1681,9 @@ MonoBehaviour:
   fireEffect: {fileID: 0}
   bullet: {fileID: 159356, guid: c3afc60529efd224d8bdd3a2cd06819c, type: 2}
   rapidCount: 3
-  rapidInterval: 0.5
-  spreadCount: 5
-  spreadDiffAngle: 7
+  rapidInterval: 0.3
+  spreadCount: 4
+  spreadDiffAngle: 10
   focusDiff: 5
 --- !u!1001 &100100000
 Prefab:
