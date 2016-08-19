@@ -1678,8 +1678,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 11405830}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 0
-  instantiationId: -1
+  viewIdField: 4
+  instantiationId: 4
   isRuntimeInstantiated: 0
 --- !u!114 &11422540
 MonoBehaviour:
@@ -1703,8 +1703,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 11449254}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 0
-  instantiationId: -1
+  viewIdField: 3
+  instantiationId: 3
   isRuntimeInstantiated: 0
 --- !u!114 &11441268
 MonoBehaviour:
@@ -1720,10 +1720,13 @@ MonoBehaviour:
   bitMotionType: 1
   bitMoveTime: 0
   isBitFixed: 0
-  reloadTime: 1
+  reloadTime: 1.5
   blade: {fileID: 106938}
   attackTime: 1
   readyTime: 0.25
+  boostSpeed: 80
+  boostTime: 1
+  boostCost: 20
 --- !u!114 &11444040
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1819,8 +1822,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 0}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 0
-  instantiationId: -1
+  viewIdField: 2
+  instantiationId: 2
   isRuntimeInstantiated: 0
 --- !u!114 &11463890
 MonoBehaviour:
@@ -1836,7 +1839,7 @@ MonoBehaviour:
   damageEffect: {fileID: 109874, guid: 45752b7016b587141a9cc7a60c12fe4b, type: 2}
   damage: 100
   damagePerSecond: 0
-  isPhysicsBulletBreak: 0
+  isPhysicsBulletBreak: 1
   isEnergyBulletBreak: 0
   ownDamageRate: 0
   startScale: {x: 0.5, y: 0.5, z: 0.5}

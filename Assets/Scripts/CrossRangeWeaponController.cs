@@ -11,9 +11,16 @@ public class CrossRangeWeaponController : WeaponController
     protected float attackTime;
     [SerializeField]
     protected float readyTime;
-
+    [SerializeField]
+    protected float boostSpeed = -1;
+    [SerializeField]
+    protected float boostTime = -1;
+    [SerializeField]
+    protected int boostCost;
+    
     private Animator weaponAnimator;
     private string animationName = "";
+    private PlayerController playerCtrl;
 
     private const string MOTION_RIGHT_SLASH = "SlashR";
     private const string MOTION_LEFT_SLASH = "SlashL";
@@ -41,6 +48,7 @@ public class CrossRangeWeaponController : WeaponController
                 continue;
             }
             blade.GetComponent<EffectController>().SetOwner(playerTran);
+            playerCtrl = playerTran.GetComponent<PlayerController>();
             break;
         }
     }
@@ -61,6 +69,12 @@ public class CrossRangeWeaponController : WeaponController
         //斬戟モーション
         weaponAnimator.SetBool(animationName, true);
 
+        if (playerCtrl != null && boostSpeed >= 0 && boostTime >= 0)
+        {
+            //前方ダッシュ
+            playerCtrl.WeaponBoost(0, 1, boostSpeed, boostTime, boostCost);
+        }
+
         for (;;)
         {
             if (!isBladeOn)
@@ -71,7 +85,11 @@ public class CrossRangeWeaponController : WeaponController
                 {
                     //ブレードON
                     blade.SetActive(true);
+                    PlayAudio();
                     isBladeOn = true;
+
+                    //停止
+                    playerStatus.InterfareMove(attackTime, null, false);
                 }
                 yield return null;
                 continue;

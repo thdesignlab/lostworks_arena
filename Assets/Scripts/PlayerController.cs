@@ -456,6 +456,39 @@ public class PlayerController : MoveOfCharacter
         }
     }
 
+    public void WeaponBoost(float x = 0, float y = 0, float speed = 0, float time = 0, int consumeSp = 0)
+    {
+        if (!status.CheckSp(consumeSp)) return;
+
+        Vector3 move = Vector3.zero;
+        if (x == 0 && y == 0)
+        {
+            //ジャンプ
+            move = Vector3.up;
+            if (speed <= 0) speed = status.jumpSpeed;
+            if (time <= 0) time = status.jumpLimit;
+        }
+        else
+        {
+            //ブースト
+            move = new Vector3(x, 0, y);
+            if (speed <= 0) speed = status.boostSpeed;
+            if (time <= 0) time = status.boostLimit;
+
+            //ブーストエフェクト
+            motionCtrl.StartBoostEffect(time);
+        }
+
+        if (move != Vector3.zero)
+        {
+            //SP消費
+            status.UseSp(status.boostCost);
+
+            //ブースト
+            base.Move(move, speed, time);
+        }
+    }
+
     private void FallDown()
     {
         //Debug.Log("FallDown");

@@ -588,7 +588,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
         {
             if (interfareMoveTime > 0)
             {
-                if (interfareMoveTime < limit)
+                if (interfareMoveTime < limit || limit == 0)
                 {
                     //残り時間上書き
                     interfareMoveTime = limit;

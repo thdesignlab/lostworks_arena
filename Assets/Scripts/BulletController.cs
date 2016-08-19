@@ -148,7 +148,8 @@ public class BulletController : MoveOfCharacter
                     if (hitEffect != null)
                     {
                         GameObject effectObj = PhotonNetwork.Instantiate(Common.Func.GetResourceEffect(hitEffect.name), myTran.position, hitEffect.transform.rotation, 0);
-                        effectObj.GetComponent<EffectController>().SetOwner(ownerTran);
+                        EffectController effectCtrl = effectObj.GetComponent<EffectController>();
+                        if (effectCtrl != null) SetOwner(ownerTran);
                     }
                 }
 
