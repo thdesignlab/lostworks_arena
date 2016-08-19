@@ -10,10 +10,6 @@ public class SpeedBurstController : WeaponController
     [SerializeField]
     private GameObject effect;
 
-    protected override void Awake()
-    {
-        base.myTran = transform;
-    }
 
     protected override void Action()
     {

@@ -180,6 +180,16 @@ public class PlayerStatus : Photon.MonoBehaviour {
     {
         SetHp(maxHp);
         SetSp(maxSp);
+
+        nowSpeedRate = 1;
+        interfareMoveTime = 0;
+        runSpeed = defaultRunSpeed;
+        jumpSpeed = defaultJumpSpeed;
+        boostSpeed = defaultBoostSpeed;
+        turnSpeed = defaultTurnSpeed;
+        boostTurnSpeed = defaultBoostTurnSpeed;
+        invincibleTime = defaultInvincibleTime;
+        recoverSp = defaultRecoverSp;
     }
 
     //一定間隔ごとにダメージを同期する
@@ -496,6 +506,8 @@ public class PlayerStatus : Photon.MonoBehaviour {
     }
 
     //##### パラメータ変更系 #####
+    private float nowSpeedRate = 1;
+    private float interfareMoveTime = 0;
 
     //最大HP(NPC用)
     public void ReplaceMaxHp(float rate)
@@ -519,7 +531,6 @@ public class PlayerStatus : Photon.MonoBehaviour {
     }
 
     //移動速度アップ・ダウン(負の効果優先)
-    private float nowSpeedRate = 1;
     public bool AccelerateRunSpeed(float rate, float limit, GameObject effect = null, bool isSendRpc = true)
     {
         if (rate == 0)
@@ -581,7 +592,6 @@ public class PlayerStatus : Photon.MonoBehaviour {
     }
 
     //移動制限
-    private float interfareMoveTime = 0;
     public void InterfareMove(float limit, GameObject effect = null, bool isSendRpc = true)
     {
         if (photonView.isMine)
