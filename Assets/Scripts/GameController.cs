@@ -23,6 +23,7 @@ public class GameController : Photon.MonoBehaviour
     private Transform myTran;
     private Transform targetTran;
     private Transform npcTran;
+    private int stageNo = -1;
 
     [HideInInspector]
     public bool isGameReady = false;
@@ -393,11 +394,14 @@ public class GameController : Photon.MonoBehaviour
         GameObject.Find("Fade").GetComponent<SceneFade>().Load(Common.CO.SCENE_TITLE, DialogController.MESSAGE_LOADING);
     }
 
-    public void NpcSpawn(int level = 0)
+    public void NpcSpawn(int no = 0)
     {
         ResetGame();
-        GameObject npc = SpawnProcess("Npc");
-        npc.GetComponent<NpcController>().SetLevel(level);
+        stageNo = no;
+        GameObject npc = SpawnProcess("BaseNpc");
+        NpcController npcCtrl = npc.GetComponent<NpcController>();
+        npcCtrl.SetNpcNo(stageNo);
+        npcCtrl.SetLevel(stageNo);
     }
 
     private GameObject SpawnProcess(string name, int groupId = 0)
@@ -501,5 +505,10 @@ public class GameController : Photon.MonoBehaviour
         {
             PhotonNetwork.Destroy(player);
         }
+    }
+
+    public int GetStageNo()
+    {
+        return stageNo;
     }
 }

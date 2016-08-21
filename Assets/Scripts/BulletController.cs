@@ -98,7 +98,7 @@ public class BulletController : MoveOfCharacter
             if (IsSafety(otherObj)) return;
 
             //ダメージを与える
-            AddDamage(otherObj);
+            AddDamage(otherObj, damage);
 
             //対象を破壊
             TargetDestory(otherObj);
@@ -112,12 +112,12 @@ public class BulletController : MoveOfCharacter
     {
         if (photonView.isMine)
         {
-            if (damage <= 0) return;
+            if (damagePerSecond <= 0) return;
             //Debug.Log("OnStay:"+otherObj.name);
             if (IsSafety(otherObj, false)) return;
 
             //ダメージを与える
-            AddSlipDamage(otherObj);
+            AddSlipDamage(otherObj, damagePerSecond);
         }
     }
 
@@ -129,8 +129,6 @@ public class BulletController : MoveOfCharacter
         {
             if (hitObj.CompareTag("Player"))
             {
-                if (dmg == 0) dmg = damage;
-
                 //プレイヤーステータス
                 PlayerStatus status = targetStatus;
                 if (hitObj.transform != targetTran)
@@ -180,7 +178,6 @@ public class BulletController : MoveOfCharacter
         if (photonView.isMine)
         {
             //ダメージ計算
-            if (dmg == 0) dmg = damagePerSecond;
             float fltDmg = dmg * Time.deltaTime;
             int addDmg = (int)Mathf.Floor(fltDmg);
             dmg -= addDmg;

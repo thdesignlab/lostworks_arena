@@ -114,14 +114,14 @@ public class MenuController : Photon.MonoBehaviour
     }
 
     //NPC生成
-    public void OnNpcCreateButton(int level = 0)
+    public void OnNpcCreateButton(int charaNo = 0)
     {
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
         if (PhotonNetwork.countOfPlayersInRooms > 1 || players.Length > 1)
         {
             return;
         }
-        gameCtrl.NpcSpawn(level);
+        gameCtrl.NpcSpawn(charaNo);
         OnNpcSelectButton(false);
     }
 

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class NpcController : MoveOfCharacter
 {
@@ -17,7 +18,8 @@ public class NpcController : MoveOfCharacter
     private float walkRadius = 100.0f;
     private Vector3 randomDirection;
 
-    private WeaponController[] weapons;
+    //private WeaponController[] weapons;
+    private List<WeaponController> weapons = new List<WeaponController>();
 
     private float preBoostTime = 0;
     private float leftTargetSearch = 0;
@@ -32,6 +34,9 @@ public class NpcController : MoveOfCharacter
 
     private int preHp = 0;
 
+    private int npcNo = -1;
+    private int npcLevel = -1;
+
     // Use this for initialization
     protected override void Awake()
     {
@@ -44,6 +49,7 @@ public class NpcController : MoveOfCharacter
     {
         base.Start();
 
+        SetWeapons();
         SearchTarget();
         StartCoroutine(RandomMoveTarget());
         StartCoroutine(Attack());
@@ -88,8 +94,14 @@ public class NpcController : MoveOfCharacter
         };
     }
 
-    public void SetLevel(int npcLevel)
+    public void SetNpcNo(int no)
     {
+        npcNo = no;
+    }
+
+    public void SetLevel(int level)
+    {
+        npcLevel = level;
         if (npcLevel < 0 || atackIntervalArray.Length < npcLevel) npcLevel = 0;
 
         status.ReplaceMaxHp(hpRateArray[npcLevel]);
@@ -103,25 +115,39 @@ public class NpcController : MoveOfCharacter
         runSpeedRate = runSpeedArray[npcLevel];
         invincibleTimeRate = invincibleTimeArray[npcLevel];
 
-        if (npcLevel >= 3)
+        //if (npcLevel >= 3)
+        //{
+        //    foreach (Transform child in myTran)
+        //    {
+        //        foreach (int key in Common.CO.partsNameArray.Keys)
+        //        {
+        //            if (child.name == Common.CO.partsNameArray[key])
+        //            {
+        //                child.gameObject.SetActive(true);
+        //                break;
+        //            }
+        //        }
+        //    }
+        //}
+    }
+
+    public void SetWeapons()
+    {
+        Transform partsJoint = myTran.FindChild(Common.CO.PARTS_JOINT);
+        foreach (Transform parts in partsJoint)
         {
-            foreach (Transform child in myTran)
+            WeaponController weapon = parts.GetComponentInChildren<WeaponController>();
+            if (weapon != null)
             {
-                foreach (int key in Common.CO.partsNameArray.Keys)
-                {
-                    if (child.name == Common.CO.partsNameArray[key])
-                    {
-                        child.gameObject.SetActive(true);
-                        break;
-                    }
-                }
+                weapon.SetTarget(targetTran);
+                weapons.Add(weapon);
             }
         }
-        weapons = myTran.GetComponentsInChildren<WeaponController>();
-        foreach (WeaponController weapon in weapons)
-        {
-            weapon.SetTarget(targetTran);
-        }
+        //weapons = parts.GetComponentsInChildren<WeaponController>();
+        //foreach (WeaponController weapon in weapons)
+        //{
+        //    weapon.SetTarget(targetTran);
+        //}
     }
 
     IEnumerator RandomMoveTarget()
@@ -185,7 +211,7 @@ public class NpcController : MoveOfCharacter
             {
                 interval = 0.2f;
             }
-            weaponNo = (weaponNo + 1) % weapons.Length;
+            weaponNo = (weaponNo + 1) % weapons.Count;
             yield return new WaitForSeconds(interval);
         }
     }
