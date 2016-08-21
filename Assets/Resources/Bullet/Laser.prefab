@@ -14,7 +14,6 @@ GameObject:
   - 136: {fileID: 13613692}
   - 114: {fileID: 11410922}
   - 114: {fileID: 11407788}
-  - 114: {fileID: 11432834}
   m_Layer: 0
   m_Name: Laser
   m_TagString: Laser
@@ -230,17 +229,6 @@ MonoBehaviour:
   effectSpawn: {fileID: 0}
   activeLimitTime: 0
   activeLimitDistance: 0
---- !u!114 &11432834
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 108382}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 662d55ff3273916409eea65fc61403b3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &11440762
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -252,10 +240,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e612a74990ec7f4da8d009e952dbcdb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damageEffect: {fileID: 0}
   damage: 0
   damagePerSecond: 0
   isPhysicsBulletBreak: 1
   isEnergyBulletBreak: 1
+  ownDamageRate: 1
 --- !u!114 &11457546
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -65,9 +65,13 @@ public class PlayerSetting : Photon.MonoBehaviour
                 //コントローラー設定
                 playerStatus.enabled = true;
 
+                //メインボディ生成
+                CreateNpcBody();
+
                 //装備設定
                 EquipWeaponRandom();
-                
+                //myTran.GetComponent<NpcController>().SetWeapons();
+
                 //NPC情報設定
                 gameCtrl.SetTarget(myTran);
                 gameCtrl.SetNpcTran(myTran);
@@ -135,6 +139,24 @@ public class PlayerSetting : Photon.MonoBehaviour
     //        gameCtrl.ResetGame();
     //    }
     //}
+    private void CreateNpcBody()
+    {
+        //NpcNo取得
+        int stageNo = gameCtrl.GetStageNo();
+
+        //メインボディ名取得
+        string npcName = "Npc";
+
+        //メインボディ生成
+        GameObject charaMainObj = PhotonNetwork.Instantiate(Common.Func.GetResourceCharacter(npcName), Vector3.zero, Quaternion.identity, 0);
+        charaMainObj.name = Common.CO.PARTS_BODY;
+        Transform charaMainTran = charaMainObj.transform;
+
+        //メインボディ紐付け
+        charaMainTran.SetParent(myTran, false);
+        charaMainTran.localPosition = Vector3.zero;
+        charaMainTran.rotation = myTran.rotation;
+    }
 
     private void CreateMainBody()
     {
@@ -217,17 +239,29 @@ public class PlayerSetting : Photon.MonoBehaviour
 
     private void EquipWeaponRandom()
     {
-        foreach (Transform child in myTran)
+        foreach (int partsNo in Common.CO.partsNameArray.Keys)
         {
-            foreach (int key in Common.CO.partsNameArray.Keys)
+            //部位取得
+            string partsName = Common.Func.GetPartsStructure(Common.CO.partsNameArray[partsNo]);
+            Transform parts = myTran.FindChild(partsName);
+            if (parts != null)
             {
-                if (child.name == Common.CO.partsNameArray[key])
-                {
-                    EquipWeapon(child);
-                    break;
-                }
+                //装備
+                EquipWeapon(parts);
             }
         }
+
+        //foreach (Transform child in myTran)
+        //{
+        //    foreach (int key in Common.CO.partsNameArray.Keys)
+        //    {
+        //        if (child.name == Common.CO.partsNameArray[key])
+        //        {
+        //            EquipWeapon(child);
+        //            break;
+        //        }
+        //    }
+        //}
     }
 
     public void EquipWeapon(Transform partsTran, GameObject weapon = null)
