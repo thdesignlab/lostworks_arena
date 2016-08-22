@@ -180,7 +180,7 @@ public class CustomManager : Photon.MonoBehaviour
         PlayerPrefsUtility.Save(Common.PP.USER_CHARACTER, UserManager.userSetCharacter);
         PlayerPrefsUtility.SaveDict<string, int>(Common.PP.USER_EQUIP, UserManager.userEquipment);
         //PhotonNetwork.LoadLevel(Common.CO.SCENE_TITLE);
-        GameObject.Find("Fade").GetComponent<SceneFade>().Load(Common.CO.SCENE_TITLE, DialogController.MESSAGE_LOADING);
+        GameObject.Find("Fade").GetComponent<FadeManager>().Load(Common.CO.SCENE_TITLE, DialogController.MESSAGE_LOADING);
     }
 
     //キャラ回転
@@ -285,6 +285,7 @@ public class CustomManager : Photon.MonoBehaviour
             {
                 //装備
                 GameObject weaponObj = EquipWeapon(parts, UserManager.userEquipment[parts.name]);
+                //Debug.Log(parts.name+" >> "+UserManager.userEquipment[parts.name]);
                 if (weaponObj != null)
                 {
                     //Bit画像設定
@@ -586,6 +587,7 @@ public class CustomManager : Photon.MonoBehaviour
     private void SetWeaponDescription(int weaponNo, GameObject weaponObj = null)
     {
         string[] weaponInfo = Common.Weapon.GetWeaponInfo(weaponNo);
+        if (weaponInfo.Length <= 0) return;
         weaponDescriptionText.text = weaponInfo[Common.Weapon.DETAIL_DESCRIPTION_NO];
 
         //武器詳細説明取得

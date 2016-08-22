@@ -49,7 +49,7 @@ public class PhotonManager : MonoBehaviour
     private InputField roomNameIF;
     private Text roomStatusText;
 
-    private SceneFade fadeCtrl;
+    private FadeManager fadeCtrl;
     private string moveScene = "";
     private string loadmessage = "";
 
@@ -60,6 +60,13 @@ public class PhotonManager : MonoBehaviour
 
     public void Awake()
     {
+        GameObject fadeObj = GameObject.Find("Fade");
+        fadeCtrl = fadeObj.GetComponent<FadeManager>();
+        DontDestroyOnLoad(fadeObj);
+        DontDestroyOnLoad(GameObject.Find("Config"));
+        DontDestroyOnLoad(GameObject.Find("WeaponStore"));
+        DontDestroyOnLoad(GameObject.Find("Debug"));
+
         //テキストエリア
         //messageAreaText = messageArea.transform.FindChild("Message").GetComponent<Text>();
 
@@ -74,16 +81,8 @@ public class PhotonManager : MonoBehaviour
             ReturnModeSelect();
         }
 
-        GameObject fadeObj = GameObject.Find("Fade");
-        fadeCtrl = fadeObj.GetComponent<SceneFade>();
-        DontDestroyOnLoad(fadeObj);
-        DontDestroyOnLoad(GameObject.Find("Config"));
-        DontDestroyOnLoad(GameObject.Find("WeaponStore"));
-        DontDestroyOnLoad(GameObject.Find("Debug"));
-
         //ユーザー情報取得
         UserManager.SetUserInfo();
-
     }
 
     void Update()
@@ -135,7 +134,7 @@ public class PhotonManager : MonoBehaviour
                     DialogController.CloseMessage();
 
                     //部屋選択表示
-                    SwitchNetworkArea(true);
+                    SwitchNetworkArea(true, true);
 
                     //初期値設定
                     PlayerPrefs.SetString("playerName", PhotonNetwork.playerName);
@@ -170,9 +169,12 @@ public class PhotonManager : MonoBehaviour
     }
 
     //初期化
-    public void Init()
+    public void Init(bool isReturn = false)
     {
-        SwitchModeSelectArea(false);
+        if (!isReturn)
+        {
+            SwitchModeSelectArea(false);
+        }
         DialogController.CloseMessage();
         SwitchNetworkArea(false);
         isTapToStart = true;
@@ -186,53 +188,57 @@ public class PhotonManager : MonoBehaviour
 
     public void ReturnModeSelect()
     {
-        Init();
+        Init(true);
         TapToStart();
     }
 
     //モードセレクトダイアログ切り替え
-    public void SwitchModeSelectArea(bool flg)
+    public void SwitchModeSelectArea(bool flg, bool isFade = false)
     {
-        modeSelectArea.SetActive(flg);
+        if (isFade)
+        {
+            fadeCtrl.FadeUI(modeSelectArea, flg);
+        }
+        else
+        {
+            modeSelectArea.SetActive(flg);
+        }
     }
 
-    ////メッセージ切り替え
-    //private void SwitchMessageArea(string text = "")
-    //{
-    //    //Debug.Log("SwitchMessageArea: " + text);
-
-    //    if (text == "")
-    //    {
-    //        DialogController.CloseMessage();
-    //    }
-    //    else
-    //    {
-    //        if (!messageArea)
-    //        {
-    //            messageArea = DialogController.OpenMessage(text);
-    //            messageAreaText = messageArea.transform.GetComponentInChildren<Text>();
-    //        }
-    //        else
-    //        {
-    //            messageAreaText.text = text;
-    //        }
-    //    }
-    //}
-
     //ネットワークダイアログ切り替え
-    private void SwitchNetworkArea(bool flg)
+    private void SwitchNetworkArea(bool flg, bool isFade = false)
     {
-        networkArea.SetActive(flg);
+        if (isFade)
+        {
+            fadeCtrl.FadeUI(networkArea.gameObject, flg, false);
+        }
+        else
+        {
+            networkArea.SetActive(flg);
+        }
+        
         if (!flg)
         {
-            SwitchRoomListArea(flg);
+            SwitchRoomListArea(flg, isFade);
         }
     }
 
     //Room一覧ダイアログ切り替え
-    public void SwitchRoomListArea(bool flg)
+    public void OnSwitchRoomListAreaButton(bool flg)
     {
-        roomListArea.SetActive(flg);
+        SwitchRoomListArea(flg, true);
+    }
+    private void SwitchRoomListArea(bool flg, bool isFade = false)
+    {
+        if (isFade)
+        {
+            fadeCtrl.FadeUI(roomListArea.gameObject, flg, false);
+        }
+        else
+        {
+            roomListArea.SetActive(flg);
+        }
+        
         if (flg)
         {
             SearchRoomList();
@@ -251,7 +257,7 @@ public class PhotonManager : MonoBehaviour
         //キャンセルボタン
         GameObject cancelBtn = (GameObject)Instantiate(roomCancelBtn);
         cancelBtn.transform.SetParent(roomListArea.transform, false);
-        cancelBtn.GetComponent<Button>().onClick.AddListener(() => SwitchRoomListArea(false));
+        cancelBtn.GetComponent<Button>().onClick.AddListener(() => SwitchRoomListArea(false, true));
 
         //Room一覧取得
         RoomInfo[] roomList = PhotonNetwork.GetRoomList();
@@ -278,7 +284,7 @@ public class PhotonManager : MonoBehaviour
     private void TapToStart()
     {
         isTapToStart = false;
-        SwitchModeSelectArea(true);
+        SwitchModeSelectArea(true, true);
 
         //現在はBOTHのみ
         switch (selectableMode)
@@ -306,7 +312,7 @@ public class PhotonManager : MonoBehaviour
     public void LocalModeSelect()
     {
         DialogController.OpenMessage(DialogController.MESSAGE_LOADING);
-        SwitchModeSelectArea(false);
+        SwitchModeSelectArea(false, true);
 
         PhotonNetwork.offlineMode = true;
         moveScene = Common.CO.SCENE_BATTLE;
@@ -317,7 +323,7 @@ public class PhotonManager : MonoBehaviour
     public void NetworkModeSelect()
     {
         DialogController.OpenMessage(DialogController.MESSAGE_LOADING);
-        SwitchModeSelectArea(false);
+        SwitchModeSelectArea(false, true);
 
         PhotonNetwork.offlineMode = false;
         PhotonNetwork.automaticallySyncScene = true;
@@ -360,6 +366,7 @@ public class PhotonManager : MonoBehaviour
     //コンフィグ
     public void OnConfigButton()
     {
+        SwitchModeSelectArea(false, true);
         GameObject.Find("Config").GetComponent<ConfigManager>().OpenConfig();
     }
 

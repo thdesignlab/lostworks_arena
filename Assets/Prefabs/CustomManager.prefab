@@ -1,0 +1,81 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &105864
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 477038}
+  - 114: {fileID: 11408684}
+  m_Layer: 0
+  m_Name: CustomManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &477038
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 105864}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.49, y: 0, z: -0.37}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+--- !u!114 &11408684
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 105864}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 195546eda2f45664a9b7dbd434403ab4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  charaTable: {fileID: 0}
+  spawnPoints:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  charaSize: 0.8
+  partsNameText: {fileID: 0}
+  partsSelectArea: {fileID: 0}
+  weaponSelectArea: {fileID: 0}
+  weaponDetailArea: {fileID: 0}
+  charaLeftArrow: {fileID: 0}
+  charaRightArrow: {fileID: 0}
+  partsUpArrow: {fileID: 0}
+  weaponCloseArrow: {fileID: 0}
+  partsSelectedSprite: {fileID: 21300012, guid: 448fa39e20a754c49a39a1544c65cedd,
+    type: 3}
+  partsNotSelectedSprite: {fileID: 21300010, guid: 448fa39e20a754c49a39a1544c65cedd,
+    type: 3}
+  bitTypeSprites:
+  - {fileID: 21300000, guid: 69a0960bc440bd648a6b0c4f255eebe9, type: 3}
+  - {fileID: 21300000, guid: 2cf33ba52ce0fef4cbbab21e16fe6855, type: 3}
+  - {fileID: 21300000, guid: bb032d438bb54a840aaafd08196e75d1, type: 3}
+  - {fileID: 21300000, guid: 3d8e779413e783c4d9a73301ea85472b, type: 3}
+  - {fileID: 21300000, guid: dcdc4d4fffe5e9240a64f4e6f729dcf9, type: 3}
+  - {fileID: 21300000, guid: 362cfca6e19f8a345ab53d51a9785ba5, type: 3}
+  selectedWeaponButton: {fileID: 140286, guid: ef7eefbbe4460264485034479c7efd4a, type: 2}
+  weaponSelectedColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  weaponNotSelectedColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 105864}
+  m_IsPrefabParent: 1
