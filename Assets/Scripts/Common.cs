@@ -199,6 +199,7 @@ namespace Common
         public const string USER_CHARACTER = "UserCharacter";
         public const string OPEN_CHARACTERS = "OpenCharacters";
         public const string OPEN_WEAPONS = "OpenWeapons";
+        public const string OPEN_MISSIONS = "OpenMissions";
 
         public const string INFO_USER_ID = "UserId";
         public const string INFO_USER_NAME = "UserName";
