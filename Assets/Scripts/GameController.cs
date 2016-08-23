@@ -23,7 +23,6 @@ public class GameController : Photon.MonoBehaviour
     private Transform myTran;
     private Transform targetTran;
     private Transform npcTran;
-    private int stageNo = -1;
 
     [HideInInspector]
     public bool isGameReady = false;
@@ -36,18 +35,26 @@ public class GameController : Photon.MonoBehaviour
     private SpriteStudioController spriteStudioCtrl;
     private Script_SpriteStudio_Root scriptRoot;
 
-    const string MESSAGE_WAITING = "Player waiting...";
+    const string MESSAGE_WAITING = "Player Waiting...";
     const string MESSAGE_CUSTOMIZE = "Customizing...";
     const string MESSAGE_READY = "Ready";
     const string MESSAGE_START = "Go";
     //const string MESSAGE_WIN = "Win";
     //const string MESSAGE_LOSE = "Lose";
-
+    const string MESSAGE_LEVEL_SELECT = "Mode Selecting...";
+    const string MESSAGE_STAGE_READY = "Stage";
+    const string MESSAGE_STAGE_CLEAR = "Stage Clear!!";
+    const string MESSAGE_STAGE_NEXT = "Next...";
+    
     [HideInInspector]
     public int gameMode = -1;
     public const int GAME_MODE_MISSION = 1;
     public const int GAME_MODE_PLACTICE = 2;
     public const int GAME_MODE_VS = 3;
+    [HideInInspector]
+    public int stageNo = -1;
+    [HideInInspector]
+    public int stageLevel = -1;
 
 
     [HideInInspector]
@@ -189,6 +196,7 @@ public class GameController : Photon.MonoBehaviour
     [PunRPC]
     private void ResetGameRPC()
     {
+        isGameReady = false;
         isGameStart = false;
         isGameEnd = false;
         if (PhotonNetwork.player == PhotonNetwork.masterClient)
@@ -232,8 +240,19 @@ public class GameController : Photon.MonoBehaviour
                 //Debug.Log("GameEnd");
                 if (gameMode == GAME_MODE_MISSION)
                 {
-                    //NEXT
-
+                    //ミッションモード
+                    //NextStage
+                    yield return new WaitForSeconds(3.0f);
+                    if (SetNextStage())
+                    {
+                        SetTextUp(MESSAGE_STAGE_NEXT, colorWait);
+                        yield return new WaitForSeconds(5.0f);
+                        StageSetting();
+                    }
+                    else
+                    {
+                        SetTextCenter(MESSAGE_STAGE_CLEAR, colorWait);
+                    }
                 }
                 yield return new WaitForSeconds(1.0f);
                 continue;
@@ -291,30 +310,55 @@ public class GameController : Photon.MonoBehaviour
                         //Debug.Log("playerStatuses: " + playerStatuses.Count.ToString());
                         if (playerStatuses.Count == needPlayerCount)
                         {
-                            //カウントダウン
-                            isGameReady = true;
+                            //バトル準備完了
+                            GameReady();
+
                             SetTextUp();
-                            SetTextCenter(MESSAGE_READY, colorReady, 3);
+                            if (gameMode == GAME_MODE_MISSION)
+                            {
+                                //ステージ文字
+                                SetTextCenter(MESSAGE_STAGE_READY + stageNo.ToString(), colorReady);
+                                yield return new WaitForSeconds(3);
+                            }
+
+                            //カウントダウン
+                            SetTextCenter(MESSAGE_READY, colorReady);
                             yield return new WaitForSeconds(3);
                             for (int i = readyTime; i > 0; i--)
                             {
-                                SetTextCenter(i.ToString(), colorReady, 1);
+                                SetTextCenter(i.ToString(), colorReady);
                                 yield return new WaitForSeconds(1);
                             }
                             SetTextCenter(MESSAGE_START, colorReady, 3);
 
                             //対戦スタート
                             GameStart();
-                            isGameReady = false;
                         }
                     }
                     else
                     {
-                        if (PhotonNetwork.countOfPlayersInRooms < needPlayerCount)
+                        if (gameMode == GAME_MODE_MISSION)
                         {
-                            //SetWaitMessage(MESSAGE_WAITING);
-                            SetTextUp(MESSAGE_WAITING, colorWait);
-                            isGameReady = false;
+                            //ミッションモード
+                            if (stageLevel > 0)
+                            {
+                                //NPC召喚
+                                StageSetting();
+                            }
+                            else
+                            {
+                                //レベル未選択
+                                SetTextUp(MESSAGE_LEVEL_SELECT, colorWait);
+                            }
+                        }
+                        else
+                        {
+                            //対戦モード
+                            if (PhotonNetwork.countOfPlayersInRooms < needPlayerCount)
+                            {
+                                //SetWaitMessage(MESSAGE_WAITING);
+                                SetTextUp(MESSAGE_WAITING, colorWait);
+                            }
                         }
                     }
                 }
@@ -323,7 +367,6 @@ public class GameController : Photon.MonoBehaviour
                     //装備設定中
                     //SetWaitMessage(MESSAGE_CUSTOMIZE + playerSetting.GetLeftCustomTime().ToString());
                     SetTextUp(MESSAGE_CUSTOMIZE + playerSetting.GetLeftCustomTime().ToString(), colorWait);
-                    isGameReady = true;
                 }
             }
 
@@ -407,16 +450,6 @@ public class GameController : Photon.MonoBehaviour
         GameObject.Find("Fade").GetComponent<FadeManager>().Load(Common.CO.SCENE_TITLE, DialogController.MESSAGE_LOADING);
     }
 
-    public void NpcSpawn(int no = 0)
-    {
-        ResetGame();
-        stageNo = no;
-        GameObject npc = SpawnProcess("BaseNpc");
-        NpcController npcCtrl = npc.GetComponent<NpcController>();
-        npcCtrl.SetNpcNo(stageNo);
-        npcCtrl.SetLevel(stageNo);
-    }
-
     private GameObject SpawnProcess(string name, int groupId = 0)
     {
         Transform spawnPoint = GetSpawnPoint();
@@ -435,14 +468,30 @@ public class GameController : Photon.MonoBehaviour
         GameObject[] spawnPoints = GameObject.FindGameObjectsWithTag("SpawnPoint");
         if (spawnPoints.Length <= 0) return null;
 
-        //int index = Random.Range(0, spawnPoints.Length);
-        //int index = GameObject.FindGameObjectsWithTag("Player").Length;
-        int index = PhotonNetwork.countOfPlayersInRooms;
-        return spawnPoints[index].transform;
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        GameObject spawnObj = spawnPoints[0];
+        if (player != null)
+        {
+            Transform playerTran = player.transform;
+            float preDistance = -1;
+            foreach (GameObject spawnPoint in spawnPoints)
+            {
+                float distance = Vector3.Distance(playerTran.position, spawnPoint.transform.position);
+                if (preDistance < 0 || preDistance < distance)
+                {
+                    spawnObj = spawnPoint;
+                    preDistance = distance;
+                }
+            }
+        }
+        //int index = PhotonNetwork.countOfPlayersInRooms;
+        return spawnObj.transform;
     }
 
-    private void GameStart()
+    private void GameReady()
     {
+        isGameReady = true;
+
         foreach (PlayerStatus playerStatus in playerStatuses)
         {
             playerStatus.Init();
@@ -453,6 +502,15 @@ public class GameController : Photon.MonoBehaviour
             if (weponCtrl == null) continue;
             weponCtrl.SetEnable(true);
         }
+    }
+
+    private void GameStart()
+    {
+        foreach (PlayerStatus playerStatus in playerStatuses)
+        {
+            playerStatus.Init();
+        }
+        isGameReady = false;
         isGameStart = true;
     }
 
@@ -520,16 +578,14 @@ public class GameController : Photon.MonoBehaviour
         }
     }
 
-    public int GetStageNo()
-    {
-        return stageNo;
-    }
-
     private void CheckMode()
     {
         if (PhotonNetwork.offlineMode)
         {
             gameMode = GAME_MODE_MISSION;
+
+            //レベル設定ダイアログ
+            stageLevel = 1;
         }
         else
         {
@@ -537,4 +593,47 @@ public class GameController : Photon.MonoBehaviour
         }
     }
 
+
+    //##### MissionMode #####
+
+    //現在のステージNo取得
+    public int GetStageNo()
+    {
+        return stageNo;
+    }
+
+    //次のステージNo設定
+    private bool SetNextStage()
+    {
+        //次のステージチェック
+        if (stageNo >= 3) return false;
+        stageNo++;
+        return true;
+    }
+
+    //ステージのNPCなどの準備
+    private void StageSetting()
+    {
+        NpcSpawn(stageNo);
+    }
+
+    //NPC生成
+    public void NpcSpawn(int no = -1)
+    {
+        ResetGame();
+
+        if (no > 0) stageNo = no;
+        if (stageNo <= 0) stageNo = 1;
+
+        //ステージのNPC取得
+        stageLevel = stageNo;
+        string npcName = "BaseNpc";
+
+        GameObject npc = SpawnProcess(npcName);
+        NpcController npcCtrl = npc.GetComponent<NpcController>();
+
+        //NPCステータス等設定
+        npcCtrl.SetNpcNo(stageNo);
+        npcCtrl.SetLevel(stageLevel);
+    }
 }
