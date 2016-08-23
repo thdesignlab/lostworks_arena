@@ -44,6 +44,13 @@ public class GameController : Photon.MonoBehaviour
     //const string MESSAGE_LOSE = "Lose";
 
     [HideInInspector]
+    public int gameMode = -1;
+    public const int GAME_MODE_MISSION = 1;
+    public const int GAME_MODE_PLACTICE = 2;
+    public const int GAME_MODE_VS = 3;
+
+
+    [HideInInspector]
     public bool isDebugMode = false;
 
     void Awake()
@@ -51,6 +58,7 @@ public class GameController : Photon.MonoBehaviour
         isDebugMode = GameObject.Find("Debug").GetComponent<MyDebug>().isDebugMode;
         spriteStudioCtrl = GameObject.Find("SpriteStudioController").GetComponent<SpriteStudioController>();
         SpawnMyPlayerEverywhere();
+        CheckMode();
     }
 
     void Start()
@@ -222,6 +230,11 @@ public class GameController : Photon.MonoBehaviour
             if (isGameEnd)
             {
                 //Debug.Log("GameEnd");
+                if (gameMode == GAME_MODE_MISSION)
+                {
+                    //NEXT
+
+                }
                 yield return new WaitForSeconds(1.0f);
                 continue;
             }
@@ -511,4 +524,17 @@ public class GameController : Photon.MonoBehaviour
     {
         return stageNo;
     }
+
+    private void CheckMode()
+    {
+        if (PhotonNetwork.offlineMode)
+        {
+            gameMode = GAME_MODE_MISSION;
+        }
+        else
+        {
+            gameMode = GAME_MODE_VS;
+        }
+    }
+
 }

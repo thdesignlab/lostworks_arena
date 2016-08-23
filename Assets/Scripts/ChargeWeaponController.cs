@@ -24,7 +24,7 @@ public class ChargeWeaponController : BulletWeaponController
                     return;
                 }
 
-                if (!gameCtrl.isGameReady
+                if ((gameCtrl != null && !gameCtrl.isGameReady)
                     && ((Input.GetMouseButton(0) && !base.isNpc) || (chargeTime <= npcChargeTime && base.isNpc))
                 )
                 {
