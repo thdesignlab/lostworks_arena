@@ -139,4 +139,9 @@ public class SpriteStudioController : MonoBehaviour
         return CreateAnimation(obj, text, pos);
     }
 
+    public void ResetSprite()
+    {
+        view3D = null;
+        scriptRoots = new Dictionary<string, Script_SpriteStudio_Root>();
+    }
 }

@@ -24,6 +24,7 @@ public class GameController : Photon.MonoBehaviour
     private Transform targetTran;
     private Transform npcTran;
 
+    private bool isWin = false;
     [HideInInspector]
     public bool isGameReady = false;
     [HideInInspector]
@@ -43,32 +44,47 @@ public class GameController : Photon.MonoBehaviour
     //const string MESSAGE_LOSE = "Lose";
     const string MESSAGE_LEVEL_SELECT = "Mode Selecting...";
     const string MESSAGE_STAGE_READY = "Stage";
-    const string MESSAGE_STAGE_CLEAR = "Stage Clear!!";
-    const string MESSAGE_STAGE_NEXT = "Next...";
+    const string MESSAGE_ROUND_READY = "Round";
+    const string MESSAGE_MISSION_CLEAR = "Mission Clear!!";
+    const string MESSAGE_STAGE_NEXT = "Next";
+    const string MESSAGE_GAME_OVER = "GameOver...";
     
+
     [HideInInspector]
     public int gameMode = -1;
     public const int GAME_MODE_MISSION = 1;
-    public const int GAME_MODE_PLACTICE = 2;
+    public const int GAME_MODE_SELECT = 2;
     public const int GAME_MODE_VS = 3;
     [HideInInspector]
     public int stageNo = -1;
     [HideInInspector]
     public int stageLevel = -1;
 
+    private int winCount = 0;
+    private int loseCount = 0;
 
     [HideInInspector]
     public bool isDebugMode = false;
 
     void Awake()
     {
-        isDebugMode = GameObject.Find("Debug").GetComponent<MyDebug>().isDebugMode;
-        spriteStudioCtrl = GameObject.Find("SpriteStudioController").GetComponent<SpriteStudioController>();
-        SpawnMyPlayerEverywhere();
+        Init();
         CheckMode();
+        SpawnMyPlayerEverywhere();
     }
 
     void Start()
+    {
+        StartCoroutine(ChceckGame());
+    }
+
+    private void Init()
+    {
+        isDebugMode = GameObject.Find("Debug").GetComponent<MyDebug>().isDebugMode;
+        spriteStudioCtrl = GameObject.Find("SpriteStudioController").GetComponent<SpriteStudioController>();
+    }
+
+    private void SetCanvasInfo()
     {
         //キャンバス情報
         Transform screenTran = Camera.main.transform.FindChild(Common.CO.SCREEN_CANVAS);
@@ -76,8 +92,6 @@ public class GameController : Photon.MonoBehaviour
         textCenter = screenTran.FindChild(Common.CO.TEXT_CENTER).GetComponent<Text>();
         SetTextUp();
         SetTextCenter();
-
-        StartCoroutine(ChceckGame());
     }
 
     private void SetTextUp(string text = "", Color color = default(Color), float fadeout = 0)
@@ -165,21 +179,15 @@ public class GameController : Photon.MonoBehaviour
 
     IEnumerator MessageFadeOut(Text textObj, float fadeout)
     {
-        //int second = 3;
-        //messageCanvasGroup.alpha = 1;
         float startAlpha = textObj.color.a;
         float nowAlpha = startAlpha;
         for (;;)
         {
-            //    messageCanvasGroup.alpha -= Time.deltaTime / second;
-            //    if (messageCanvasGroup.alpha <= 0) break;
             nowAlpha -= Time.deltaTime / fadeout * startAlpha;
             textObj.color = new Color(textObj.color.r, textObj.color.g, textObj.color.b, nowAlpha);
             if (nowAlpha <= 0) break;
             yield return null;
         }
-        //messageText.text = "";
-        //messageCanvas.SetActive(false);
         textObj.enabled = false;
     }
 
@@ -196,6 +204,7 @@ public class GameController : Photon.MonoBehaviour
     [PunRPC]
     private void ResetGameRPC()
     {
+        isWin = false;
         isGameReady = false;
         isGameStart = false;
         isGameEnd = false;
@@ -241,18 +250,55 @@ public class GameController : Photon.MonoBehaviour
                 if (gameMode == GAME_MODE_MISSION)
                 {
                     //ミッションモード
-                    //NextStage
                     yield return new WaitForSeconds(3.0f);
-                    if (SetNextStage())
+                    bool isStageSetting = false;
+                    if (isWin)
                     {
-                        SetTextUp(MESSAGE_STAGE_NEXT, colorWait);
-                        yield return new WaitForSeconds(5.0f);
-                        StageSetting();
+                        //勝利
+                        if (winCount >= 3)
+                        {
+                            //ステージクリア
+                            //NextStage
+                            if (SetNextStage())
+                            {
+                                isStageSetting = true;
+                                SetTextUp(MESSAGE_STAGE_NEXT + MESSAGE_STAGE_READY + "...", colorWait);
+                            }
+                            else
+                            {
+                                //全ステージクリア
+                                SetTextCenter(MESSAGE_MISSION_CLEAR, colorWait);
+                            }
+                        }
+                        else
+                        {
+                            //NextRound
+                            isStageSetting = true;
+                            SetTextUp(MESSAGE_STAGE_NEXT + MESSAGE_ROUND_READY + "...", colorWait);
+                        }
                     }
                     else
                     {
-                        SetTextCenter(MESSAGE_STAGE_CLEAR, colorWait);
+                        //敗北
+                        if (loseCount >= 3)
+                        {
+                            //ゲームオーバー
+                            SetTextCenter(MESSAGE_GAME_OVER, colorWin);
+                        }
+                        else
+                        {
+                            isStageSetting = true;
+                            SetTextUp(MESSAGE_STAGE_NEXT + MESSAGE_ROUND_READY + "...", colorWait);
+                        }
                     }
+
+                    //ステージセッティング
+                    if (isStageSetting)
+                    {
+                        yield return new WaitForSeconds(5.0f);
+                        StageSetting();
+                    }
+
                 }
                 yield return new WaitForSeconds(1.0f);
                 continue;
@@ -316,8 +362,15 @@ public class GameController : Photon.MonoBehaviour
                             SetTextUp();
                             if (gameMode == GAME_MODE_MISSION)
                             {
-                                //ステージ文字
-                                SetTextCenter(MESSAGE_STAGE_READY + stageNo.ToString(), colorReady);
+                                int round = winCount + loseCount + 1;
+                                if (round == 1)
+                                {
+                                    //ステージ文字
+                                    SetTextCenter(MESSAGE_STAGE_READY + stageNo.ToString(), colorReady, 2.5f);
+                                    yield return new WaitForSeconds(3);
+                                }
+                                //ラウンド文字
+                                SetTextCenter(MESSAGE_ROUND_READY + round.ToString(), colorReady, 2.5f);
                                 yield return new WaitForSeconds(3);
                             }
 
@@ -384,13 +437,9 @@ public class GameController : Photon.MonoBehaviour
     public void SpawnMyPlayerEverywhere()
     {
         CleanNpc();
-        ResetGame();
 
         //ベースボディ生成
-        string charaName = Common.CO.CHARACTER_BASE;
-        GameObject player = SpawnProcess(charaName);
-
-        playerSetting = player.GetComponent<PlayerSetting>();
+        PlayerSpawn();
     }
 
     private void CleanNpc()
@@ -516,30 +565,21 @@ public class GameController : Photon.MonoBehaviour
 
     private void GameEnd()
     {
-        isGameEnd = true;
-        ResultMessage(targetTran == null) ;
-    }
-
-    private void ResultMessage(bool isWin)
-    {
-        if (isWin)
+        if (targetTran == null)
         {
-            //winCanvas.SetActive(true);
+            //勝利
+            winCount++;
+            isWin = true;
             SetTextCenter(spriteStudioCtrl.ANIMATION_TEXT_WIN, colorWin);
-            //StartCoroutine(ResultMessageDelete(textCenter));
         }
         else
         {
-            //loseCanvas.SetActive(true);
+            //敗北
+            loseCount++;
             SetTextCenter(spriteStudioCtrl.ANIMATION_TEXT_LOSE, colorLose);
-            //StartCoroutine(ResultMessageDelete(textCenter));
         }
+        isGameEnd = true;
     }
-    //IEnumerator ResultMessageDelete(GameObject c)
-    //{
-    //    yield return new WaitForSeconds(10);
-    //    c.SetActive(false);
-    //}
 
     public static string OnUGuiButton(Vector3 _scrPos)
     {
@@ -582,6 +622,7 @@ public class GameController : Photon.MonoBehaviour
     {
         if (PhotonNetwork.offlineMode)
         {
+            //ミッションモード
             gameMode = GAME_MODE_MISSION;
 
             //レベル設定ダイアログ
@@ -589,6 +630,7 @@ public class GameController : Photon.MonoBehaviour
         }
         else
         {
+            //対戦モード
             gameMode = GAME_MODE_VS;
         }
     }
@@ -608,13 +650,36 @@ public class GameController : Photon.MonoBehaviour
         //次のステージチェック
         if (stageNo >= 3) return false;
         stageNo++;
+        winCount = 0;
+        loseCount = 0;
+
         return true;
     }
 
     //ステージのNPCなどの準備
     private void StageSetting()
     {
+        if (myTran == null)
+        {
+            Destroy(Camera.main.gameObject);
+            Destroy(targetTran.gameObject);
+            Init();
+            PlayerSpawn();
+        }
         NpcSpawn(stageNo);
+    }
+
+    private void PlayerSpawn()
+    {
+        //スプライトスタジオキャッシュリセット
+        spriteStudioCtrl.ResetSprite();
+
+        //ベースボディ生成
+        string charaName = Common.CO.CHARACTER_BASE;
+        GameObject player = SpawnProcess(charaName);
+        playerSetting = player.GetComponent<PlayerSetting>();
+        SetCanvasInfo();
+        ResetGame();
     }
 
     //NPC生成
