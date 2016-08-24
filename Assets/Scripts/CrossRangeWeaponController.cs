@@ -17,7 +17,11 @@ public class CrossRangeWeaponController : WeaponController
     protected float boostTime = -1;
     [SerializeField]
     protected int boostCost;
-    
+    [SerializeField]
+    protected bool isStopInAttack;
+    [SerializeField]
+    private float chargeTime;
+
     private Animator weaponAnimator;
     private string animationName = "";
     private PlayerController playerCtrl;
@@ -66,8 +70,10 @@ public class CrossRangeWeaponController : WeaponController
         float readyProcTime = 0;
         float attackProcTime = 0;
 
+        if (chargeTime > 0) yield return new WaitForSeconds(chargeTime);
+
         //斬戟モーション
-        weaponAnimator.SetBool(animationName, true);
+        if (weaponAnimator != null) weaponAnimator.SetBool(animationName, true);
 
         if (playerCtrl != null && boostSpeed >= 0 && boostTime >= 0)
         {
@@ -88,8 +94,11 @@ public class CrossRangeWeaponController : WeaponController
                     PlayAudio();
                     isBladeOn = true;
 
-                    //停止
-                    playerStatus.InterfareMove(attackTime, null, false);
+                    if (isStopInAttack)
+                    {
+                        //停止
+                        playerStatus.InterfareMove(attackTime, null, false);
+                    }
                 }
                 yield return null;
                 continue;
@@ -109,7 +118,7 @@ public class CrossRangeWeaponController : WeaponController
             yield return null;
         }
 
-        weaponAnimator.SetBool(animationName, false);
+        if (weaponAnimator != null) weaponAnimator.SetBool(animationName, false);
 
         base.EndAction();
     }
@@ -117,7 +126,7 @@ public class CrossRangeWeaponController : WeaponController
     public override bool IsEnableFire()
     {
         if (!base.IsEnableFire()) return false;
-        if (blade == null || animationName == "") return false;
+        if (blade == null) return false;
         return true;
     }
 

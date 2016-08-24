@@ -384,6 +384,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
     public void UseSp(int sp)
     {
         nowSp -= sp;
+        if (nowSp < 0) nowSp = 0;
     }
     public bool CheckSp(int sp)
     {
@@ -792,6 +793,18 @@ public class PlayerStatus : Photon.MonoBehaviour {
             if (loseCount < count) markFlg = false;
             obj.SetActive(markFlg);
             count++;
+        }
+    }
+
+    public void WeaponBoost(float x = 0, float y = 0, float speed = 0, float time = 0, int consumeSp = 0)
+    {
+        if (isNpc)
+        {
+
+        }
+        else
+        {
+
         }
     }
 }

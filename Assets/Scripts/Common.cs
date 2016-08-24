@@ -180,6 +180,7 @@ namespace Common
             TAG_BULLET_ENERGY,
             TAG_BULLET_LASER,
             TAG_BULLET_EXTRA,
+            TAG_EFFECT,
         };
 
         //オブジェ
@@ -365,14 +366,33 @@ namespace Common
         public const int DETAIL_NAME_NO = 1;            //キャラ名
         public const int DETAIL_DESCRIPTION_NO = 2;     //説明
         public const int DETAIL_OBTAIN_TYPE_NO = 3;     //取得タイプ
-        public const int DETAIL_EXTRA_WEAPON_NO = 4;     //必殺技武器No
+        public const int DETAIL_EXTRA_WEAPON_NO = 4;     //必殺武器No
 
         //キャラクターリスト
         public static Dictionary<int, string[]> characterLineUp = new Dictionary<int, string[]>()
         {
-            {0, new string[]{ "Hero1", "るり", "", OBTAIN_TYPE_INIT, "10000"}},
+            {0, new string[]{ "Hero1", "るり", "", OBTAIN_TYPE_INIT, "10002"}},
             {1, new string[]{ "Hero2", "おだんご", "", OBTAIN_TYPE_INIT, "10001"}},
+            {1000, new string[]{ "Npc", "かぷせる", "", OBTAIN_TYPE_NONE, "10002"}},
         };
+
+        public static string[] GetCharacterInfo(int characterNo)
+        {
+            string[] charaInfo = new string[] { };
+            if (characterLineUp.ContainsKey(characterNo))
+            {
+                charaInfo = characterLineUp[characterNo];
+            }
+            return charaInfo; 
+        }
+
+        public static int GetExtraWeaponNo(int characterNo)
+        {
+            string[] charaInfo = GetCharacterInfo(characterNo);
+            if (charaInfo.Length <= 0) return -1;
+            string weaponNo = charaInfo[DETAIL_EXTRA_WEAPON_NO];
+            return int.Parse(weaponNo);
+        }
     }
 
     //### 武器詳細 ###
@@ -437,6 +457,7 @@ namespace Common
         {
             { 10000, new string[]{ "ExtraArmor", "", "", OBTAIN_TYPE_INIT}},
             { 10001, new string[]{ "ExtraBeam", "", "", OBTAIN_TYPE_INIT}},
+            { 10002, new string[]{ "ExtraBurning", "", "", OBTAIN_TYPE_INIT}},
         };
 
         //部位ごとの武器リスト取得

@@ -458,8 +458,6 @@ public class PlayerController : MoveOfCharacter
 
     public void WeaponBoost(float x = 0, float y = 0, float speed = 0, float time = 0, int consumeSp = 0)
     {
-        if (!status.CheckSp(consumeSp)) return;
-
         Vector3 move = Vector3.zero;
         if (x == 0 && y == 0)
         {
@@ -486,6 +484,7 @@ public class PlayerController : MoveOfCharacter
 
             //ブースト
             base.Move(move, speed, time);
+            status.InterfareTurn(0, time);
         }
     }
 

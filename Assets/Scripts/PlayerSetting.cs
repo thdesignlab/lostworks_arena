@@ -70,7 +70,6 @@ public class PlayerSetting : Photon.MonoBehaviour
 
                 //装備設定
                 EquipWeaponRandom();
-                //myTran.GetComponent<NpcController>().SetWeapons();
 
                 //NPC情報設定
                 gameCtrl.SetTarget(myTran);
@@ -101,8 +100,6 @@ public class PlayerSetting : Photon.MonoBehaviour
                 //装備設定
                 EquipWeaponUserInfo();
                 isCustomEnd = true;
-                //weaponStroe.CustomMenuOpen();
-                //StartCoroutine(CustomizeCountDown());
             }
             //playerCanvas.SetActive(true);
         }
@@ -126,19 +123,9 @@ public class PlayerSetting : Photon.MonoBehaviour
             //カスタマイズ完了FLG
             isCustomEnd = true;
             SetCustomStatus();
-            //StartCoroutine(CustomizeCountDown());
         }
     }
 
-    //void Start()
-    //{
-    //    if (!isActiveSceane) return;
-
-    //    if (isNpc || !photonView.isMine)
-    //    {
-    //        gameCtrl.ResetGame();
-    //    }
-    //}
     private void CreateNpcBody()
     {
         //NpcNo取得
@@ -225,10 +212,21 @@ public class PlayerSetting : Photon.MonoBehaviour
             Transform parts = myTran.FindChild(partsName);
             if (parts != null)
             {
-                if (!UserManager.userEquipment.ContainsKey(parts.name)) continue;
+                int wepNo = -1;
+                if (parts.name == Common.CO.PARTS_EXTRA)
+                {
+                    //専用武器取得
+                    wepNo = Common.Character.GetExtraWeaponNo(UserManager.userSetCharacter);
+                }
+                else
+                {
+                    //装備中武器取得
+                    if (!UserManager.userEquipment.ContainsKey(parts.name)) continue;
+                    wepNo = UserManager.userEquipment[parts.name];
+                }
 
                 //武器取得
-                string weaponName = Common.Weapon.GetWeaponName(UserManager.userEquipment[parts.name], true);
+                string weaponName = Common.Weapon.GetWeaponName(wepNo, true);
                 GameObject weapon = (GameObject)Resources.Load(Common.Func.GetResourceWeapon(weaponName));
 
                 //装備
@@ -250,18 +248,6 @@ public class PlayerSetting : Photon.MonoBehaviour
                 EquipWeapon(parts);
             }
         }
-
-        //foreach (Transform child in myTran)
-        //{
-        //    foreach (int key in Common.CO.partsNameArray.Keys)
-        //    {
-        //        if (child.name == Common.CO.partsNameArray[key])
-        //        {
-        //            EquipWeapon(child);
-        //            break;
-        //        }
-        //    }
-        //}
     }
 
     public void EquipWeapon(Transform partsTran, GameObject weapon = null)

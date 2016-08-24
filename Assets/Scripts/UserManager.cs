@@ -92,7 +92,7 @@ public class UserManager
                 }
                 break;
             }
-            userEquipment[Common.CO.PARTS_EXTRA] = Common.Weapon.GetExtraWeaponNo(userSetCharacter);
+            userEquipment[Common.CO.PARTS_EXTRA] = -1;
             PlayerPrefsUtility.SaveDict<string, int>(Common.PP.USER_EQUIP, userEquipment);
         }
 
@@ -130,7 +130,7 @@ public class UserManager
 
     public static void SetUserInfo()
     {
-        //データ削除
+        //データ削除(debug用)
         //PlayerPrefs.DeleteAll();
 
         if (IsInitUser())

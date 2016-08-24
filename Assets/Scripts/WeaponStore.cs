@@ -241,6 +241,11 @@ public class WeaponStore : Photon.MonoBehaviour
             case Common.CO.PARTS_KIND_SUB:
                 weapon = SelectWeapon(Common.Weapon.subWeaponLineUp);
                 break;
+
+            case Common.CO.PARTS_KIND_EXTRA:
+                weapon = SelectWeapon(Common.Weapon.extraWeaponLineUp);
+                Debug.Log(weapon);
+                break;
         }
 
         return weapon;
