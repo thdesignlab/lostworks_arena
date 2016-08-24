@@ -482,7 +482,7 @@ public class PlayerController : MoveOfCharacter
         if (move != Vector3.zero)
         {
             //SP消費
-            status.UseSp(status.boostCost);
+            status.UseSp(consumeSp);
 
             //ブースト
             base.Move(move, speed, time);

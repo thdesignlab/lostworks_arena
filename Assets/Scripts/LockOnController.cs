@@ -21,7 +21,7 @@ public class LockOnController : Photon.MonoBehaviour
 
     private bool isACtiveSceane = true;
 
-    void Awake ()
+    void Awake()
     {
         if (SceneManager.GetActiveScene().name == Common.CO.SCENE_CUSTOM)
         {
@@ -32,24 +32,24 @@ public class LockOnController : Photon.MonoBehaviour
 
         myTran = transform;
         //GameObject targetObj = GameObject.Find(Common.CO.SCREEN_CANVAS+"TargetMark");
-	}
-    void Start()
-    {
-        if (!isACtiveSceane) return;
-
-        CanvasRect = GameObject.FindGameObjectWithTag("PlayerCanvas").GetComponent<RectTransform>();
-        GameObject targetObj = Camera.main.transform.FindChild(Common.CO.SCREEN_CANVAS + Common.CO.TARGET_MARK).gameObject;
-        if (targetObj != null)
-        {
-            targetMarkImg = targetObj.GetComponent<RawImage>();
-            targetMarkRectTran = targetObj.GetComponent<RectTransform>();
-        }
-
-        //ステータス取得
-        //status = myTran.root.GetComponent<PlayerStatus>();
-        //Debug.Log(myTran.name+" >> "+status);
-        StartCoroutine(SetStatus());
     }
+    //void Start()
+    //{
+    //    if (!isACtiveSceane) return;
+
+    //    CanvasRect = GameObject.FindGameObjectWithTag("PlayerCanvas").GetComponent<RectTransform>();
+    //    GameObject targetObj = Camera.main.transform.FindChild(Common.CO.SCREEN_CANVAS + Common.CO.TARGET_MARK).gameObject;
+    //    if (targetObj != null)
+    //    {
+    //        targetMarkImg = targetObj.GetComponent<RawImage>();
+    //        targetMarkRectTran = targetObj.GetComponent<RectTransform>();
+    //    }
+
+    //    //ステータス取得
+    //    //status = myTran.root.GetComponent<PlayerStatus>();
+    //    //Debug.Log(myTran.name+" >> "+status);
+    //    StartCoroutine(SetStatus());
+    //}
 
     void OnBecameInvisible()
     {
@@ -58,16 +58,6 @@ public class LockOnController : Photon.MonoBehaviour
         //Debug.Log(myTran.name + " >> OnBecameInvisible");
 
         SwitchLockOn(false);
-
-        //if (status == null) return;
-
-        //if (!photonView.isMine || status.IsNpc())
-        //{
-        //    //Debug.Log("Invisible" + transform.root.name);
-        //    isLockOn = false;
-        //    status.SetLocked(false);
-        //    SetTargetMark(false);
-        //}
     }
     void OnBecameVisible()
     {
@@ -76,15 +66,6 @@ public class LockOnController : Photon.MonoBehaviour
         //Debug.Log(myTran.name + " >> OnBecameVisible");
 
         SwitchLockOn(true);
-        //if (status == null) return;
-
-        //if (!photonView.isMine || status.IsNpc())
-        //{
-        //    Debug.Log("Visible: " + myTran.root.name);
-        //    isLockOn = true;
-        //    status.SetLocked(true);
-        //    SetTargetMark(true);
-        //}
     }
 
     private void SwitchLockOn(bool flg)
@@ -116,6 +97,24 @@ public class LockOnController : Photon.MonoBehaviour
     {
         if (!isACtiveSceane) return;
 
+        if (status == null || targetMarkRectTran == null)
+        {
+            CanvasRect = GameObject.FindGameObjectWithTag("PlayerCanvas").GetComponent<RectTransform>();
+            GameObject targetObj = Camera.main.transform.FindChild(Common.CO.SCREEN_CANVAS + Common.CO.TARGET_MARK).gameObject;
+            if (targetObj != null)
+            {
+                targetMarkImg = targetObj.GetComponent<RawImage>();
+                targetMarkRectTran = targetObj.GetComponent<RectTransform>();
+            }
+            status = myTran.root.GetComponent<PlayerStatus>();
+            if (status != null && targetMarkRectTran != null)
+            {
+                SwitchLockOn(isVisible);
+            }
+            return;
+        }
+
+
         if (isLockOn)
         {
             if (targetMarkRectTran.localScale != Vector3.one * markLastSizeRate)
@@ -135,17 +134,17 @@ public class LockOnController : Photon.MonoBehaviour
         }
     }
 
-    IEnumerator SetStatus()
-    {
-        for (;;)
-        {
-            status = myTran.root.GetComponent<PlayerStatus>();
-            if (status != null)
-            {
-                SwitchLockOn(isVisible);
-                break;
-            }
-            yield return null;
-        }
-    }
+    //IEnumerator SetStatus()
+    //{
+    //    for (;;)
+    //    {
+    //        status = myTran.root.GetComponent<PlayerStatus>();
+    //        if (status != null)
+    //        {
+    //            SwitchLockOn(isVisible);
+    //            break;
+    //        }
+    //        yield return null;
+    //    }
+    //}
 }

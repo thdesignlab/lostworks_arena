@@ -56,8 +56,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 0}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 0
-  instantiationId: -1
+  viewIdField: 2
+  instantiationId: 2
   isRuntimeInstantiated: 0
 --- !u!114 &11463346
 MonoBehaviour:
@@ -98,7 +98,7 @@ MonoBehaviour:
   isEnergyBulletBreak: 0
   isHitBreak: 1
   safetyTime: 0
-  turnSpeed: 180
+  turnSpeed: 360
   lockStartTime: 0
   lockedSpeedRate: 1
   lockedTurnSpeedRate: 1

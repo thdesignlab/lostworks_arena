@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+
 
 public class PlayerStatus : Photon.MonoBehaviour {
 
@@ -87,7 +89,13 @@ public class PlayerStatus : Photon.MonoBehaviour {
     private bool isActiveSceane = true;
 
     //強制無敵状態
-    private bool isForceInvincible = false; 
+    private bool isForceInvincible = false;
+
+    //勝数マーク
+    private const string TAG_WIN_MARK_MINE = "WinMarkMine";
+    private const string TAG_WIN_MARK_ENEMY = "WinMarkEnemy";
+    private List<GameObject> winCountMineList = new List<GameObject>();
+    private List<GameObject> winCountEnemyList = new List<GameObject>();
 
     void Awake()
     {
@@ -120,16 +128,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
         isNpc = GetComponent<PlayerSetting>().isNpc;
 
         gameCtrl = GameObject.Find("GameController").GetComponent<GameController>();
-
-        Init();
-    }
-
-    void Start()
-    {
-        if (!isActiveSceane) return;
-
         //ステータス構造
-        //string screenStatus = Common.CO.SCREEN_CANVAS + Common.CO.SCREEN_STATUS;
         Transform screenStatusTran = Camera.main.transform.FindChild(Common.CO.SCREEN_CANVAS + Common.CO.SCREEN_STATUS);
 
         //HPバー
@@ -157,6 +156,22 @@ public class PlayerStatus : Photon.MonoBehaviour {
         //キャラカメラ
         //camCtrl = Camera.main.gameObject.GetComponent<CameraController>();
 
+        //勝マーク
+        foreach (Transform winMark in screenStatusTran.FindChild("HpLine/Mine/WinMark"))
+        {
+            if (winMark.name.IndexOf("_on") != -1) winCountMineList.Add(winMark.gameObject);
+        }
+        foreach (Transform winMark in screenStatusTran.FindChild("HpLine/Enemy/WinMark"))
+        {
+            if (winMark.name.IndexOf("_on") != -1) winCountEnemyList.Add(winMark.gameObject);
+        }
+        Init();
+    }
+
+    void Start()
+    {
+        if (!isActiveSceane) return;
+        
         StartCoroutine(DamageSync());
         StartCoroutine(RecoverSp());
         if (photonView.isMine)
@@ -427,7 +442,8 @@ public class PlayerStatus : Photon.MonoBehaviour {
             {
                 //戦闘不能
                 //transform.DetachChildren();
-                if (!isNpc) { 
+                if (!isNpc) {
+                    hitEffect.color = hitNoiseEnd;
                     Camera.main.transform.parent = null;
                 }
                 GetComponent<ObjectController>().DestoryObject();
@@ -706,5 +722,51 @@ public class PlayerStatus : Photon.MonoBehaviour {
         Transform effect = pv.transform.FindChild(effectName);
         if (effect == null) return;
         effect.gameObject.SetActive(flg);
+    }
+
+    public void ResetWinMark()
+    {
+        Debug.Log("ResetWinMark:"+ gameCtrl.gameMode);
+        bool markFlg = false;
+        if (gameCtrl.gameMode == GameController.GAME_MODE_VS) markFlg = true;
+        foreach (GameObject obj in winCountMineList)
+        {
+            obj.SetActive(markFlg);
+        }
+        foreach (GameObject obj in winCountEnemyList)
+        {
+            obj.SetActive(markFlg);
+
+        }
+    }
+
+    public void SetWinMark(int winCount, int loseCount)
+    {
+        Debug.Log("SetWinMark:" + winCount+" / "+loseCount);
+        if (gameCtrl.gameMode == GameController.GAME_MODE_VS)
+        {
+            ResetWinMark();
+            return;
+        }
+
+        //自分の勝マーク
+        bool markFlg = true;
+        int count = 1;
+        foreach (GameObject obj in winCountMineList)
+        {
+            if (winCount < count) markFlg = false;
+            obj.SetActive(markFlg);
+            count++;
+        }
+
+        //敵の勝マーク
+        markFlg = true;
+        count = 1;
+        foreach (GameObject obj in winCountEnemyList)
+        {
+            if (loseCount < count) markFlg = false;
+            obj.SetActive(markFlg);
+            count++;
+        }
     }
 }
