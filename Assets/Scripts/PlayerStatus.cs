@@ -458,11 +458,14 @@ public class PlayerStatus : Photon.MonoBehaviour {
             {
                 //戦闘不能
                 //transform.DetachChildren();
-                if (!isNpc) {
-                    Camera.main.transform.parent = null;
+                if (!isNpc)Camera.main.transform.parent = null;
+                if (hitEffect != null)
+                {
                     hitEffect.color = hitNoiseEnd;
+                    Destroy(hitEffect.gameObject);
                 }
                 GetComponent<ObjectController>().DestoryObject();
+                return;
             }
             if (transform.position.y < -10)
             {
@@ -538,11 +541,11 @@ public class PlayerStatus : Photon.MonoBehaviour {
     }
     public int GetNowHpPer()
     {
-        return (int)(nowHp / maxHp * 100);
+        return (int)(nowHp * 100 / maxHp );
     }
     public int GetNowSpPer()
     {
-        return (int)(nowSp / maxSp * 100);
+        return (int)(nowSp * 100 / maxSp);
     }
 
     //##### パラメータ変更系 #####

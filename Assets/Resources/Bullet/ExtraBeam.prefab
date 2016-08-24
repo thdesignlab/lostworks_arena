@@ -598,7 +598,7 @@ MonoBehaviour:
   isLockFlat: 0
   childBullet: {fileID: 165138, guid: d280e340207c5f047b4420b64e3d64e9, type: 2}
   childeBulletCount: 1
-  purgeDistance: 50
+  purgeDistance: 100
   purgeTime: 1
   isPurgeDestroy: 0
 --- !u!114 &11403494
@@ -739,7 +739,7 @@ MonoBehaviour:
   isLockFlat: 0
   childBullet: {fileID: 165138, guid: d280e340207c5f047b4420b64e3d64e9, type: 2}
   childeBulletCount: 1
-  purgeDistance: 50
+  purgeDistance: 100
   purgeTime: 1
   isPurgeDestroy: 0
 --- !u!114 &11445674
@@ -775,7 +775,7 @@ MonoBehaviour:
   isLockFlat: 0
   childBullet: {fileID: 165138, guid: d280e340207c5f047b4420b64e3d64e9, type: 2}
   childeBulletCount: 1
-  purgeDistance: 50
+  purgeDistance: 100
   purgeTime: 1
   isPurgeDestroy: 0
 --- !u!114 &11446526
@@ -974,7 +974,7 @@ MonoBehaviour:
   isLockFlat: 0
   childBullet: {fileID: 165138, guid: d280e340207c5f047b4420b64e3d64e9, type: 2}
   childeBulletCount: 1
-  purgeDistance: 50
+  purgeDistance: 100
   purgeTime: 1
   isPurgeDestroy: 0
 --- !u!114 &11468442
@@ -1122,7 +1122,7 @@ MonoBehaviour:
   UseGravity: 0
   hitEffect: {fileID: 0}
   speed: 0
-  damage: 200
+  damage: 300
   damagePerSecond: 50
   stuckTime: 0
   knockBackRate: 0

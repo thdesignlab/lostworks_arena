@@ -173,10 +173,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e612a74990ec7f4da8d009e952dbcdb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 50
+  damageEffect: {fileID: 0}
+  damage: 100
   damagePerSecond: 0
   isPhysicsBulletBreak: 0
   isEnergyBulletBreak: 0
+  ownDamageRate: 1
 --- !u!114 &11472352
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -213,14 +215,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1d600a14ff695d4f9c4f4a7d7101de8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 50
+  damageEffect: {fileID: 0}
+  damage: 250
   damagePerSecond: 100
   isPhysicsBulletBreak: 1
   isEnergyBulletBreak: 1
+  ownDamageRate: 1
   startScale: {x: 0, y: 0, z: 0}
   endScale: {x: 6, y: 6, z: 6}
   scaleTime: 0.5
-  effectiveTime: 3
   scaleLateTime: 2
   isParticle: 1
 --- !u!135 &13509098

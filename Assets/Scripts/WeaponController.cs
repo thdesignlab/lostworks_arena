@@ -185,7 +185,7 @@ public class WeaponController : Photon.MonoBehaviour
             imgGage.fillAmount = 1;
             imgGage.color = NORMAL_GAGE_COLOR;
         }
-        if (spriteStudioCtrl)
+        if (spriteStudioCtrl && myBtn.gameObject.GetActive())
         {
             Vector3 pos = spriteStudioCtrl.GetObjPos(myBtn.gameObject);
             //Debug.Log(pos+" >> "+ scriptRoot.transform.position);
@@ -453,5 +453,13 @@ public class WeaponController : Photon.MonoBehaviour
     public bool IsAction()
     {
         return isAction;
+    }
+
+    public void SwitchBtn(bool flg)
+    {
+        if (myBtn != null)
+        {
+            myBtn.gameObject.SetActive(flg);
+        }
     }
 }

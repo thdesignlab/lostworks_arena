@@ -9,14 +9,26 @@ public class ExtraWeaponController : Photon.MonoBehaviour
     private GameObject extraEffect;
     [SerializeField]
     private float fireTimeInAnim = 1;
+    [SerializeField]
+    private int useHpPerCondition = 30;    //指定した割合のHPが減った場合に1回使用可能
 
     private WeaponController wepCtrl;
     private Animator charaAnimator;
     private PlayerStatus playerStatus;
     private Transform myParentTran;
+    private GameObject extraBtn;
+    private GameController gameCtrl;
 
     private const string TAG_ANIMATION_WAIT = "Wait";
     private const string TAG_ANIMATION_EXTRA = "Extra";
+
+    private int useCount = 0;   //使用回数
+    private const int FREE_HP_CONDITION = 15;   //使用回数無制限になるHP割合
+
+    void Start()
+    {
+        StartCoroutine(CheckBtn());
+    }
 
     public void SetInit(WeaponController wep, Animator anim, PlayerStatus status)
     {
@@ -24,12 +36,16 @@ public class ExtraWeaponController : Photon.MonoBehaviour
         charaAnimator = anim;
         playerStatus = status;
         myParentTran = playerStatus.transform;
+        GameObject gameObj = GameObject.Find("GameController");
+        if (gameObj != null) gameCtrl = gameObj.GetComponent<GameController>();
+        wepCtrl.SwitchBtn(false);
     }
 
     public void Fire(Transform targetTran)
     {
         if (!isEnabled()) return;
 
+        useCount++;
         StartCoroutine(FireProccess(targetTran));
     }
 
@@ -121,6 +137,56 @@ public class ExtraWeaponController : Photon.MonoBehaviour
         if (!wepCtrl.IsEnableFire()) return false;
         AnimatorStateInfo stateInfo = charaAnimator.GetCurrentAnimatorStateInfo(0);
         if (!stateInfo.IsTag(TAG_ANIMATION_WAIT)) return false;
+        if (!IsLeftUsableCount()) return false;
         return true;
+    }
+
+    private bool IsLeftUsableCount()
+    {
+        //現在のHP割合
+        int hpPer = playerStatus.GetNowHpPer();
+
+        //使用無制限チェック
+        if (hpPer <= FREE_HP_CONDITION) return true;
+
+        //使用回数チェック
+        int usableCount = (int)Mathf.Floor((100 - hpPer) / useHpPerCondition);
+        
+        if (usableCount <= useCount) return false;
+
+        return true;
+    }
+
+    IEnumerator CheckBtn()
+    {
+        for (;;)
+        {
+            if (wepCtrl != null)
+            {
+                //ボタン表示切替
+                bool isEnabled = false;
+                if (gameCtrl != null && gameCtrl.isGameReady)
+                {
+                    //ゲーム開始準備期間に使用回数をリセット
+                    useCount = 0;
+                    isEnabled = false;
+                }
+                else
+                {
+                    if (gameCtrl != null && !gameCtrl.isGameStart)
+                    {
+                        //ゲーム開始前
+                        isEnabled = true;
+                    }
+                    else
+                    {
+                        //使用回数チェック
+                        isEnabled = IsLeftUsableCount();
+                    }
+                }
+                wepCtrl.SwitchBtn(isEnabled);
+            }
+            yield return new WaitForSeconds(1.0f);
+        }
     }
 }
