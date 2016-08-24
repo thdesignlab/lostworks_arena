@@ -23,6 +23,8 @@ public class GameController : Photon.MonoBehaviour
     private Transform myTran;
     private Transform targetTran;
     private Transform npcTran;
+    [HideInInspector]
+    public bool isPause = false;
 
     private bool isWin = false;
     [HideInInspector]
@@ -36,6 +38,7 @@ public class GameController : Photon.MonoBehaviour
     private PlayerStatus playerStatus;
     private SpriteStudioController spriteStudioCtrl;
     private Script_SpriteStudio_Root scriptRoot;
+    private FadeManager fadeCtrl;
 
     const string MESSAGE_WAITING = "Player Waiting...";
     const string MESSAGE_CUSTOMIZE = "Customizing...";
@@ -48,7 +51,7 @@ public class GameController : Photon.MonoBehaviour
     const string MESSAGE_ROUND_READY = "Round";
     const string MESSAGE_MISSION_CLEAR = "Mission Clear!!";
     const string MESSAGE_STAGE_NEXT = "Next";
-    const string MESSAGE_GAME_OVER = "GameOver...";
+    const string MESSAGE_GAME_OVER = "GameOver";
 
 
     [HideInInspector]
@@ -83,6 +86,8 @@ public class GameController : Photon.MonoBehaviour
     {
         isDebugMode = GameObject.Find("Debug").GetComponent<MyDebug>().isDebugMode;
         spriteStudioCtrl = GameObject.Find("SpriteStudioController").GetComponent<SpriteStudioController>();
+        fadeCtrl = GameObject.Find("Fade").GetComponent<FadeManager>();
+
     }
 
     private void SetCanvasInfo()
@@ -668,8 +673,15 @@ public class GameController : Photon.MonoBehaviour
             Destroy(targetTran.gameObject);
             Init();
             PlayerSpawn();
+            if (targetTran != null)
+            {
+                targetTran.GetComponent<PlayerStatus>().Init();
+            }
         }
-        NpcSpawn(stageNo);
+        else
+        {
+            NpcSpawn(stageNo);
+        }
     }
 
     private void PlayerSpawn()

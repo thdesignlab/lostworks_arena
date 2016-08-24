@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine.Events;
 
@@ -23,30 +24,50 @@ public class DialogController : MonoBehaviour
     public const string MESSAGE_JOIN_ROOM = "Join Room";
     public const string MESSAGE_SEARCH_ROOM = "Search Room";
 
-    public static void OpenDialog(string text, bool isCancel = false)
-    {
-        OpenDialog(text, null, null, isCancel);
-    }
+    //ボタン
+    const string BUTTON_OK_TEXT = "OK";
+    const string BUTTON_CANCEL_TEXT = "Cancel";
 
-    public static void OpenDialog(string text, UnityAction okAction, bool isCancel = false)
+    //##### ダイアログ表示 #####
+    public static GameObject OpenDialog(string text, UnityAction okAction = null, bool isCancel = false)
     {
-        OpenDialog(text, okAction, null, isCancel);
+        return OpenDialog(text, BUTTON_OK_TEXT, okAction, isCancel);
     }
-
+    public static GameObject OpenDialog(string text, string btnText, UnityAction okAction, bool isCancel)
+    {
+        return OpenDialog(text, new List<string>() { btnText }, new List<UnityAction>() { okAction }, isCancel);
+    }
     public static GameObject OpenDialog(string text, UnityAction okAction, UnityAction cancelAction, bool isCancel = false)
     {
+        return OpenDialog(text, new List<string>() { BUTTON_OK_TEXT, BUTTON_CANCEL_TEXT }, new List<UnityAction>() { okAction, cancelAction }, isCancel);
+    }
+    public static GameObject OpenDialog(string text, List<string> buttons, List<UnityAction> actions, bool isCancel = false)
+    {
         if (dialog != null) CloseDialog();
+        if (buttons.Count <= 0 || actions.Count <= 0) return null;
 
         dialog = Instantiate((GameObject)Resources.Load(RESOURCE_DIALOG));
         Text textMessage = dialog.transform.FindChild("DialogArea/Message").GetComponent<Text>();
-        Button buttonOk = dialog.transform.FindChild("DialogArea/ButtonArea/OK").GetComponent<Button>();
+        GameObject buttonOkObj = dialog.transform.FindChild("DialogArea/ButtonArea/OK").gameObject;
         GameObject buttonCancelObj = dialog.transform.FindChild("DialogArea/ButtonArea/Cancel").gameObject;
 
+        //テキスト設定
         textMessage.text = text;
-        buttonOk.onClick.AddListener(() => OnOk(okAction));
-        if (cancelAction != null || isCancel)
+
+        //OKボタン
+        SetBtn(buttonOkObj, buttons[0], actions[0]);
+             
+        //Cancelボタン
+        if (isCancel || buttons.Count >= 2)
         {
-            buttonCancelObj.GetComponent<Button>().onClick.AddListener(() => OnCancel(cancelAction));
+            string btnText = BUTTON_CANCEL_TEXT;
+            UnityAction btnAction = null;
+            if (buttons.Count >= 2)
+            {
+                btnText = buttons[1];
+                btnAction = actions[1];
+            }
+            SetBtn(buttonCancelObj, btnText, btnAction);
             buttonCancelObj.SetActive(true);
         }
         else
@@ -61,16 +82,14 @@ public class DialogController : MonoBehaviour
         Destroy(dialog);
     }
 
-    public static void OnOk(UnityAction unityAction = null)
+    private static void SetBtn(GameObject btnObj, string btnText, UnityAction btnAction)
     {
-        if (unityAction != null)
-        {
-            unityAction.Invoke();
-        }
-        CloseDialog();
+        btnObj.GetComponent<Button>().onClick.AddListener(() => OnClickButton(btnAction));
+        Text buttonOkText = btnObj.transform.GetComponentInChildren<Text>();
+        if (buttonOkText != null) buttonOkText.text = btnText;
     }
 
-    public static void OnCancel(UnityAction unityAction = null)
+    public static void OnClickButton(UnityAction unityAction = null)
     {
         if (unityAction != null)
         {

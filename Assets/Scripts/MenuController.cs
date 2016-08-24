@@ -4,15 +4,15 @@ using System.Collections;
 public class MenuController : Photon.MonoBehaviour
 {
     [SerializeField]
-    private GameObject npcMenu;
+    private GameObject pauseButton;
     [SerializeField]
     private GameObject debugButton;
+    [SerializeField]
+    private GameObject npcMenu;
     [SerializeField]
     private GameObject debugMenu;
     [SerializeField]
     private float switchTime = 0.3f;
-    //[SerializeField]
-    //private float slideLength = -400;
     [SerializeField]
     private bool isRight = false;
 
@@ -25,18 +25,17 @@ public class MenuController : Photon.MonoBehaviour
     void Awake()
     {
         myTran = transform;
-        //if (slideLength == 0)
-        //{
-        //    myTran.gameObject.SetActive(false); 
-        //}
 
         gameCtrl = GameObject.Find("GameController").GetComponent<GameController>();
-    }
-
-    void Start()
-    {
+        if (gameCtrl == null || gameCtrl.gameMode == GameController.GAME_MODE_VS)
+        {
+            //一時停止禁止
+            pauseButton.SetActive(false);
+        }
         //デバッグボタンON/OFF
-        debugButton.SetActive(gameCtrl.isDebugMode);
+        bool isDebug = false;
+        if (gameCtrl != null) isDebug = gameCtrl.isDebugMode;
+        debugButton.SetActive(isDebug);
     }
 
     void Update()
@@ -105,6 +104,25 @@ public class MenuController : Photon.MonoBehaviour
     public void OnTitleButton()
     {
         DialogController.OpenDialog("タイトルに戻ります", () => gameCtrl.GoToTitle(), true);
+    }
+
+    //一時停止
+    public void OnPauseButton()
+    {
+        if (gameCtrl == null || gameCtrl.gameMode == GameController.GAME_MODE_VS)
+        {
+            //一時停止禁止
+            return;
+        }
+
+        gameCtrl.isPause = true;
+        DialogController.OpenDialog("一時停止中", "再開", () => ResetPause(), false);
+        Time.timeScale = 0;
+    }
+    public void ResetPause()
+    {
+        gameCtrl.isPause = false;
+        Time.timeScale = 1;
     }
 
     //NPC選択表示切替

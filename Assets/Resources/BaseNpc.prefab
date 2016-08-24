@@ -314,7 +314,6 @@ GameObject:
   - 114: {fileID: 11451846}
   - 143: {fileID: 14380714}
   - 114: {fileID: 11472050}
-  - 135: {fileID: 13530870}
   m_Layer: 0
   m_Name: BaseNpc
   m_TagString: Player
@@ -1089,7 +1088,7 @@ MonoBehaviour:
   glideGravityRate: 1
   isLockOn: 0
   UseGravity: 1
-  searchCollider: {fileID: 13530870}
+  searchCollider: {fileID: 0}
 --- !u!114 &11474524
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1224,18 +1223,6 @@ MonoBehaviour:
   viewIdField: 0
   instantiationId: -1
   isRuntimeInstantiated: 0
---- !u!135 &13530870
-SphereCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 199702}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!143 &14380714
 CharacterController:
   m_ObjectHideFlags: 1

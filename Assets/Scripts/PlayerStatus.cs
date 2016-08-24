@@ -174,21 +174,21 @@ public class PlayerStatus : Photon.MonoBehaviour {
         
         StartCoroutine(DamageSync());
         StartCoroutine(RecoverSp());
-        if (photonView.isMine)
-        {
-            if (isNpc)
-            {
-                StartCoroutine(SetHpSlider(hpBarEnemy, hpBarEnemyImage));
-            }
-            else
-            {
-                StartCoroutine(SetHpSlider(hpBarMine, hpBarMineImage));
-            }
-        }
-        else
-        {
-            StartCoroutine(SetHpSlider(hpBarEnemy, hpBarEnemyImage));
-        }
+        //if (photonView.isMine)
+        //{
+        //    if (isNpc)
+        //    {
+        //        StartCoroutine(SetHpSlider(hpBarEnemy, hpBarEnemyImage));
+        //    }
+        //    else
+        //    {
+        //        StartCoroutine(SetHpSlider(hpBarMine, hpBarMineImage));
+        //    }
+        //}
+        //else
+        //{
+        //    StartCoroutine(SetHpSlider(hpBarEnemy, hpBarEnemyImage));
+        //}
     }
 
     public void Init()
@@ -205,6 +205,22 @@ public class PlayerStatus : Photon.MonoBehaviour {
         boostTurnSpeed = defaultBoostTurnSpeed;
         invincibleTime = defaultInvincibleTime;
         recoverSp = defaultRecoverSp;
+
+        if (photonView.isMine)
+        {
+            if (isNpc)
+            {
+                StartCoroutine(SetHpSlider(hpBarEnemy, hpBarEnemyImage));
+            }
+            else
+            {
+                StartCoroutine(SetHpSlider(hpBarMine, hpBarMineImage));
+            }
+        }
+        else
+        {
+            StartCoroutine(SetHpSlider(hpBarEnemy, hpBarEnemyImage));
+        }
     }
 
     //一定間隔ごとにダメージを同期する
@@ -443,8 +459,8 @@ public class PlayerStatus : Photon.MonoBehaviour {
                 //戦闘不能
                 //transform.DetachChildren();
                 if (!isNpc) {
-                    hitEffect.color = hitNoiseEnd;
                     Camera.main.transform.parent = null;
+                    hitEffect.color = hitNoiseEnd;
                 }
                 GetComponent<ObjectController>().DestoryObject();
             }
@@ -519,6 +535,14 @@ public class PlayerStatus : Photon.MonoBehaviour {
     public int GetNowHp()
     {
         return nowHp;
+    }
+    public int GetNowHpPer()
+    {
+        return (int)(nowHp / maxHp * 100);
+    }
+    public int GetNowSpPer()
+    {
+        return (int)(nowSp / maxSp * 100);
     }
 
     //##### パラメータ変更系 #####
@@ -726,7 +750,6 @@ public class PlayerStatus : Photon.MonoBehaviour {
 
     public void ResetWinMark()
     {
-        Debug.Log("ResetWinMark:"+ gameCtrl.gameMode);
         bool markFlg = false;
         if (gameCtrl.gameMode == GameController.GAME_MODE_VS) markFlg = true;
         foreach (GameObject obj in winCountMineList)
@@ -742,7 +765,6 @@ public class PlayerStatus : Photon.MonoBehaviour {
 
     public void SetWinMark(int winCount, int loseCount)
     {
-        Debug.Log("SetWinMark:" + winCount+" / "+loseCount);
         if (gameCtrl.gameMode == GameController.GAME_MODE_VS)
         {
             ResetWinMark();

@@ -15,8 +15,12 @@ public class NpcController : MoveOfCharacter
 
     private PlayerStatus status;
     private Transform targetTran;
-    private float walkRadius = 100.0f;
     private Vector3 randomDirection;
+    private GameController gameCtrl;
+
+    private float walkRadius = 150.0f;  //移動半径
+    private float boostLeftSpPer = 30;  //通常時にブーストするSP残量閾値
+    private float quickTargetTime = 3;  //対象へクイックターンする時間
 
     //private WeaponController[] weapons;
     private List<WeaponController> weapons = new List<WeaponController>();
@@ -41,6 +45,7 @@ public class NpcController : MoveOfCharacter
     protected override void Awake()
     {
         base.Awake();
+        gameCtrl = GameObject.Find("GameController").GetComponent<GameController>();
         status = GetComponent<PlayerStatus>();
         preHp = status.GetNowHp();
    }
@@ -71,7 +76,7 @@ public class NpcController : MoveOfCharacter
         }
         else
         {
-            if (quickTurnTime >= 3)
+            if (quickTurnTime >= quickTargetTime)
             {
                 QuickTarget(targetTran);
                 quickTurnTime = 0;
@@ -91,7 +96,14 @@ public class NpcController : MoveOfCharacter
                 preHp = nowHp;
                 AvoidBoost();
             }
-        };
+        }
+        else
+        {
+            if (preBoostTime > boostIntervalTime * 2 && status.GetNowSpPer() >= boostLeftSpPer)
+            {
+                AvoidBoost();
+            }
+        }
     }
 
     public void SetNpcNo(int no)
@@ -106,29 +118,17 @@ public class NpcController : MoveOfCharacter
 
         status.ReplaceMaxHp(hpRateArray[npcLevel]);
 
-        float radius = searchRangeArray[npcLevel];
-        searchCollider.radius = radius;
-        searchCollider.center = new Vector3(0, radius / 3, radius / 3);
+        if (searchCollider != null)
+        {
+            float radius = searchRangeArray[npcLevel];
+            searchCollider.radius = radius;
+            searchCollider.center = new Vector3(0, radius / 3, radius / 3);
+        }
 
         atackIntervalTime = atackIntervalArray[npcLevel];
         boostIntervalTime = boostIntervalArray[npcLevel];
         runSpeedRate = runSpeedArray[npcLevel];
         invincibleTimeRate = invincibleTimeArray[npcLevel];
-
-        //if (npcLevel >= 3)
-        //{
-        //    foreach (Transform child in myTran)
-        //    {
-        //        foreach (int key in Common.CO.partsNameArray.Keys)
-        //        {
-        //            if (child.name == Common.CO.partsNameArray[key])
-        //            {
-        //                child.gameObject.SetActive(true);
-        //                break;
-        //            }
-        //        }
-        //    }
-        //}
     }
 
     public void SetWeapons()
@@ -166,16 +166,9 @@ public class NpcController : MoveOfCharacter
                 continue;
             }
 
-            //targetNo = Random.Range(0, spawnPoint.Length + 2);
-            //if (targetNo >= spawnPoint.Length)
-            //{
-            //    randomMoveTarget = targetTran;
-            //}
-            //else
-            //{
-            //    randomMoveTarget = spawnPoint[targetNo].transform;
-            //}
-            randomDirection = Random.insideUnitSphere * walkRadius + myTran.position;
+            Vector3 pos = myTran.position;
+            if (targetTran != null) pos = targetTran.position;
+            randomDirection = Random.insideUnitSphere * walkRadius + pos;
             NavMeshHit hit;
             if (NavMesh.SamplePosition(randomDirection, out hit, walkRadius, 1))
             {
@@ -196,11 +189,17 @@ public class NpcController : MoveOfCharacter
         int weaponNo = 0;
         for (;;)
         {
+            if (!gameCtrl.isGameStart)
+            {
+                yield return null;
+                continue;
+            }
+
             float interval = atackIntervalTime;
 
             if (targetTran == null)
             {
-                yield return new WaitForSeconds(3.0f);
+                yield return null;
                 continue;
             }
             if (weapons[weaponNo].IsEnableFire())
@@ -209,7 +208,7 @@ public class NpcController : MoveOfCharacter
             }
             else
             {
-                interval = 0.2f;
+                interval = 0.1f;
             }
             weaponNo = (weaponNo + 1) % weapons.Count;
             yield return new WaitForSeconds(interval);
@@ -326,30 +325,6 @@ public class NpcController : MoveOfCharacter
             yield return null;
         }
     }
-
-    //public void FireRightHand()
-    //{
-    //    if (!photonView.isMine) return;
-    //    if (rightHandCtrl == null) return;
-    //    base.PreserveSpeed();
-    //    rightHandCtrl.Fire(targetTran);
-    //}
-
-    //public void FireLeftHand()
-    //{
-    //    if (!photonView.isMine) return;
-    //    if (leftHandCtrl == null) return;
-    //    base.PreserveSpeed();
-    //    leftHandCtrl.Fire(targetTran);
-    //}
-
-    //public void FireShoulder()
-    //{
-    //    if (!photonView.isMine) return;
-    //    if (shoulderCtrl == null) return;
-    //    base.PreserveSpeed();
-    //    shoulderCtrl.Fire(targetTran);
-    //}
 
     private void QuickTarget(Transform target)
     {
