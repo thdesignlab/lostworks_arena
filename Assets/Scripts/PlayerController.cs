@@ -439,53 +439,17 @@ public class PlayerController : MoveOfCharacter
                 speed *= status.glideBoost;
             }
             if (speed == 0) return;
-
-            //ブーストエフェクト
-            motionCtrl.StartBoostEffect(limit);
         }
 
-        if (move != Vector3.zero && speed > 0)
-        {
-            //SP消費
-            status.UseSp(status.boostCost);
+        if (move == Vector3.zero || speed <= 0) return;
 
-            //無敵時間セット
-            status.SetInvincible(true);
+        //SP消費
+        status.UseSp(status.boostCost);
 
-            base.Move(move, speed, limit);
-        }
-    }
+        //無敵状態
+        status.SetInvincible(true);
 
-    public void WeaponBoost(float x = 0, float y = 0, float speed = 0, float time = 0, int consumeSp = 0)
-    {
-        Vector3 move = Vector3.zero;
-        if (x == 0 && y == 0)
-        {
-            //ジャンプ
-            move = Vector3.up;
-            if (speed <= 0) speed = status.jumpSpeed;
-            if (time <= 0) time = status.jumpLimit;
-        }
-        else
-        {
-            //ブースト
-            move = new Vector3(x, 0, y);
-            if (speed <= 0) speed = status.boostSpeed;
-            if (time <= 0) time = status.boostLimit;
-
-            //ブーストエフェクト
-            motionCtrl.StartBoostEffect(time);
-        }
-
-        if (move != Vector3.zero)
-        {
-            //SP消費
-            status.UseSp(consumeSp);
-
-            //ブースト
-            base.Move(move, speed, time);
-            status.InterfareTurn(0, time);
-        }
+        base.Move(move, speed, limit);
     }
 
     private void FallDown()

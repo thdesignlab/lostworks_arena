@@ -85,6 +85,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
     private float defaultInvincibleTime;
     private int defaultRecoverSp;
 
+    private BaseMoveController moveCtrl;
     private GameController gameCtrl;
     private bool isActiveSceane = true;
 
@@ -126,6 +127,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
         }
 
         isNpc = GetComponent<PlayerSetting>().isNpc;
+        moveCtrl = GetComponent<BaseMoveController>();
 
         gameCtrl = GameObject.Find("GameController").GetComponent<GameController>();
         //ステータス構造
@@ -796,15 +798,27 @@ public class PlayerStatus : Photon.MonoBehaviour {
         }
     }
 
-    public void WeaponBoost(float x = 0, float y = 0, float speed = 0, float time = 0, int consumeSp = 0)
+    public bool ForceBoost(Vector3 moveVector, float speed, float time, int consumeSp = 0, bool isInvincible = false)
     {
-        if (isNpc)
+        if (moveVector == Vector3.zero || speed <= 0 || time <= 0 || moveCtrl == null) return false;
+        
+        if (consumeSp > 0)
         {
-
+            //SP消費
+            UseSp(consumeSp);
         }
-        else
+        if (isInvincible)
         {
-
+            //無敵状態
+            SetInvincible(true);
         }
+        //ブースト
+        moveCtrl.SpecialBoost(moveVector, speed, time);
+
+        //移動・回転制限
+        InterfareMove(time, null, false);
+        InterfareTurn(0, time);
+
+        return true;
     }
 }

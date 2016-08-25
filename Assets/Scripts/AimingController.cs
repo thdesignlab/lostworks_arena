@@ -25,7 +25,6 @@ public class AimingController: BaseMoveController
         if (gameObj)
         {
             //myStatus = gameObj.GetComponent<GameController>().GetMyTran().GetComponent<PlayerStatus>();
-            base.CheckNpc();
         }
     }
 
@@ -36,6 +35,7 @@ public class AimingController: BaseMoveController
 
         if (targetStatus.IsLocked() || base.isNpc)
         {
+            //Debug.Log("Aiming:"+base.isNpc);
             base.SetAngle(targetTran, aimSpeed);
         }
         else
@@ -62,5 +62,10 @@ public class AimingController: BaseMoveController
         {
             aimSpeed *= rate;
         }
+    }
+
+    public void SetNpc(bool flg)
+    {
+        base.isNpc = flg;
     }
 }

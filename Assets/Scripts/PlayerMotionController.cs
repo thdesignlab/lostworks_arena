@@ -16,7 +16,8 @@ public class PlayerMotionController : MonoBehaviour
     private Transform myPlayerTran;
     private Transform myBodyTran;   //向きを変えるBody部分
     //private Rigidbody myRigidbody;
-    private PlayerController playerCtrl;
+    //private PlayerController playerCtrl;
+    private BaseMoveController moveCtrl;
     private MeshRenderer shadow;
     private Transform boostEffectTran;
     private float leftBoostEffectTime = 0;
@@ -24,9 +25,10 @@ public class PlayerMotionController : MonoBehaviour
     void Awake()
     {
         myPlayerTran = transform;
-        
+
         //myRigidbody = GetComponent<Rigidbody>();
-        playerCtrl = GetComponent<PlayerController>();
+        //playerCtrl = GetComponent<PlayerController>();
+        moveCtrl = GetComponent<BaseMoveController>();
 
         Transform shadowTran = myPlayerTran.FindChild(Common.CO.PARTS_GROUNDED);
         if (shadowTran != null)
@@ -42,15 +44,13 @@ public class PlayerMotionController : MonoBehaviour
 
     void Start()
     {
-        ////ジャンプモーションチェック
-        //StartCoroutine(CheckJumpMotion());
         myBodyTran = myPlayerTran.FindChild(Common.Func.GetBodyStructure());
         animator = myBodyTran.GetComponent<Animator>();
     }
 
     void Update()
     {
-        Vector3 moveDiff = playerCtrl.GetMoveDiff();
+        Vector3 moveDiff = moveCtrl.GetMoveDiff();
         Vector3 localMoveDiff = myPlayerTran.InverseTransformDirection(moveDiff).normalized;
 
         //ジャンプモーションチェック
@@ -58,17 +58,21 @@ public class PlayerMotionController : MonoBehaviour
 
         //移動モーション
         CheckMoveMotion(localMoveDiff.x, localMoveDiff.z);
-
+        
         if (IsAttack())
         {
             //攻撃中は体を正面に向ける
             SetBodyAngle();
         }
-        else if (playerCtrl.IsMoving())
+        else if (moveCtrl.IsMoving())
         {
             //移動中は移動方向へ
             SetBodyAngle(localMoveDiff.x, localMoveDiff.z);
         }
+
+        //ブーストチェック
+        bool boostOn = moveCtrl.IsBoost();
+        SwitchBoostEffect(boostOn);
     }
 
     public void SetBodyAngle(float x = 0, float y = 0)
@@ -119,38 +123,52 @@ public class PlayerMotionController : MonoBehaviour
 
     //### ブースト ###
 
-    public void StartBoostEffect(float limit)
+    private void SwitchBoostEffect(bool flg)
     {
         if (boostEffect == null) return;
-
-        if (leftBoostEffectTime > 0)
+        boostEffect.SetActive(flg);
+        if (flg)
         {
-            leftBoostEffectTime = limit;
-            return;
+            animator.speed = 1.5f;
         }
-
-        StartCoroutine(BoostEffect(limit));
-
-    }
-    IEnumerator BoostEffect(float limit)
-    {
-        leftBoostEffectTime = limit;
-
-        boostEffect.SetActive(true);
-        animator.speed = 1.5f;
-        for (;;)
+        else
         {
-            leftBoostEffectTime -= Time.deltaTime;
-            if (leftBoostEffectTime <= 0)
-            {
-                break;
-            }
-            //boostEffectTran.rotation = myBodyTran.rotation;
-            yield return null;
+            animator.speed = 1.0f;
         }
-        animator.speed = 1.0f;
-        boostEffect.SetActive(false);
     }
+
+    //public void StartBoostEffect(float limit)
+    //{
+    //    if (boostEffect == null) return;
+
+    //    if (leftBoostEffectTime > 0)
+    //    {
+    //        leftBoostEffectTime = limit;
+    //        return;
+    //    }
+
+    //    StartCoroutine(BoostEffect(limit));
+
+    //}
+    //IEnumerator BoostEffect(float limit)
+    //{
+    //    leftBoostEffectTime = limit;
+
+    //    boostEffect.SetActive(true);
+    //    animator.speed = 1.5f;
+    //    for (;;)
+    //    {
+    //        leftBoostEffectTime -= Time.deltaTime;
+    //        if (leftBoostEffectTime <= 0)
+    //        {
+    //            break;
+    //        }
+    //        //boostEffectTran.rotation = myBodyTran.rotation;
+    //        yield return null;
+    //    }
+    //    animator.speed = 1.0f;
+    //    boostEffect.SetActive(false);
+    //}
 
 
     //### ジャンプ ###
@@ -174,7 +192,7 @@ public class PlayerMotionController : MonoBehaviour
     private bool preIsGrounded;
     private void CheckJumpMotion(float y)
     {
-        bool isGrounded = playerCtrl.IsGrounded();
+        bool isGrounded = moveCtrl.IsGrounded();
         //Debug.Log(preIsGrounded.ToString()+" / "+ isGrounded.ToString());
         if (preIsGrounded != isGrounded)
         {

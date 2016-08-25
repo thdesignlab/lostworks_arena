@@ -1815,11 +1815,13 @@ MonoBehaviour:
   isBitFixed: 0
   reloadTime: 1.5
   blade: {fileID: 106938}
-  attackTime: 1
-  readyTime: 0.25
+  attackTime: 1.5
+  attackWaitTime: 0.2
   boostSpeed: 80
   boostTime: 1
-  boostCost: 20
+  boostWaitTime: 0
+  boostCost: 30
+  isStopInAttack: 0
 --- !u!114 &11444040
 MonoBehaviour:
   m_ObjectHideFlags: 1

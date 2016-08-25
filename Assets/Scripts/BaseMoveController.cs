@@ -184,8 +184,6 @@ public abstract class BaseMoveController : Photon.MonoBehaviour
 
     protected Vector3 DifferentialCorrection(Transform targetTran, float mySpeed = -1)
     {
-        //CheckNpc();
-
         float distance = Vector3.Distance(targetTran.position, myTran.position);
         float myVelocity = mySpeed;
         if (myVelocity < 0) myVelocity = GetVelocity();
@@ -277,12 +275,23 @@ public abstract class BaseMoveController : Photon.MonoBehaviour
     {
         return isMoving;
     }
+
+    public bool IsBoost()
+    {
+        return isBoost;
+    }
+
     public Vector3 GetMoveDiff()
     {
         return moveDiffVector;
     }
 
     //protected abstract void Move(Vector3 vector, float speed, float limit = 0);
+
+    public void SpecialBoost(Vector3 vector, float speed, float limit)
+    {
+        Move(vector, speed, limit);
+    }
 
     //移動の入力受付(LocalVector)
     protected void Move(Vector3 vector, float speed, float limit = 0)
@@ -437,9 +446,9 @@ public abstract class BaseMoveController : Photon.MonoBehaviour
         return;
     }        
 
-    protected void CheckNpc()
-    {
-        PlayerStatus status = myTran.root.gameObject.GetComponent<PlayerStatus>();
-        if (status != null) isNpc = status.IsNpc();
-    }
+    //protected void CheckNpc()
+    //{
+    //    PlayerStatus status = myTran.root.gameObject.GetComponent<PlayerStatus>();
+    //    if (status != null) isNpc = status.IsNpc();
+    //}
 }

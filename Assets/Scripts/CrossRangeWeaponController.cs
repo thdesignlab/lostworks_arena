@@ -8,23 +8,22 @@ public class CrossRangeWeaponController : WeaponController
     [SerializeField]
     protected GameObject blade;
     [SerializeField]
-    protected float attackTime;
+    protected float attackTime; //bladeをONにしている時間
     [SerializeField]
-    protected float readyTime;
+    protected float attackWaitTime; //モーション開始後bladeをONにするまでの時間
     [SerializeField]
-    protected float boostSpeed = -1;
+    protected float boostSpeed;
     [SerializeField]
-    protected float boostTime = -1;
+    protected float boostTime;
+    [SerializeField]
+    private float boostWaitTime; //モーション開始後boost開始までの時間
     [SerializeField]
     protected int boostCost;
     [SerializeField]
     protected bool isStopInAttack;
-    [SerializeField]
-    private float chargeTime;
 
     private Animator weaponAnimator;
     private string animationName = "";
-    private PlayerController playerCtrl;
 
     private const string MOTION_RIGHT_SLASH = "SlashR";
     private const string MOTION_LEFT_SLASH = "SlashL";
@@ -34,6 +33,7 @@ public class CrossRangeWeaponController : WeaponController
         base.Awake();
         //bitPos = myBitTran.localPosition;
         weaponAnimator = myTran.GetComponent<Animator>();
+        if (blade != null) blade.SetActive(false);
     }
 
     protected override void Start()
@@ -52,7 +52,6 @@ public class CrossRangeWeaponController : WeaponController
                 continue;
             }
             blade.GetComponent<EffectController>().SetOwner(playerTran);
-            playerCtrl = playerTran.GetComponent<PlayerController>();
             break;
         }
     }
@@ -67,27 +66,44 @@ public class CrossRangeWeaponController : WeaponController
     {
         bool isBladeOn = false;
         bool isBladeOff = false;
-        float readyProcTime = 0;
+        bool isBoostOn = false;
+        bool isBoostOff = false;
         float attackProcTime = 0;
-
-        if (chargeTime > 0) yield return new WaitForSeconds(chargeTime);
 
         //斬戟モーション
         if (weaponAnimator != null) weaponAnimator.SetBool(animationName, true);
 
-        if (playerCtrl != null && boostSpeed >= 0 && boostTime >= 0)
-        {
-            //前方ダッシュ
-            playerCtrl.WeaponBoost(0, 1, boostSpeed, boostTime, boostCost);
-        }
-
         for (;;)
         {
+            attackProcTime += Time.deltaTime;
+
+            if (playerStatus != null && boostSpeed >= 0 && boostTime >= 0)
+            {
+                //ブーストチェック
+                if (!isBoostOn)
+                {
+                    if (attackProcTime >= boostWaitTime)
+                    {
+                        //ブースト開始
+                        playerStatus.ForceBoost(new Vector3(0, 0, 1), boostSpeed, boostTime, boostCost);
+                        isBoostOn = true;
+                    }
+                }
+                if (isBoostOn && !isBoostOff)
+                {
+                    //ブースト終了チェック
+                    if (attackProcTime >= boostTime + boostWaitTime) isBoostOff = true;
+                }
+            }
+            else
+            {
+                isBoostOff = true;
+            }
+
             if (!isBladeOn)
             {
                 //準備期間
-                readyProcTime += Time.deltaTime;
-                if (readyProcTime >= readyTime)
+                if (attackProcTime >= attackWaitTime)
                 {
                     //ブレードON
                     blade.SetActive(true);
@@ -104,16 +120,17 @@ public class CrossRangeWeaponController : WeaponController
                 continue;
             }
 
-            attackProcTime += Time.deltaTime;
-
-            if (!isBladeOff && attackProcTime >= attackTime)
+            if (isBladeOn && !isBladeOff)
             {
-                //ブレードOFF
-                blade.SetActive(false);
-                isBladeOff = true;
+                if (attackProcTime >= attackTime + attackWaitTime)
+                {
+                    //ブレードOFF
+                    blade.SetActive(false);
+                    isBladeOff = true;
+                }
             }
 
-            if (isBladeOff && attackProcTime >= attackTime + readyTime) break;
+            if (isBladeOff && isBoostOff) break;
 
             yield return null;
         }

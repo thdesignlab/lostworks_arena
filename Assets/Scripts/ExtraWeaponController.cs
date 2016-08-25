@@ -8,7 +8,7 @@ public class ExtraWeaponController : Photon.MonoBehaviour
     [SerializeField]
     private GameObject extraEffect;
     [SerializeField]
-    private float fireTimeInAnim = 1;
+    private float fireTimeInAnim = 1;   //攻撃開始するタイミング(アニメーション経過時間0-1内で指定)
     [SerializeField]
     private int useHpPerCondition = 30;    //指定した割合のHPが減った場合に1回使用可能
 

@@ -147,7 +147,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effectSpawn: {fileID: 0}
-  activeLimitTime: 5.5
+  activeLimitTime: 4.5
   activeLimitDistance: 0
 --- !u!114 &11464544
 MonoBehaviour:
@@ -178,7 +178,7 @@ MonoBehaviour:
   damagePerSecond: 0
   isPhysicsBulletBreak: 0
   isEnergyBulletBreak: 0
-  ownDamageRate: 1
+  ownDamageRate: 0
 --- !u!114 &11472352
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -223,7 +223,7 @@ MonoBehaviour:
   ownDamageRate: 1
   startScale: {x: 0, y: 0, z: 0}
   endScale: {x: 6, y: 6, z: 6}
-  scaleTime: 0.5
+  scaleTime: 1
   scaleLateTime: 2
   isParticle: 1
 --- !u!135 &13509098

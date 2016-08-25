@@ -64,6 +64,11 @@ public class EffectController : Photon.MonoBehaviour
                     }
                 }
             }
+            else if (otherObj.CompareTag(Common.CO.TAG_STRUCTURE))
+            {
+                if (myTran.tag == Common.CO.TAG_BULLET_EXTRA) damage *= Common.CO.EXTRA_BULLET_BREAK_RATE;
+                otherObj.GetComponent<StructureController>().AddDamage(damage);
+            }
 
             //対象を破壊
             if ((isEnergyBulletBreak && Common.Func.IsBullet(otherObj.tag))

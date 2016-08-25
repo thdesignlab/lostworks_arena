@@ -108,6 +108,8 @@ public class WeaponController : Photon.MonoBehaviour
             if (playerStatus != null)
             {
                 isNpc = playerStatus.IsNpc();
+                AimingController aimCtrl = GetComponent<AimingController>();
+                if (aimCtrl != null) aimCtrl.SetNpc(isNpc);
                 break;
             }
             yield return null;
