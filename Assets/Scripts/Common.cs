@@ -371,7 +371,7 @@ namespace Common
         //キャラクターリスト
         public static Dictionary<int, string[]> characterLineUp = new Dictionary<int, string[]>()
         {
-            {0, new string[]{ "Hero1", "るり", "", OBTAIN_TYPE_INIT, "10002"}},
+            {0, new string[]{ "Hero1", "るり", "", OBTAIN_TYPE_INIT, "10003"}},
             {1, new string[]{ "Hero2", "おだんご", "", OBTAIN_TYPE_INIT, "10001"}},
             {1000, new string[]{ "Npc", "かぷせる", "", OBTAIN_TYPE_NONE, "10002"}},
         };
@@ -458,6 +458,8 @@ namespace Common
             { 10000, new string[]{ "ExtraArmor", "", "", OBTAIN_TYPE_INIT}},
             { 10001, new string[]{ "ExtraBeam", "", "", OBTAIN_TYPE_INIT}},
             { 10002, new string[]{ "ExtraBurning", "", "", OBTAIN_TYPE_INIT}},
+            { 10003, new string[]{ "ExtraRifle", "", "", OBTAIN_TYPE_INIT}},
+            { 10004, new string[]{ "ExtraShadowSewing", "", "", OBTAIN_TYPE_INIT}},
         };
 
         //部位ごとの武器リスト取得

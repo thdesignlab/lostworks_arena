@@ -33,7 +33,6 @@ public class WeaponController : Photon.MonoBehaviour
 
     protected Transform myTran;
     protected Transform myBitTran;
-
     protected Transform playerTran;
     protected PlayerStatus playerStatus;
     protected bool isNpc = false;
@@ -53,6 +52,9 @@ public class WeaponController : Photon.MonoBehaviour
 
     protected AimingController aimingCtrl;
     protected bool isAction = false;
+
+    [SerializeField]
+    protected int extraHpPer = 0;   //Ex武器の場合に指定
 
     protected virtual void Awake()
     {
@@ -330,7 +332,7 @@ public class WeaponController : Photon.MonoBehaviour
     protected bool StartBitMove(Vector3 fromPos, Vector3 toPos)
     {
         //Debug.Log(bitFromPos + " >> " + bitToPos + " : " + bitMoveTime);
-        if (fromPos == toPos) return true;
+        if (myBitTran == null || fromPos == toPos) return false;
 
         if (photonView.isMine)
         {
@@ -349,7 +351,7 @@ public class WeaponController : Photon.MonoBehaviour
 
     protected void ReturnBitMove(Vector3 fromPos, Vector3 toPos)
     {
-        if (bitFromPos == bitToPos) return;
+        if (myBitTran == null || bitFromPos == bitToPos) return;
 
         if (photonView.isMine)
         {
@@ -463,5 +465,10 @@ public class WeaponController : Photon.MonoBehaviour
         {
             myBtn.gameObject.SetActive(flg);
         }
+    }
+
+    public int GetExtraHpPer()
+    {
+        return extraHpPer;
     }
 }

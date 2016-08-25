@@ -62,23 +62,32 @@ public class PlayerMotionController : MonoBehaviour
         //ジャンプモーションチェック
         CheckJumpMotion(localMoveDiff.y);
 
-        //移動モーション
-        CheckMoveMotion(localMoveDiff.x, localMoveDiff.z);
-        
-        if (IsAttack())
+        if (moveCtrl.IsKnockBack())
         {
-            //攻撃中は体を正面に向ける
-            SetBodyAngle();
+            //ノックバック中
+            //ブーストエフェクト
+            SwitchBoostEffect(true, moveDiff);
         }
-        else if (moveCtrl.IsMoving())
+        else
         {
-            //移動中は移動方向へ
-            SetBodyAngle(localMoveDiff.x, localMoveDiff.z);
-        }
+            //移動モーション
+            CheckMoveMotion(localMoveDiff.x, localMoveDiff.z);
 
-        //ブーストチェック
-        bool boostOn = moveCtrl.IsBoost();
-        SwitchBoostEffect(boostOn);
+            if (IsAttack())
+            {
+                //攻撃中は体を正面に向ける
+                SetBodyAngle();
+            }
+            else if (moveCtrl.IsMoving())
+            {
+                //移動中は移動方向へ
+                SetBodyAngle(localMoveDiff.x, localMoveDiff.z);
+            }
+
+            //ブーストチェック
+            bool boostOn = moveCtrl.IsBoost();
+            SwitchBoostEffect(boostOn, moveDiff);
+        }
     }
 
     public void SetBodyAngle(float x = 0, float y = 0)
@@ -128,22 +137,15 @@ public class PlayerMotionController : MonoBehaviour
 
     //### ブースト ###
 
-    private void SwitchBoostEffect(bool flg)
+    private void SwitchBoostEffect(bool flg, Vector3 worldMoveDiff)
     {
         if (boostEffect == null) return;
         boostEffect.SetActive(flg);
         if (flg)
         {
             animator.speed = 1.5f;
-            if (isBodyRotate)
-            {
-                boostEffectTran.rotation = myBodyTran.rotation;
-            }
-            else
-            {
-                //Vector3 lookPos = new Vector3(localMoveDiff.x, 0, localMoveDiff.z);
-                //boostEffectTran.LookAt(myBodyTran.position + lookPos);
-            }
+            Vector3 lookPos = new Vector3(worldMoveDiff.x, 0, worldMoveDiff.z);
+            boostEffectTran.LookAt(myBodyTran.position + lookPos);
         }
         else
         {

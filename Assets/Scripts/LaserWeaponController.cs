@@ -63,15 +63,8 @@ public class LaserWeaponController : WeaponController
     IEnumerator LaserShoot()
     {
         //Bit移動
-        if (!base.StartBitMove(bitFromPos, bitToPos))
-        {
-            //Bit移動まち
-            for (;;)
-            {
-                if (base.isBitMoved) break;
-                yield return null;
-            }
-        }
+        base.StartBitMove(bitFromPos, bitToPos);
+        yield return new WaitForSeconds(bitMoveTime);
         laserSwitchTime = 0;
 
         //モーション開始
@@ -80,7 +73,7 @@ public class LaserWeaponController : WeaponController
         if (base.playerStatus != null)
         {
             //移動・回転制限
-            base.playerStatus.AccelerateRunSpeed(runSpeedRate, effectiveTime);
+            base.playerStatus.AccelerateRunSpeed(runSpeedRate, effectiveTime, null, false);
             base.playerStatus.InterfareTurn(turnSpeedRate, effectiveTime);
             if (aimingCtrl != null) aimingCtrl.SetAimSpeed(turnSpeedRate);
         }

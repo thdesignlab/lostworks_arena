@@ -1573,13 +1573,15 @@ MonoBehaviour:
   bitMoveTime: 0
   isBitFixed: 0
   reloadTime: 2
-  fireEffect: {fileID: 182678, guid: bb8b28526e4afa1488092ff5b00c3e2b, type: 2}
+  extraHpPer: 0
+  fireEffect: {fileID: 128990, guid: 26eff61a30ffb3040a1cf5904f260089, type: 2}
   bullet: {fileID: 133600, guid: a84bfc7094a8fec4c876ebc0545bded6, type: 2}
   rapidCount: 5
   rapidInterval: 0.5
   spreadCount: 0
   spreadDiffAngle: 0
   focusDiff: 1
+  recoil: 0
 --- !u!114 &11449972
 MonoBehaviour:
   m_ObjectHideFlags: 1

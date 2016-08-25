@@ -41,6 +41,10 @@ public class NpcController : MoveOfCharacter
     private int npcNo = -1;
     private int npcLevel = -1;
 
+    private PlayerMotionController motionCtrl;
+    private Animator animator;
+    private ExtraWeaponController extraCtrl;
+
     // Use this for initialization
     protected override void Awake()
     {
@@ -48,7 +52,8 @@ public class NpcController : MoveOfCharacter
         gameCtrl = GameObject.Find("GameController").GetComponent<GameController>();
         status = GetComponent<PlayerStatus>();
         preHp = status.GetNowHp();
-   }
+        motionCtrl = GetComponent<PlayerMotionController>();
+    }
 
     protected override void Start()
     {
@@ -133,14 +138,63 @@ public class NpcController : MoveOfCharacter
 
     public void SetWeapons()
     {
+        Transform mainBody = myTran.FindChild(Common.Func.GetBodyStructure());
+        animator = mainBody.GetComponent<Animator>();
+
         Transform partsJoint = myTran.FindChild(Common.CO.PARTS_JOINT);
         foreach (Transform parts in partsJoint)
         {
-            WeaponController weapon = parts.GetComponentInChildren<WeaponController>();
-            if (weapon != null)
+            WeaponController wepCtrl = parts.GetComponentInChildren<WeaponController>();
+            if (wepCtrl != null)
             {
-                weapon.SetTarget(targetTran);
-                weapons.Add(weapon);
+                wepCtrl.SetTarget(targetTran);
+                switch (parts.name)
+                {
+                    case Common.CO.PARTS_LEFT_HAND:
+                        //通常時左武器
+                        wepCtrl.SetMotionCtrl(animator, Common.CO.MOTION_LEFT_ATTACK);
+                        break;
+
+                    case Common.CO.PARTS_LEFT_HAND_DASH:
+                        //ダッシュ時左武器
+                        wepCtrl.SetMotionCtrl(animator, Common.CO.MOTION_LEFT_ATTACK);
+                        break;
+
+                    case Common.CO.PARTS_RIGHT_HAND:
+                        //通常時右武器
+                        wepCtrl.SetMotionCtrl(animator, Common.CO.MOTION_RIGHT_ATTACK);
+                        break;
+
+                    case Common.CO.PARTS_RIGHT_HAND_DASH:
+                        //ダッシュ時右武器
+                        wepCtrl.SetMotionCtrl(animator, Common.CO.MOTION_RIGHT_ATTACK);
+                        break;
+
+                    case Common.CO.PARTS_SHOULDER:
+                        //通常時背中武器
+                        wepCtrl.SetMotionCtrl(animator, Common.CO.MOTION_SHOULDER_ATTACK);
+                        break;
+
+                    case Common.CO.PARTS_SHOULDER_DASH:
+                        //ダッシュ時背中武器
+                        wepCtrl.SetMotionCtrl(animator, Common.CO.MOTION_SHOULDER_ATTACK);
+                        break;
+
+                    case Common.CO.PARTS_SUB:
+                        //サブ武器
+                        wepCtrl.SetMotionCtrl(animator, Common.CO.MOTION_USE_SUB);
+                        break;
+
+                    case Common.CO.PARTS_EXTRA:
+                        //専用武器
+                        extraCtrl = mainBody.GetComponent<ExtraWeaponController>();
+                        if (extraCtrl != null)
+                        {
+                            extraCtrl.SetInit(wepCtrl, animator, status);
+                        }
+                        break;
+                }
+                weapons.Add(wepCtrl);
             }
         }
         //weapons = parts.GetComponentsInChildren<WeaponController>();
@@ -202,6 +256,19 @@ public class NpcController : MoveOfCharacter
                 yield return null;
                 continue;
             }
+
+            //専用武器
+            if (extraCtrl != null)
+            {
+                if (extraCtrl.IsEnabled())
+                {
+                    extraCtrl.Fire(targetTran);
+                    yield return new WaitForSeconds(interval);
+                    continue;
+                }
+            }
+
+            //通常武器
             if (weapons[weaponNo].IsEnableFire())
             {
                 weapons[weaponNo].Fire(targetTran);
