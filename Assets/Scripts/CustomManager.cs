@@ -180,7 +180,7 @@ public class CustomManager : Photon.MonoBehaviour
         PlayerPrefsUtility.Save(Common.PP.USER_CHARACTER, UserManager.userSetCharacter);
         PlayerPrefsUtility.SaveDict<string, int>(Common.PP.USER_EQUIP, UserManager.userEquipment);
         //PhotonNetwork.LoadLevel(Common.CO.SCENE_TITLE);
-        GameObject.Find("Fade").GetComponent<FadeManager>().Load(Common.CO.SCENE_TITLE, DialogController.MESSAGE_LOADING);
+        GameObject.Find("ScreenManager").GetComponent<ScreenManager>().Load(Common.CO.SCENE_TITLE, DialogController.MESSAGE_LOADING);
     }
 
     //キャラ回転

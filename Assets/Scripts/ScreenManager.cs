@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine.UI;
 using System.Collections.Generic;
 
-public class FadeManager : Photon.MonoBehaviour
+public class ScreenManager : Photon.MonoBehaviour
 {
     private Transform myTran;
     private Image fadeImg;

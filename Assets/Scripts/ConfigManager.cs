@@ -7,11 +7,11 @@ public class ConfigManager : MonoBehaviour
     [SerializeField]
     private GameObject configCanvas;
 
-    private FadeManager fadeCtrl;
+    private ScreenManager screenMgr;
 
     void Awake()
     {
-        fadeCtrl = GameObject.Find("Fade").GetComponent<FadeManager>();
+        screenMgr = GameObject.Find("ScreenManager").GetComponent<ScreenManager>();
         configCanvas.SetActive(false);
     }
 
@@ -19,7 +19,7 @@ public class ConfigManager : MonoBehaviour
     {
         //ダイアログ表示
         //configCanvas.SetActive(true);
-        fadeCtrl.FadeUI(configCanvas.gameObject, true);
+        screenMgr.FadeUI(configCanvas.gameObject, true);
 
         ////シーンごとの処理
         //switch (SceneManager.GetActiveScene().name)
@@ -36,7 +36,7 @@ public class ConfigManager : MonoBehaviour
 
         //ダイアログ非表示
         //configCanvas.SetActive(false);
-        fadeCtrl.FadeUI(configCanvas.gameObject, false);
+        screenMgr.FadeUI(configCanvas.gameObject, false);
 
         //シーンごとの処理
         switch (SceneManager.GetActiveScene().name)

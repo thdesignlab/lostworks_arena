@@ -49,7 +49,7 @@ public class PhotonManager : MonoBehaviour
     private InputField roomNameIF;
     private Text roomStatusText;
 
-    private FadeManager fadeCtrl;
+    private ScreenManager screenMgr;
     private string moveScene = "";
     private string loadmessage = "";
 
@@ -60,9 +60,9 @@ public class PhotonManager : MonoBehaviour
 
     public void Awake()
     {
-        GameObject fadeObj = GameObject.Find("Fade");
-        fadeCtrl = fadeObj.GetComponent<FadeManager>();
-        DontDestroyOnLoad(fadeObj);
+        GameObject screenObj = GameObject.Find("ScreenManager");
+        screenMgr = screenObj.GetComponent<ScreenManager>();
+        DontDestroyOnLoad(screenObj);
         DontDestroyOnLoad(GameObject.Find("Config"));
         DontDestroyOnLoad(GameObject.Find("WeaponStore"));
         DontDestroyOnLoad(GameObject.Find("Debug"));
@@ -92,12 +92,13 @@ public class PhotonManager : MonoBehaviour
         if (isTapToStart)
         {
             GameObject message = DialogController.OpenMessage(DialogController.MESSAGE_TOP);
-            Text textMessage = message.transform.FindChild("Label/Text").GetComponent<Text>();
+            Image messageImage = DialogController.GetMessageImageObj();
+            Text messageText = DialogController.GetMessageTextObj();
             if (Input.GetMouseButtonDown(0))
             {
                 TapToStart();
             }
-            if (textMessage != null)
+            if (message != null)
             {
                 processTime += Time.deltaTime;
 
@@ -105,7 +106,8 @@ public class PhotonManager : MonoBehaviour
                 {
                     //一定時間ごとに点滅
                     float alpha = Common.Func.GetSin(processTime, 270, 45);
-                    textMessage.color = new Color(textMessage.color.r, textMessage.color.g, textMessage.color.b, alpha);
+                    messageText.color = new Color(messageText.color.r, messageText.color.g, messageText.color.b, alpha);
+                    messageImage.color = new Color(messageImage.color.r, messageImage.color.g, messageImage.color.b, alpha);
                 }
             }
             else
@@ -197,7 +199,7 @@ public class PhotonManager : MonoBehaviour
     {
         if (isFade)
         {
-            fadeCtrl.FadeUI(modeSelectArea, flg);
+            screenMgr.FadeUI(modeSelectArea, flg);
         }
         else
         {
@@ -210,7 +212,7 @@ public class PhotonManager : MonoBehaviour
     {
         if (isFade)
         {
-            fadeCtrl.FadeUI(networkArea.gameObject, flg, false);
+            screenMgr.FadeUI(networkArea.gameObject, flg, false);
         }
         else
         {
@@ -232,7 +234,7 @@ public class PhotonManager : MonoBehaviour
     {
         if (isFade)
         {
-            fadeCtrl.FadeUI(roomListArea.gameObject, flg, false);
+            screenMgr.FadeUI(roomListArea.gameObject, flg, false);
         }
         else
         {
@@ -455,7 +457,7 @@ public class PhotonManager : MonoBehaviour
     {
         //Debug.Log("OnCreatedRoom");
         //PhotonNetwork.LoadLevel(moveScene);
-        fadeCtrl.Load(moveScene);
+        screenMgr.Load(moveScene);
     }
 
     public void OnDisconnectedFromPhoton()

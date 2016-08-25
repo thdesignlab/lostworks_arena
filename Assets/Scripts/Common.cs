@@ -22,6 +22,7 @@ namespace Common
         public const string RESOURCE_ANIMATION_2D = "Animation2D/";
         public const string RESOURCE_ANIMATION_3D = "Animation3D/";
         public const string RESOURCE_CHARACTER = "Character/";
+        public const string RESOURCE_IMAGE = "Image/";
 
         //スクリーンUI
         public const string SCREEN_CANVAS = "ScreenCanvas/";
@@ -244,6 +245,10 @@ namespace Common
         public static string GetResourceCharacter(string name)
         {
             return CO.RESOURCE_CHARACTER + name;
+        }
+        public static string GetResourceSprite(string name)
+        {
+            return CO.RESOURCE_IMAGE + name;
         }
 
         //配列チェック

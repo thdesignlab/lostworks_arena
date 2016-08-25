@@ -11,7 +11,9 @@ public class DialogController : MonoBehaviour
     private static Text textMessage;
 
     //メッセージ
-    private static GameObject message;
+    private static GameObject messageObj;
+    private static Image messageImage;
+    private static Text messageText;
 
     const string RESOURCE_DIALOG = "UI/Dialog";
     const string RESOURCE_MESSAGE = "UI/Message";
@@ -23,6 +25,17 @@ public class DialogController : MonoBehaviour
     public const string MESSAGE_CREATE_ROOM = "Create Room";
     public const string MESSAGE_JOIN_ROOM = "Join Room";
     public const string MESSAGE_SEARCH_ROOM = "Search Room";
+
+    private static string MESSAGE_IMAGE_PARENT = "LoadMessage";
+    private static Dictionary<string, string> messageImgNameDic = new Dictionary<string, string>()
+    {
+        { MESSAGE_TOP, "_1" },
+        { MESSAGE_CONNECT, "_0" },
+        { MESSAGE_LOADING, "_2" },
+        { MESSAGE_CREATE_ROOM, "_" },
+        { MESSAGE_JOIN_ROOM, "_" },
+        { MESSAGE_SEARCH_ROOM, "_" },
+    };
 
     //ボタン
     const string BUTTON_OK_TEXT = "OK";
@@ -106,20 +119,60 @@ public class DialogController : MonoBehaviour
             return null;
         }
 
-        if (message == null)
+        if (messageObj == null)
         {
-            message = Instantiate((GameObject)Resources.Load(RESOURCE_MESSAGE));
-            textMessage = message.transform.FindChild("Label/Text").GetComponent<Text>();
+            messageObj = Instantiate((GameObject)Resources.Load(RESOURCE_MESSAGE));
+            messageImage = messageObj.transform.FindChild("Image").GetComponent<Image>();
+            messageText = messageObj.transform.FindChild("Text").GetComponent<Text>();
         }
-        textMessage.text = text;
 
-        return message;
+        if (messageText.text == text) return messageObj;
+
+        Texture2D image = GetMessageImage(text);
+        messageText.text = text;
+        if (image != null)
+        {
+            //画像
+            messageImage.sprite = Sprite.Create(image, new Rect(0, 0, image.width, image.height), Vector2.zero);
+            messageImage.enabled = true;
+            messageText.enabled = false;
+        }
+        else
+        {
+            //テキスト
+            messageImage.sprite = null;
+            messageImage.enabled = false;
+            messageText.enabled = true;
+        }
+
+        return messageObj;
     }
 
     public static void CloseMessage()
     {
-        if (message == null) return;
-        Destroy(message);
+        if (messageObj == null) return;
+        Destroy(messageObj);
     }
     
+    private static Texture2D GetMessageImage(string text)
+    {
+        Texture2D image = null;
+        if (messageImgNameDic.ContainsKey(text))
+        {
+            string imageName = MESSAGE_IMAGE_PARENT + "/" + MESSAGE_IMAGE_PARENT + messageImgNameDic[text];
+            //string imageName = MESSAGE_IMAGE_PARENT;
+            image = (Texture2D)Resources.Load(Common.Func.GetResourceSprite(imageName));
+            Debug.Log(image);
+        }
+        return image;
+    }
+
+    public static Image GetMessageImageObj()
+    {
+        return messageImage;
+    }
+    public static Text GetMessageTextObj()
+    {
+        return messageText;
+    }
 }

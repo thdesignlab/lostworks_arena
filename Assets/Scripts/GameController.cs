@@ -38,7 +38,7 @@ public class GameController : Photon.MonoBehaviour
     private PlayerStatus playerStatus;
     private SpriteStudioController spriteStudioCtrl;
     private Script_SpriteStudio_Root scriptRoot;
-    private FadeManager fadeCtrl;
+    private ScreenManager screenMgr;
 
     const string MESSAGE_WAITING = "Player Waiting...";
     const string MESSAGE_CUSTOMIZE = "Customizing...";
@@ -86,7 +86,7 @@ public class GameController : Photon.MonoBehaviour
     {
         isDebugMode = GameObject.Find("Debug").GetComponent<MyDebug>().isDebugMode;
         spriteStudioCtrl = GameObject.Find("SpriteStudioController").GetComponent<SpriteStudioController>();
-        fadeCtrl = GameObject.Find("Fade").GetComponent<FadeManager>();
+        screenMgr = GameObject.Find("ScreenManager").GetComponent<ScreenManager>();
 
     }
 
@@ -502,7 +502,7 @@ public class GameController : Photon.MonoBehaviour
     {
         PhotonNetwork.LeaveRoom();
         //PhotonNetwork.LoadLevel(Common.CO.SCENE_TITLE);
-        GameObject.Find("Fade").GetComponent<FadeManager>().Load(Common.CO.SCENE_TITLE, DialogController.MESSAGE_LOADING);
+        screenMgr.Load(Common.CO.SCENE_TITLE, DialogController.MESSAGE_LOADING);
     }
 
     private GameObject SpawnProcess(string name, int groupId = 0)
