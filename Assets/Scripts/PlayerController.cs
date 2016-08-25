@@ -188,8 +188,9 @@ public class PlayerController : MoveOfCharacter
 
     public void SetWeapon()
     {
-        //アニメーション用
-        animator = myTran.FindChild(Common.Func.GetBodyStructure()).GetComponent<Animator>();
+        //アニメーション
+        Transform mainBody = myTran.FindChild(Common.Func.GetBodyStructure());
+        animator = mainBody.GetComponent<Animator>();
 
         WeaponController wepCtrl;
         foreach (int partsNo in Common.CO.partsNameArray.Keys)
@@ -257,7 +258,6 @@ public class PlayerController : MoveOfCharacter
 
                 case Common.CO.PARTS_EXTRA:
                     //専用武器
-                    Transform mainBody = myTran.FindChild(Common.CO.PARTS_BODY + "/" + Common.CO.PARTS_MAIN_BODY);
                     extraCtrl = mainBody.GetComponent<ExtraWeaponController>();
                     if (extraCtrl != null)
                     {
@@ -334,6 +334,13 @@ public class PlayerController : MoveOfCharacter
             case Common.CO.PARTS_SUB_NO:
                 ctrl = subCtrl;
                 break;
+            case Common.CO.PARTS_EXTRA_NO:
+                if (extraCtrl != null)
+                {
+                    extraCtrl.Fire();
+                    return true;
+                }
+                break;
         }
         if (ctrl == null) return false;
 
@@ -352,7 +359,7 @@ public class PlayerController : MoveOfCharacter
 
     private void TouchAction()
     {
-        if (base.isBoost)
+        if (isBoost && !isSpecialBoost)
         {
             //ダッシュ中はその場で停止
             Run();
@@ -364,7 +371,7 @@ public class PlayerController : MoveOfCharacter
     }
     private void DoubleTouchAction()
     {
-        if (base.isBoost)
+        if (isBoost && !isSpecialBoost)
         {
             //ダッシュ中はダッシュキャンセル
             Run();

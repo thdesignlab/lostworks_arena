@@ -29,9 +29,10 @@ public abstract class BaseMoveController : Photon.MonoBehaviour
 
     //ブースト中判定
     protected bool isBoost = false;
+    protected bool isSpecialBoost = false;
 
     //ノックバック
-    protected float knockBackBaseTime = 0.2f;
+    protected float knockBackBaseTime = 0.3f;
     protected bool isKnockBack = false;
 
     protected bool isNpc = false;
@@ -281,6 +282,11 @@ public abstract class BaseMoveController : Photon.MonoBehaviour
         return isBoost;
     }
 
+    public bool IsKnockBack()
+    {
+        return isKnockBack;
+    }
+
     public Vector3 GetMoveDiff()
     {
         return moveDiffVector;
@@ -291,14 +297,21 @@ public abstract class BaseMoveController : Photon.MonoBehaviour
     public void SpecialBoost(Vector3 vector, float speed, float limit)
     {
         Move(vector, speed, limit);
+        StartCoroutine(CheckSpecialBoost(limit));
+    }
+    IEnumerator CheckSpecialBoost(float limit)
+    {
+        isSpecialBoost = true;
+        yield return new WaitForSeconds(limit);
+        isSpecialBoost = false;
     }
 
     //移動の入力受付(LocalVector)
-    protected void Move(Vector3 vector, float speed, float limit = 0)
+    protected void Move(Vector3 vector, float speed, float limit = 0, bool isOutForce = false)
     {
         //Debug.Log("Move");
         Vector3 moveDirection = myTran.TransformDirection(vector).normalized;
-        MoveWorld(moveDirection, speed, limit, false, false);
+        MoveWorld(moveDirection, speed, limit, isOutForce, false);
     }
 
     protected void MoveWorld(Vector3 worldVector, float speed, float limit = 0, bool isOutForce = true, bool isSendRPC = true)
@@ -353,18 +366,24 @@ public abstract class BaseMoveController : Photon.MonoBehaviour
         MoveWorld(worldVector, speed, limit, isOutForce, false);
     }
 
-    //対象にRigidBodyがあり、IsKinematicがONの場合のみ
+    //衝突によるノックバック
+    //IsKinematicがONの場合のみ
+    private float defaultMass = 100;
     protected void TargetKnockBack(Transform targetTran, float rate = 100.0f)
     {
         if (isKnockBack) return;
-        if (myRigidbody == null) return;
         BaseMoveController targetCtrl = targetTran.gameObject.GetComponent<BaseMoveController>();
-        //if (targetCtrl == null || targetCtrl.myRigidbody == null || !targetCtrl.myRigidbody.isKinematic) return;
-        if (targetCtrl == null || targetCtrl.myRigidbody == null) return;
+        if (targetCtrl == null) return;
+
+        //質量取得
+        float myMass = defaultMass;
+        float targetMass = defaultMass;
+        if (myRigidbody != null) myMass = myRigidbody.mass;
+        if (targetCtrl.myRigidbody != null) targetMass = targetCtrl.myRigidbody.mass;
 
         Vector3 velocity = GetVelocityVector();
-        float forceRate = myRigidbody.mass / targetCtrl.myRigidbody.mass;
-        float force = Mathf.Pow(velocity.magnitude, 2) / targetCtrl.myRigidbody.mass * forceRate * rate / 100;
+        float forceRate = myMass / targetMass;
+        float force = Mathf.Pow(velocity.magnitude, 2) / targetMass * forceRate * rate / 100;
         float limit = knockBackBaseTime * forceRate;
         if (limit < knockBackBaseTime / 2)
         {
@@ -376,9 +395,15 @@ public abstract class BaseMoveController : Photon.MonoBehaviour
         }
         //Debug.Log(velocity + " / " + force.ToString() + " / " + limit.ToString());
         targetCtrl.MoveWorld(velocity, force, limit);
-
     }
 
+    //自分の行動による反動
+    public void ActionRecoil(Vector3 forceVector, float speed, float limit = 0)
+    {
+        if (limit <= 0) limit = knockBackBaseTime;
+        Move(forceVector, speed, limit, true);
+    }
+    
     //ブースト(重複不可)
     private float leftBoostTime = 0;
     private float boostLimitTime = 0;
@@ -433,7 +458,11 @@ public abstract class BaseMoveController : Photon.MonoBehaviour
 
             //残り時間チェック
             leftTime -= Time.deltaTime;
-            if (leftTime <= 0) break;
+            if (leftTime <= 0)
+            {
+                yield return new WaitForSeconds(0.2f);
+                break;
+            }
             yield return null;
         }
 
@@ -442,7 +471,6 @@ public abstract class BaseMoveController : Photon.MonoBehaviour
 
     protected virtual void MoveProcess(Vector3 v)
     {
-        //子で実装(abstarctにする場合継承しているClass注意)
         return;
     }        
 

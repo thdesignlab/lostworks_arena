@@ -180,21 +180,6 @@ public class PlayerStatus : Photon.MonoBehaviour {
         
         StartCoroutine(DamageSync());
         StartCoroutine(RecoverSp());
-        //if (photonView.isMine)
-        //{
-        //    if (isNpc)
-        //    {
-        //        StartCoroutine(SetHpSlider(hpBarEnemy, hpBarEnemyImage));
-        //    }
-        //    else
-        //    {
-        //        StartCoroutine(SetHpSlider(hpBarMine, hpBarMineImage));
-        //    }
-        //}
-        //else
-        //{
-        //    StartCoroutine(SetHpSlider(hpBarEnemy, hpBarEnemyImage));
-        //}
     }
 
     public void Init()
@@ -827,5 +812,13 @@ public class PlayerStatus : Photon.MonoBehaviour {
         InterfareTurn(0, time);
 
         return true;
+    }
+
+
+    //自分の行動による反動
+    public void ActionRecoil(float speed, float limit = 0, Vector3 forceVector = default(Vector3))
+    {
+        if (forceVector == default(Vector3)) forceVector = Vector3.back;
+        moveCtrl.ActionRecoil(forceVector, speed, limit);
     }
 }

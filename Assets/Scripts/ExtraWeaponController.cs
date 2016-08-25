@@ -9,8 +9,8 @@ public class ExtraWeaponController : Photon.MonoBehaviour
     private GameObject extraEffect;
     [SerializeField]
     private float fireTimeInAnim = 1;   //攻撃開始するタイミング(アニメーション経過時間0-1内で指定)
-    [SerializeField]
-    private int useHpPerCondition = 30;    //指定した割合のHPが減った場合に1回使用可能
+    
+    private int useHpPerCondition = 0;    //指定した割合のHPが減った場合に1回使用可能
 
     private WeaponController wepCtrl;
     private Animator charaAnimator;
@@ -39,11 +39,12 @@ public class ExtraWeaponController : Photon.MonoBehaviour
         GameObject gameObj = GameObject.Find("GameController");
         if (gameObj != null) gameCtrl = gameObj.GetComponent<GameController>();
         wepCtrl.SwitchBtn(false);
+        useHpPerCondition = wepCtrl.GetExtraHpPer();
     }
 
-    public void Fire(Transform targetTran)
+    public void Fire(Transform targetTran = null)
     {
-        if (!isEnabled()) return;
+        if (!IsEnabled()) return;
 
         useCount++;
         StartCoroutine(FireProccess(targetTran));
@@ -59,28 +60,28 @@ public class ExtraWeaponController : Photon.MonoBehaviour
         //追加エフェクト
         SwitchExtraEffect(true);
         //攻撃モーション開始
-        charaAnimator.SetBool(Common.CO.MOTION_EXTRA_ATTACK, true);
+        if (charaAnimator != null) charaAnimator.SetBool(Common.CO.MOTION_EXTRA_ATTACK, true);
 
         bool isReady = false;
         bool isFire = false;
         for (;;)
         {
             float animTime = GetActionTime();
-            if (!isReady && 0 < animTime && animTime < 1)
+            if (!isReady && (charaAnimator == null || 0 < animTime && animTime < 1))
             {
                 isReady = true;
             }
             if (isReady)
             {
                 //攻撃タイミングチェック
-                if (!isFire && animTime >= fireTimeInAnim)
+                if (!isFire && (charaAnimator == null || animTime >= fireTimeInAnim))
                 {
                     isFire = true;
                     wepCtrl.Fire(targetTran);
                 }
 
                 //カメラアニメーション終了チェック
-                if (isFire && animTime >= 1) break;
+                if (isFire && (charaAnimator == null || animTime >= 1)) break;
             }
             if (!isFire && targetTran != null)
             {
@@ -101,7 +102,7 @@ public class ExtraWeaponController : Photon.MonoBehaviour
             yield return null;
         }
         //攻撃モーション終了
-        charaAnimator.SetBool(Common.CO.MOTION_EXTRA_ATTACK, false);
+        if (charaAnimator != null) charaAnimator.SetBool(Common.CO.MOTION_EXTRA_ATTACK, false);
         SwitchExtraEffect(false);
 
         //無敵解除
@@ -123,6 +124,7 @@ public class ExtraWeaponController : Photon.MonoBehaviour
 
     private float GetActionTime()
     {
+        if (charaAnimator == null) return -1;
         //int targetHash = Animator.StringToHash("Base Layer."+Common.CO.MOTION_EXTRA_ATTACK);
         AnimatorStateInfo stateInfo = charaAnimator.GetCurrentAnimatorStateInfo(0);
         if (!stateInfo.IsTag(TAG_ANIMATION_EXTRA))
@@ -132,17 +134,19 @@ public class ExtraWeaponController : Photon.MonoBehaviour
         return charaAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime;
     }
 
-    private bool isEnabled()
+    public bool IsEnabled()
     {
-        if (wepCtrl == null || charaAnimator == null) return false;
+        if (wepCtrl == null) return false;
         
         if (!wepCtrl.IsEnableFire()) return false;
         
-        AnimatorStateInfo stateInfo = charaAnimator.GetCurrentAnimatorStateInfo(0);
-        
-        if (!playerStatus.IsNpc() && !stateInfo.IsTag(TAG_ANIMATION_WAIT)) return false;
+        if (charaAnimator != null && !playerStatus.IsNpc())
+        {
+            AnimatorStateInfo stateInfo = charaAnimator.GetCurrentAnimatorStateInfo(0);
+            if (!stateInfo.IsTag(TAG_ANIMATION_WAIT)) return false;
+        }
 
-        if (gameCtrl != null && !gameCtrl.isGameStart) return true;
+        if (gameCtrl == null || !gameCtrl.isGameStart) return true;
         if (!IsLeftUsableCount()) return false;
         
         return true;
@@ -157,6 +161,7 @@ public class ExtraWeaponController : Photon.MonoBehaviour
         if (hpPer <= FREE_HP_CONDITION) return true;
 
         //使用回数チェック
+        if (useHpPerCondition <= 0) return true;
         int usableCount = (int)Mathf.Floor((100 - hpPer) / useHpPerCondition);
         
         if (usableCount <= useCount) return false;

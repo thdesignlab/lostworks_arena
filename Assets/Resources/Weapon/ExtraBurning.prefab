@@ -35,7 +35,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &140366
 GameObject:
   m_ObjectHideFlags: 1
@@ -452,7 +452,8 @@ MonoBehaviour:
   bitMotionType: 0
   bitMoveTime: 0
   isBitFixed: 0
-  reloadTime: 30
+  reloadTime: 15
+  extraHpPer: 10
   blade: {fileID: 113064}
   attackTime: 3
   attackWaitTime: 1

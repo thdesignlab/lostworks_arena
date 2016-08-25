@@ -18,6 +18,8 @@ public class BulletWeaponController : WeaponController
     protected int spreadDiffAngle; //角度差分(Spreadのみ)
     [SerializeField]
     protected float focusDiff = 0;    //ブレ幅
+    [SerializeField]
+    protected float recoil = 0;    //反動
 
     protected List<Transform> muzzles = new List<Transform>();   //発射口
     protected List<Quaternion> defaultMuzzleQuaternions = new List<Quaternion>();
@@ -116,15 +118,8 @@ public class BulletWeaponController : WeaponController
     IEnumerator WaitBitMove()
     {
         //Bit移動
-        if (!base.StartBitMove(bitFromPos, bitToPos))
-        {
-            //Bit移動まち
-            for (;;)
-            {
-                if (base.isBitMoved) break;
-                yield return null;
-            }
-        }
+        base.StartBitMove(bitFromPos, bitToPos);
+        yield return new WaitForSeconds(bitMoveTime);
         ActionProccess();
     }
 
@@ -203,7 +198,8 @@ public class BulletWeaponController : WeaponController
         if (fireEffect != null)
         {
             //発射エフェクト
-            GameObject.Instantiate(fireEffect, pos, fireEffect.transform.rotation);
+            //GameObject.Instantiate(fireEffect, pos, fireEffect.transform.rotation);
+            PhotonNetwork.Instantiate(Common.Func.GetResourceEffect(fireEffect.name), pos, fireEffect.transform.rotation, 0);
         }
         if (focusDiff > 0)
         {
@@ -215,6 +211,12 @@ public class BulletWeaponController : WeaponController
         GameObject ob = PhotonNetwork.Instantiate(Common.Func.GetResourceBullet(bullet.name), pos, quat, groupId);
         SetBulletTarget(ob);
         base.PlayAudio();
+
+        if (recoil > 0 && playerStatus != null)
+        {
+            //反動
+            playerStatus.ActionRecoil(recoil);
+        }
 
         shootBullets.Add(ob);
         return ob;
