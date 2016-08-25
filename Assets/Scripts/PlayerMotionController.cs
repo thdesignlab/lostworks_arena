@@ -21,6 +21,7 @@ public class PlayerMotionController : MonoBehaviour
     private MeshRenderer shadow;
     private Transform boostEffectTran;
     private float leftBoostEffectTime = 0;
+    private GameObject boostEffectAnim;
 
     void Awake()
     {
@@ -39,6 +40,11 @@ public class PlayerMotionController : MonoBehaviour
         if (boostEffect != null)
         {
             boostEffectTran = boostEffect.transform;
+            foreach (Transform child in boostEffectTran)
+            {
+                boostEffectAnim = child.gameObject;
+                break;
+            }
         }
     }
 
@@ -100,7 +106,6 @@ public class PlayerMotionController : MonoBehaviour
             {
                 myBodyTran.LookAt(myBodyTran.position + lookPos);
             }
-            boostEffectTran.LookAt(myBodyTran.position + lookPos);
         }
     }
 
@@ -130,46 +135,21 @@ public class PlayerMotionController : MonoBehaviour
         if (flg)
         {
             animator.speed = 1.5f;
+            if (isBodyRotate)
+            {
+                boostEffectTran.rotation = myBodyTran.rotation;
+            }
+            else
+            {
+                //Vector3 lookPos = new Vector3(localMoveDiff.x, 0, localMoveDiff.z);
+                //boostEffectTran.LookAt(myBodyTran.position + lookPos);
+            }
         }
         else
         {
             animator.speed = 1.0f;
         }
     }
-
-    //public void StartBoostEffect(float limit)
-    //{
-    //    if (boostEffect == null) return;
-
-    //    if (leftBoostEffectTime > 0)
-    //    {
-    //        leftBoostEffectTime = limit;
-    //        return;
-    //    }
-
-    //    StartCoroutine(BoostEffect(limit));
-
-    //}
-    //IEnumerator BoostEffect(float limit)
-    //{
-    //    leftBoostEffectTime = limit;
-
-    //    boostEffect.SetActive(true);
-    //    animator.speed = 1.5f;
-    //    for (;;)
-    //    {
-    //        leftBoostEffectTime -= Time.deltaTime;
-    //        if (leftBoostEffectTime <= 0)
-    //        {
-    //            break;
-    //        }
-    //        //boostEffectTran.rotation = myBodyTran.rotation;
-    //        yield return null;
-    //    }
-    //    animator.speed = 1.0f;
-    //    boostEffect.SetActive(false);
-    //}
-
 
     //### ジャンプ ###
 
@@ -179,6 +159,7 @@ public class PlayerMotionController : MonoBehaviour
         animator.SetBool(Common.CO.MOTION_JUMP, true);
         animator.SetBool(Common.CO.MOTION_DOWN, false);
         shadow.enabled = false;
+        if (boostEffectAnim != null) boostEffectAnim.SetActive(false);
     }
 
     private void ResetJumpMotion()
@@ -187,6 +168,7 @@ public class PlayerMotionController : MonoBehaviour
         animator.SetBool(Common.CO.MOTION_JUMP, false);
         animator.SetBool(Common.CO.MOTION_DOWN, false);
         shadow.enabled = true;
+        if (boostEffectAnim != null) boostEffectAnim.SetActive(true);
     }
 
     private bool preIsGrounded;

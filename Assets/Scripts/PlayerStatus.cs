@@ -92,6 +92,10 @@ public class PlayerStatus : Photon.MonoBehaviour {
     //強制無敵状態
     private bool isForceInvincible = false;
 
+    //スタックエフェクト
+    [SerializeField]
+    private GameObject stuckEffect;
+
     //勝数マーク
     private const string TAG_WIN_MARK_MINE = "WinMarkMine";
     private const string TAG_WIN_MARK_ENEMY = "WinMarkEnemy";
@@ -640,6 +644,9 @@ public class PlayerStatus : Photon.MonoBehaviour {
     //移動制限
     public void InterfareMove(float limit, GameObject effect = null, bool isSendRpc = true)
     {
+        //他人からの効果にはエフェクトをつける
+        if (isSendRpc && effect == null) effect = stuckEffect;
+
         if (photonView.isMine)
         {
             if (interfareMoveTime > 0)
