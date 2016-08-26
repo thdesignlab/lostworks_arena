@@ -128,12 +128,12 @@ public class DialogController : MonoBehaviour
 
         if (messageText.text == text) return messageObj;
 
-        Texture2D image = GetMessageImage(text);
+        Sprite image = GetMessageImage(text);
         messageText.text = text;
         if (image != null)
         {
             //画像
-            messageImage.sprite = Sprite.Create(image, new Rect(0, 0, image.width, image.height), Vector2.zero);
+            messageImage.sprite = image;
             messageImage.enabled = true;
             messageText.enabled = false;
         }
@@ -154,15 +154,14 @@ public class DialogController : MonoBehaviour
         Destroy(messageObj);
     }
     
-    private static Texture2D GetMessageImage(string text)
+    private static Sprite GetMessageImage(string text)
     {
-        Texture2D image = null;
+        Sprite image = null;
         if (messageImgNameDic.ContainsKey(text))
         {
-            string imageName = MESSAGE_IMAGE_PARENT + "/" + MESSAGE_IMAGE_PARENT + messageImgNameDic[text];
-            //string imageName = MESSAGE_IMAGE_PARENT;
-            image = (Texture2D)Resources.Load(Common.Func.GetResourceSprite(imageName));
-            Debug.Log(image);
+            string imageName = MESSAGE_IMAGE_PARENT + messageImgNameDic[text];
+            Sprite[] sprites = Resources.LoadAll<Sprite>(Common.Func.GetResourceSprite(MESSAGE_IMAGE_PARENT));
+            image = System.Array.Find<Sprite>(sprites, (sprite) => sprite.name.Equals(imageName));
         }
         return image;
     }

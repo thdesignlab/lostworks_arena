@@ -111,7 +111,7 @@ public class CustomManager : Photon.MonoBehaviour
         { Common.CO.PARTS_RIGHT_HAND_NO, PARTS_AREA_NAME_RIGHT },
         { Common.CO.PARTS_RIGHT_HAND_DASH_NO, PARTS_AREA_NAME_RIGHT_DASH },
         { Common.CO.PARTS_SUB_NO, PARTS_AREA_NAME_SUB },
-        //{ Common.CO.PARTS_EXTRA_NO, PARTS_AREA_NAME_EXTRA },
+        { Common.CO.PARTS_EXTRA_NO, PARTS_AREA_NAME_EXTRA },
     };
 
 
