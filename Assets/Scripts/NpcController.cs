@@ -38,9 +38,6 @@ public class NpcController : MoveOfCharacter
 
     private int preHp = 0;
 
-    private int npcNo = -1;
-    private int npcLevel = -1;
-
     private PlayerMotionController motionCtrl;
     private Animator animator;
     private ExtraWeaponController extraCtrl;
@@ -111,29 +108,24 @@ public class NpcController : MoveOfCharacter
         }
     }
 
-    public void SetNpcNo(int no)
-    {
-        npcNo = no;
-    }
-
     public void SetLevel(int level)
     {
-        npcLevel = level;
-        if (npcLevel < 0 || atackIntervalArray.Length < npcLevel) npcLevel = 0;
+        if (level < 0) level = 0;
+        if (atackIntervalArray.Length <= level) level = atackIntervalArray.Length - 1;
 
-        status.ReplaceMaxHp(hpRateArray[npcLevel]);
+        status.ReplaceMaxHp(hpRateArray[level]);
 
         if (searchCollider != null)
         {
-            float radius = searchRangeArray[npcLevel];
+            float radius = searchRangeArray[level];
             searchCollider.radius = radius;
             searchCollider.center = new Vector3(0, radius / 3, radius / 3);
         }
 
-        atackIntervalTime = atackIntervalArray[npcLevel];
-        boostIntervalTime = boostIntervalArray[npcLevel];
-        runSpeedRate = runSpeedArray[npcLevel];
-        invincibleTimeRate = invincibleTimeArray[npcLevel];
+        atackIntervalTime = atackIntervalArray[level];
+        boostIntervalTime = boostIntervalArray[level];
+        runSpeedRate = runSpeedArray[level];
+        invincibleTimeRate = invincibleTimeArray[level];
     }
 
     public void SetWeapons()
@@ -187,7 +179,7 @@ public class NpcController : MoveOfCharacter
 
                     case Common.CO.PARTS_EXTRA:
                         //専用武器
-                        extraCtrl = mainBody.GetComponent<ExtraWeaponController>();
+                        extraCtrl = parts.GetComponentInChildren<ExtraWeaponController>();
                         if (extraCtrl != null)
                         {
                             extraCtrl.SetInit(wepCtrl, animator, status);

@@ -258,7 +258,7 @@ public class PlayerController : MoveOfCharacter
 
                 case Common.CO.PARTS_EXTRA:
                     //専用武器
-                    extraCtrl = mainBody.GetComponent<ExtraWeaponController>();
+                    extraCtrl = parts.GetComponentInChildren<ExtraWeaponController>();
                     if (extraCtrl != null)
                     {
                         //wepCtrl.SetMotionCtrl(animator, Common.CO.MOTION_EXTRA_ATTACK);
@@ -337,8 +337,7 @@ public class PlayerController : MoveOfCharacter
             case Common.CO.PARTS_EXTRA_NO:
                 if (extraCtrl != null)
                 {
-                    extraCtrl.Fire();
-                    return true;
+                    ctrl = extraCtrl.GetWeaponController();
                 }
                 break;
         }

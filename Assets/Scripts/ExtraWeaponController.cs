@@ -9,8 +9,8 @@ public class ExtraWeaponController : Photon.MonoBehaviour
     private GameObject extraEffect;
     [SerializeField]
     private float fireTimeInAnim = 1;   //攻撃開始するタイミング(アニメーション経過時間0-1内で指定)
-    
-    private int useHpPerCondition = 0;    //指定した割合のHPが減った場合に1回使用可能
+    [SerializeField]
+    private int useHpPerCondition = 25;   //Ex武器の場合に指定
 
     private WeaponController wepCtrl;
     private Animator charaAnimator;
@@ -39,7 +39,6 @@ public class ExtraWeaponController : Photon.MonoBehaviour
         GameObject gameObj = GameObject.Find("GameController");
         if (gameObj != null) gameCtrl = gameObj.GetComponent<GameController>();
         wepCtrl.SwitchBtn(false);
-        useHpPerCondition = wepCtrl.GetExtraHpPer();
     }
 
     public void Fire(Transform targetTran = null)
@@ -200,5 +199,10 @@ public class ExtraWeaponController : Photon.MonoBehaviour
             }
             yield return new WaitForSeconds(1.0f);
         }
+    }
+
+    public WeaponController GetWeaponController()
+    {
+        return wepCtrl;
     }
 }

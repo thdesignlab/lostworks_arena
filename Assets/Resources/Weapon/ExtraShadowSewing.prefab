@@ -26,6 +26,7 @@ GameObject:
   - 114: {fileID: 11437590}
   - 114: {fileID: 11470806}
   - 114: {fileID: 11491834}
+  - 114: {fileID: 11456374}
   m_Layer: 0
   m_Name: ExtraShadowSewing
   m_TagString: Weapon
@@ -191,6 +192,21 @@ MonoBehaviour:
   viewIdField: 0
   instantiationId: -1
   isRuntimeInstantiated: 0
+--- !u!114 &11456374
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 186210}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9fab0cff8dbc4ad428570c6eeed5935d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  extraCam: {fileID: 0}
+  extraEffect: {fileID: 0}
+  fireTimeInAnim: 1
+  useHpPerCondition: 10
 --- !u!114 &11470806
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -217,7 +233,6 @@ MonoBehaviour:
   bitMoveTime: 0
   isBitFixed: 0
   reloadTime: 15
-  extraHpPer: 10
   fireEffect: {fileID: 0}
   bullet: {fileID: 169932, guid: c7797b1a59c7ac246ac57dc31242bbb5, type: 2}
   rapidCount: 1

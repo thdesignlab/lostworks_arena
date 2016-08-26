@@ -46,8 +46,8 @@ public class MyDebug : MonoBehaviour
         PushLog(log, false);
     }
 
-    private int textAreaWidth = 400;
-    private int textAreaheight = 200;
+    private int textAreaWidth = Screen.width;
+    private int textAreaheight = Screen.height / 2;
     private int space = 30;
 
     void OnGUI()

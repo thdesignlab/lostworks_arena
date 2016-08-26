@@ -446,7 +446,7 @@ MonoBehaviour:
   isLockOn: 0
   UseGravity: 0
   hitEffect: {fileID: 0}
-  speed: 70
+  speed: 80
   damage: 50
   damagePerSecond: 0
   stuckTime: 0.5
@@ -455,10 +455,11 @@ MonoBehaviour:
   isEnergyBulletBreak: 0
   isHitBreak: 1
   safetyTime: 1
-  turnSpeed: 60
-  lockStartTime: 3
-  lockedSpeedRate: 8
-  isNeedLock: 0
+  turnSpeed: 90
+  lockStartTime: 1.5
+  lockedSpeedRate: 5
+  lockedTurnSpeedRate: 1
+  isNeedLock: 1
   isLockFlat: 0
 --- !u!136 &13630562
 CapsuleCollider:

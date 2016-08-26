@@ -63,6 +63,8 @@ public class GameController : Photon.MonoBehaviour
     public int stageNo = -1;
     [HideInInspector]
     public int stageLevel = -1;
+    [HideInInspector]
+    public int npcNo = -1;
 
     private int winCount = 0;
     private int loseCount = 0;
@@ -655,7 +657,7 @@ public class GameController : Photon.MonoBehaviour
     private bool SetNextStage()
     {
         //次のステージチェック
-        if (stageNo >= 3) return false;
+        if (!Common.Mission.stageNpcNoDic.ContainsKey(stageNo + 1)) return false;
         stageNo++;
         winCount = 0;
         loseCount = 0;
@@ -704,18 +706,21 @@ public class GameController : Photon.MonoBehaviour
     {
         ResetGame();
 
+        //ステージNo設定
         if (no > 0) stageNo = no;
         if (stageNo <= 0) stageNo = 1;
 
+        //NpcNo
+        npcNo = Common.Mission.stageNpcNoDic[stageNo];
+
+        //★ステージレベル(仮)
+        stageLevel = (int)Mathf.Floor(stageNo + 1 / 2);
+
         //ステージのNPC取得
-        stageLevel = stageNo;
         string npcName = "BaseNpc";
 
         GameObject npc = SpawnProcess(npcName);
         NpcController npcCtrl = npc.GetComponent<NpcController>();
-
-        //NPCステータス等設定
-        npcCtrl.SetNpcNo(stageNo);
         npcCtrl.SetLevel(stageLevel);
     }
 }

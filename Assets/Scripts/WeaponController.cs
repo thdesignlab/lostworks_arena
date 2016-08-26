@@ -53,9 +53,6 @@ public class WeaponController : Photon.MonoBehaviour
     protected AimingController aimingCtrl;
     protected bool isAction = false;
 
-    [SerializeField]
-    protected int extraHpPer = 0;   //Ex武器の場合に指定
-
     protected virtual void Awake()
     {
         myTran = transform;
@@ -467,8 +464,4 @@ public class WeaponController : Photon.MonoBehaviour
         }
     }
 
-    public int GetExtraHpPer()
-    {
-        return extraHpPer;
-    }
 }

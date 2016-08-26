@@ -102,6 +102,10 @@ public class PlayerStatus : Photon.MonoBehaviour {
     private List<GameObject> winCountMineList = new List<GameObject>();
     private List<GameObject> winCountEnemyList = new List<GameObject>();
 
+    ////バトルログ
+    //private Queue logBattleQueue = new Queue();
+    //private bool isDispLogBattle = false;
+
     void Awake()
     {
         if (shield != null)
@@ -212,6 +216,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
         {
             StartCoroutine(SetHpSlider(hpBarEnemy, hpBarEnemyImage));
         }
+
     }
 
     //一定間隔ごとにダメージを同期する
@@ -258,7 +263,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
         nowSp = sp;
     }
 
-    public void AddDamage(int damage)
+    public void AddDamage(int damage, string name = "unkown")
     {
         if (gameCtrl == null || !gameCtrl.isGameStart || gameCtrl.isGameEnd) return;
 
@@ -272,6 +277,8 @@ public class PlayerStatus : Photon.MonoBehaviour {
             }
             return;
         }
+
+        //ダメージ
         totalDamage += damage;
         if (nowHp - totalDamage <= 0)
         {
@@ -818,7 +825,69 @@ public class PlayerStatus : Photon.MonoBehaviour {
     //自分の行動による反動
     public void ActionRecoil(float speed, float limit = 0, Vector3 forceVector = default(Vector3))
     {
+        if (!isActiveSceane) return;
         if (forceVector == default(Vector3)) forceVector = Vector3.back;
         moveCtrl.ActionRecoil(forceVector, speed, limit);
     }
+
+    ////##### バトルログ #####
+
+    //private void PushbattleLog(int damage, string name, bool console = false)
+    //{
+    //    name = name.Replace("(Clone)", "");
+    //    string text = name + " >> " + damage.ToString();
+    //    PushBattleLog(text, console);
+    //}
+
+    //private void PushBattleLog(string text, bool console = false)
+    //{
+    //    if (logBattleQueue.Count >= 10) logBattleQueue.Dequeue();
+
+    //    logBattleQueue.Enqueue(text);
+    //    if (console) Debug.Log(text);
+    //}
+
+    //private int textAreaWidth = Screen.width / 2;
+    //private int textAreaheight = Screen.height / 2;
+    //void OnGUI()
+    //{
+    //    if (!isActiveSceane) return;
+    //    if (!isDispLogBattle) return;
+    //    Rect logRect = new Rect(0, Screen.height - textAreaheight, textAreaWidth, textAreaheight);
+
+    //    if (dispLog)
+    //    {
+    //        //ログ表示中
+    //        string logText = "";
+    //        foreach (string log in logQueue)
+    //        {
+    //            logText += log;
+    //        }
+    //        GUI.TextArea(logRect, logText);
+    //        if (GUI.Button(btnRect, "-"))
+    //        {
+    //            dispLog = false;
+    //            btnDown = 0;
+    //        }
+    //    }
+    //    else
+    //    {
+    //        SetGuiSkin(GUI.skin);
+    //        GUI.skin = guiSkin;
+
+    //        //ログ非表示中
+    //        if (GUI.RepeatButton(btnRect, "", "button"))
+    //        {
+    //            btnDown += Time.deltaTime;
+    //            if (btnDown >= btnDownTime)
+    //            {
+    //                dispLog = true;
+    //            }
+    //        }
+    //        else
+    //        {
+    //            //btnDown -= Time.deltaTime / 10;
+    //        }
+    //    }
+    //}
 }

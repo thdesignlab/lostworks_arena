@@ -371,14 +371,16 @@ namespace Common
         public const int DETAIL_NAME_NO = 1;            //キャラ名
         public const int DETAIL_DESCRIPTION_NO = 2;     //説明
         public const int DETAIL_OBTAIN_TYPE_NO = 3;     //取得タイプ
-        public const int DETAIL_EXTRA_WEAPON_NO = 4;     //必殺武器No
+        public const int DETAIL_EXTRA_WEAPONS_NO = 4;     //必殺武器No
 
         //キャラクターリスト
         public static Dictionary<int, string[]> characterLineUp = new Dictionary<int, string[]>()
         {
-            {0, new string[]{ "Hero1", "るり", "", OBTAIN_TYPE_INIT, "10003"}},
-            {1, new string[]{ "Hero2", "おだんご", "", OBTAIN_TYPE_INIT, "10001"}},
-            {1000, new string[]{ "Npc", "かぷせる", "", OBTAIN_TYPE_NONE, "10002"}},
+            {0, new string[]{ "Hero1", "Luri", "", OBTAIN_TYPE_INIT, "10000,10001,10002,10003,10004"}},
+            {1, new string[]{ "Hero2", "Dango", "", OBTAIN_TYPE_INIT, "10001"}},
+            {1000, new string[]{ "Npc1", "Capsule1", "", OBTAIN_TYPE_NONE, "10002"}},
+            {1001, new string[]{ "Npc2", "Capsule2", "", OBTAIN_TYPE_NONE, "10003,10004"}},
+            {1002, new string[]{ "Npc3", "Capsule3", "", OBTAIN_TYPE_NONE, "10000"}},
         };
 
         public static string[] GetCharacterInfo(int characterNo)
@@ -389,14 +391,6 @@ namespace Common
                 charaInfo = characterLineUp[characterNo];
             }
             return charaInfo; 
-        }
-
-        public static int GetExtraWeaponNo(int characterNo)
-        {
-            string[] charaInfo = GetCharacterInfo(characterNo);
-            if (charaInfo.Length <= 0) return -1;
-            string weaponNo = charaInfo[DETAIL_EXTRA_WEAPON_NO];
-            return int.Parse(weaponNo);
         }
     }
 
@@ -460,11 +454,11 @@ namespace Common
         //スペシャル武器リスト
         public static Dictionary<int, string[]> extraWeaponLineUp = new Dictionary<int, string[]>()
         {
-            { 10000, new string[]{ "ExtraArmor", "", "", OBTAIN_TYPE_INIT}},
-            { 10001, new string[]{ "ExtraBeam", "", "", OBTAIN_TYPE_INIT}},
-            { 10002, new string[]{ "ExtraBurning", "", "", OBTAIN_TYPE_INIT}},
-            { 10003, new string[]{ "ExtraRifle", "", "", OBTAIN_TYPE_INIT}},
-            { 10004, new string[]{ "ExtraShadowSewing", "", "", OBTAIN_TYPE_INIT}},
+            { 10000, new string[]{ "ExtraArmor", "ExArmor", "爆発するよ！", OBTAIN_TYPE_INIT}},
+            { 10001, new string[]{ "ExtraBeam", "ExBeam", "撃つよ！", OBTAIN_TYPE_INIT}},
+            { 10002, new string[]{ "ExtraBurning", "ExBurning", "突撃するよ！", OBTAIN_TYPE_INIT}},
+            { 10003, new string[]{ "ExtraRifle", "ExRifle", "ふっとばすよ！", OBTAIN_TYPE_INIT}},
+            { 10004, new string[]{ "ExtraShadowSewing", "ExShadowDagger", "拘束するよ！", OBTAIN_TYPE_INIT}},
         };
 
         //部位ごとの武器リスト取得
@@ -535,21 +529,23 @@ namespace Common
             return weaponInfo;
         }
 
-        //特別武器装備可能チェック
+        //特殊武器装備可能チェック
         public static bool IsEnabledEquipExtraWeapon(int charaNo, int weaponNo)
         {
             bool isEnabled = false;
-            if (Character.characterLineUp.ContainsKey(charaNo))
+            int[] weaponNoArray = GetExtraWeaponNoArray(charaNo);
+            foreach (int no in weaponNoArray)
             {
-                if (weaponNo.ToString() == Character.characterLineUp[charaNo][Character.DETAIL_EXTRA_WEAPON_NO])
+                if (no == weaponNo)
                 {
                     isEnabled = true;
+                    break;
                 }
             }
             return isEnabled;
         }
 
-        //特別武器チェック
+        //特殊武器チェック
         public static bool isExtraWeapon(int weaponNo)
         {
             if (extraWeaponLineUp.ContainsKey(weaponNo))
@@ -559,10 +555,37 @@ namespace Common
             return false;
         }
 
-        //特別武器取得
-        public static int GetExtraWeaponNo(int charaNo)
+        //装備可能な特殊武器Noを取得する
+        public static int[] GetExtraWeaponNoArray(int characterNo)
         {
-            return int.Parse(Common.Character.characterLineUp[charaNo][Character.DETAIL_EXTRA_WEAPON_NO]);
+            List<int> weaponNoList = new List<int>();
+            string[] charaInfo = Character.GetCharacterInfo(characterNo);
+            if (charaInfo.Length > 0)
+            {
+                string weaponsNoStr = charaInfo[Character.DETAIL_EXTRA_WEAPONS_NO];
+                string[] weaponsNo = weaponsNoStr.Split(',');
+                foreach (string weaponNo in weaponsNo)
+                {
+                    weaponNoList.Add(int.Parse(weaponNo));
+                }
+            }
+            return weaponNoList.ToArray();
+        }
+
+        //特殊武器Noを取得する
+        public static int GetExtraWeaponNo(int characterNo, int index = -1)
+        {
+            int weaponNo = -1;
+            int[] weaponNoArray = GetExtraWeaponNoArray(characterNo);
+            if (index < 0)
+            {
+                index = Random.Range(0, weaponNoArray.Length);
+            }
+            if (0 < weaponNoArray.Length && weaponNoArray.Length < index)
+            {
+                weaponNo = weaponNoArray[index];
+            }
+            return weaponNo;
         }
 
         //武器名を取得する
@@ -589,5 +612,53 @@ namespace Common
             }
             return weaponName;
         }
+    }
+
+
+    //### ミッション ###
+    public static class Mission
+    {
+        //ステージ：NPC
+        public static Dictionary<int, int> stageNpcNoDic = new Dictionary<int, int>()
+        {
+            { 1, 1000 },
+            { 2, 1001 },
+            { 3, 1002 },
+            { 4, 1 },
+            { 5, 0 },
+        };
+
+        //NPCステータス
+        public const int STATUS_RUN_SPEED = 0;
+        public const int STATUS_BOOST_SPEED = 0;
+        public const int STATUS_TURN_SPEED = 0;
+        public const int STATUS_MAX_HP = 0;
+        public const int STATUS_RECOVER_SP = 0;
+        public const int STATUS_ATTACK_RATE = 0;
+        public const int STATUS_ATTACK_INTERVAL = 0;
+        public const int STATUS_BOOST_INTERVAL = 0;
+        public const int STATUS_TARGET_INTERVAL = 0;
+        public const int STATUS_TARGET_TYPE = 0;
+        public const int STATUS_TARGET_DISTANCE = 0;
+        public static Dictionary<int, int[]> npcStatusDic = new Dictionary<int, int[]>()
+        {
+            { 0, new int[]{ 30, 70, 20, 1200, 30, 100, 3, 3, 3, 1 , 100} },
+            { 1, new int[]{ 30, 70, 20, 1200, 30, 100, 3, 3, 3, 0 , 100} },
+            { 1000, new int[]{ 15, 30, 10, 600, 10, 50, 3, 3, 3, 0 , 100} },
+            { 1001, new int[]{ 25, 50, 15, 800, 20, 70, 3, 3, 3, 0 , 100} },
+            { 1002, new int[]{ 30, 60, 20, 1000, 30, 90, 3, 3, 3, 0 , 100} },
+        };
+
+        //NPC武器
+        public static Dictionary<int, int[]> npcWeaponDic = new Dictionary<int, int[]>()
+        {
+            { 0, new int[]{ 0, 0, 0, 0, 0, 0, 0} },
+            { 1, new int[]{ 0, 0, 0, 0, 0, 0, 0} },
+            { 1000, new int[]{ 0, 0, 0, 0, 0, 0, 0} },
+            { 1001, new int[]{ 0, 0, 0, 0, 0, 0, 0} },
+            { 1002, new int[]{ 0, 0, 0, 0, 0, 0, 0} },
+            { 1003, new int[]{ 0, 0, 0, 0, 0, 0, 0} },
+            { 1004, new int[]{ 0, 0, 0, 0, 0, 0, 0} },
+        };
     }
 }

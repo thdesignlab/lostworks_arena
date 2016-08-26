@@ -94,8 +94,12 @@ public class BulletController : MoveOfCharacter
     {
         if (photonView.isMine)
         {
-            //Debug.Log("OnHit:" + otherObj.name);
-            if (IsSafety(otherObj)) return;
+            if (IsSafety(otherObj))
+            {
+                //Debug.Log("■OnHit[Safety]:" + myTran.name + " >> " + otherObj.name + " / " + otherObj.tag);
+                return;
+            }
+            //Debug.Log("OnHit:" + myTran.name + " >> " + otherObj.name + " / " + otherObj.tag);
 
             //ダメージを与える
             AddDamage(otherObj, damage);
@@ -230,15 +234,14 @@ public class BulletController : MoveOfCharacter
     {
         //一度衝突しているものは無視
         if (isHit && isHitCheck) return true;
-        
+
         //エフェクトはスルー
         //HIT判定はエフェクト側で行う
-        if (hitObj.tag == Common.CO.TAG_EFFECT) return true;
-        
+        if (hitObj.CompareTag(Common.CO.TAG_EFFECT)) return true;
+
         //ターゲットにあたった場合は有効
-        if (hitObj.transform != targetTran && hitObj.tag != Common.CO.TAG_STRUCTURE)
+        if (hitObj.transform != targetTran && !hitObj.CompareTag(Common.CO.TAG_STRUCTURE))
         {
-            
             //持ち主に当たった場合無視
             if (hitObj.transform == ownerTran) return true;
             

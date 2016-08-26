@@ -16,6 +16,7 @@ public class PlayerSetting : Photon.MonoBehaviour
     private int bodyViewId;
 
     public bool isNpc = false;
+    string[] charaInfo = new string[] { };
 
     private GameController gameCtrl;
     private WeaponStore weaponStroe;
@@ -59,17 +60,19 @@ public class PlayerSetting : Photon.MonoBehaviour
             if (isNpc)
             {
                 //##### NPCの場合 #####
-                //NPC名変更
-                myTran.name = Common.CO.NPC_NAME;
-
                 //コントローラー設定
                 playerStatus.enabled = true;
+
+
+                //NPC名変更
+                charaInfo = Common.Character.GetCharacterInfo(gameCtrl.npcNo);
+                myTran.name = charaInfo[Common.Character.DETAIL_NAME_NO];
 
                 //メインボディ生成
                 CreateNpcBody();
 
                 //装備設定
-                EquipWeaponRandom();
+                EquipWeaponNpc();
 
                 //NPC情報設定
                 gameCtrl.SetTarget(myTran);
@@ -128,11 +131,8 @@ public class PlayerSetting : Photon.MonoBehaviour
 
     private void CreateNpcBody()
     {
-        //NpcNo取得
-        int stageNo = gameCtrl.GetStageNo();
-
         //メインボディ名取得
-        string npcName = "Npc";
+        string npcName = charaInfo[Common.Character.DETAIL_PREFAB_NAME_NO];
 
         //メインボディ生成
         GameObject charaMainObj = PhotonNetwork.Instantiate(Common.Func.GetResourceCharacter(npcName), Vector3.zero, Quaternion.identity, 0);
@@ -213,18 +213,11 @@ public class PlayerSetting : Photon.MonoBehaviour
             if (parts != null)
             {
                 int wepNo = -1;
-                if (parts.name == Common.CO.PARTS_EXTRA)
-                {
-                    //専用武器取得
-                    wepNo = Common.Character.GetExtraWeaponNo(UserManager.userSetCharacter);
-                }
-                else
-                {
-                    //装備中武器取得
-                    if (!UserManager.userEquipment.ContainsKey(parts.name)) continue;
-                    wepNo = UserManager.userEquipment[parts.name];
-                }
 
+                //装備中武器取得
+                if (!UserManager.userEquipment.ContainsKey(parts.name)) continue;
+                wepNo = UserManager.userEquipment[parts.name];
+                
                 //武器取得
                 string weaponName = Common.Weapon.GetWeaponName(wepNo, true);
                 GameObject weapon = (GameObject)Resources.Load(Common.Func.GetResourceWeapon(weaponName));
@@ -235,10 +228,24 @@ public class PlayerSetting : Photon.MonoBehaviour
         }
     }
 
-    private void EquipWeaponRandom()
+    private void EquipWeaponNpc()
     {
+        //武器リスト取得
+        int[] weaponArray = Common.Mission.npcWeaponDic[gameCtrl.npcNo];
+
         foreach (int partsNo in Common.CO.partsNameArray.Keys)
         {
+            //武器No取得
+            int weaponNo = -1;
+            if (partsNo == Common.CO.PARTS_EXTRA_NO)
+            {
+                weaponNo = Common.Weapon.GetExtraWeaponNo(gameCtrl.npcNo);
+            }
+            else if (0 < weaponArray.Length && weaponArray.Length < partsNo)
+            {
+                weaponNo = weaponArray[partsNo];
+            }
+
             //部位取得
             string partsName = Common.Func.GetPartsStructure(Common.CO.partsNameArray[partsNo]);
             Transform parts = myTran.FindChild(partsName);

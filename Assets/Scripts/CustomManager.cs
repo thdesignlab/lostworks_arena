@@ -179,7 +179,6 @@ public class CustomManager : Photon.MonoBehaviour
     {
         PlayerPrefsUtility.Save(Common.PP.USER_CHARACTER, UserManager.userSetCharacter);
         PlayerPrefsUtility.SaveDict<string, int>(Common.PP.USER_EQUIP, UserManager.userEquipment);
-        //PhotonNetwork.LoadLevel(Common.CO.SCENE_TITLE);
         GameObject.Find("ScreenManager").GetComponent<ScreenManager>().Load(Common.CO.SCENE_TITLE, DialogController.MESSAGE_LOADING);
     }
 
@@ -202,7 +201,11 @@ public class CustomManager : Photon.MonoBehaviour
         UserManager.userSetCharacter = charaNo;
 
         //特別武器更新
-        UserManager.userEquipment[Common.CO.PARTS_EXTRA] = Common.Weapon.GetExtraWeaponNo(charaNo);
+        int extraWeaponNo = UserManager.userEquipment[Common.CO.PARTS_EXTRA];
+        if (!Common.Weapon.IsEnabledEquipExtraWeapon(charaNo, extraWeaponNo))
+        {
+            UserManager.userEquipment[Common.CO.PARTS_EXTRA] = Common.Weapon.GetExtraWeaponNo(charaNo);
+        }
 
         //ベースボディ生成
         GameObject charaBaseObj = PhotonNetwork.Instantiate(Common.CO.CHARACTER_BASE, spawnPoints[tableIndex].position, spawnPoints[tableIndex].rotation, 0);
@@ -285,12 +288,9 @@ public class CustomManager : Photon.MonoBehaviour
             {
                 //装備
                 GameObject weaponObj = EquipWeapon(parts, UserManager.userEquipment[parts.name]);
-                //Debug.Log(parts.name+" >> "+UserManager.userEquipment[parts.name]);
-                if (weaponObj != null)
-                {
-                    //Bit画像設定
-                    SetBitIcon(partsNo, weaponObj);
-                }
+                
+                //Bit画像設定
+                SetBitIcon(partsNo, weaponObj);
             }
         }
     }
@@ -458,7 +458,6 @@ public class CustomManager : Photon.MonoBehaviour
         }
 
         //partsNo取得
-        //selectedPartsNo = GetSelectPartsNo(tapObj.name);
         selectedPartsNo = partsNo;
 
         //選択部位背景変更
@@ -492,19 +491,25 @@ public class CustomManager : Photon.MonoBehaviour
     {
         //Debug.Log("WeaponSelect:"+weaponNo);
 
-        //装備可能チェック
-        if (!weaponStore.IsEnabledEquip(weaponNo)) return;
+        //現在装備中チェック
+        string partsName = Common.CO.partsNameArray[selectedPartsNo];
 
-        //武器説明表示
-        SetWeaponDescription(weaponNo);
-
-        //装備
-        EquipWeapon(selectedPartsNo, weaponNo);
-
-        //武器文字色変更
-        foreach (Transform btn in weaponButtonArea)
+        if (UserManager.userEquipment[partsName] != weaponNo)
         {
-            btn.FindChild("Text").GetComponent<Text>().color = GetWeaponTextColor(int.Parse(btn.name));
+            //装備可能チェック
+            if (!weaponStore.IsEnabledEquip(weaponNo)) return;
+
+            //武器説明表示
+            SetWeaponDescription(weaponNo);
+
+            //装備
+            EquipWeapon(selectedPartsNo, weaponNo);
+
+            //武器文字色変更
+            foreach (Transform btn in weaponButtonArea)
+            {
+                btn.FindChild("Text").GetComponent<Text>().color = GetWeaponTextColor(int.Parse(btn.name));
+            }
         }
 
         //試射
@@ -535,7 +540,6 @@ public class CustomManager : Photon.MonoBehaviour
 
         //装備可能武器取得
         List<int> weaponNoList = weaponStore.GetSelectableWeaponNoList(selectedPartsNo, true);
-        //weaponNoList.Insert(0, nowWeaponNo);
 
         //ボタン作成
         foreach (int weaponNo in weaponNoList)
@@ -723,51 +727,60 @@ public class CustomManager : Photon.MonoBehaviour
     private void SetBitIcon(int partsNo, GameObject weaponObj)
     {
         if (!bitImgMap.ContainsKey(partsNo)) return;
-        if (weaponObj == null) return;
 
-        int bitType = weaponObj.GetComponent<WeaponController>().GetBitMotion();
-        Sprite bitSprite = bitTypeSprites[0];
-        switch (bitType)
+        Sprite bitSprite = null;
+        if (weaponObj != null)
         {
-            case Common.CO.BIT_MOTION_TYPE_GUN:
-                //銃タイプ
-                switch (partsNo)
-                {
-                    case Common.CO.PARTS_LEFT_HAND_NO:
-                    case Common.CO.PARTS_LEFT_HAND_DASH_NO:
-                        bitSprite = bitTypeSprites[1];
-                        break;
+            int bitType = weaponObj.GetComponent<WeaponController>().GetBitMotion();
+            switch (bitType)
+            {
+                case Common.CO.BIT_MOTION_TYPE_GUN:
+                    //銃タイプ
+                    switch (partsNo)
+                    {
+                        case Common.CO.PARTS_LEFT_HAND_NO:
+                        case Common.CO.PARTS_LEFT_HAND_DASH_NO:
+                            bitSprite = bitTypeSprites[1];
+                            break;
 
-                    case Common.CO.PARTS_RIGHT_HAND_NO:
-                    case Common.CO.PARTS_RIGHT_HAND_DASH_NO:
-                        bitSprite = bitTypeSprites[2];
-                        break;
+                        case Common.CO.PARTS_RIGHT_HAND_NO:
+                        case Common.CO.PARTS_RIGHT_HAND_DASH_NO:
+                            bitSprite = bitTypeSprites[2];
+                            break;
 
-                    default:
-                        bitSprite = bitTypeSprites[3];
-                        break;
-                }
-                break;
+                        default:
+                            bitSprite = bitTypeSprites[3];
+                            break;
+                    }
+                    break;
 
-            case Common.CO.BIT_MOTION_TYPE_MISSILE:
-                //ミサイルタイプ
-                bitSprite = bitTypeSprites[3];
-                break;
+                case Common.CO.BIT_MOTION_TYPE_MISSILE:
+                    //ミサイルタイプ
+                    bitSprite = bitTypeSprites[3];
+                    break;
 
-            case Common.CO.BIT_MOTION_TYPE_LASER:
-                //レーザータイプ
-                bitSprite = bitTypeSprites[4];
-                break;
+                case Common.CO.BIT_MOTION_TYPE_LASER:
+                    //レーザータイプ
+                    bitSprite = bitTypeSprites[4];
+                    break;
 
-            default:
-                //その他
-                bitSprite = bitTypeSprites[0];
-                break;
+                default:
+                    //その他
+                    bitSprite = bitTypeSprites[0];
+                    break;
+            }
         }
 
         foreach (Image img in bitImgMap[partsNo])
         {
-            if (bitSprite == null) img.enabled = false;
+            if (bitSprite == null)
+            {
+                img.enabled = false;
+            }
+            else
+            {
+                img.enabled = true;
+            }
             img.sprite = bitSprite;
         }
     }

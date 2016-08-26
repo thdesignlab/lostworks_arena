@@ -88,10 +88,10 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 130950}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_LocalRotation: {x: -0.65328157, y: 0.27059808, z: 0.2705981, w: 0.65328145}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 5, y: 5, z: 5}
-  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: 45, z: 0}
   m_Children:
   - {fileID: 408682}
   - {fileID: 497852}
@@ -200,8 +200,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2, y: 5, z: 2}
-  m_Center: {x: 0, y: 2.5, z: 0}
+  m_Size: {x: 1.5, y: 4, z: 1.5}
+  m_Center: {x: 0, y: 2, z: 0}
 --- !u!95 &9586018
 Animator:
   serializedVersion: 3
@@ -231,8 +231,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageEffect: {fileID: 0}
-  damage: 30
-  damagePerSecond: 50
+  damage: 20
+  damagePerSecond: 30
   isPhysicsBulletBreak: 0
   isEnergyBulletBreak: 0
   ownDamageRate: 0

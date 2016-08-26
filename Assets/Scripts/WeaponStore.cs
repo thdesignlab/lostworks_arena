@@ -89,7 +89,7 @@ public class WeaponStore : Photon.MonoBehaviour
         //特別武器チェック
         if (Common.Weapon.isExtraWeapon(weaponNo))
         {
-            if (!Common.Weapon.IsEnabledEquipExtraWeapon(weaponNo, weaponNo))
+            if (!Common.Weapon.IsEnabledEquipExtraWeapon(UserManager.userSetCharacter, weaponNo))
             {
                 return false;
             }
