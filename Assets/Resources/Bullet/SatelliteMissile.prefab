@@ -455,10 +455,10 @@ MonoBehaviour:
   isEnergyBulletBreak: 0
   isHitBreak: 1
   safetyTime: 1
-  turnSpeed: 90
-  lockStartTime: 1.5
+  turnSpeed: 360
+  lockStartTime: 2
   lockedSpeedRate: 5
-  lockedTurnSpeedRate: 1
+  lockedTurnSpeedRate: 0.5
   isNeedLock: 1
   isLockFlat: 0
 --- !u!136 &13630562

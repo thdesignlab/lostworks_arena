@@ -102,9 +102,18 @@ public class PlayerStatus : Photon.MonoBehaviour {
     private List<GameObject> winCountMineList = new List<GameObject>();
     private List<GameObject> winCountEnemyList = new List<GameObject>();
 
-    ////バトルログ
-    //private Queue logBattleQueue = new Queue();
-    //private bool isDispLogBattle = false;
+    //バトルログ
+    private bool isDispBattleLog = false;
+    const int BATTLE_LOG_COUNT = 10;
+    public const int BATTLE_LOG_ATTACK = 0;
+    public const int BATTLE_LOG_DAMAGE = 1;
+    private int[] battleLogNo = new int[] { 0, 0 };
+    private Text[] battleLogArea = new Text[] { null, null };
+    private Queue[] logBattleQueue = new Queue[] { null, null };
+    private string[] preSlipDmgName = new string[] { "", "" };
+    private int[] slipTotalDmg = new int[] { 0, 0 };
+    private Dictionary<string, int> damageSourceMine = new Dictionary<string, int>();
+    private Dictionary<string, int> damageSourceEnemy = new Dictionary<string, int>();
 
     void Awake()
     {
@@ -138,6 +147,8 @@ public class PlayerStatus : Photon.MonoBehaviour {
         moveCtrl = GetComponent<BaseMoveController>();
 
         gameCtrl = GameObject.Find("GameController").GetComponent<GameController>();
+        isDispBattleLog = gameCtrl.isDebugMode;
+
         //ステータス構造
         Transform screenStatusTran = Camera.main.transform.FindChild(Common.CO.SCREEN_CANVAS + Common.CO.SCREEN_STATUS);
 
@@ -175,6 +186,15 @@ public class PlayerStatus : Photon.MonoBehaviour {
         {
             if (winMark.name.IndexOf("_on") != -1) winCountEnemyList.Add(winMark.gameObject);
         }
+
+        //バトルログエリア
+        Transform battleLogTran = screenStatusTran.FindChild("BattleLog");
+        if (battleLogTran != null)
+        {
+            battleLogArea[BATTLE_LOG_ATTACK] = battleLogTran.FindChild("Attack").GetComponent<Text>();
+            battleLogArea[BATTLE_LOG_DAMAGE] = battleLogTran.FindChild("Damage").GetComponent<Text>();
+        }
+
         Init();
     }
 
@@ -217,6 +237,14 @@ public class PlayerStatus : Photon.MonoBehaviour {
             StartCoroutine(SetHpSlider(hpBarEnemy, hpBarEnemyImage));
         }
 
+        damageSourceMine = new Dictionary<string, int>();
+        damageSourceEnemy = new Dictionary<string, int>();
+        logBattleQueue[BATTLE_LOG_ATTACK] = new Queue();
+        logBattleQueue[BATTLE_LOG_DAMAGE] = new Queue();
+        preSlipDmgName[BATTLE_LOG_ATTACK] = "";
+        preSlipDmgName[BATTLE_LOG_DAMAGE] = "";
+        slipTotalDmg[BATTLE_LOG_ATTACK] = 0;
+        slipTotalDmg[BATTLE_LOG_DAMAGE] = 0;
     }
 
     //一定間隔ごとにダメージを同期する
@@ -263,11 +291,11 @@ public class PlayerStatus : Photon.MonoBehaviour {
         nowSp = sp;
     }
 
-    public void AddDamage(int damage, string name = "unkown")
+    public bool AddDamage(int damage, string name = "Unknown", bool isSlipDamage = false)
     {
-        if (gameCtrl == null || !gameCtrl.isGameStart || gameCtrl.isGameEnd) return;
+        if (gameCtrl == null || !gameCtrl.isGameStart || gameCtrl.isGameEnd) return false;
 
-        if (isForceInvincible) return;
+        if (isForceInvincible) return false;
 
         if (leftInvincibleTime > 0)
         {
@@ -275,7 +303,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
             {
                 photonView.RPC("OpenShieldRPC", PhotonTargets.All, shieldTime);
             }
-            return;
+            return false;
         }
 
         //ダメージ
@@ -285,11 +313,20 @@ public class PlayerStatus : Photon.MonoBehaviour {
             SetHp(0);
         }
 
+        //被ダメージログ
+        if (photonView.isMine && !isNpc)
+        {
+            SetBattleLog(BATTLE_LOG_DAMAGE, damage, name, isSlipDamage);
+        }
+
+
         ////カメラ振動
         //if (photonView.isMine && camCtrl != null)
         //{
         //    //camCtrl.Shake();
         //}
+
+        return true;
     }
 
     [PunRPC]
@@ -453,6 +490,20 @@ public class PlayerStatus : Photon.MonoBehaviour {
 
         if (photonView.isMine)
         {
+            if (!isNpc && isDispBattleLog)
+            {
+                int logType = BATTLE_LOG_ATTACK;
+                foreach (Queue que in logBattleQueue)
+                {
+                    battleLogArea[logType].text = "";
+                    foreach (string text in que)
+                    {
+                        battleLogArea[logType].text += text + "\n";
+                    }
+                    logType = BATTLE_LOG_DAMAGE;
+                }
+            }
+
             if (isDead)
             {
                 //戦闘不能
@@ -830,64 +881,76 @@ public class PlayerStatus : Photon.MonoBehaviour {
         moveCtrl.ActionRecoil(forceVector, speed, limit);
     }
 
-    ////##### バトルログ #####
+    //##### バトルログ #####
 
-    //private void PushbattleLog(int damage, string name, bool console = false)
-    //{
-    //    name = name.Replace("(Clone)", "");
-    //    string text = name + " >> " + damage.ToString();
-    //    PushBattleLog(text, console);
-    //}
+    public void SetBattleLog(int logType, int damage, string name, bool isSlipDamage = false)
+    {
+        if (isSlipDamage)
+        {
+            if (preSlipDmgName[logType] == name)
+            {
+                //Slipダメージはまとめる
+                slipTotalDmg[logType] += damage;
+            }
+            else
+            {
+                //別のSlipダメージ
+                PushBattleLog(logType, slipTotalDmg[logType], preSlipDmgName[logType]);
+                preSlipDmgName[logType] = name;
+                slipTotalDmg[logType] = damage;
+            }
+        }
+        else
+        {
+            if (preSlipDmgName[logType] != "")
+            {
+                //ログへ出力
+                PushBattleLog(logType, slipTotalDmg[logType], preSlipDmgName[logType]);
+                preSlipDmgName[logType] = "";
+                slipTotalDmg[logType] = 0;
+            }
+            PushBattleLog(logType, damage, name);
+        }
 
-    //private void PushBattleLog(string text, bool console = false)
-    //{
-    //    if (logBattleQueue.Count >= 10) logBattleQueue.Dequeue();
+    }
 
-    //    logBattleQueue.Enqueue(text);
-    //    if (console) Debug.Log(text);
-    //}
+    private void PushBattleLog(int logType, int damage, string name, bool console = false)
+    {
+        if (name == "" || damage <= 0) return;
 
-    //private int textAreaWidth = Screen.width / 2;
-    //private int textAreaheight = Screen.height / 2;
-    //void OnGUI()
-    //{
-    //    if (!isActiveSceane) return;
-    //    if (!isDispLogBattle) return;
-    //    Rect logRect = new Rect(0, Screen.height - textAreaheight, textAreaWidth, textAreaheight);
+        //バトルログ
+        if (isDispBattleLog)
+        {
+            battleLogNo[logType]++;
+            name = name.Replace("(Clone)", "");
+            string logName = name;
+            if (logName.Length > 10) logName = logName.Substring(0, 10);
+            string text = "[" + battleLogNo[logType] + "]" + logName + " > " + damage.ToString();
 
-    //    if (dispLog)
-    //    {
-    //        //ログ表示中
-    //        string logText = "";
-    //        foreach (string log in logQueue)
-    //        {
-    //            logText += log;
-    //        }
-    //        GUI.TextArea(logRect, logText);
-    //        if (GUI.Button(btnRect, "-"))
-    //        {
-    //            dispLog = false;
-    //            btnDown = 0;
-    //        }
-    //    }
-    //    else
-    //    {
-    //        SetGuiSkin(GUI.skin);
-    //        GUI.skin = guiSkin;
+            if (logBattleQueue[logType].Count >= BATTLE_LOG_COUNT) logBattleQueue[logType].Dequeue();
+            logBattleQueue[logType].Enqueue(text);
+            if (console) Debug.Log(text);
+        }
 
-    //        //ログ非表示中
-    //        if (GUI.RepeatButton(btnRect, "", "button"))
-    //        {
-    //            btnDown += Time.deltaTime;
-    //            if (btnDown >= btnDownTime)
-    //            {
-    //                dispLog = true;
-    //            }
-    //        }
-    //        else
-    //        {
-    //            //btnDown -= Time.deltaTime / 10;
-    //        }
-    //    }
-    //}
+        //ダメージソース
+        Dictionary<string, int> damageSource;
+        if (logType == BATTLE_LOG_ATTACK)
+        {
+            damageSource = damageSourceMine;
+        }
+        else
+        {
+            damageSource = damageSourceEnemy;
+        }
+        if (!damageSource.ContainsKey(name)) damageSource[name] = 0;
+        damageSource[name] += damage;
+    }
+
+    public bool SwitchBattleLog()
+    {
+        isDispBattleLog = !isDispBattleLog;
+        battleLogArea[BATTLE_LOG_ATTACK].gameObject.SetActive(isDispBattleLog);
+        battleLogArea[BATTLE_LOG_DAMAGE].gameObject.SetActive(isDispBattleLog);
+        return isDispBattleLog;
+    }
 }

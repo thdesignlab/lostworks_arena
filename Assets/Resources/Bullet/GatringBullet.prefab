@@ -111,7 +111,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 1
+  m_CollisionDetection: 2
 --- !u!114 &11461518
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -175,7 +175,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   effectSpawn: {fileID: 0}
   activeLimitTime: 0
-  activeLimitDistance: 100
+  activeLimitDistance: 200
 --- !u!136 &13634990
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -185,10 +185,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 2
+  m_Radius: 0.6
+  m_Height: 4
   m_Direction: 2
-  m_Center: {x: 0, y: 0, z: -0.5}
+  m_Center: {x: 0, y: 0, z: -1}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

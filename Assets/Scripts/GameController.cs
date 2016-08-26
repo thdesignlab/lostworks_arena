@@ -57,7 +57,7 @@ public class GameController : Photon.MonoBehaviour
     [HideInInspector]
     public int gameMode = -1;
     public const int GAME_MODE_MISSION = 1;
-    public const int GAME_MODE_SELECT = 2;
+    public const int GAME_MODE_PLACTICE = 2;
     public const int GAME_MODE_VS = 3;
     [HideInInspector]
     public int stageNo = -1;

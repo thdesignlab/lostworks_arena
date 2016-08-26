@@ -4,13 +4,11 @@ using System.Collections;
 public class MenuController : Photon.MonoBehaviour
 {
     [SerializeField]
-    private GameObject pauseButton;
-    [SerializeField]
     private GameObject debugButton;
     [SerializeField]
-    private GameObject npcMenu;
-    [SerializeField]
     private GameObject debugMenu;
+    [SerializeField]
+    private GameObject npcMenu;
     [SerializeField]
     private float switchTime = 0.3f;
     [SerializeField]
@@ -18,23 +16,56 @@ public class MenuController : Photon.MonoBehaviour
 
     private Transform myTran;
     private GameController gameCtrl;
+    private GameObject pauseButton;
+    private GameObject npcButton;
 
     private bool isMenuOpen = false;
     private bool enableMenuAction = true;
 
+    const string MENU_BUTTONS = "MenuButtons";
+    const string BUTTON_PAUSE = "PauseButton";
+    const string BUTTON_CPU_BATTLE = "NpcButton";
+
     void Awake()
     {
         myTran = transform;
+        Transform menuObj = myTran.FindChild(MENU_BUTTONS);
+        //一時停止ボタン
+        Transform pauseTran = menuObj.FindChild(BUTTON_PAUSE);
+        if (pauseTran != null) pauseButton = pauseTran.gameObject;
+        //CPU生成ボタン
+        Transform npcTran = menuObj.FindChild(BUTTON_CPU_BATTLE);
+        if (npcTran != null) npcButton = npcTran.gameObject;
 
         gameCtrl = GameObject.Find("GameController").GetComponent<GameController>();
-        if (gameCtrl == null || gameCtrl.gameMode == GameController.GAME_MODE_VS)
-        {
-            //一時停止禁止
-            pauseButton.SetActive(false);
-        }
-        //デバッグボタンON/OFF
+
         bool isDebug = false;
-        if (gameCtrl != null) isDebug = gameCtrl.isDebugMode;
+        bool isEnabledCpu = false;
+        if (gameCtrl != null)
+        {
+            //デバッグモードチェック
+            isDebug = gameCtrl.isDebugMode;
+
+            switch (gameCtrl.gameMode)
+            {
+                case GameController.GAME_MODE_PLACTICE:
+                    //CPU生成ボタン表示
+                    isEnabledCpu = true;
+                    break;
+
+                case GameController.GAME_MODE_VS:
+                    //一時停止禁止
+                    pauseButton.SetActive(false);
+                    //CPU生成ボタン表示
+                    isEnabledCpu = true;
+                    break;
+            }
+        }
+
+        //CPU生成ボタンON/OFF
+        npcButton.SetActive(isEnabledCpu);
+
+        //デバッグボタンON/OFF
         debugButton.SetActive(isDebug);
     }
 
@@ -134,6 +165,8 @@ public class MenuController : Photon.MonoBehaviour
     //NPC生成
     public void OnNpcCreateButton(int charaNo = 0)
     {
+        if (gameCtrl.gameMode == GameController.GAME_MODE_MISSION) return;
+
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
         if (PhotonNetwork.countOfPlayersInRooms > 1 || players.Length > 1)
         {
@@ -177,5 +210,14 @@ public class MenuController : Photon.MonoBehaviour
         OnDebugMenuButton(false);
         if (!gameCtrl.isDebugMode) return;
         GameObject.Find("WeaponStore").GetComponent<WeaponStore>().CustomMenuOpen();
+    }
+
+    //バトルログ表示
+    public void OnBattleLogButton()
+    {
+        OnDebugMenuButton(false);
+        if (!gameCtrl.isDebugMode) return;
+        PlayerStatus status = myTran.root.GetComponent<PlayerStatus>();
+        if (status != null) status.SwitchBattleLog();
     }
 }

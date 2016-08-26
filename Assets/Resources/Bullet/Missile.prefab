@@ -421,11 +421,11 @@ MonoBehaviour:
   isLockOn: 1
   UseGravity: 0
   hitEffect: {fileID: 0}
-  speed: 100
+  speed: 120
   damage: 20
   damagePerSecond: 0
   stuckTime: 0
-  knockBackRate: 1
+  knockBackRate: 0
   isPhysicsBulletBreak: 0
   isEnergyBulletBreak: 0
   isHitBreak: 1
@@ -433,6 +433,7 @@ MonoBehaviour:
   turnSpeed: 120
   lockStartTime: 0
   lockedSpeedRate: 1.5
+  lockedTurnSpeedRate: 0.5
   isNeedLock: 1
   isLockFlat: 0
 --- !u!114 &11478710
@@ -472,7 +473,7 @@ CapsuleCollider:
   m_Radius: 0.2
   m_Height: 0.8
   m_Direction: 2
-  m_Center: {x: 0, y: 0, z: 1}
+  m_Center: {x: 0, y: 0, z: 0.5}
 --- !u!198 &19891612
 ParticleSystem:
   m_ObjectHideFlags: 1

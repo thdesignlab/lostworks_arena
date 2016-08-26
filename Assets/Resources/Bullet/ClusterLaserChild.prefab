@@ -71,7 +71,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effectSpawn: {fileID: 0}
-  activeLimitTime: 2
+  activeLimitTime: 1.5
   activeLimitDistance: 0
 --- !u!114 &11493428
 MonoBehaviour:
@@ -98,7 +98,7 @@ MonoBehaviour:
   isEnergyBulletBreak: 0
   isHitBreak: 1
   safetyTime: 0
-  turnSpeed: 360
+  turnSpeed: 270
   lockStartTime: 0
   lockedSpeedRate: 1
   lockedTurnSpeedRate: 1

@@ -115,13 +115,13 @@ MonoBehaviour:
   isPhysicsBulletBreak: 0
   isEnergyBulletBreak: 0
   isHitBreak: 0
-  safetyTime: 0.1
+  safetyTime: 0
   turnSpeed: 30
   lockStartTime: 0
   lockedSpeedRate: 1
   lockedTurnSpeedRate: 1
-  isNeedLock: 0
-  isLockFlat: 0
+  isNeedLock: 1
+  isLockFlat: 1
   chainObject: {fileID: 195286, guid: 099cfea8d86d0c24da0944f2eb9dc4f0, type: 2}
   chainCount: 15
   chainTime: 0

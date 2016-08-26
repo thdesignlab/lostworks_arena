@@ -32,6 +32,7 @@ public class BulletController : MoveOfCharacter
     protected PlayerStatus targetStatus;
     protected Collider myCollider;
     protected Transform ownerTran;
+    protected PlayerStatus ownerStatus;
     protected int ownerId = -1;
 
     protected const int MIN_SEND_DAMAGE = 5;
@@ -143,7 +144,7 @@ public class BulletController : MoveOfCharacter
                 if (damage > 0)
                 {
                     //ダメージ
-                    status.AddDamage(damage);
+                    AddDamageProccess(status, damage);
                     //Debug.Log(hitObj.name + " >> " + myTran.name + "(" + damage + ")");
 
                     //ダメージエフェクト
@@ -201,7 +202,7 @@ public class BulletController : MoveOfCharacter
                     {
                         status = hitObj.GetComponent<PlayerStatus>();
                     }
-                    status.AddDamage(addDmg);
+                    AddDamageProccess(status, addDmg, true);
                     //Debug.Log(hitObj.name + " >> " + myTran.name + "(slip:" + addDmg + ")");
                 }
                 else if (hitObj.CompareTag(Common.CO.TAG_STRUCTURE))
@@ -211,6 +212,15 @@ public class BulletController : MoveOfCharacter
                 }
             }
         }
+    }
+
+    protected void AddDamageProccess(PlayerStatus status, int dmg, bool isSlip = false)
+    {
+        //対象へダメージを与える
+        bool isDamage = status.AddDamage(dmg, myTran.name, isSlip);
+
+        //与えたダメージのログを保管
+        if (isDamage && ownerStatus != null) ownerStatus.SetBattleLog(PlayerStatus.BATTLE_LOG_ATTACK, dmg, myTran.name, isSlip);
     }
 
     //ターゲットを破壊する
@@ -283,6 +293,7 @@ public class BulletController : MoveOfCharacter
     {
         if (owner == null) return;
         ownerTran = owner;
+        ownerStatus = ownerTran.GetComponent<PlayerStatus>();
         PhotonView pv = PhotonView.Get(ownerTran.gameObject);
         if (pv != null) ownerId = pv.ownerId;
     }

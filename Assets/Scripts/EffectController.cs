@@ -18,7 +18,7 @@ public class EffectController : Photon.MonoBehaviour
 
     protected Transform myTran;
     protected Transform ownerTran;
-
+    protected PlayerStatus ownerStatus;
 
     protected virtual void Awake()
     {
@@ -30,13 +30,7 @@ public class EffectController : Photon.MonoBehaviour
         GameObject otherObj = other.gameObject;
         OnHit(otherObj);
     }
-
-    //void OnParticleCollision(GameObject otherObj)
-    //{
-    //    Debug.Log(otherObj);
-    //    OnHit(otherObj);
-    //}
-
+    
     protected void OnHit(GameObject otherObj)
     {
         if (photonView.isMine)
@@ -51,10 +45,9 @@ public class EffectController : Photon.MonoBehaviour
 
                 if (dmg > 0)
                 {
-                    PlayerStatus status = otherObj.GetComponent<PlayerStatus>();
-
                     //ダメージ
-                    status.AddDamage(dmg);
+                    PlayerStatus status = otherObj.GetComponent<PlayerStatus>();
+                    AddDamageProccess(status, dmg);
 
                     //エフェクト
                     if (damageEffect != null)
@@ -107,16 +100,27 @@ public class EffectController : Photon.MonoBehaviour
                     }
                     if (addDmg > 0)
                     {
-                        otherObj.GetComponent<PlayerStatus>().AddDamage(addDmg);
+                        PlayerStatus status = otherObj.GetComponent<PlayerStatus>();
+                        AddDamageProccess(status, addDmg, true);
                     }
                 }
             }
         }
     }
 
+    protected void AddDamageProccess(PlayerStatus status, int dmg, bool isSlip = false)
+    {
+        //対象へダメージを与える
+        bool isDamage = status.AddDamage(dmg, myTran.name, isSlip);
+
+        //与えたダメージのログを保管
+        if (isDamage && ownerStatus != null) ownerStatus.SetBattleLog(PlayerStatus.BATTLE_LOG_ATTACK, dmg, myTran.name, isSlip);
+    }
+
     public void SetOwner(Transform owner)
     {
         ownerTran = owner;
+        if (ownerTran != null) ownerStatus = ownerTran.GetComponent<PlayerStatus>();
     }
     public Transform GetOwner()
     {
