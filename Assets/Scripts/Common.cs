@@ -629,25 +629,39 @@ namespace Common
         };
 
         //NPCステータス
-        public const int STATUS_RUN_SPEED = 0;
-        public const int STATUS_BOOST_SPEED = 0;
-        public const int STATUS_TURN_SPEED = 0;
         public const int STATUS_MAX_HP = 0;
-        public const int STATUS_RECOVER_SP = 0;
-        public const int STATUS_ATTACK_RATE = 0;
-        public const int STATUS_ATTACK_INTERVAL = 0;
-        public const int STATUS_BOOST_INTERVAL = 0;
-        public const int STATUS_TARGET_INTERVAL = 0;
-        public const int STATUS_TARGET_TYPE = 0;
-        public const int STATUS_TARGET_DISTANCE = 0;
+        public const int STATUS_RECOVER_SP = 1;
+        public const int STATUS_RUN_SPEED = 2;
+        public const int STATUS_BOOST_SPEED = 3;
+        public const int STATUS_TURN_SPEED = 4;
+        public const int STATUS_ATTACK_RATE = 5;
+        public const int STATUS_ATTACK_INTERVAL = 6;
+        public const int STATUS_BOOST_INTERVAL = 7;
+        public const int STATUS_TARGET_INTERVAL = 8;
+        public const int STATUS_TARGET_TYPE = 9;
+        public const int STATUS_TARGET_DISTANCE = 10;
         public static Dictionary<int, int[]> npcStatusDic = new Dictionary<int, int[]>()
         {
-            { 0, new int[]{ 30, 70, 20, 1200, 30, 100, 3, 3, 3, 1 , 100} },
-            { 1, new int[]{ 30, 70, 20, 1200, 30, 100, 3, 3, 3, 0 , 100} },
-            { 1000, new int[]{ 15, 30, 10, 600, 10, 50, 3, 3, 3, 0 , 100} },
-            { 1001, new int[]{ 25, 50, 15, 800, 20, 70, 3, 3, 3, 0 , 100} },
-            { 1002, new int[]{ 30, 60, 20, 1000, 30, 90, 3, 3, 3, 0 , 100} },
+                            //hp, sp, run, boost, turn, atk%, atkI, boostI, tagI
+            { 0, new int[]{ 1200, 30, 35, 70, 20, 100, 2, 2, 3, 1 , 50} },
+            { 1, new int[]{ 1200, 30, 30, 70, 20, 120, 2, 2, 3, 1 , 200} },
+            { 1000, new int[]{ 600, 10, 15, 30, 10, 50, 3, 3, 3, 0 , 200} },
+            { 1001, new int[]{ 800, 20, 25, 50, 15, 70, 3, 3, 3, 0 , 200} },
+            { 1002, new int[]{ 1000, 30, 30, 60, 20, 90, 3, 3, 3, 0 , 100} },
         };
+
+        //レベルによるステータス変化
+        public static Dictionary<int, float[]> npcLevelStatusDic = new Dictionary<int, float[]>()
+        {
+                            //hp, sp, run, boost, turn, atk%, atkI, boostI, tagI
+            { 1, new float[] { 1, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 1.5f, 1.5f, 1.5f} },
+            { 2, new float[] { 1, 1, 1, 1, 0.8f, 0.8f, 1.3f, 1.3f, 1.3f} },
+            { 3, new float[] { 1, 1, 1, 1, 1, 1, 1, 1, 1} },
+            { 4, new float[] { 1.2f, 1.5f, 1.1f, 1.1f, 1.5f, 1, 0.75f, 0.75f, 0.5f} },
+            { 5, new float[] { 1.5f, 2, 1.2f, 1.2f, 1.5f, 1.2f, 0.5f, 0.5f, 0.5f } },
+        };
+        //設定レベル以上の場合の追加Rate
+        public static float[] overLevelState = new float[] { 0.1f, 0.1f, 0, 0, 0, 0.05f, 0, 0, 0};
 
         //NPC武器
         public static Dictionary<int, int[]> npcWeaponDic = new Dictionary<int, int[]>()

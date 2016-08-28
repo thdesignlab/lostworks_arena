@@ -4,23 +4,17 @@ using System.Collections.Generic;
 
 public class NpcController : MoveOfCharacter
 {
-    private float[] hpRateArray = new float[] { 1, 1.5f, 2 , 3};
-    private float[] invincibleTimeArray = new float[] { 1, 1, 1.5f , 1.5f};
-    private float[] atackIntervalArray = new float[] { 0, 3, 1 , 0.5f};
-    private float[] boostIntervalArray = new float[] { 0, 3, 1 , 0.5f};
-    private float[] searchRangeArray = new float[] { 0, 3, 6 , 10};
-    private float[] runSpeedArray = new float[] { 1.0f, 1.0f, 1.5f , 1.5f};
-    [SerializeField]
-    private SphereCollider searchCollider;
-
     private PlayerStatus status;
     private Transform targetTran;
     private Vector3 randomDirection;
     private GameController gameCtrl;
 
+    private int targetType = 0;
     private float walkRadius = 150.0f;  //移動半径
     private float boostLeftSpPer = 30;  //通常時にブーストするSP残量閾値
     private float quickTargetTime = 3;  //対象へクイックターンする時間
+    private float atackIntervalTime;
+    private float boostIntervalTime;
 
     //private WeaponController[] weapons;
     private List<WeaponController> weapons = new List<WeaponController>();
@@ -28,15 +22,10 @@ public class NpcController : MoveOfCharacter
     private float preBoostTime = 0;
     private float leftTargetSearch = 0;
     private float quickTurnTime = 0;
-
-    private float atackIntervalTime;
-    private float boostIntervalTime;
-    private float runSpeedRate;
-    private float invincibleTimeRate;
+    private int preHp = 0;
 
     private Vector3 randomMoveTarget = Vector3.zero;
 
-    private int preHp = 0;
 
     private PlayerMotionController motionCtrl;
     private Animator animator;
@@ -110,22 +99,54 @@ public class NpcController : MoveOfCharacter
 
     public void SetLevel(int level)
     {
+        if (gameCtrl == null) gameCtrl = GameObject.Find("GameController").GetComponent<GameController>();
+
+        //レベル決定
         if (level < 0) level = 0;
-        if (atackIntervalArray.Length <= level) level = atackIntervalArray.Length - 1;
-
-        status.ReplaceMaxHp(hpRateArray[level]);
-
-        if (searchCollider != null)
+        int settingMaxLevel = Common.Mission.npcLevelStatusDic.Count;
+        int overLevel = 0;
+        if (settingMaxLevel < level)
         {
-            float radius = searchRangeArray[level];
-            searchCollider.radius = radius;
-            searchCollider.center = new Vector3(0, radius / 3, radius / 3);
+            overLevel = settingMaxLevel - level;
+            level = settingMaxLevel;
         }
 
-        atackIntervalTime = atackIntervalArray[level];
-        boostIntervalTime = boostIntervalArray[level];
-        runSpeedRate = runSpeedArray[level];
-        invincibleTimeRate = invincibleTimeArray[level];
+        //キャラステータス取得
+        int[] npcStatusArray = Common.Mission.npcStatusDic[gameCtrl.npcNo];
+        float[] statusLevelRate = Common.Mission.npcLevelStatusDic[level];
+        if (overLevel > 0)
+        {
+            int i = 0;
+            foreach (float addRate in Common.Mission.overLevelState)
+            {
+                statusLevelRate[i] += addRate * overLevel;
+                i++;
+            }
+        }
+
+        //ステータス設定
+        status.SetStatus(npcStatusArray, statusLevelRate);
+
+        //攻撃間隔
+        int index = Common.Mission.STATUS_ATTACK_INTERVAL;
+        atackIntervalTime = npcStatusArray[index] * statusLevelRate[index];
+
+        //ブースト間隔
+        index = Common.Mission.STATUS_BOOST_INTERVAL;
+        boostIntervalTime = npcStatusArray[index] * statusLevelRate[index];
+
+        //ターゲット間隔
+        index = Common.Mission.STATUS_TARGET_INTERVAL;
+        quickTargetTime = npcStatusArray[index] * statusLevelRate[index];
+
+        //ターゲットタイプ
+        targetType = npcStatusArray[Common.Mission.STATUS_TARGET_TYPE];
+        walkRadius = npcStatusArray[Common.Mission.STATUS_TARGET_DISTANCE];
+
+        //Debug.Log("level:" + level + "(" + overLevel + ")");
+        //Debug.Log("atackIntervalTime:" + atackIntervalTime);
+        //Debug.Log("boostIntervalTime:" + boostIntervalTime);
+        //Debug.Log("quickTargetTime:" + quickTargetTime);
     }
 
     public void SetWeapons()
@@ -213,7 +234,11 @@ public class NpcController : MoveOfCharacter
             }
 
             Vector3 pos = myTran.position;
-            if (targetTran != null) pos = targetTran.position;
+            if (targetType == 1)
+            {
+                if (targetTran != null) pos = targetTran.position;
+            }
+            
             randomDirection = Random.insideUnitSphere * walkRadius + pos;
             NavMeshHit hit;
             if (NavMesh.SamplePosition(randomDirection, out hit, walkRadius, 1))
@@ -295,7 +320,7 @@ public class NpcController : MoveOfCharacter
     private void Run(float x, float y)
     {
         Vector3 moveDirection = new Vector3(x, 0, y);
-        base.MoveWorld(moveDirection, status.runSpeed * runSpeedRate);
+        base.MoveWorld(moveDirection, status.runSpeed);
     }
 
     private void Jump(int x, int y)
@@ -339,7 +364,7 @@ public class NpcController : MoveOfCharacter
             status.UseSp(status.boostCost);
 
             //無敵時間セット
-            status.SetInvincible(true, status.invincibleTime * invincibleTimeRate);
+            status.SetInvincible(true, status.invincibleTime);
 
             base.Move(move, speed, limit);
         }
@@ -358,7 +383,7 @@ public class NpcController : MoveOfCharacter
 
         //Debug.Log("FallDown");
         //無敵時間セット
-        status.SetInvincible(true, status.invincibleTime * invincibleTimeRate);
+        status.SetInvincible(true, status.invincibleTime);
 
         //降下
         StartCoroutine(Landing());
@@ -421,20 +446,9 @@ public class NpcController : MoveOfCharacter
 
     private void RandomMove()
     {
-        if (runSpeedRate == 0) return;
+        if (status.runSpeed == 0) return;
 
-        Vector3 targetPos = Vector3.zero;
-        if (!base.isGrounded && myTran.position.y < 0.5f)
-        {
-            //落下防止
-            randomMoveTarget = Vector3.zero;
-            leftTargetSearch = 5;
-            Jump(0, 0);
-        }
-        else
-        {
-            targetPos = randomMoveTarget;
-        }
+        Vector3 targetPos = randomMoveTarget;
 
         float distance = Vector3.Distance(targetPos, myTran.position);
         if (distance < 10)

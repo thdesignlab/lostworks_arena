@@ -19,6 +19,7 @@ public class EffectController : Photon.MonoBehaviour
     protected Transform myTran;
     protected Transform ownerTran;
     protected PlayerStatus ownerStatus;
+    protected string ownerWeapon = "";
 
     protected virtual void Awake()
     {
@@ -53,7 +54,7 @@ public class EffectController : Photon.MonoBehaviour
                     if (damageEffect != null)
                     {
                         GameObject effectObj = PhotonNetwork.Instantiate(Common.Func.GetResourceEffect(damageEffect.name), otherObj.transform.position, damageEffect.transform.rotation, 0);
-                        effectObj.GetComponent<EffectController>().SetOwner(ownerTran);
+                        effectObj.GetComponent<EffectController>().SetOwner(ownerTran, ownerWeapon);
                     }
                 }
             }
@@ -111,19 +112,25 @@ public class EffectController : Photon.MonoBehaviour
     protected void AddDamageProccess(PlayerStatus status, int dmg, bool isSlip = false)
     {
         //対象へダメージを与える
-        bool isDamage = status.AddDamage(dmg, myTran.name, isSlip);
+        bool isDamage = status.AddDamage(dmg, ownerWeapon, isSlip);
 
         //与えたダメージのログを保管
-        if (isDamage && ownerStatus != null) ownerStatus.SetBattleLog(PlayerStatus.BATTLE_LOG_ATTACK, dmg, myTran.name, isSlip);
+        if (isDamage && ownerStatus != null)
+        {
+            //Debug.Log(myTran.name + " >> " + ownerStatus.name);
+            ownerStatus.SetBattleLog(PlayerStatus.BATTLE_LOG_ATTACK, dmg, ownerWeapon, isSlip);
+        }
     }
 
-    public void SetOwner(Transform owner)
+    public void SetOwner(Transform owner, string weaponName)
     {
         ownerTran = owner;
+        ownerWeapon = weaponName;
         if (ownerTran != null) ownerStatus = ownerTran.GetComponent<PlayerStatus>();
     }
-    public Transform GetOwner()
+    public void GetOwner(out Transform tran, out string name)
     {
-        return ownerTran;
+        tran = ownerTran;
+        name = ownerWeapon;
     }
 }

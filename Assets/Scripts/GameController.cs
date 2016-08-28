@@ -69,6 +69,15 @@ public class GameController : Photon.MonoBehaviour
     private int winCount = 0;
     private int loseCount = 0;
 
+    //バトルログ
+    [SerializeField]
+    private GameObject resultCanvas;
+    private Text resultTextMine;
+    private Text resultTextEnemy;
+    private Dictionary<string, int> damageSourceMine = new Dictionary<string, int>();
+    private Dictionary<string, int> damageSourceEnemy = new Dictionary<string, int>();
+    private bool isResultCheck = false;
+
     [HideInInspector]
     public bool isDebugMode = false;
 
@@ -89,7 +98,6 @@ public class GameController : Photon.MonoBehaviour
         isDebugMode = GameObject.Find("Debug").GetComponent<MyDebug>().isDebugMode;
         spriteStudioCtrl = GameObject.Find("SpriteStudioController").GetComponent<SpriteStudioController>();
         screenMgr = GameObject.Find("ScreenManager").GetComponent<ScreenManager>();
-
     }
 
     private void SetCanvasInfo()
@@ -255,56 +263,65 @@ public class GameController : Photon.MonoBehaviour
             if (isGameEnd)
             {
                 //Debug.Log("GameEnd");
+                yield return new WaitForSeconds(3.0f);
+                if (!isResultCheck)
+                {
+                    //結果表示
+                    OpenResult();
+                }
                 if (gameMode == GAME_MODE_MISSION)
                 {
                     //ミッションモード
-                    yield return new WaitForSeconds(3.0f);
-                    bool isStageSetting = false;
-                    if (isWin)
+
+                    if (isResultCheck)
                     {
-                        //勝利
-                        if (winCount >= 3)
+                        bool isStageSetting = false;
+                        if (isWin)
                         {
-                            //ステージクリア
-                            //NextStage
-                            if (SetNextStage())
+                            //勝利
+                            if (winCount >= 3)
                             {
-                                isStageSetting = true;
-                                SetTextUp(MESSAGE_STAGE_NEXT + MESSAGE_STAGE_READY + "...", colorWait);
+                                //ステージクリア
+                                //NextStage
+                                if (SetNextStage())
+                                {
+                                    isStageSetting = true;
+                                    SetTextUp(MESSAGE_STAGE_NEXT + MESSAGE_STAGE_READY + "...", colorWait);
+                                }
+                                else
+                                {
+                                    //全ステージクリア
+                                    SetTextCenter(MESSAGE_MISSION_CLEAR, colorWait);
+                                }
                             }
                             else
                             {
-                                //全ステージクリア
-                                SetTextCenter(MESSAGE_MISSION_CLEAR, colorWait);
+                                //NextRound
+                                isStageSetting = true;
+                                SetTextUp(MESSAGE_STAGE_NEXT + MESSAGE_ROUND_READY + "...", colorWait);
                             }
                         }
                         else
                         {
-                            //NextRound
-                            isStageSetting = true;
-                            SetTextUp(MESSAGE_STAGE_NEXT + MESSAGE_ROUND_READY + "...", colorWait);
+                            //敗北
+                            if (loseCount >= 3)
+                            {
+                                //ゲームオーバー
+                                SetTextCenter(MESSAGE_GAME_OVER, colorWin);
+                            }
+                            else
+                            {
+                                isStageSetting = true;
+                                SetTextUp(MESSAGE_STAGE_NEXT + MESSAGE_ROUND_READY + "...", colorWait);
+                            }
                         }
-                    }
-                    else
-                    {
-                        //敗北
-                        if (loseCount >= 3)
-                        {
-                            //ゲームオーバー
-                            SetTextCenter(MESSAGE_GAME_OVER, colorWin);
-                        }
-                        else
-                        {
-                            isStageSetting = true;
-                            SetTextUp(MESSAGE_STAGE_NEXT + MESSAGE_ROUND_READY + "...", colorWait);
-                        }
-                    }
 
-                    //ステージセッティング
-                    if (isStageSetting)
-                    {
-                        yield return new WaitForSeconds(5.0f);
-                        StageSetting();
+                        //ステージセッティング
+                        if (isStageSetting)
+                        {
+                            yield return new WaitForSeconds(5.0f);
+                            StageSetting();
+                        }
                     }
 
                 }
@@ -666,6 +683,32 @@ public class GameController : Photon.MonoBehaviour
         return true;
     }
 
+    //結果ダイアログ表示
+    private void OpenResult()
+    {
+        if (!isDebugMode)
+        {
+            isResultCheck = true;
+            return;
+        }
+        if (resultCanvas.GetActive()) return;
+
+        string resultMine = CreateDamageSourceText(PlayerStatus.BATTLE_LOG_ATTACK);
+        string resultEnemy = CreateDamageSourceText(PlayerStatus.BATTLE_LOG_DAMAGE);
+
+        resultCanvas.SetActive(true);
+        Transform resultTran = resultCanvas.transform.FindChild("DamageSource/Result");
+        resultTran.FindChild("Mine").GetComponent<Text>().text = resultMine;
+        resultTran.FindChild("Enemy").GetComponent<Text>().text = resultEnemy;
+    }
+
+    //結果確認ボタン押下
+    public void OnResultCheck()
+    {
+        resultCanvas.SetActive(false);
+        isResultCheck = true;
+    }
+
     //ステージのNPCなどの準備
     private void StageSetting()
     {
@@ -684,6 +727,11 @@ public class GameController : Photon.MonoBehaviour
         {
             NpcSpawn(stageNo);
         }
+
+        isResultCheck = false;
+        resultCanvas.SetActive(false);
+        damageSourceMine = new Dictionary<string, int>();
+        damageSourceEnemy = new Dictionary<string, int>();
     }
 
     private void PlayerSpawn()
@@ -714,7 +762,7 @@ public class GameController : Photon.MonoBehaviour
         npcNo = Common.Mission.stageNpcNoDic[stageNo];
 
         //★ステージレベル(仮)
-        stageLevel = (int)Mathf.Floor(stageNo + 1 / 2);
+        stageLevel = stageNo;
 
         //ステージのNPC取得
         string npcName = "BaseNpc";
@@ -722,5 +770,58 @@ public class GameController : Photon.MonoBehaviour
         GameObject npc = SpawnProcess(npcName);
         NpcController npcCtrl = npc.GetComponent<NpcController>();
         npcCtrl.SetLevel(stageLevel);
+    }
+
+    public void SetDamageSource(int logType, string name, int damage)
+    {
+        Dictionary<string, int> damageSource;
+        if (logType == PlayerStatus.BATTLE_LOG_ATTACK)
+        {
+            //Debug.Log(myTran.name+" : "+name+" >> atk");
+            damageSource = damageSourceMine;
+        }
+        else
+        {
+            //Debug.Log(myTran.name + " : " + name + " >> def");
+            damageSource = damageSourceEnemy;
+        }
+        if (!damageSource.ContainsKey(name)) damageSource[name] = 0;
+        damageSource[name] += damage;
+    }
+
+    private string CreateDamageSourceText(int type)
+    {
+        Dictionary<string, int> damageSource;
+        if (type == PlayerStatus.BATTLE_LOG_ATTACK)
+        {
+            damageSource = damageSourceMine;
+        }
+        else
+        {
+            damageSource = damageSourceEnemy;
+        }
+
+        string text = "";
+        List<string> nameList = new List<string>();
+        List<int> damageList = new List<int>();
+        float sumDamage = 0;
+        foreach (string name in damageSource.Keys)
+        {
+            sumDamage += damageSource[name];
+            int index = 0;
+            foreach (int damage in damageList)
+            {
+                if (damage <= damageSource[name]) break;
+                index++;
+            }
+            nameList.Insert(index, name);
+            damageList.Insert(index, damageSource[name]);
+        }
+
+        for (int i = 0; i < nameList.Count; i++)
+        {
+            text += nameList[i] + " > " + damageList[i] + "(" + (int)(damageList[i] / sumDamage * 100) + "%)\n";
+        }
+        return text;
     }
 }

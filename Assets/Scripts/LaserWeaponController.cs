@@ -224,7 +224,7 @@ public class LaserWeaponController : WeaponController
         if (bulletCtrl != null)
         {
             bulletCtrl.SetTarget(targetTran);
-            bulletCtrl.SetOwner(playerTran);
+            bulletCtrl.SetOwner(playerTran, myTran.name);
         }
     }
 }

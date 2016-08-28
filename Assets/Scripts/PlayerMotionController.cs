@@ -56,6 +56,8 @@ public class PlayerMotionController : MonoBehaviour
 
     void Update()
     {
+        if (animator == null) return;
+
         Vector3 moveDiff = moveCtrl.GetMoveDiff();
         Vector3 localMoveDiff = myPlayerTran.InverseTransformDirection(moveDiff).normalized;
 

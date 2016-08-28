@@ -55,7 +55,10 @@ public class ExtraWeaponController : Photon.MonoBehaviour
         playerStatus.SetForceInvincible(true);
 
         //カメラ切り替え
-        if (extraCam != null) extraCam.SetActive(true);
+        if (extraCam != null && !playerStatus.IsNpc())
+        {
+            extraCam.SetActive(true);
+        }
         //追加エフェクト
         SwitchExtraEffect(true);
         //攻撃モーション開始
@@ -92,7 +95,10 @@ public class ExtraWeaponController : Photon.MonoBehaviour
         }
 
         //カメラ戻し
-        if (extraCam != null) extraCam.SetActive(false);
+        if (extraCam != null && !playerStatus.IsNpc())
+        {
+            extraCam.SetActive(false);
+        }
 
         for (;;)
         {

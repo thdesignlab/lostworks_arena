@@ -16,6 +16,8 @@ public class PlayerStatus : Photon.MonoBehaviour {
     public float glideBoost;    //滑空時ブースト係数
     public float turnSpeed;         //通常時旋回スピード
     public float boostTurnSpeed;    //ターゲット時旋回スピード
+    public float attackRate = 100;    //攻撃力
+    //public float defenceRate = 100;    //防御力
 
     //HP
     [SerializeField]
@@ -84,6 +86,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
     private float defaultBoostTurnSpeed;
     private float defaultInvincibleTime;
     private int defaultRecoverSp;
+    private float defaultAttackRate;
 
     private BaseMoveController moveCtrl;
     private GameController gameCtrl;
@@ -112,8 +115,6 @@ public class PlayerStatus : Photon.MonoBehaviour {
     private Queue[] logBattleQueue = new Queue[] { null, null };
     private string[] preSlipDmgName = new string[] { "", "" };
     private int[] slipTotalDmg = new int[] { 0, 0 };
-    private Dictionary<string, int> damageSourceMine = new Dictionary<string, int>();
-    private Dictionary<string, int> damageSourceEnemy = new Dictionary<string, int>();
 
     void Awake()
     {
@@ -135,6 +136,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
         defaultBoostTurnSpeed = boostTurnSpeed;
         defaultInvincibleTime = invincibleTime;
         defaultRecoverSp = recoverSp;
+        defaultAttackRate = attackRate;
 
         if (SceneManager.GetActiveScene().name == Common.CO.SCENE_CUSTOM)
         {
@@ -237,8 +239,6 @@ public class PlayerStatus : Photon.MonoBehaviour {
             StartCoroutine(SetHpSlider(hpBarEnemy, hpBarEnemyImage));
         }
 
-        damageSourceMine = new Dictionary<string, int>();
-        damageSourceEnemy = new Dictionary<string, int>();
         logBattleQueue[BATTLE_LOG_ATTACK] = new Queue();
         logBattleQueue[BATTLE_LOG_DAMAGE] = new Queue();
         preSlipDmgName[BATTLE_LOG_ATTACK] = "";
@@ -314,12 +314,8 @@ public class PlayerStatus : Photon.MonoBehaviour {
         }
 
         //被ダメージログ
-        if (photonView.isMine && !isNpc)
-        {
-            SetBattleLog(BATTLE_LOG_DAMAGE, damage, name, isSlipDamage);
-        }
-
-
+        SetBattleLog(BATTLE_LOG_DAMAGE, damage, name, isSlipDamage);
+        
         ////カメラ振動
         //if (photonView.isMine && camCtrl != null)
         //{
@@ -492,6 +488,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
         {
             if (!isNpc && isDispBattleLog)
             {
+                //バトルログ
                 int logType = BATTLE_LOG_ATTACK;
                 foreach (Queue que in logBattleQueue)
                 {
@@ -503,12 +500,25 @@ public class PlayerStatus : Photon.MonoBehaviour {
                     logType = BATTLE_LOG_DAMAGE;
                 }
             }
+            if (!isNpc && (isDead || gameCtrl.isGameEnd))
+            {
+                int[] logTypes = new int[] { BATTLE_LOG_ATTACK, BATTLE_LOG_DAMAGE };
+                foreach (int logType in logTypes)
+                {
+                    PushBattleLog(logType, slipTotalDmg[logType], preSlipDmgName[logType]);
+                    preSlipDmgName[logType] = "";
+                    slipTotalDmg[logType] = 0;
+                }
+            }
 
             if (isDead)
             {
                 //戦闘不能
                 //transform.DetachChildren();
-                if (!isNpc)Camera.main.transform.parent = null;
+                if (!isNpc)
+                {
+                    Camera.main.transform.parent = null;
+                }
                 if (hitEffect != null)
                 {
                     hitEffect.color = hitNoiseEnd;
@@ -602,12 +612,39 @@ public class PlayerStatus : Photon.MonoBehaviour {
     private float nowSpeedRate = 1;
     private float interfareMoveTime = 0;
 
-    //最大HP(NPC用)
-    public void ReplaceMaxHp(float rate)
+    //初期ステータス設定(NPC用)
+    public void SetStatus(int[] defaultStatus, float[] levelRate)
     {
-        maxHp = (int)Mathf.Ceil(maxHp * rate);
+        //MaxHp
+        int index = Common.Mission.STATUS_MAX_HP;
+        maxHp = (int)(defaultStatus[index] * levelRate[index]);
         SetHp(maxHp);
+
+        //RecoverSp
+        index = Common.Mission.STATUS_RECOVER_SP;
+        recoverSp = (int)(defaultStatus[index] * levelRate[index]);
+        defaultRecoverSp = recoverSp;
+
+        //RunSpeed
+        index = Common.Mission.STATUS_RUN_SPEED;
+        runSpeed = defaultStatus[index] * levelRate[index];
+        defaultRunSpeed = runSpeed;
+
+        //BoostSpeed
+        index = Common.Mission.STATUS_BOOST_SPEED;
+        boostSpeed = defaultStatus[index] * levelRate[index];
+        defaultBoostSpeed = boostSpeed;
+
+        //TurnSpeed
+        index = Common.Mission.STATUS_TURN_SPEED;
+        turnSpeed = defaultStatus[index] * levelRate[index];
+        defaultTurnSpeed = turnSpeed;
+
+        index = Common.Mission.STATUS_ATTACK_RATE;
+        attackRate = defaultStatus[index] * levelRate[index];
+        defaultAttackRate = attackRate;
     }
+
 
     //SP回復量(自分専用)
     public void AccelerateRecoverSp(float rate, float limit, GameObject effect = null)
@@ -885,7 +922,9 @@ public class PlayerStatus : Photon.MonoBehaviour {
 
     public void SetBattleLog(int logType, int damage, string name, bool isSlipDamage = false)
     {
-        if (isSlipDamage)
+        if (!photonView.isMine || isNpc) return;
+
+            if (isSlipDamage)
         {
             if (preSlipDmgName[logType] == name)
             {
@@ -916,6 +955,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
 
     private void PushBattleLog(int logType, int damage, string name, bool console = false)
     {
+        if (!photonView.isMine || isNpc) return;
         if (name == "" || damage <= 0) return;
 
         //バトルログ
@@ -933,17 +973,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
         }
 
         //ダメージソース
-        Dictionary<string, int> damageSource;
-        if (logType == BATTLE_LOG_ATTACK)
-        {
-            damageSource = damageSourceMine;
-        }
-        else
-        {
-            damageSource = damageSourceEnemy;
-        }
-        if (!damageSource.ContainsKey(name)) damageSource[name] = 0;
-        damageSource[name] += damage;
+        gameCtrl.SetDamageSource(logType, name, damage);
     }
 
     public bool SwitchBattleLog()

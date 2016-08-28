@@ -12,6 +12,8 @@ public class ObjectController : Photon.MonoBehaviour {
     private float activeLimitDistance = 0;
 
     private Transform myTran;
+    private Transform ownerTran;
+    private string ownerWeapon;
 
     void Start()
     {
@@ -82,20 +84,18 @@ public class ObjectController : Photon.MonoBehaviour {
         if (effectSpawn != null)
         {
             GameObject effectObj = PhotonNetwork.Instantiate(Common.Func.GetResourceEffect(effectSpawn.name), myTran.position, effectSpawn.transform.rotation, effectSpawnGroupId);
-            Transform ownerTran = GetOwnerTran();
-            effectObj.GetComponent<EffectController>().SetOwner(ownerTran);
+            GetOwnerTran();
+            effectObj.GetComponent<EffectController>().SetOwner(ownerTran, ownerWeapon);
         }
         PhotonNetwork.Destroy(gameObject);
     }
 
-    private Transform GetOwnerTran()
+    private void GetOwnerTran()
     {
         EffectController effectCtrl = myTran.GetComponent<EffectController>();
-        if (effectCtrl != null) return effectCtrl.GetOwner();
+        if (effectCtrl != null) effectCtrl.GetOwner(out ownerTran, out ownerWeapon);
 
         BulletController bulletCtrl = myTran.GetComponent<BulletController>();
-        if (bulletCtrl != null) return bulletCtrl.GetOwner();
-
-        return null;
+        if (bulletCtrl != null) bulletCtrl.GetOwner(out ownerTran, out ownerWeapon);
     }
 }

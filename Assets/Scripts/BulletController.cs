@@ -34,6 +34,7 @@ public class BulletController : MoveOfCharacter
     protected Transform ownerTran;
     protected PlayerStatus ownerStatus;
     protected int ownerId = -1;
+    protected string ownerWeapon = "";
 
     protected const int MIN_SEND_DAMAGE = 5;
 
@@ -152,7 +153,7 @@ public class BulletController : MoveOfCharacter
                     {
                         GameObject effectObj = PhotonNetwork.Instantiate(Common.Func.GetResourceEffect(hitEffect.name), myTran.position, hitEffect.transform.rotation, 0);
                         EffectController effectCtrl = effectObj.GetComponent<EffectController>();
-                        if (effectCtrl != null) SetOwner(ownerTran);
+                        if (effectCtrl != null) SetOwner(ownerTran, ownerWeapon);
                     }
                 }
 
@@ -217,10 +218,14 @@ public class BulletController : MoveOfCharacter
     protected void AddDamageProccess(PlayerStatus status, int dmg, bool isSlip = false)
     {
         //対象へダメージを与える
-        bool isDamage = status.AddDamage(dmg, myTran.name, isSlip);
+        bool isDamage = status.AddDamage(dmg, ownerWeapon, isSlip);
 
         //与えたダメージのログを保管
-        if (isDamage && ownerStatus != null) ownerStatus.SetBattleLog(PlayerStatus.BATTLE_LOG_ATTACK, dmg, myTran.name, isSlip);
+        if (isDamage && ownerStatus != null)
+        {
+            //Debug.Log(myTran.name + " >> " + ownerStatus.name);
+            ownerStatus.SetBattleLog(PlayerStatus.BATTLE_LOG_ATTACK, dmg, ownerWeapon, isSlip);
+        }
     }
 
     //ターゲットを破壊する
@@ -289,11 +294,12 @@ public class BulletController : MoveOfCharacter
     }
 
     //持ち主設定
-    public void SetOwner(Transform owner)
+    public void SetOwner(Transform owner, string weaponName)
     {
         if (owner == null) return;
         ownerTran = owner;
         ownerStatus = ownerTran.GetComponent<PlayerStatus>();
+        ownerWeapon = weaponName;
         PhotonView pv = PhotonView.Get(ownerTran.gameObject);
         if (pv != null) ownerId = pv.ownerId;
     }
@@ -323,8 +329,9 @@ public class BulletController : MoveOfCharacter
     {
         return targetTran;
     }
-    public Transform GetOwner()
+    public void GetOwner(out Transform tran, out string name)
     {
-        return ownerTran;
+        tran = ownerTran;
+        name = ownerWeapon;
     }
 }

@@ -1932,10 +1932,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageEffect: {fileID: 109874, guid: 45752b7016b587141a9cc7a60c12fe4b, type: 2}
-  damage: 100
+  damage: 180
   damagePerSecond: 0
   isPhysicsBulletBreak: 1
-  isEnergyBulletBreak: 0
+  isEnergyBulletBreak: 1
   ownDamageRate: 0
   startScale: {x: 0.5, y: 0.5, z: 0.5}
   endScale: {x: 3, y: 3, z: 2}

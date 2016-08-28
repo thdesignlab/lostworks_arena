@@ -62,6 +62,7 @@ public class PlayerSetting : Photon.MonoBehaviour
                 //##### NPCの場合 #####
                 //コントローラー設定
                 playerStatus.enabled = true;
+                motionCtrl.enabled = true;
 
 
                 //NPC名変更

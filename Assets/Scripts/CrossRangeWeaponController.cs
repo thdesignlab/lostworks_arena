@@ -39,10 +39,10 @@ public class CrossRangeWeaponController : WeaponController
     protected override void Start()
     {
         base.Start();
-        StartCoroutine(SetOwner());
+        StartCoroutine(SetOwnerRoutine());
     }
 
-    IEnumerator SetOwner()
+    IEnumerator SetOwnerRoutine()
     {
         for (;;)
         {
@@ -51,7 +51,7 @@ public class CrossRangeWeaponController : WeaponController
                 yield return null;
                 continue;
             }
-            blade.GetComponent<EffectController>().SetOwner(playerTran);
+            blade.GetComponent<EffectController>().SetOwner(playerTran, myTran.name);
             break;
         }
     }
