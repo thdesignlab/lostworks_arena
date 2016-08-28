@@ -40,6 +40,7 @@ namespace Common
         //メッセージ
         public const string TEXT_UP = "TextUp";
         public const string TEXT_CENTER = "TextCenter";
+        public const string TEXT_LINE = "TextLine";
 
 
         //移動モーション

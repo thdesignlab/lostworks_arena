@@ -32,9 +32,9 @@ public class DialogController : MonoBehaviour
         { MESSAGE_TOP, "_1" },
         { MESSAGE_CONNECT, "_0" },
         { MESSAGE_LOADING, "_2" },
-        { MESSAGE_CREATE_ROOM, "_" },
-        { MESSAGE_JOIN_ROOM, "_" },
-        { MESSAGE_SEARCH_ROOM, "_" },
+        { MESSAGE_CREATE_ROOM, "_2" },
+        { MESSAGE_JOIN_ROOM, "_2" },
+        { MESSAGE_SEARCH_ROOM, "_2" },
     };
 
     //ボタン

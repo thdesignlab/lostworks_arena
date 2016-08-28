@@ -1089,7 +1089,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   runSpeed: 30
-  jumpSpeed: 150
+  jumpSpeed: 180
   jumpLimit: 0.3
   glideJump: 0
   boostSpeed: 70
@@ -1097,6 +1097,7 @@ MonoBehaviour:
   glideBoost: 1
   turnSpeed: 15
   boostTurnSpeed: 500
+  attackRate: 100
   maxHp: 1000
   maxSp: 1000
   recoverSp: 50
@@ -1146,7 +1147,6 @@ MonoBehaviour:
   glideGravityRate: 1
   isLockOn: 0
   UseGravity: 1
-  searchCollider: {fileID: 0}
 --- !u!114 &11474524
 MonoBehaviour:
   m_ObjectHideFlags: 1

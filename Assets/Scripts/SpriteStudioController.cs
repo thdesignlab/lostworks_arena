@@ -5,9 +5,15 @@ using System.Collections.Generic;
 public class SpriteStudioController : MonoBehaviour
 {
     //リロード完了
+    [HideInInspector]
     public string ANIMATION_BUTTON_FLASH = "ButtonFlash";
+    //Lineメッセージ
+    [HideInInspector]
+    public string ANIMATION_LINE_TEXT = "TextLine";
     //メッセージ
+    [HideInInspector]
     public string ANIMATION_TEXT_WIN = "Win";
+    [HideInInspector]
     public string ANIMATION_TEXT_LOSE = "Lose";
 
 
@@ -137,6 +143,14 @@ public class SpriteStudioController : MonoBehaviour
         Vector3 pos = GetObjPos(targetObj);
         if (obj == null) return null;
         return CreateAnimation(obj, text, pos);
+    }
+    //Lineメッセージ
+    public Script_SpriteStudio_Root TextLine(GameObject targetObj)
+    {
+        GameObject obj = (GameObject)Resources.Load(Common.Func.GetResourceAnimation(ANIMATION_LINE_TEXT));
+        Vector3 pos = GetObjPos(targetObj);
+        if (obj == null) return null;
+        return CreateAnimation(obj, ANIMATION_LINE_TEXT, pos);
     }
 
     public void ResetSprite()

@@ -7,6 +7,7 @@ public class LockOnController : Photon.MonoBehaviour
 {
     private Transform myTran;
     private PlayerStatus status;
+    private GameController gameCtrl;
 
     private RectTransform CanvasRect;
     private RawImage targetMarkImg;
@@ -31,25 +32,8 @@ public class LockOnController : Photon.MonoBehaviour
         }
 
         myTran = transform;
-        //GameObject targetObj = GameObject.Find(Common.CO.SCREEN_CANVAS+"TargetMark");
+        gameCtrl = GameObject.Find("GameController").GetComponent<GameController>();
     }
-    //void Start()
-    //{
-    //    if (!isACtiveSceane) return;
-
-    //    CanvasRect = GameObject.FindGameObjectWithTag("PlayerCanvas").GetComponent<RectTransform>();
-    //    GameObject targetObj = Camera.main.transform.FindChild(Common.CO.SCREEN_CANVAS + Common.CO.TARGET_MARK).gameObject;
-    //    if (targetObj != null)
-    //    {
-    //        targetMarkImg = targetObj.GetComponent<RawImage>();
-    //        targetMarkRectTran = targetObj.GetComponent<RectTransform>();
-    //    }
-
-    //    //ステータス取得
-    //    //status = myTran.root.GetComponent<PlayerStatus>();
-    //    //Debug.Log(myTran.name+" >> "+status);
-    //    StartCoroutine(SetStatus());
-    //}
 
     void OnBecameInvisible()
     {
@@ -99,6 +83,8 @@ public class LockOnController : Photon.MonoBehaviour
 
         if (status == null || targetMarkRectTran == null)
         {
+            if (!gameCtrl.isGameStart) return;
+
             CanvasRect = GameObject.FindGameObjectWithTag("PlayerCanvas").GetComponent<RectTransform>();
             GameObject targetObj = Camera.main.transform.FindChild(Common.CO.SCREEN_CANVAS + Common.CO.TARGET_MARK).gameObject;
             if (targetObj != null)
@@ -133,18 +119,4 @@ public class LockOnController : Photon.MonoBehaviour
             targetMarkRectTran.anchoredPosition = WorldObject_ScreenPosition;
         }
     }
-
-    //IEnumerator SetStatus()
-    //{
-    //    for (;;)
-    //    {
-    //        status = myTran.root.GetComponent<PlayerStatus>();
-    //        if (status != null)
-    //        {
-    //            SwitchLockOn(isVisible);
-    //            break;
-    //        }
-    //        yield return null;
-    //    }
-    //}
 }

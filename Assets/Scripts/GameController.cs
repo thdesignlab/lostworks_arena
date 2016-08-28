@@ -14,6 +14,9 @@ public class GameController : Photon.MonoBehaviour
 
     private Text textUp;
     private Text textCenter;
+    private Image imageCenter;
+    private Text textLine;
+    private Color colorLine = Color.white;
     private Color colorWin = Color.red;
     private Color colorLose = Color.blue;
     private Color colorReady = Color.yellow;
@@ -53,6 +56,11 @@ public class GameController : Photon.MonoBehaviour
     const string MESSAGE_STAGE_NEXT = "Next";
     const string MESSAGE_GAME_OVER = "GameOver";
 
+    private Dictionary<string, string[]> spriteTexts = new Dictionary<string, string[]>()
+    {
+        { MESSAGE_READY, new string[] { "ReadyGo", "ReadyGo_0" } },
+        { MESSAGE_START, new string[] { "ReadyGo", "ReadyGo_1" } },
+    };
 
     [HideInInspector]
     public int gameMode = -1;
@@ -106,6 +114,7 @@ public class GameController : Photon.MonoBehaviour
         Transform screenTran = Camera.main.transform.FindChild(Common.CO.SCREEN_CANVAS);
         textUp = screenTran.FindChild(Common.CO.TEXT_UP).GetComponent<Text>();
         textCenter = screenTran.FindChild(Common.CO.TEXT_CENTER).GetComponent<Text>();
+        textLine = screenTran.FindChild(Common.CO.TEXT_LINE).GetComponent<Text>();
         SetTextUp();
         SetTextCenter();
     }
@@ -118,11 +127,31 @@ public class GameController : Photon.MonoBehaviour
     {
         SetText(textCenter, text, color, fadeout);
     }
-    private void SetText(Text textObj, string text, Color color = default(Color), float fadeout = 0)
+    private void SetTextLine(string text = "", Color color = default(Color), float fadeout = 0)
+    {
+        SetText(textLine, text, color, fadeout, true);
+    }
+    private void SetText(Text textObj, bool isLineText = false)
+    {
+        SetText(textObj, "", default(Color), 0, isLineText);
+    }
+    private void SetText(Text textObj, string text, Color color = default(Color), float fadeout = 0, bool isLineText = false)
     {
         //Debug.Log(textObj.name+" >> "+text);
+        Image textImage = textObj.transform.GetComponentInChildren<Image>();
         if (text == "")
         {
+            //Line削除
+            if (isLineText)
+            {
+                scriptRoot = spriteStudioCtrl.TextLine(textObj.gameObject);
+                if (scriptRoot != null)
+                {
+                    //アニメーション
+                    spriteStudioCtrl.Stop(scriptRoot);
+                }
+            }
+
             //テキスト削除
             scriptRoot = spriteStudioCtrl.DispMessage(textObj.gameObject, textObj.text);
             if (scriptRoot != null)
@@ -142,15 +171,28 @@ public class GameController : Photon.MonoBehaviour
                 {
                     //Text
                     textObj.enabled = false;
+                    textImage.enabled = false;
                 }
             }
             textObj.text = "";
         }
         else
         {
+            SetText(textObj, isLineText);
+
+            //Line表示
+            if (isLineText)
+            {
+                scriptRoot = spriteStudioCtrl.TextLine(textObj.gameObject);
+                if (scriptRoot != null)
+                {
+                    //アニメーション
+                    spriteStudioCtrl.Play(scriptRoot);
+                }
+            }
+
             //テキスト表示
             textObj.enabled = false;
-            SetText(textObj, "");
             textObj.text = text;
             scriptRoot = spriteStudioCtrl.DispMessage(textObj.gameObject, textObj.text);
             if (scriptRoot != null)
@@ -168,14 +210,22 @@ public class GameController : Photon.MonoBehaviour
                 }
                 else
                 {
-                    //Text
-                    if (color != default(Color)) textObj.color = new Color(color.r, color.g, color.b, baseAlpha);
-                    //if (fadeout > 0) StartCoroutine(MessageFadeOut(textObj, fadeout));
-                    textObj.enabled = true;
+                    Sprite img = GetSpriteText(text);
+                    if (img != null)
+                    {
+                        textObj.transform.GetComponentInChildren<Image>().sprite = img;
+                        textImage.enabled = true;
+                    }
+                    else
+                    {
+                        //Text
+                        if (color != default(Color)) textObj.color = new Color(color.r, color.g, color.b, baseAlpha);
+                        textObj.enabled = true;
+                    }
                 }
             }
 
-            if (fadeout > 0) StartCoroutine(MessageDelayDelete(textObj, fadeout));
+            if (fadeout > 0) StartCoroutine(MessageDelayDelete(textObj, fadeout, isLineText));
         }
     }
 
@@ -193,6 +243,18 @@ public class GameController : Photon.MonoBehaviour
         }
     }
 
+    private Sprite GetSpriteText(string text)
+    {
+        Sprite img = null;
+        if (spriteTexts.ContainsKey(text))
+        {
+            string[] texts = spriteTexts[text];
+            Sprite[] sprites = Resources.LoadAll<Sprite>(Common.Func.GetResourceSprite(texts[0]));
+            img = System.Array.Find<Sprite>(sprites, (sprite) => sprite.name.Equals(texts[1]));
+        }
+        return img;
+    }
+
     IEnumerator MessageFadeOut(Text textObj, float fadeout)
     {
         float startAlpha = textObj.color.a;
@@ -207,10 +269,10 @@ public class GameController : Photon.MonoBehaviour
         textObj.enabled = false;
     }
 
-    IEnumerator MessageDelayDelete(Text textObj, float fadeout)
+    IEnumerator MessageDelayDelete(Text textObj, float fadeout, bool isLineText = false)
     {
         yield return new WaitForSeconds(fadeout);
-        SetText(textObj, "");
+        SetText(textObj, isLineText);
     }
 
     public void ResetGame()
@@ -286,7 +348,8 @@ public class GameController : Photon.MonoBehaviour
                                 if (SetNextStage())
                                 {
                                     isStageSetting = true;
-                                    SetTextUp(MESSAGE_STAGE_NEXT + MESSAGE_STAGE_READY + "...", colorWait);
+                                    //SetTextUp(MESSAGE_STAGE_NEXT + MESSAGE_STAGE_READY + "...", colorWait);
+                                    SetTextLine(MESSAGE_STAGE_NEXT + MESSAGE_STAGE_READY + "...", colorLine);
                                 }
                                 else
                                 {
@@ -298,7 +361,8 @@ public class GameController : Photon.MonoBehaviour
                             {
                                 //NextRound
                                 isStageSetting = true;
-                                SetTextUp(MESSAGE_STAGE_NEXT + MESSAGE_ROUND_READY + "...", colorWait);
+                                //SetTextUp(MESSAGE_STAGE_NEXT + MESSAGE_ROUND_READY + "...", colorWait);
+                                SetTextLine(MESSAGE_STAGE_NEXT + MESSAGE_ROUND_READY + "...", colorLine);
                             }
                         }
                         else
@@ -312,7 +376,8 @@ public class GameController : Photon.MonoBehaviour
                             else
                             {
                                 isStageSetting = true;
-                                SetTextUp(MESSAGE_STAGE_NEXT + MESSAGE_ROUND_READY + "...", colorWait);
+                                //SetTextUp(MESSAGE_STAGE_NEXT + MESSAGE_ROUND_READY + "...", colorWait);
+                                SetTextLine(MESSAGE_STAGE_NEXT + MESSAGE_ROUND_READY + "...", colorLine);
                             }
                         }
 
@@ -385,17 +450,18 @@ public class GameController : Photon.MonoBehaviour
                             GameReady();
 
                             SetTextUp();
+                            SetTextCenter();
                             if (gameMode == GAME_MODE_MISSION)
                             {
                                 int round = winCount + loseCount + 1;
                                 if (round == 1)
                                 {
                                     //ステージ文字
-                                    SetTextCenter(MESSAGE_STAGE_READY + stageNo.ToString(), colorReady, 2.5f);
+                                    SetTextLine(MESSAGE_STAGE_READY + stageNo.ToString(), colorLine, 2.5f);
                                     yield return new WaitForSeconds(3);
                                 }
                                 //ラウンド文字
-                                SetTextCenter(MESSAGE_ROUND_READY + round.ToString(), colorReady, 2.5f);
+                                SetTextLine(MESSAGE_ROUND_READY + round.ToString(), colorLine, 2.5f);
                                 yield return new WaitForSeconds(3);
                             }
 

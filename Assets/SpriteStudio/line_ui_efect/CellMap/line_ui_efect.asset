@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2c3e2fd293409448b70e6699a65a249, type: 3}
+  m_Name: line_ui_efect
+  m_EditorClassIdentifier: 
+  ListDataCellMap:
+  - Name: line_ui_efect
+    SizeOriginal: {x: 512, y: 512}
+    ListCell:
+    - Name: NewCell
+      Rectangle:
+        serializedVersion: 2
+        x: 0
+        y: 27
+        width: 512
+        height: 106
+      Pivot: {x: 256, y: 53}
+    - Name: NewCell_1
+      Rectangle:
+        serializedVersion: 2
+        x: 0
+        y: 135
+        width: 512
+        height: 106
+      Pivot: {x: 256, y: 53}
+    - Name: NewCell_2
+      Rectangle:
+        serializedVersion: 2
+        x: 0
+        y: 253
+        width: 512
+        height: 105
+      Pivot: {x: 256, y: 52.5}
