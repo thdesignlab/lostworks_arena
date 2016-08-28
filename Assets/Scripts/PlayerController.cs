@@ -619,6 +619,8 @@ public class PlayerController : MoveOfCharacter
 
     void OnTouchStart(object sender, CustomInputEventArgs e)
     {
+        if (Time.timeScale == 0) return;
+
         //string text = string.Format("OnTouchStart X={0} Y={1}", e.Input.ScreenPosition.x, e.Input.ScreenPosition.y);
         //Debug.Log(e.Input.);
 

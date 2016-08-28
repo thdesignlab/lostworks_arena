@@ -425,8 +425,7 @@ namespace Common
             { 2002, new string[]{ "PulseGun", "", "", OBTAIN_TYPE_INIT}},
             { 2003, new string[]{ "ThrowingDagger", "", "", OBTAIN_TYPE_INIT}},
             { 2004, new string[]{ "PenetrateDagger", "", "", OBTAIN_TYPE_INIT}},
-            { 2005, new string[]{ "LaserBlade", "LaserBlade-α", "", OBTAIN_TYPE_INIT}},
-            { 2006, new string[]{ "LaserBlade", "LaserBlade-β", "", OBTAIN_TYPE_INIT}},
+            { 2005, new string[]{ "LaserBlade", "", "", OBTAIN_TYPE_INIT}},
         };
         //背中武器リスト
         public static Dictionary<int, string[]> shoulderWeaponLineUp = new Dictionary<int, string[]>()
