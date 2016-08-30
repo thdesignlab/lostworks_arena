@@ -18,6 +18,23 @@ public class DialogController : MonoBehaviour
     const string RESOURCE_DIALOG = "UI/Dialog";
     const string RESOURCE_MESSAGE = "UI/Message";
 
+    //メッセージ配置
+    public const int MESSAGE_POSITION_CENTER = 0;
+    public const int MESSAGE_POSITION_LEFT = 1;
+    public const int MESSAGE_POSITION_RIGHT = 2;
+    private static Dictionary<int, Vector2> messageImagePositionPivots = new Dictionary<int, Vector2>()
+    {
+        { MESSAGE_POSITION_CENTER, new Vector2(0.5f, 0.0f)},
+        { MESSAGE_POSITION_LEFT, new Vector2(0.0f, 0.0f)},
+        { MESSAGE_POSITION_RIGHT, new Vector2(1.0f, 0.0f)},
+    };
+    private static Dictionary<int, TextAnchor> messageTextPositionPivots = new Dictionary<int, TextAnchor>()
+    {
+        { MESSAGE_POSITION_CENTER, TextAnchor.MiddleCenter},
+        { MESSAGE_POSITION_LEFT, TextAnchor.MiddleLeft},
+        { MESSAGE_POSITION_RIGHT, TextAnchor.MiddleRight},
+    };
+
     //メッセージ
     public const string MESSAGE_TOP = "Tap to Start";
     public const string MESSAGE_CONNECT = "Connecting...";
@@ -111,7 +128,7 @@ public class DialogController : MonoBehaviour
         CloseDialog();
     }
 
-    public static GameObject OpenMessage(string text)
+    public static GameObject OpenMessage(string text, int msgPos = MESSAGE_POSITION_CENTER)
     {
         if (text == "")
         {
@@ -122,8 +139,12 @@ public class DialogController : MonoBehaviour
         if (messageObj == null)
         {
             messageObj = Instantiate((GameObject)Resources.Load(RESOURCE_MESSAGE));
-            messageImage = messageObj.transform.FindChild("Image").GetComponent<Image>();
-            messageText = messageObj.transform.FindChild("Text").GetComponent<Text>();
+            RectTransform messageImageTran = messageObj.transform.FindChild("Image").GetComponent<RectTransform>();
+            messageImageTran.pivot = messageImagePositionPivots[msgPos];
+            messageImage = messageImageTran.GetComponent<Image>();
+            RectTransform messageTextTran = messageObj.transform.FindChild("Text").GetComponent<RectTransform>();
+            messageText = messageTextTran.GetComponent<Text>();
+            messageText.alignment = messageTextPositionPivots[msgPos]; ;
         }
 
         if (messageText.text == text) return messageObj;

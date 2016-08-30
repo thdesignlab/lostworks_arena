@@ -34,7 +34,7 @@ public class ScreenManager : Photon.MonoBehaviour
         Image[] imgs = new Image[] { fadeImg };
 
         //メッセージ表示
-        if (message != "") DialogController.OpenMessage(message);
+        if (message != "") DialogController.OpenMessage(message, DialogController.MESSAGE_POSITION_RIGHT);
 
         //フェードアウト
         Coroutine fadeOut = StartCoroutine(Fade(imgs, false));

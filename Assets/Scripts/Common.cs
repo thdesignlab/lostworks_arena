@@ -196,23 +196,34 @@ namespace Common
     //### 端末保持情報 ###
     public static class PP
     {
+        //保存情報
         public const string USER_INFO = "UserInfo";
         public const string USER_RESULT = "UserResult";
         public const string USER_EQUIP = "UserEquipment";
+        public const string USER_CONFIG = "UserConfig";
         public const string USER_CHARACTER = "UserCharacter";
         public const string OPEN_CHARACTERS = "OpenCharacters";
         public const string OPEN_WEAPONS = "OpenWeapons";
         public const string OPEN_MISSIONS = "OpenMissions";
 
-        public const string INFO_USER_ID = "UserId";
-        public const string INFO_USER_NAME = "UserName";
+        //ユーザー情報項目
+        public const int INFO_USER_ID = 0;
+        public const int INFO_USER_NAME = 1;
 
-        public const string RESULT_BATTLE_COUNT = "BattleCount";
-        public const string RESULT_WIN_COUNT = "WinCount";
-        public const string RESULT_LOSE_COUNT = "LoseCount";
-        public const string RESULT_BATTLE_RATE = "BattleRate";
+        //コンフィグ情報項目
+        public const int CONFIG_BGM_VALUE = 0;
+        public const int CONFIG_BGM_MUTE = 1;
+        public const int CONFIG_SE_VALUE = 2;
+        public const int CONFIG_SE_MUTE = 3;
+        public const int CONFIG_VOICE_VALUE = 4;
+        public const int CONFIG_VOICE_MUTE = 5;
 
-        public const string EQUIP_CHARACTER_NO = "CharacterNo";
+        //バトル結果項目
+        public const int RESULT_BATTLE_COUNT = 0;
+        public const int RESULT_WIN_COUNT = 1;
+        public const int RESULT_LOSE_COUNT = 2;
+        public const int RESULT_BATTLE_RATE = 3;
+
     }
 
     //### 共通関数 ###
@@ -377,7 +388,7 @@ namespace Common
         //キャラクターリスト
         public static Dictionary<int, string[]> characterLineUp = new Dictionary<int, string[]>()
         {
-            {0, new string[]{ "Hero1", "Luri", "", OBTAIN_TYPE_INIT, "10000,10001,10002,10003,10004"}},
+            {0, new string[]{ "Hero1", "Luri", "", OBTAIN_TYPE_INIT, "10000"}},
             {1, new string[]{ "Hero2", "Dango", "", OBTAIN_TYPE_INIT, "10001"}},
             {1000, new string[]{ "Npc1", "Capsule1", "", OBTAIN_TYPE_NONE, "10002"}},
             {1001, new string[]{ "Npc2", "Capsule2", "", OBTAIN_TYPE_NONE, "10003,10004"}},

@@ -4,12 +4,14 @@ using System.Collections.Generic;
 
 public class UserManager
 {
-    public static Dictionary<string, string> userInfo = new Dictionary<string, string>();   //ユーザー情報
-    public static Dictionary<string, int> userResult = new Dictionary<string, int>();       //ユーザー戦歴
+    public static Dictionary<int, string> userInfo = new Dictionary<int, string>();   //ユーザー情報
+    public static Dictionary<int, int> userResult = new Dictionary<int, int>();       //ユーザー戦歴
     public static Dictionary<string, int> userEquipment = new Dictionary<string, int>();    //ユーザー装備
+    public static Dictionary<int, int> userConfig = new Dictionary<int, int>();    //設定
     public static int userSetCharacter = 0;   //ユーザー設定キャラ
     public static List<int> userOpenCharacters = new List<int>();    //開放キャラクター
     public static List<int> userOpenWeapons = new List<int>();       //開放武器
+    public static List<int> userOpenMissions = new List<int>() { 1, 1 };       //開放Mission(level, stage)
 
     //##### ユーザー情報 #####
 
@@ -21,7 +23,7 @@ public class UserManager
         {
             userInfo[Common.PP.INFO_USER_ID] = SystemInfo.deviceUniqueIdentifier;
             userInfo[Common.PP.INFO_USER_NAME] = "Guest" + Random.Range(1, 99999);
-            PlayerPrefsUtility.SaveDict<string, string>(Common.PP.USER_INFO, userInfo);
+            PlayerPrefsUtility.SaveDict<int, string>(Common.PP.USER_INFO, userInfo);
         }
 
         //戦歴
@@ -31,7 +33,7 @@ public class UserManager
             userResult[Common.PP.RESULT_WIN_COUNT] = 0;
             userResult[Common.PP.RESULT_LOSE_COUNT] = 0;
             userResult[Common.PP.RESULT_BATTLE_RATE] = 1000;
-            PlayerPrefsUtility.SaveDict<string, int>(Common.PP.USER_RESULT, userResult);
+            PlayerPrefsUtility.SaveDict<int, int>(Common.PP.USER_RESULT, userResult);
         }
 
         //装備
@@ -114,6 +116,12 @@ public class UserManager
             PlayerPrefsUtility.SaveList<int>(Common.PP.OPEN_WEAPONS, userOpenWeapons);
         }
 
+        //開放Mission
+        if (!PlayerPrefs.HasKey(Common.PP.OPEN_MISSIONS))
+        {
+            PlayerPrefsUtility.SaveList<int>(Common.PP.OPEN_MISSIONS, userOpenMissions);
+        }
+
         PlayerPrefs.Save();
     }
 
@@ -125,6 +133,7 @@ public class UserManager
         if (!PlayerPrefs.HasKey(Common.PP.USER_CHARACTER)) return true;
         if (!PlayerPrefs.HasKey(Common.PP.OPEN_CHARACTERS)) return true;
         if (!PlayerPrefs.HasKey(Common.PP.OPEN_WEAPONS)) return true;
+        if (!PlayerPrefs.HasKey(Common.PP.OPEN_MISSIONS)) return true;
         return false;
     }
 
@@ -132,22 +141,23 @@ public class UserManager
     {
         //データ削除(debug用)
         //PlayerPrefs.DeleteAll();
+        PlayerPrefs.DeleteKey(Common.PP.USER_INFO);
+        PlayerPrefs.DeleteKey(Common.PP.USER_RESULT);
 
         if (IsInitUser())
         {
             //新規ユーザー
             InitUserInfo();
         }
-        else
-        {
-            //ユーザー情報取得
-            userInfo = PlayerPrefsUtility.LoadDict<string, string>(Common.PP.USER_INFO);
-            userResult = PlayerPrefsUtility.LoadDict<string, int>(Common.PP.USER_RESULT);
-            userEquipment = PlayerPrefsUtility.LoadDict<string, int>(Common.PP.USER_EQUIP);
-            userSetCharacter = PlayerPrefsUtility.Load(Common.PP.USER_CHARACTER, 0);
-            userOpenCharacters = PlayerPrefsUtility.LoadList<int>(Common.PP.OPEN_CHARACTERS);
-            userOpenWeapons = PlayerPrefsUtility.LoadList<int>(Common.PP.OPEN_WEAPONS);
-        }
+
+        //ユーザー情報取得
+        userInfo = PlayerPrefsUtility.LoadDict<int, string>(Common.PP.USER_INFO);
+        userResult = PlayerPrefsUtility.LoadDict<int, int>(Common.PP.USER_RESULT);
+        userEquipment = PlayerPrefsUtility.LoadDict<string, int>(Common.PP.USER_EQUIP);
+        userSetCharacter = PlayerPrefsUtility.Load(Common.PP.USER_CHARACTER, 0);
+        userOpenCharacters = PlayerPrefsUtility.LoadList<int>(Common.PP.OPEN_CHARACTERS);
+        userOpenWeapons = PlayerPrefsUtility.LoadList<int>(Common.PP.OPEN_WEAPONS);
+        userOpenMissions = PlayerPrefsUtility.LoadList<int>(Common.PP.OPEN_MISSIONS);
     }
 
     public static void SetUserName(string userName)
@@ -165,7 +175,7 @@ public class UserManager
 
     public static void DispUserInfo()
     {
-        foreach (string key in userInfo.Keys)
+        foreach (int key in userInfo.Keys)
         {
             Debug.Log(key+" >> "+userInfo[key]);
         }

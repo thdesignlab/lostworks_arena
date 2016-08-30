@@ -91,7 +91,7 @@ public class PhotonManager : MonoBehaviour
 
         if (isTapToStart)
         {
-            GameObject message = DialogController.OpenMessage(DialogController.MESSAGE_TOP);
+            GameObject message = DialogController.OpenMessage(DialogController.MESSAGE_TOP, DialogController.MESSAGE_POSITION_CENTER);
             Image messageImage = DialogController.GetMessageImageObj();
             Text messageText = DialogController.GetMessageTextObj();
             if (Input.GetMouseButtonDown(0))
@@ -153,7 +153,7 @@ public class PhotonManager : MonoBehaviour
                 if (PhotonNetwork.connecting)
                 {
                     // *** 接続中 ***
-                    DialogController.OpenMessage(DialogController.MESSAGE_CONNECT);
+                    DialogController.OpenMessage(DialogController.MESSAGE_CONNECT, DialogController.MESSAGE_POSITION_RIGHT);
                 }
                 else
                 {
@@ -313,7 +313,7 @@ public class PhotonManager : MonoBehaviour
     //ローカルモード選択
     public void LocalModeSelect()
     {
-        DialogController.OpenMessage(DialogController.MESSAGE_LOADING);
+        DialogController.OpenMessage(DialogController.MESSAGE_LOADING, DialogController.MESSAGE_POSITION_RIGHT);
         SwitchModeSelectArea(false, true);
 
         PhotonNetwork.offlineMode = true;
@@ -324,7 +324,7 @@ public class PhotonManager : MonoBehaviour
     //ネットワークモード選択
     public void NetworkModeSelect()
     {
-        DialogController.OpenMessage(DialogController.MESSAGE_LOADING);
+        DialogController.OpenMessage(DialogController.MESSAGE_LOADING, DialogController.MESSAGE_POSITION_RIGHT);
         SwitchModeSelectArea(false, true);
 
         PhotonNetwork.offlineMode = false;
@@ -358,7 +358,7 @@ public class PhotonManager : MonoBehaviour
     //カスタマイズ
     public void CustomSelect()
     {
-        DialogController.OpenMessage(DialogController.MESSAGE_LOADING);
+        DialogController.OpenMessage(DialogController.MESSAGE_LOADING, DialogController.MESSAGE_POSITION_RIGHT);
 
         PhotonNetwork.offlineMode = true;
         moveScene = Common.CO.SCENE_CUSTOM;
@@ -392,7 +392,7 @@ public class PhotonManager : MonoBehaviour
     //Room作成
     public void CreateRoom()
     {
-        DialogController.OpenMessage(DialogController.MESSAGE_CREATE_ROOM);
+        DialogController.OpenMessage(DialogController.MESSAGE_CREATE_ROOM, DialogController.MESSAGE_POSITION_RIGHT);
         if (PhotonNetwork.countOfRooms >= 10)
         {
             DialogController.CloseMessage();
@@ -405,7 +405,7 @@ public class PhotonManager : MonoBehaviour
     //入室
     public void JoinRoom(string roomName = "")
     {
-        DialogController.OpenMessage(DialogController.MESSAGE_JOIN_ROOM);
+        DialogController.OpenMessage(DialogController.MESSAGE_JOIN_ROOM, DialogController.MESSAGE_POSITION_RIGHT);
         if (roomName == "")
         {
             roomName = roomNameIF.text;
@@ -416,7 +416,7 @@ public class PhotonManager : MonoBehaviour
     //ランダム入室
     public void RandomJoinRoom()
     {
-        DialogController.OpenMessage(DialogController.MESSAGE_SEARCH_ROOM);
+        DialogController.OpenMessage(DialogController.MESSAGE_SEARCH_ROOM, DialogController.MESSAGE_POSITION_RIGHT);
         PhotonNetwork.JoinRandomRoom();
     }
 

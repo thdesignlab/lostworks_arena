@@ -922,9 +922,11 @@ public class PlayerStatus : Photon.MonoBehaviour {
 
     public void SetBattleLog(int logType, int damage, string name, bool isSlipDamage = false)
     {
+        if (!gameCtrl.isDebugMode) return;
+
         if (!photonView.isMine || isNpc) return;
 
-            if (isSlipDamage)
+        if (isSlipDamage)
         {
             if (preSlipDmgName[logType] == name)
             {
@@ -955,6 +957,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
 
     private void PushBattleLog(int logType, int damage, string name, bool console = false)
     {
+        if (!gameCtrl.isDebugMode) return;
         if (!photonView.isMine || isNpc) return;
         if (name == "" || damage <= 0) return;
 
