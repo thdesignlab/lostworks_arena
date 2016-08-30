@@ -592,7 +592,7 @@ namespace Common
             {
                 index = Random.Range(0, weaponNoArray.Length);
             }
-            if (0 < weaponNoArray.Length && weaponNoArray.Length < index)
+            if (0 < weaponNoArray.Length && index < weaponNoArray.Length)
             {
                 weaponNo = weaponNoArray[index];
             }
@@ -635,8 +635,8 @@ namespace Common
             { 1, 1000 },
             { 2, 1001 },
             { 3, 1002 },
-            { 4, 1 },
-            { 5, 0 },
+            { 4, 0 },
+            { 5, 1 },
         };
 
         //NPCステータス
@@ -654,8 +654,8 @@ namespace Common
         public static Dictionary<int, int[]> npcStatusDic = new Dictionary<int, int[]>()
         {
                             //hp, sp, run, boost, turn, atk%, atkI, boostI, tagI
-            { 0, new int[]{ 1200, 30, 35, 70, 20, 100, 2, 2, 3, 1 , 50} },
-            { 1, new int[]{ 1200, 30, 30, 70, 20, 120, 2, 2, 3, 1 , 200} },
+            { 0, new int[]{ 1200, 30, 35, 70, 20, 100, 2, 2, 1, 1 , 50} },
+            { 1, new int[]{ 1200, 30, 30, 70, 20, 120, 2, 2, 1, 1 , 250} },
             { 1000, new int[]{ 600, 10, 15, 30, 10, 50, 3, 3, 3, 0 , 200} },
             { 1001, new int[]{ 800, 20, 25, 50, 15, 70, 3, 3, 3, 0 , 200} },
             { 1002, new int[]{ 1000, 30, 30, 60, 20, 90, 3, 3, 3, 0 , 100} },
@@ -665,11 +665,11 @@ namespace Common
         public static Dictionary<int, float[]> npcLevelStatusDic = new Dictionary<int, float[]>()
         {
                             //hp, sp, run, boost, turn, atk%, atkI, boostI, tagI
-            { 1, new float[] { 1, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 1.5f, 1.5f, 1.5f} },
-            { 2, new float[] { 1, 1, 1, 1, 0.8f, 0.8f, 1.3f, 1.3f, 1.3f} },
-            { 3, new float[] { 1, 1, 1, 1, 1, 1, 1, 1, 1} },
-            { 4, new float[] { 1.2f, 1.5f, 1.1f, 1.1f, 1.5f, 1, 0.75f, 0.75f, 0.5f} },
-            { 5, new float[] { 1.5f, 2, 1.2f, 1.2f, 1.5f, 1.2f, 0.5f, 0.5f, 0.5f } },
+            { 1, new float[] { 1, 0.5f, 0.75f, 0.75f, 0.5f, 0.5f, 1.5f, 1.5f, 1.5f} },
+            { 2, new float[] { 1, 1, 1, 1, 1, 1, 1, 1, 1} },
+            { 3, new float[] { 1.1f, 1.2f, 1.1f, 1.1f, 1.25f, 1, 0.75f, 0.8f, 0.5f} },
+            { 4, new float[] { 1.25f, 1.5f, 1.2f, 1.2f, 1.5f, 1.2f, 0.6f, 0.7f, 0.4f } },
+            { 5, new float[] { 1.5f, 2.0f, 1.25f, 1.25f, 1.5f, 1.25f, 0.5f, 0.5f, 0.3f } },
         };
         //設定レベル以上の場合の追加Rate
         public static float[] overLevelState = new float[] { 0.1f, 0.1f, 0, 0, 0, 0.05f, 0, 0, 0};
@@ -677,13 +677,11 @@ namespace Common
         //NPC武器
         public static Dictionary<int, int[]> npcWeaponDic = new Dictionary<int, int[]>()
         {
-            { 0, new int[]{ 0, 0, 0, 0, 0, 0, 0} },
-            { 1, new int[]{ 0, 0, 0, 0, 0, 0, 0} },
-            { 1000, new int[]{ 0, 0, 0, 0, 0, 0, 0} },
-            { 1001, new int[]{ 0, 0, 0, 0, 0, 0, 0} },
-            { 1002, new int[]{ 0, 0, 0, 0, 0, 0, 0} },
-            { 1003, new int[]{ 0, 0, 0, 0, 0, 0, 0} },
-            { 1004, new int[]{ 0, 0, 0, 0, 0, 0, 0} },
+            { 0, new int[]{ 2005, 1004, 2005, 2002, 3000, 4003, 5003} },
+            { 1, new int[]{ 1002, 4002, 2004, 1001, 3002, 4000, 5001} },
+            { 1000, new int[]{ 0, 0, 2000, 2001, 0, 0, 5002} },
+            { 1001, new int[]{ 1000, 1002, 0, 0, 0, 0, 5002} },
+            { 1002, new int[]{ 2002, 2002, 2003, 2003, 3001, 4001, 5003} },
         };
     }
 }

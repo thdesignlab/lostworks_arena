@@ -205,7 +205,7 @@ public class NpcController : MoveOfCharacter
                         {
                             extraCtrl.SetInit(wepCtrl, animator, status);
                         }
-                        break;
+                        continue;
                 }
                 weapons.Add(wepCtrl);
             }
@@ -280,21 +280,25 @@ public class NpcController : MoveOfCharacter
                 if (extraCtrl.IsEnabled())
                 {
                     extraCtrl.Fire(targetTran);
-                    yield return new WaitForSeconds(interval);
+                    yield return new WaitForSeconds(3.0f);
                     continue;
                 }
             }
 
             //通常武器
-            if (weapons[weaponNo].IsEnableFire())
+            weaponNo = Random.Range(0, weapons.Count);
+            for (;;)
             {
-                weapons[weaponNo].Fire(targetTran);
+                if (weapons[weaponNo].IsEnableFire())
+                {
+                    QuickTarget(targetTran);
+                    quickTurnTime = 0;
+                    weapons[weaponNo].Fire(targetTran);
+                    break;
+                }
+                weaponNo = (weaponNo + 1) % weapons.Count;
+                yield return null;
             }
-            else
-            {
-                interval = 0.1f;
-            }
-            weaponNo = (weaponNo + 1) % weapons.Count;
             yield return new WaitForSeconds(interval);
         }
     }

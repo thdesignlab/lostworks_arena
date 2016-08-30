@@ -242,10 +242,14 @@ public class PlayerSetting : Photon.MonoBehaviour
             {
                 weaponNo = Common.Weapon.GetExtraWeaponNo(gameCtrl.npcNo);
             }
-            else if (0 < weaponArray.Length && weaponArray.Length < partsNo)
+            else if (0 < weaponArray.Length && partsNo < weaponArray.Length)
             {
                 weaponNo = weaponArray[partsNo];
             }
+
+            //武器取得
+            string weaponName = Common.Weapon.GetWeaponName(weaponNo, true);
+            GameObject weapon = (GameObject)Resources.Load(Common.Func.GetResourceWeapon(weaponName));
 
             //部位取得
             string partsName = Common.Func.GetPartsStructure(Common.CO.partsNameArray[partsNo]);
@@ -253,7 +257,7 @@ public class PlayerSetting : Photon.MonoBehaviour
             if (parts != null)
             {
                 //装備
-                EquipWeapon(parts);
+                EquipWeapon(parts, weapon);
             }
         }
     }
@@ -277,7 +281,6 @@ public class PlayerSetting : Photon.MonoBehaviour
         //すでに装備している場合は破棄
         foreach (Transform child in parts)
         {
-            //Debug.Log("Del: "+ child.name);
             PhotonNetwork.Destroy(child.gameObject);
         }
 
