@@ -13,6 +13,7 @@ GameObject:
   - 135: {fileID: 13577188}
   - 114: {fileID: 11422660}
   - 114: {fileID: 11453172}
+  - 114: {fileID: 11491246}
   m_Layer: 0
   m_Name: EnergyBomb
   m_TagString: EnergyBullet
@@ -28,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 104904}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 3, y: 3, z: 3}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
@@ -45,7 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effectSpawn: {fileID: 0}
-  activeLimitTime: 3
+  activeLimitTime: 5
   activeLimitDistance: 0
 --- !u!114 &11453172
 MonoBehaviour:
@@ -72,6 +73,33 @@ MonoBehaviour:
   viewIdField: 0
   instantiationId: -1
   isRuntimeInstantiated: 0
+--- !u!114 &11491246
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 104904}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60b5ddf3824056f47b3e6c24f1ed6c1e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isCheckGrounded: 0
+  glideGravityRate: 1
+  isLockOn: 0
+  UseGravity: 0
+  hitEffect: {fileID: 135988, guid: d7cd433d10510fe46a35c39bac480fe1, type: 2}
+  speed: 5
+  damage: 30
+  damagePerSecond: 0
+  stuckTime: 0
+  knockBackRate: 0
+  isPhysicsBulletBreak: 0
+  isEnergyBulletBreak: 0
+  isHitBreak: 0
+  safetyTime: 0
+  maxRadius: 10
+  radiusTime: 3
 --- !u!135 &13577188
 SphereCollider:
   m_ObjectHideFlags: 1

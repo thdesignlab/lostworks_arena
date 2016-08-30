@@ -445,6 +445,7 @@ namespace Common
             { 3001, new string[]{ "HugeLaser", "", "", OBTAIN_TYPE_INIT}},
             { 3002, new string[]{ "SatelliteMissile", "", "", OBTAIN_TYPE_INIT}},
             { 3003, new string[]{ "Cyclone", "", "", OBTAIN_TYPE_INIT}},
+            { 3004, new string[]{ "EnergyShield", "", "", OBTAIN_TYPE_INIT}},
         };
         //背中武器(ダッシュ)リスト
         public static Dictionary<int, string[]> shoulderDashWeaponLineUp = new Dictionary<int, string[]>()

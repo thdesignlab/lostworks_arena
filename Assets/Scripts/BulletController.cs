@@ -64,7 +64,7 @@ public class BulletController : MoveOfCharacter
         activeTime += Time.deltaTime;
         if (photonView.isMine)
         {
-            if (activeTime >= 15) base.DestoryObject();
+            if (activeTime >= 10) base.DestoryObject();
 
             if (activeTime >= safetyTime)
             {
