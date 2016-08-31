@@ -633,7 +633,7 @@ namespace Common
         //ステージ：NPC
         public static Dictionary<int, int> stageNpcNoDic = new Dictionary<int, int>()
         {
-            { 1, 1000 },
+            { 1, 0 },
             { 2, 1001 },
             { 3, 1002 },
             { 4, 0 },
@@ -678,7 +678,7 @@ namespace Common
         //NPC武器
         public static Dictionary<int, int[]> npcWeaponDic = new Dictionary<int, int[]>()
         {
-            { 0, new int[]{ 2005, 1004, 2005, 2002, 3000, 4003, 5003} },
+            { 0, new int[]{ 2005, 1004, 2005, 2002, 3004, 4003, 5003} },
             { 1, new int[]{ 1002, 4002, 2004, 1001, 3002, 4000, 5001} },
             { 1000, new int[]{ 0, 0, 2000, 2001, 0, 0, 5002} },
             { 1001, new int[]{ 1000, 1002, 0, 0, 0, 0, 5002} },

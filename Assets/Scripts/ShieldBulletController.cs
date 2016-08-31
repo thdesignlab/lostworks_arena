@@ -4,11 +4,7 @@ using System.Collections;
 public class ShieldBulletController : BulletController
 {
     [SerializeField]
-    private float maxRadius;
-    [SerializeField]
-    private float radiusTime;
-
-    private float startRadius = 1;
+    private float angleSpeed;
 
     protected override void Awake()
     {
@@ -18,7 +14,6 @@ public class ShieldBulletController : BulletController
     protected override void Start()
     {
         base.Start();
-        if (ownerTran != null) startRadius = Vector3.Distance(myTran.position, ownerTran.position);
     }
 
     protected override void Update()
@@ -28,6 +23,11 @@ public class ShieldBulletController : BulletController
         if (ownerTran == null) return;
 
         //自分に対して常に垂直にする
+        //myTran.Rotate(ownerTran.up, angleSpeed);
+        myTran.RotateAround(ownerTran.position, ownerTran.up, angleSpeed * Time.deltaTime);
+
+
+
         //myTran.LookAt(ownerTran.position);
         //float radiusRate = activeTime / radiusTime;
         //if (radiusRate <= 1)

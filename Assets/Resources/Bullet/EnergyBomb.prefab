@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effectSpawn: {fileID: 0}
-  activeLimitTime: 5
+  activeLimitTime: 6
   activeLimitDistance: 0
 --- !u!114 &11453172
 MonoBehaviour:
@@ -88,8 +88,8 @@ MonoBehaviour:
   glideGravityRate: 1
   isLockOn: 0
   UseGravity: 0
-  hitEffect: {fileID: 135988, guid: d7cd433d10510fe46a35c39bac480fe1, type: 2}
-  speed: 5
+  hitEffect: {fileID: 109874, guid: 45752b7016b587141a9cc7a60c12fe4b, type: 2}
+  speed: 3
   damage: 30
   damagePerSecond: 0
   stuckTime: 0
@@ -98,8 +98,7 @@ MonoBehaviour:
   isEnergyBulletBreak: 0
   isHitBreak: 0
   safetyTime: 0
-  maxRadius: 10
-  radiusTime: 3
+  angleSpeed: 120
 --- !u!135 &13577188
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -461,7 +460,7 @@ ParticleSystem:
       minMaxState: 3
     randomizeRotationDirection: 0
     gravityModifier: 0
-    maxNumParticles: 10
+    maxNumParticles: 30
     rotation3D: 1
   ShapeModule:
     serializedVersion: 2

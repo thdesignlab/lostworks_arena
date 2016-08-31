@@ -11,11 +11,6 @@ public class AudioController : Photon.MonoBehaviour
     {
         myTran = transform;
         audioSources = myTran.GetComponentsInChildren<AudioSource>();
-        //Debug.Log("###: " + myTran.root.name);
-        //foreach (AudioSource tmp in audioSources)
-        //{
-        //    Debug.Log(tmp.transform.name);
-        //}
     }
 
     public void Play(int no = 0, bool isSendRPC = true)
