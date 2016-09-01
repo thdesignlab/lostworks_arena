@@ -655,18 +655,18 @@ namespace Common
         public static Dictionary<int, int[]> npcStatusDic = new Dictionary<int, int[]>()
         {
                             //hp, sp, run, boost, turn, atk%, atkI, boostI, tagI
-            { 0, new int[]{ 1200, 30, 35, 70, 20, 100, 2, 2, 1, 1 , 50} },
-            { 1, new int[]{ 1200, 30, 30, 70, 20, 120, 2, 2, 1, 1 , 250} },
-            { 1000, new int[]{ 600, 10, 15, 30, 10, 50, 3, 3, 3, 0 , 200} },
-            { 1001, new int[]{ 800, 20, 25, 50, 15, 70, 3, 3, 3, 0 , 200} },
-            { 1002, new int[]{ 1000, 30, 30, 60, 20, 90, 3, 3, 3, 0 , 100} },
+            { 0, new int[]{ 1200, 50, 35, 70, 20, 100, 2, 2, 3, 1 , 50} },
+            { 1, new int[]{ 1200, 40, 30, 70, 20, 120, 2, 2, 3, 1 , 250} },
+            { 1000, new int[]{ 600, 20, 15, 30, 10, 50, 3, 3, 5, 0 , 200} },
+            { 1001, new int[]{ 800, 25, 25, 50, 15, 70, 3, 3, 5, 0 , 200} },
+            { 1002, new int[]{ 1000, 30, 30, 60, 20, 90, 3, 3, 5, 0 , 100} },
         };
 
         //レベルによるステータス変化
         public static Dictionary<int, float[]> npcLevelStatusDic = new Dictionary<int, float[]>()
         {
                             //hp, sp, run, boost, turn, atk%, atkI, boostI, tagI
-            { 1, new float[] { 1, 0.5f, 0.75f, 0.75f, 0.5f, 0.5f, 1.5f, 1.5f, 1.5f} },
+            { 1, new float[] { 1, 1, 0.75f, 0.75f, 0.5f, 0.5f, 1.5f, 1.5f, 1.5f} },
             { 2, new float[] { 1, 1, 1, 1, 1, 1, 1, 1, 1} },
             { 3, new float[] { 1.1f, 1.2f, 1.1f, 1.1f, 1.25f, 1, 0.75f, 0.8f, 0.5f} },
             { 4, new float[] { 1.25f, 1.5f, 1.2f, 1.2f, 1.5f, 1.2f, 0.6f, 0.7f, 0.4f } },

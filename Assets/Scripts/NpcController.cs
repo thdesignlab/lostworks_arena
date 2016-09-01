@@ -11,7 +11,7 @@ public class NpcController : MoveOfCharacter
 
     private int targetType = 0;
     private float walkRadius = 150.0f;  //移動半径
-    private float boostLeftSpPer = 30;  //通常時にブーストするSP残量閾値
+    private float stockSpPer = 50;
     private float quickTargetTime = 3;  //対象へクイックターンする時間
     private float atackIntervalTime;
     private float boostIntervalTime;
@@ -79,18 +79,26 @@ public class NpcController : MoveOfCharacter
         }
 
         //回避
-        if (preBoostTime >= boostIntervalTime && boostIntervalTime > 0)
+        if (boostIntervalTime > 0)
         {
-            int nowHp = status.GetNowHp();
-            if (preHp != nowHp)
+            bool isBoost = false;
+            if (preBoostTime >= boostIntervalTime)
             {
-                preHp = nowHp;
-                AvoidBoost();
+                //一定以上のSPがある場合はブースト
+                if (status.GetNowSpPer() >= stockSpPer) isBoost = true;
             }
-        }
-        else
-        {
-            if (preBoostTime > boostIntervalTime * 2 && status.GetNowSpPer() >= boostLeftSpPer)
+            else if (preBoostTime >= boostIntervalTime / 10)
+            {
+                //ダメージを受けている場合はブースト
+                int nowHp = status.GetNowHp();
+                if (preHp != nowHp)
+                {
+                    preHp = nowHp;
+                    isBoost = true;
+                }
+            }
+
+            if (isBoost)
             {
                 AvoidBoost();
             }
@@ -329,7 +337,11 @@ public class NpcController : MoveOfCharacter
 
     private void Jump(int x, int y)
     {
-        if (!status.CheckSp(status.boostCost)) return;
+        //Debug.Log("sp:" + status.GetNowSpPer());
+        if (!status.CheckSp(status.boostCost))
+        {
+            return;
+        }
         //Debug.Log("Jump: " + x.ToString() + " / " + y.ToString());
         Vector3 move = Vector3.zero;
         float speed = 0;
@@ -436,16 +448,10 @@ public class NpcController : MoveOfCharacter
 
         //回避行動
         //Vector3 bulletVector = myTran.position - other.transform.position;
-        if (isGrounded && Random.Range(0, 100) < 15)
-        {
-            Jump(0, 0);
-        }
-        else
-        {
-            int x = Random.Range(-1, 2);
-            int y = Random.Range(0, 2);
-            Jump(x, y);
-        }
+        int x = Random.Range(-1, 2);
+        int y = Random.Range(-1, 2);
+        //Debug.Log(x + " >> " + y);
+        Jump(x, y);
     }
 
     private void RandomMove()
