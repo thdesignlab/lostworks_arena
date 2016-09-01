@@ -20,10 +20,14 @@ public class BgmManager : Photon.MonoBehaviour
         audioSource = myTran.GetComponent<AudioSource>();
     }
 
-    private void PlayBgm()
+    public void Play(string sceneName = "")
     {
+        if (audioSource == null) return;
+
+        if (sceneName == "") sceneName = SceneManager.GetActiveScene().name;
+
         AudioClip audioClip = null;
-        switch (SceneManager.GetActiveScene().name)
+        switch (sceneName)
         {
             case Common.CO.SCENE_TITLE:
                 audioClip = bgmTitle;
@@ -37,6 +41,7 @@ public class BgmManager : Photon.MonoBehaviour
                 audioClip = bgmBattle;
                 break;
         }
+        Debug.Log(audioClip);
         if (audioClip != null)
         {
             if (audioClip != audioSource.clip)
@@ -47,6 +52,7 @@ public class BgmManager : Photon.MonoBehaviour
         }
         else
         {
+            audioSource.clip = null;
             audioSource.Stop();
         }
     }

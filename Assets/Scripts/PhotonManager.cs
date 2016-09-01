@@ -66,7 +66,6 @@ public class PhotonManager : MonoBehaviour
         DontDestroyOnLoad(GameObject.Find("Config"));
         DontDestroyOnLoad(GameObject.Find("WeaponStore"));
         DontDestroyOnLoad(GameObject.Find("Debug"));
-        DontDestroyOnLoad(GameObject.Find("BgmManager"));
 
         //テキストエリア
         //messageAreaText = messageArea.transform.FindChild("Message").GetComponent<Text>();
@@ -84,6 +83,13 @@ public class PhotonManager : MonoBehaviour
 
         //ユーザー情報取得
         UserManager.SetUserInfo();
+    }
+
+    void Start()
+    {
+        GameObject bgmObj = GameObject.Find("BgmManager");
+        DontDestroyOnLoad(bgmObj);
+        bgmObj.GetComponent<BgmManager>().Play();
     }
 
     void Update()

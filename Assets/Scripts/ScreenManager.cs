@@ -8,6 +8,7 @@ public class ScreenManager : Photon.MonoBehaviour
     private Transform myTran;
     private Image fadeImg;
     private Text messageText;
+    private BgmManager bgmMgr;
 
     [SerializeField]
     private float fadeTime = 0.5f;
@@ -22,6 +23,7 @@ public class ScreenManager : Photon.MonoBehaviour
         {
             fadeImg = fadeTran.GetComponent<Image>();
         }
+        bgmMgr = GameObject.Find("BgmManager").GetComponent<BgmManager>();
     }
 
     public void Load(string sceneName, string message = "")
@@ -42,6 +44,7 @@ public class ScreenManager : Photon.MonoBehaviour
 
         //シーンロード
         PhotonNetwork.LoadLevel(sceneName);
+        bgmMgr.Play(sceneName);
 
         //フェードイン
         Coroutine fadeIn = StartCoroutine(Fade(imgs, true));
