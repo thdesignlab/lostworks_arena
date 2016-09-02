@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine.Events;
 
-public class WeaponStore : Photon.MonoBehaviour
+public class WeaponStore : SingletonMonoBehaviour<WeaponStore>
 {
     [SerializeField]
     private GameObject weaponCanvas;

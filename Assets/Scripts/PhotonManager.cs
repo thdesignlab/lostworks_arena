@@ -55,8 +55,6 @@ public class PhotonManager : MonoBehaviour
 
     public void Awake()
     {
-        DontDestroyOnLoad(GameObject.Find("WeaponStore"));
-
         //初期化
         if (isFirstScean)
         {

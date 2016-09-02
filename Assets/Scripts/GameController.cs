@@ -549,7 +549,7 @@ public class GameController : Photon.MonoBehaviour
     public void SetMyTran(Transform tran)
     {
         myTran = tran;
-        GameObject.Find("WeaponStore").GetComponent<WeaponStore>().SetMyTran();
+        WeaponStore.Instance.SetMyTran();
     }
     public Transform GetMyTran()
     {

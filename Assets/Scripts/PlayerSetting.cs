@@ -19,7 +19,6 @@ public class PlayerSetting : Photon.MonoBehaviour
     string[] charaInfo = new string[] { };
 
     private GameController gameCtrl;
-    private WeaponStore weaponStroe;
 
     private bool isCustomEnd = false;
     private int customizeTime = 15;
@@ -33,7 +32,6 @@ public class PlayerSetting : Photon.MonoBehaviour
     {
         myTran = transform;
         myTran.name = "Hero" + photonView.viewID.ToString();
-        weaponStroe = GameObject.Find("WeaponStore").GetComponent<WeaponStore>();
         playerStatus = myTran.GetComponent<PlayerStatus>();
         playerCtrl = myTran.GetComponent<PlayerController>();
         motionCtrl = myTran.GetComponent<PlayerMotionController>();
@@ -198,7 +196,7 @@ public class PlayerSetting : Photon.MonoBehaviour
             if (isCustomEnd) break;
             if (leftCustomizeTime <= 0)
             {
-                weaponStroe.CustomMenuClose();
+                WeaponStore.Instance.CustomMenuClose();
                 break;
             }
         }
@@ -269,7 +267,7 @@ public class PlayerSetting : Photon.MonoBehaviour
         if (weapon == null)
         {
             //ランダム取得(NPC用)
-            weapon = weaponStroe.GetRandomWeaponForNpc(partsTran, weaponMap);
+            weapon = WeaponStore.Instance.GetRandomWeaponForNpc(partsTran, weaponMap);
         }
         SpawnWeapon(partsTran, weapon);
     }

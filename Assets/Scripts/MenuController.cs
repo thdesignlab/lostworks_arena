@@ -206,7 +206,7 @@ public class MenuController : Photon.MonoBehaviour
     {
         OnDebugMenuButton(false);
         if (!MyDebug.Instance.isDebugMode) return;
-        GameObject.Find("WeaponStore").GetComponent<WeaponStore>().CustomMenuOpen();
+        WeaponStore.Instance.CustomMenuOpen();
     }
 
     //バトルログ表示

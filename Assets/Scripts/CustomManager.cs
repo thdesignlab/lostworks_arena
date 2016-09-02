@@ -47,9 +47,7 @@ public class CustomManager : Photon.MonoBehaviour
     private Color weaponNotSelectedColor = Color.yellow;
     private int maxWeaponButtonCount = 8;
     private float buttonHeight;
-
-    private WeaponStore weaponStore;
-
+    
     private Transform charaTran;
     private PlayerController playerCtrl;
     private Animator charaAnimator;
@@ -117,8 +115,6 @@ public class CustomManager : Photon.MonoBehaviour
 
     void Awake()
     {
-        weaponStore = GameObject.Find("WeaponStore").GetComponent<WeaponStore>();
-
         //UI初期設定
         startWeaponListPos = weaponSelectArea.localPosition;
         lastWeaponListPos = startWeaponListPos + Vector3.right * weaponSelectArea.rect.width;
@@ -497,7 +493,7 @@ public class CustomManager : Photon.MonoBehaviour
         if (UserManager.userEquipment[partsName] != weaponNo)
         {
             //装備可能チェック
-            if (!weaponStore.IsEnabledEquip(weaponNo)) return;
+            if (!WeaponStore.Instance.IsEnabledEquip(weaponNo)) return;
 
             //武器説明表示
             SetWeaponDescription(weaponNo);
@@ -539,7 +535,7 @@ public class CustomManager : Photon.MonoBehaviour
         int nowWeaponNo = UserManager.userEquipment[Common.CO.partsNameArray[selectedPartsNo]];
 
         //装備可能武器取得
-        List<int> weaponNoList = weaponStore.GetSelectableWeaponNoList(selectedPartsNo, true);
+        List<int> weaponNoList = WeaponStore.Instance.GetSelectableWeaponNoList(selectedPartsNo, true);
 
         //ボタン作成
         foreach (int weaponNo in weaponNoList)
