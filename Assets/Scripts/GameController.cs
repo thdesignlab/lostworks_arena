@@ -41,7 +41,6 @@ public class GameController : Photon.MonoBehaviour
     private PlayerStatus playerStatus;
     private SpriteStudioController spriteStudioCtrl;
     private Script_SpriteStudio_Root scriptRoot;
-    private ScreenManager screenMgr;
 
     const string MESSAGE_WAITING = "Player Waiting...";
     const string MESSAGE_CUSTOMIZE = "Customizing...";
@@ -86,8 +85,8 @@ public class GameController : Photon.MonoBehaviour
     private Dictionary<string, int> damageSourceEnemy = new Dictionary<string, int>();
     private bool isResultCheck = false;
 
-    [HideInInspector]
-    public bool isDebugMode = false;
+    //[HideInInspector]
+    //public bool isDebugMode = false;
 
     void Awake()
     {
@@ -103,9 +102,7 @@ public class GameController : Photon.MonoBehaviour
 
     private void Init()
     {
-        isDebugMode = GameObject.Find("Debug").GetComponent<MyDebug>().isDebugMode;
         spriteStudioCtrl = GameObject.Find("SpriteStudioController").GetComponent<SpriteStudioController>();
-        screenMgr = GameObject.Find("ScreenManager").GetComponent<ScreenManager>();
     }
 
     private void SetCanvasInfo()
@@ -587,7 +584,7 @@ public class GameController : Photon.MonoBehaviour
     {
         PhotonNetwork.LeaveRoom();
         //PhotonNetwork.LoadLevel(Common.CO.SCENE_TITLE);
-        screenMgr.Load(Common.CO.SCENE_TITLE, DialogController.MESSAGE_LOADING);
+        ScreenManager.Instance.Load(Common.CO.SCENE_TITLE, DialogController.MESSAGE_LOADING);
     }
 
     private GameObject SpawnProcess(string name, int groupId = 0)
@@ -752,7 +749,7 @@ public class GameController : Photon.MonoBehaviour
     //結果ダイアログ表示
     private void OpenResult()
     {
-        if (!isDebugMode)
+        if (!MyDebug.Instance.isDebugMode)
         {
             isResultCheck = true;
             return;

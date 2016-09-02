@@ -149,7 +149,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
         moveCtrl = GetComponent<BaseMoveController>();
 
         gameCtrl = GameObject.Find("GameController").GetComponent<GameController>();
-        isDispBattleLog = gameCtrl.isDebugMode;
+        isDispBattleLog = MyDebug.Instance.isDebugMode;
 
         //ステータス構造
         Transform screenStatusTran = Camera.main.transform.FindChild(Common.CO.SCREEN_CANVAS + Common.CO.SCREEN_STATUS);
@@ -922,7 +922,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
 
     public void SetBattleLog(int logType, int damage, string name, bool isSlipDamage = false)
     {
-        if (!gameCtrl.isDebugMode) return;
+        if (!MyDebug.Instance.isDebugMode) return;
 
         if (!photonView.isMine || isNpc) return;
 
@@ -957,7 +957,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
 
     private void PushBattleLog(int logType, int damage, string name, bool console = false)
     {
-        if (!gameCtrl.isDebugMode) return;
+        if (!MyDebug.Instance.isDebugMode) return;
         if (!photonView.isMine || isNpc) return;
         if (name == "" || damage <= 0) return;
 

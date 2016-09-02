@@ -2,58 +2,61 @@
 using System.Collections;
 using UnityEngine.SceneManagement;
 
-public class BgmManager : Photon.MonoBehaviour
+public class BgmManager : MonoBehaviour
 {
-    private Transform myTran;
     private AudioSource audioSource;
 
+    //BGM再生設定
     [SerializeField]
-    private AudioClip bgmTitle;
+    private float playStartTime = 0;
+    //[SerializeField]
+    //private float playEndTime = 0;
+
+    //BGMループ設定
     [SerializeField]
-    private AudioClip bgmCustom;
+    private float loopStartTime = 0;   //ループ再生の開始時間
     [SerializeField]
-    private AudioClip bgmBattle;
+    private float loopEndTime = 0;     //ループ位置に戻る時間
+    //[SerializeField]
+    //private int loopCount = -1;     //ループ回数
+
+
+    //private int nowLoopCount = 0;
 
     void Awake()
     {
-        myTran = transform;
-        audioSource = myTran.GetComponent<AudioSource>();
+        audioSource = transform.GetComponent<AudioSource>();
     }
 
-    public void Play(string sceneName = "")
+    void Update()
     {
-        if (audioSource == null) return;
-
-        if (sceneName == "") sceneName = SceneManager.GetActiveScene().name;
-
-        AudioClip audioClip = null;
-        switch (sceneName)
+        // 再生中のBGMの再生時間を監視する
+        if (audioSource != null && audioSource.isPlaying)
         {
-            case Common.CO.SCENE_TITLE:
-                audioClip = bgmTitle;
-                break;
-
-            case Common.CO.SCENE_CUSTOM:
-                audioClip = bgmCustom;
-                break;
-
-            case Common.CO.SCENE_BATTLE:
-                audioClip = bgmBattle;
-                break;
-        }
-        Debug.Log(audioClip);
-        if (audioClip != null)
-        {
-            if (audioClip != audioSource.clip)
+            if (loopEndTime > 0)
             {
-                audioSource.clip = audioClip;
-                audioSource.Play();
+                if (audioSource.time >= loopEndTime)
+                {
+                    audioSource.time = loopStartTime;
+                }
             }
         }
-        else
+    }
+
+    public void Play()
+    {
+        if (audioSource == null) return;
+        if (!audioSource.isPlaying)
         {
-            audioSource.clip = null;
-            audioSource.Stop();
+            audioSource.Play();
+            audioSource.time = playStartTime;
         }
+        //nowLoopCount = 0;
+    }
+
+    public void Stop()
+    {
+        if (audioSource == null) return;
+        audioSource.Stop();
     }
 }

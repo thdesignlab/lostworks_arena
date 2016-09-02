@@ -13,8 +13,6 @@ public class PhotonManager : MonoBehaviour
     private GameObject networkArea;
     [SerializeField]
     private GameObject roomListArea;
-    //[SerializeField]
-    private GameObject messageArea;
     [SerializeField]
     private GameObject configArea;
 
@@ -43,13 +41,10 @@ public class PhotonManager : MonoBehaviour
     private bool isNetworkMode = false;
 
     private float processTime = 0;
-
-    private Text messageAreaText;
-
+    
     private InputField roomNameIF;
     private Text roomStatusText;
 
-    private ScreenManager screenMgr;
     private string moveScene = "";
     private string loadmessage = "";
 
@@ -60,15 +55,7 @@ public class PhotonManager : MonoBehaviour
 
     public void Awake()
     {
-        GameObject screenObj = GameObject.Find("ScreenManager");
-        screenMgr = screenObj.GetComponent<ScreenManager>();
-        DontDestroyOnLoad(screenObj);
-        DontDestroyOnLoad(GameObject.Find("Config"));
         DontDestroyOnLoad(GameObject.Find("WeaponStore"));
-        DontDestroyOnLoad(GameObject.Find("Debug"));
-
-        //テキストエリア
-        //messageAreaText = messageArea.transform.FindChild("Message").GetComponent<Text>();
 
         //初期化
         if (isFirstScean)
@@ -85,17 +72,8 @@ public class PhotonManager : MonoBehaviour
         UserManager.SetUserInfo();
     }
 
-    void Start()
-    {
-        GameObject bgmObj = GameObject.Find("BgmManager");
-        DontDestroyOnLoad(bgmObj);
-        bgmObj.GetComponent<BgmManager>().Play();
-    }
-
     void Update()
     {
-        //processTime += Time.deltaTime;
-
         if (isTapToStart)
         {
             GameObject message = DialogController.OpenMessage(DialogController.MESSAGE_TOP, DialogController.MESSAGE_POSITION_CENTER);
@@ -206,7 +184,7 @@ public class PhotonManager : MonoBehaviour
     {
         if (isFade)
         {
-            screenMgr.FadeUI(modeSelectArea, flg);
+            ScreenManager.Instance.FadeUI(modeSelectArea, flg);
         }
         else
         {
@@ -219,7 +197,7 @@ public class PhotonManager : MonoBehaviour
     {
         if (isFade)
         {
-            screenMgr.FadeUI(networkArea.gameObject, flg, false);
+            ScreenManager.Instance.FadeUI(networkArea.gameObject, flg, false);
         }
         else
         {
@@ -241,7 +219,7 @@ public class PhotonManager : MonoBehaviour
     {
         if (isFade)
         {
-            screenMgr.FadeUI(roomListArea.gameObject, flg, false);
+            ScreenManager.Instance.FadeUI(roomListArea.gameObject, flg, false);
         }
         else
         {
@@ -376,7 +354,7 @@ public class PhotonManager : MonoBehaviour
     public void OnConfigButton()
     {
         SwitchModeSelectArea(false, true);
-        GameObject.Find("Config").GetComponent<ConfigManager>().OpenConfig();
+        ConfigManager.Instance.OpenConfig();
     }
 
     // ##### 各操作 #####
@@ -464,7 +442,7 @@ public class PhotonManager : MonoBehaviour
     {
         //Debug.Log("OnCreatedRoom");
         //PhotonNetwork.LoadLevel(moveScene);
-        screenMgr.Load(moveScene);
+        ScreenManager.Instance.Load(moveScene);
     }
 
     public void OnDisconnectedFromPhoton()

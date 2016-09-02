@@ -39,12 +39,9 @@ public class MenuController : Photon.MonoBehaviour
 
         gameCtrl = GameObject.Find("GameController").GetComponent<GameController>();
 
-        bool isDebug = false;
         bool isEnabledCpu = false;
         if (gameCtrl != null)
         {
-            //デバッグモードチェック
-            isDebug = gameCtrl.isDebugMode;
 
             switch (gameCtrl.gameMode)
             {
@@ -66,7 +63,7 @@ public class MenuController : Photon.MonoBehaviour
         npcButton.SetActive(isEnabledCpu);
 
         //デバッグボタンON/OFF
-        debugButton.SetActive(isDebug);
+        debugButton.SetActive(MyDebug.Instance.isDebugMode);
     }
 
     void Update()
@@ -179,7 +176,7 @@ public class MenuController : Photon.MonoBehaviour
     //コンフィグ
     public void OnConfigButton()
     {
-        GameObject.Find("Config").GetComponent<ConfigManager>().OpenConfig();
+        ConfigManager.Instance.OpenConfig();
     }
 
     //##### デバッグメニュー #####
@@ -197,7 +194,7 @@ public class MenuController : Photon.MonoBehaviour
     public void OnRespawnButton()
     {
         OnDebugMenuButton(false);
-        if (!gameCtrl.isDebugMode) return;
+        if (!MyDebug.Instance.isDebugMode) return;
         if (gameCtrl.GetMyTran() != null) return;
 
         Destroy(Camera.main.gameObject);
@@ -208,7 +205,7 @@ public class MenuController : Photon.MonoBehaviour
     public void OnCustomButton()
     {
         OnDebugMenuButton(false);
-        if (!gameCtrl.isDebugMode) return;
+        if (!MyDebug.Instance.isDebugMode) return;
         GameObject.Find("WeaponStore").GetComponent<WeaponStore>().CustomMenuOpen();
     }
 
@@ -216,7 +213,7 @@ public class MenuController : Photon.MonoBehaviour
     public void OnBattleLogButton()
     {
         OnDebugMenuButton(false);
-        if (!gameCtrl.isDebugMode) return;
+        if (!MyDebug.Instance.isDebugMode) return;
         PlayerStatus status = myTran.root.GetComponent<PlayerStatus>();
         if (status != null) status.SwitchBattleLog();
     }

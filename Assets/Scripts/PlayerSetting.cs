@@ -324,7 +324,7 @@ public class PlayerSetting : Photon.MonoBehaviour
                 playerCtrl.SetWeapon();
                 if (photonView.isMine && isActiveSceane)
                 {
-                    if (gameCtrl.isDebugMode)
+                    if (MyDebug.Instance.isDebugMode)
                     {
                         weaponCtrl.SetEnable(true);
                     }

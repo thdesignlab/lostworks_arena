@@ -2,31 +2,22 @@
 using System.Collections;
 using UnityEngine.SceneManagement;
 
-public class ConfigManager : MonoBehaviour
+public class ConfigManager : SingletonMonoBehaviour<ConfigManager>
 {
     [SerializeField]
     private GameObject configCanvas;
 
-    private ScreenManager screenMgr;
-
-    void Awake()
+    protected override void Awake()
     {
-        screenMgr = GameObject.Find("ScreenManager").GetComponent<ScreenManager>();
+        base.Awake();
+
         configCanvas.SetActive(false);
     }
 
     public void OpenConfig()
     {
         //ダイアログ表示
-        screenMgr.FadeUI(configCanvas.gameObject, true);
-
-        ////シーンごとの処理
-        //switch (SceneManager.GetActiveScene().name)
-        //{
-        //    case Common.CO.SCENE_TITLE:
-        //        GameObject.Find("PhotonManager").GetComponent<PhotonManager>().SwitchModeSelectArea(false);
-        //        break;
-        //}
+        ScreenManager.Instance.FadeUI(configCanvas.gameObject, true);
     }
 
     public void CloseConfig()
@@ -34,7 +25,7 @@ public class ConfigManager : MonoBehaviour
         //設定保存
 
         //ダイアログ非表示
-        screenMgr.FadeUI(configCanvas.gameObject, false);
+        ScreenManager.Instance.FadeUI(configCanvas.gameObject, false);
 
         //シーンごとの処理
         switch (SceneManager.GetActiveScene().name)

@@ -3,27 +3,24 @@ using System.Collections;
 using UnityEngine.UI;
 using System.Collections.Generic;
 
-public class ScreenManager : Photon.MonoBehaviour
+public class ScreenManager : SingletonMonoBehaviour<ScreenManager>
 {
     private Transform myTran;
     private Image fadeImg;
     private Text messageText;
-    private BgmManager bgmMgr;
 
     [SerializeField]
     private float fadeTime = 0.5f;
 
     private bool isUiFade = false;
 
-    void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         myTran = transform;
         Transform fadeTran = myTran.FindChild("FadeImage");
-        if (fadeTran != null)
-        {
-            fadeImg = fadeTran.GetComponent<Image>();
-        }
-        bgmMgr = GameObject.Find("BgmManager").GetComponent<BgmManager>();
+        fadeImg = fadeTran.GetComponent<Image>();
     }
 
     public void Load(string sceneName, string message = "")
@@ -42,13 +39,18 @@ public class ScreenManager : Photon.MonoBehaviour
         Coroutine fadeOut = StartCoroutine(Fade(imgs, false));
         yield return fadeOut;
 
+        //BGM停止
+        SoundManager.Instance.StopBgm(sceneName);
+
         //シーンロード
         PhotonNetwork.LoadLevel(sceneName);
-        bgmMgr.Play(sceneName);
 
         //フェードイン
         Coroutine fadeIn = StartCoroutine(Fade(imgs, true));
         yield return fadeIn;
+
+        //BGM再生
+        SoundManager.Instance.PlayBgm(sceneName);
 
         //メッセージ非表示
         if (message != "") DialogController.CloseMessage();

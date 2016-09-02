@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MyDebug : MonoBehaviour
+public class MyDebug : SingletonMonoBehaviour<MyDebug>
 {
+    [SerializeField]
     public bool isDebugMode;
 
     [SerializeField]
@@ -13,15 +14,7 @@ public class MyDebug : MonoBehaviour
     private int btnDownTime = 3;
     private float btnDown = 0;
     private bool dispLog = false;
-
-    void Awake()
-    {
-        GameObject gameObj = GameObject.Find("GameController");
-        if (gameObj != null)
-        {
-            gameObj.GetComponent<GameController>().isDebugMode = isDebugMode;
-        }
-    }
+    
 
     void OnEnable()
     {
