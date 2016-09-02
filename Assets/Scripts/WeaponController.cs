@@ -19,6 +19,9 @@ public class WeaponController : Photon.MonoBehaviour
     protected Vector3 bitToPos = default(Vector3);
     protected float radius = 0;
 
+    protected bool isBitOn = false;
+    protected const float BIT_SWITCH_TIME = 0.5f;
+
     [SerializeField]
     protected float reloadTime;   //再装填時間
     protected float leftReloadTime = 0;
@@ -71,6 +74,7 @@ public class WeaponController : Photon.MonoBehaviour
                 myBitTran = child;
                 bitFromPos = myBitTran.localPosition;
                 bitAnimator = myBitTran.GetComponent<Animator>();
+                myBitTran.localScale = Vector3.zero;
             }
         }
     }
@@ -144,6 +148,9 @@ public class WeaponController : Photon.MonoBehaviour
     {
         isAction = true;
 
+        //BitOn
+        BitOn();
+
         //モーション開始
         StartMotion();
     }
@@ -153,6 +160,9 @@ public class WeaponController : Photon.MonoBehaviour
 
         //Bit位置を戻す
         ReturnBitMove(bitToPos, bitFromPos);
+
+        //BitOff
+        BitOff();
 
         //モーション終了
         StopMotion();
@@ -326,10 +336,47 @@ public class WeaponController : Photon.MonoBehaviour
         audioCtrl.Stop(no);
     }
 
+
+    protected void BitOn()
+    {
+        if (myBitTran == null) return;
+        isBitOn = true;
+        myBitTran.localScale = Vector3.one;
+    }
+    protected void BitOff()
+    {
+        if (myBitTran == null) return;
+        isBitOn = false;
+        StartCoroutine(BitOffProccess());
+    }
+    IEnumerator BitOffProccess()
+    {
+        yield return new WaitForSeconds(1.0f);
+
+        float time = 0;
+        float lerpRate = 0;
+        for (;;)
+        {
+            if (isBitOn)
+            {
+                myBitTran.localScale = Vector3.one;
+                yield break;
+            }
+
+            time += Time.deltaTime;
+            lerpRate = time / BIT_SWITCH_TIME;
+            if (lerpRate > 1) lerpRate = 1;
+            myBitTran.localScale = Vector3.Lerp(Vector3.one, Vector3.zero, lerpRate);
+            if (lerpRate > 1) break;
+            yield return null;
+        }
+    }
+
     protected bool StartBitMove(Vector3 fromPos, Vector3 toPos)
     {
         //Debug.Log(bitFromPos + " >> " + bitToPos + " : " + bitMoveTime);
-        if (myBitTran == null || fromPos == toPos) return false;
+        if (myBitTran == null) return false;
+        if (fromPos == toPos) return false;
 
         if (photonView.isMine)
         {
@@ -348,7 +395,8 @@ public class WeaponController : Photon.MonoBehaviour
 
     protected void ReturnBitMove(Vector3 fromPos, Vector3 toPos)
     {
-        if (myBitTran == null || bitFromPos == bitToPos) return;
+        if (myBitTran == null) return;
+        if (bitFromPos == bitToPos) return;
 
         if (photonView.isMine)
         {

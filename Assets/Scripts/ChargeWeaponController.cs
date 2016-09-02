@@ -58,6 +58,8 @@ public class ChargeWeaponController : BulletWeaponController
 
         isAction = true;
 
+        BitOn();
+
         //モーション開始
         StartMotion();
 

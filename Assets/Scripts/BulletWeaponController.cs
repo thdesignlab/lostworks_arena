@@ -105,7 +105,7 @@ public class BulletWeaponController : WeaponController
     {
         shootBullets = new List<GameObject>();
 
-        if (base.bitMoveTime > 0)
+        if (bitMoveTime  > 0)
         {
             StartCoroutine(WaitBitMove());
         }
@@ -118,6 +118,7 @@ public class BulletWeaponController : WeaponController
     IEnumerator WaitBitMove()
     {
         //Bit移動
+        BitOn();
         base.StartBitMove(bitFromPos, bitToPos);
         yield return new WaitForSeconds(bitMoveTime);
         ActionProccess();

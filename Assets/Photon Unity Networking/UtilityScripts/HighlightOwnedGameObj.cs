@@ -15,6 +15,7 @@ public class HighlightOwnedGameObj : Photon.MonoBehaviour
         {
             if (this.markerTransform == null)
             {
+                Debug.Log(transform.name);
                 GameObject markerObject = (GameObject) GameObject.Instantiate(this.PointerPrefab);
                 markerObject.transform.parent = gameObject.transform;
                 this.markerTransform = markerObject.transform;
