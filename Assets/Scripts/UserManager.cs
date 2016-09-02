@@ -98,6 +98,19 @@ public class UserManager
             PlayerPrefsUtility.SaveDict<string, int>(Common.PP.USER_EQUIP, userEquipment);
         }
 
+        //コンフィグ
+        if (!PlayerPrefs.HasKey(Common.PP.USER_CONFIG))
+        {
+            userConfig[Common.PP.CONFIG_BGM_VALUE] = ConfigManager.SLIDER_COUNT / 2;
+            userConfig[Common.PP.CONFIG_BGM_MUTE] = 0;
+            userConfig[Common.PP.CONFIG_SE_VALUE] = ConfigManager.SLIDER_COUNT / 2;
+            userConfig[Common.PP.CONFIG_SE_MUTE] = 0;
+            userConfig[Common.PP.CONFIG_VOICE_VALUE] = ConfigManager.SLIDER_COUNT / 2;
+            userConfig[Common.PP.CONFIG_VOICE_MUTE] = 0;
+            SaveConfig(false);
+        }
+        
+
         //設定キャラ
         if (!PlayerPrefs.HasKey(Common.PP.USER_CHARACTER))
         {
@@ -130,6 +143,7 @@ public class UserManager
         if (!PlayerPrefs.HasKey(Common.PP.USER_INFO)) return true;
         if (!PlayerPrefs.HasKey(Common.PP.USER_RESULT)) return true;
         if (!PlayerPrefs.HasKey(Common.PP.USER_EQUIP)) return true;
+        if (!PlayerPrefs.HasKey(Common.PP.USER_CONFIG)) return true;
         if (!PlayerPrefs.HasKey(Common.PP.USER_CHARACTER)) return true;
         if (!PlayerPrefs.HasKey(Common.PP.OPEN_CHARACTERS)) return true;
         if (!PlayerPrefs.HasKey(Common.PP.OPEN_WEAPONS)) return true;
@@ -141,8 +155,8 @@ public class UserManager
     {
         //データ削除(debug用)
         //PlayerPrefs.DeleteAll();
-        PlayerPrefs.DeleteKey(Common.PP.USER_INFO);
-        PlayerPrefs.DeleteKey(Common.PP.USER_RESULT);
+        //PlayerPrefs.DeleteKey(Common.PP.USER_INFO);
+        //PlayerPrefs.DeleteKey(Common.PP.USER_RESULT);
 
         if (IsInitUser())
         {
@@ -154,6 +168,7 @@ public class UserManager
         userInfo = PlayerPrefsUtility.LoadDict<int, string>(Common.PP.USER_INFO);
         userResult = PlayerPrefsUtility.LoadDict<int, int>(Common.PP.USER_RESULT);
         userEquipment = PlayerPrefsUtility.LoadDict<string, int>(Common.PP.USER_EQUIP);
+        userConfig = PlayerPrefsUtility.LoadDict<int, int>(Common.PP.USER_CONFIG);
         userSetCharacter = PlayerPrefsUtility.Load(Common.PP.USER_CHARACTER, 0);
         userOpenCharacters = PlayerPrefsUtility.LoadList<int>(Common.PP.OPEN_CHARACTERS);
         userOpenWeapons = PlayerPrefsUtility.LoadList<int>(Common.PP.OPEN_WEAPONS);
@@ -168,6 +183,14 @@ public class UserManager
     //##### ユーザー戦績 #####
 
 
+    //##### ユーザーコンフィグ #####
+
+    public static void SaveConfig(bool isSave = true)
+    {
+        PlayerPrefsUtility.SaveDict<int, int>(Common.PP.USER_CONFIG, userConfig);
+        if (isSave) PlayerPrefs.Save();
+    }
+
     //##### ユーザーキャラクター #####
 
 
@@ -178,6 +201,13 @@ public class UserManager
         foreach (int key in userInfo.Keys)
         {
             Debug.Log(key+" >> "+userInfo[key]);
+        }
+    }
+    public static void DispUserConfig()
+    {
+        foreach (int key in userConfig.Keys)
+        {
+            Debug.Log(key + " >> " + userConfig[key]);
         }
     }
 
