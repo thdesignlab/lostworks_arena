@@ -25,6 +25,8 @@ public class ExtraWeaponController : Photon.MonoBehaviour
     private int useCount = 0;   //使用回数
     private const int FREE_HP_CONDITION = 15;   //使用回数無制限になるHP割合
 
+    private bool isShooting = false;
+
     void Start()
     {
         StartCoroutine(CheckBtn());
@@ -51,6 +53,8 @@ public class ExtraWeaponController : Photon.MonoBehaviour
 
     IEnumerator FireProccess(Transform targetTran)
     {
+        isShooting = true;
+
         //無敵開始
         playerStatus.SetForceInvincible(true);
 
@@ -112,6 +116,8 @@ public class ExtraWeaponController : Photon.MonoBehaviour
 
         //無敵解除
         playerStatus.SetForceInvincible(false);
+
+        isShooting = false;
     }
 
     private void SwitchExtraEffect(bool flg)
@@ -210,5 +216,10 @@ public class ExtraWeaponController : Photon.MonoBehaviour
     public WeaponController GetWeaponController()
     {
         return wepCtrl;
+    }
+
+    public bool IsShooting()
+    {
+        return isShooting;
     }
 }

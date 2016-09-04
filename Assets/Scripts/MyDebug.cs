@@ -35,19 +35,20 @@ public class MyDebug : SingletonMonoBehaviour<MyDebug>
         // 必要な変数を宣言する
         //string dtNow = System.DateTime.Now.ToString("yyyy/MM/dd (ddd) HH:mm:ss");
         string dtNow = System.DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
-        string log = "### START ### -- "+ dtNow + "\ncondition : " + condition + "\nstackTrace : " + stackTrace + "\ntype : " + type.ToString() + "\n### END ###\n";
+        string log = "### START ### -- "+ type.ToString() + " -- " + dtNow + "\ncondition : " + condition + "\nstackTrace : " + stackTrace + "\n### END ###\n";
+        //string log = "### START ### -- " + dtNow + "\n" + stackTrace + "\ntype : " + type.ToString() + "\n### END ###\n";
         PushLog(log, false);
     }
 
     private int textAreaWidth = Screen.width;
     private int textAreaheight = Screen.height / 2;
-    private int space = 30;
+    private int space = Screen.height / 16;
 
     void OnGUI()
     {
         if (!isDebugMode) return;
-        Rect btnRect = new Rect(0, Screen.height - space, space, space);
-        Rect logRect = new Rect(0, Screen.height - textAreaheight - space, textAreaWidth, textAreaheight);
+        Rect btnRect = new Rect(0, 0, space, space);
+        Rect logRect = new Rect(0, space, textAreaWidth, textAreaheight);
 
         if (dispLog)
         {
@@ -55,7 +56,7 @@ public class MyDebug : SingletonMonoBehaviour<MyDebug>
             string logText = "";
             foreach (string log in logQueue)
             {
-                logText += log;
+                logText = log + logText;
             }
             GUI.TextArea(logRect, logText);
             if (GUI.Button(btnRect, "-"))
@@ -80,6 +81,7 @@ public class MyDebug : SingletonMonoBehaviour<MyDebug>
             }
             else
             {
+                //btnDown = 0;
                 //btnDown -= Time.deltaTime / 10;
             }
         }

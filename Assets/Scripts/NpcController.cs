@@ -285,10 +285,15 @@ public class NpcController : MoveOfCharacter
             //専用武器
             if (extraCtrl != null)
             {
+                if (extraCtrl.IsShooting())
+                {
+                    yield return null;
+                    continue;
+                }
+
                 if (extraCtrl.IsEnabled())
                 {
                     extraCtrl.Fire(targetTran);
-                    yield return new WaitForSeconds(3.0f);
                     continue;
                 }
             }

@@ -439,7 +439,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
         Vector3 prePos = transform.position;
         float bonusTime = 0;
         float fraction = 0;
-        float interval = 0.1f;
+        float interval = 0.05f;
         for (;;)
         {
             if (nowSp == maxSp)

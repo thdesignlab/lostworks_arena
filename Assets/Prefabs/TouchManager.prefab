@@ -44,11 +44,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Enabled: 1
-  LevelingFrameCount: 3
-  DetectAcceleration: 10000
-  DefeatSpeed: 100
-  MinFlickDistance: 0
-  ContinuousDetect: 0
+  LevelingFrameCount: 2
+  DetectAcceleration: 1000
+  DefeatSpeed: 500
+  MinFlickDistance: 100
+  ContinuousDetect: 1
 --- !u!114 &11420614
 MonoBehaviour:
   m_ObjectHideFlags: 1

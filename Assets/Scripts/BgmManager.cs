@@ -9,19 +9,12 @@ public class BgmManager : MonoBehaviour
     //BGM再生設定
     [SerializeField]
     private float playStartTime = 0;
-    //[SerializeField]
-    //private float playEndTime = 0;
 
     //BGMループ設定
     [SerializeField]
     private float loopStartTime = 0;   //ループ再生の開始時間
     [SerializeField]
     private float loopEndTime = 0;     //ループ位置に戻る時間
-    //[SerializeField]
-    //private int loopCount = -1;     //ループ回数
-
-
-    //private int nowLoopCount = 0;
 
     void Awake()
     {
@@ -51,7 +44,6 @@ public class BgmManager : MonoBehaviour
             audioSource.Play();
             audioSource.time = playStartTime;
         }
-        //nowLoopCount = 0;
     }
 
     public void Stop()

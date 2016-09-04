@@ -75,7 +75,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effectSpawn: {fileID: 0}
-  activeLimitTime: 3
+  activeLimitTime: 2
   activeLimitDistance: 0
 --- !u!114 &11476194
 MonoBehaviour:
@@ -93,7 +93,7 @@ MonoBehaviour:
   isLockOn: 0
   UseGravity: 0
   hitEffect: {fileID: 0}
-  speed: 100
+  speed: 80
   damage: 5
   damagePerSecond: 0
   stuckTime: 0

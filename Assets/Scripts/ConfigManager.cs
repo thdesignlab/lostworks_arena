@@ -54,13 +54,12 @@ public class ConfigManager : SingletonMonoBehaviour<ConfigManager>
 
     void Start()
     {
-        foreach (int kind in UserManager.userConfig.Keys)
+        Dictionary<int, int> configDic = new Dictionary<int, int>(UserManager.userConfig);
+        foreach (int kind in configDic.Keys)
         {
+            //Debug.Log(kind+" >> "+configDic[kind]);
             if (volumeNameDic.ContainsKey(kind))
             {
-                //ミキサー設定
-                ChangeVolume(kind, UserManager.userConfig[kind], false);
-
                 //UI設定
                 Slider tmpSlider = null;
                 Toggle tmpToggle = null;
@@ -85,13 +84,9 @@ public class ConfigManager : SingletonMonoBehaviour<ConfigManager>
                         muteKey = Common.PP.CONFIG_VOICE_MUTE;
                         break;
                 }
+                int tmpMute = UserManager.userConfig[muteKey];
                 tmpSlider.value = UserManager.userConfig[kind];
-                tmpToggle.isOn = false;
-                if (UserManager.userConfig[muteKey] == 1)
-                {
-                    tmpSlider.value = 0;
-                    tmpToggle.isOn = true;
-                }
+                if (tmpMute == 1) tmpToggle.isOn = true;
             }
         }
     }
@@ -120,29 +115,27 @@ public class ConfigManager : SingletonMonoBehaviour<ConfigManager>
     }
 
     //音量変更
-    private void ChangeVolume(int kind, float value, bool isSave = true)
+    private void ChangeVolume(int kind, float value, bool isSave = false)
     {
-        if (volumeNameDic.ContainsKey(kind))
-        {
-            float volumeDB = 20 * Mathf.Log10(value / SLIDER_COUNT);
-            mixer.SetFloat(volumeNameDic[kind], Mathf.Clamp(volumeDB, MIN_DECIBEL, MAX_DECIBEL));
-
-            if (isSave) UserManager.userConfig[kind] = (int)value;
-        }
+        SetMixer(kind, value);
+        if (isSave) UserManager.userConfig[kind] = (int)value;
     }
-    public void ChangeVolumeBgm(float value)
+    public void OnChangeVolumeBgm(float value)
     {
-        ChangeVolume(Common.PP.CONFIG_BGM_VALUE, value);
+        ChangeVolume(Common.PP.CONFIG_BGM_VALUE, value, true);
+        bgmToggle.isOn = false;
     }
-    public void ChangeVolumeSe(float value)
+    public void OnChangeVolumeSe(float value)
     {
-        if (seAudio != null) seAudio.Play();
-        ChangeVolume(Common.PP.CONFIG_SE_VALUE, value);
+        if (configCanvas.gameObject.GetActive() && seAudio != null) seAudio.Play();
+        ChangeVolume(Common.PP.CONFIG_SE_VALUE, value, true);
+        seToggle.isOn = false;
     }
-    public void ChangeVolumeVoice(float value)
+    public void OnChangeVolumeVoice(float value)
     {
-        if (voiceAudio != null) voiceAudio.Play();
-        ChangeVolume(Common.PP.CONFIG_VOICE_VALUE, value);
+        if (configCanvas.gameObject.GetActive() && voiceAudio != null) voiceAudio.Play();
+        ChangeVolume(Common.PP.CONFIG_VOICE_VALUE, value, true);
+        voiceToggle.isOn = false;
     }
 
     //Mute
@@ -152,22 +145,31 @@ public class ConfigManager : SingletonMonoBehaviour<ConfigManager>
         int value = 0;
         if (!flg)
         {
-            mute = 1;
+            mute = 0;
             value = UserManager.userConfig[volumeKind];
         }
         UserManager.userConfig[muteKind] = mute;
-        ChangeVolume(volumeKind, value, false);
+        ChangeVolume(volumeKind, value);
     }
-    public void ChangeMuteBgm(bool flg)
+    public void OnChangeMuteBgm(bool flg)
     {
         ChangeMute(Common.PP.CONFIG_BGM_MUTE, flg, Common.PP.CONFIG_BGM_VALUE);
     }
-    public void ChangeMuteSe(bool flg)
+    public void OnChangeMuteSe(bool flg)
     {
         ChangeMute(Common.PP.CONFIG_SE_MUTE, flg, Common.PP.CONFIG_SE_VALUE);
     }
-    public void ChangeMuteVoice(bool flg)
+    public void OnChangeMuteVoice(bool flg)
     {
         ChangeMute(Common.PP.CONFIG_VOICE_MUTE, flg, Common.PP.CONFIG_VOICE_VALUE);
+    }
+
+    private void SetMixer(int kind, float value)
+    {
+        if (volumeNameDic.ContainsKey(kind))
+        {
+            float volumeDB = 20 * Mathf.Log10(value / SLIDER_COUNT);
+            mixer.SetFloat(volumeNameDic[kind], Mathf.Clamp(volumeDB, MIN_DECIBEL, MAX_DECIBEL));
+        }
     }
 }

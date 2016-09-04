@@ -415,11 +415,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isCheckGrounded: 0
-  glideGravityRate: 0.4
+  glideGravityRate: 0.1
   isLockOn: 0
   UseGravity: 1
   hitEffect: {fileID: 0}
-  speed: 120
+  speed: 100
   damage: 30
   damagePerSecond: 0
   stuckTime: 0

@@ -155,8 +155,8 @@ public class UserManager
     {
         //データ削除(debug用)
         //PlayerPrefs.DeleteAll();
-        //PlayerPrefs.DeleteKey(Common.PP.USER_INFO);
-        //PlayerPrefs.DeleteKey(Common.PP.USER_RESULT);
+        PlayerPrefs.DeleteKey(Common.PP.USER_INFO);
+        PlayerPrefs.DeleteKey(Common.PP.USER_RESULT);
 
         if (IsInitUser())
         {
