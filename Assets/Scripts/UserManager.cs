@@ -11,7 +11,7 @@ public class UserManager
     public static int userSetCharacter = 0;   //ユーザー設定キャラ
     public static List<int> userOpenCharacters = new List<int>();    //開放キャラクター
     public static List<int> userOpenWeapons = new List<int>();       //開放武器
-    public static List<int> userOpenMissions = new List<int>() { 1, 1 };       //開放Mission(level, stage)
+    public static List<int> userOpenMissions = new List<int>() { 2, 1 };       //開放Mission(level, stage)
 
     //##### ユーザー情報 #####
 
@@ -193,6 +193,28 @@ public class UserManager
 
     //##### ユーザーキャラクター #####
 
+
+    //##### 解放ミッション #####
+
+    public static void OpenNextMission(int nowLevel, int nowStage)
+    {
+        if (userOpenMissions[Common.PP.MISSION_LEVEL] != nowLevel) return;
+        if (userOpenMissions[Common.PP.MISSION_STAGE] != nowStage) return;
+
+        if (nowStage == Common.Mission.stageNpcNoDic.Count)
+        {
+            //NextLevel
+            userOpenMissions[Common.PP.MISSION_LEVEL] = nowLevel + 1;
+            userOpenMissions[Common.PP.MISSION_STAGE] = 1;
+        }
+        else
+        {
+            //NextStage
+            userOpenMissions[Common.PP.MISSION_STAGE] = nowStage + 1;
+        }
+        PlayerPrefsUtility.SaveList<int>(Common.PP.OPEN_MISSIONS, userOpenMissions);
+        PlayerPrefs.Save();
+    }
 
     //##### デバッグ #####
 

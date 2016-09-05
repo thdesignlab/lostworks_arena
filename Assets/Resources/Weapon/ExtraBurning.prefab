@@ -457,7 +457,7 @@ MonoBehaviour:
   blade: {fileID: 113064}
   attackTime: 3
   attackWaitTime: 1
-  boostSpeed: 200
+  boostSpeed: 250
   boostTime: 3.5
   boostWaitTime: 2
   boostCost: 500
@@ -550,7 +550,7 @@ MonoBehaviour:
   extraCam: {fileID: 0}
   extraEffect: {fileID: 0}
   fireTimeInAnim: 1
-  useHpPerCondition: 10
+  useHpPerCondition: 25
 --- !u!114 &11473352
 MonoBehaviour:
   m_ObjectHideFlags: 1

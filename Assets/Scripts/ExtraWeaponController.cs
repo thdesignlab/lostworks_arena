@@ -163,7 +163,7 @@ public class ExtraWeaponController : Photon.MonoBehaviour
             if (!stateInfo.IsTag(TAG_ANIMATION_WAIT)) return false;
         }
 
-        if (isActiveScene || !GameController.Instance.isGameStart) return true;
+        if (!isActiveScene || !GameController.Instance.isGameStart) return true;
         if (!IsLeftUsableCount()) return false;
         
         return true;

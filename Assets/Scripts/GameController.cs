@@ -72,6 +72,10 @@ public class GameController : SingletonMonoBehaviour<GameController>
     public int stageLevel = -1;
     [HideInInspector]
     public int npcNo = -1;
+    [SerializeField]
+    private GameObject levelSelectCanvas;
+    [SerializeField]
+    private GameObject levelSelectButton;
 
     private int winCount = 0;
     private int loseCount = 0;
@@ -717,8 +721,23 @@ public class GameController : SingletonMonoBehaviour<GameController>
             //ミッションモード
             gameMode = GAME_MODE_MISSION;
 
+            //解放ミッションチェック
+            int maxLevel = UserManager.userOpenMissions[Common.PP.MISSION_LEVEL];
+            Debug.Log(maxLevel);
+
             //レベル設定ダイアログ
-            stageLevel = 1;
+            RectTransform content = levelSelectCanvas.transform.FindChild("ScrollView/Viewport/Content").GetComponent<RectTransform>();
+            content.sizeDelta = new Vector2(0, maxLevel * 200);
+            int setLevel = 0;
+            for (int i = maxLevel; i > 0; i--)
+            {
+                setLevel = i;
+                GameObject btn = (GameObject)Instantiate(levelSelectButton, Vector3.zero, Quaternion.identity);
+                btn.transform.SetParent(content, false);
+                btn.transform.GetComponentInChildren<Text>().text = Common.Mission.GetLevelName(setLevel);
+                btn.transform.GetComponent<Button>().onClick.AddListener(() => OnSelectLevel(setLevel));
+            }
+            levelSelectCanvas.SetActive(true);
         }
         else
         {
@@ -730,6 +749,12 @@ public class GameController : SingletonMonoBehaviour<GameController>
 
     //##### MissionMode #####
 
+    public void OnSelectLevel(int level)
+    {
+        stageLevel = level;
+        levelSelectCanvas.SetActive(false);
+    }
+
     //現在のステージNo取得
     public int GetStageNo()
     {
@@ -739,6 +764,9 @@ public class GameController : SingletonMonoBehaviour<GameController>
     //次のステージNo設定
     private bool SetNextStage()
     {
+        //次のステージOPEN
+        UserManager.OpenNextMission(stageLevel, stageNo);
+
         //次のステージチェック
         if (!Common.Mission.stageNpcNoDic.ContainsKey(stageNo + 1)) return false;
         stageNo++;
@@ -826,9 +854,6 @@ public class GameController : SingletonMonoBehaviour<GameController>
 
         //NpcNo
         npcNo = Common.Mission.stageNpcNoDic[stageNo];
-
-        //★ステージレベル(仮)
-        stageLevel = stageNo;
 
         //ステージのNPC取得
         string npcName = "BaseNpc";

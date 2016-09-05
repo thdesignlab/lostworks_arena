@@ -90,7 +90,7 @@ MonoBehaviour:
   UseGravity: 0
   hitEffect: {fileID: 135988, guid: d7cd433d10510fe46a35c39bac480fe1, type: 2}
   speed: 100
-  damage: 8
+  damage: 10
   damagePerSecond: 0
   stuckTime: 0
   knockBackRate: 0
@@ -100,8 +100,8 @@ MonoBehaviour:
   safetyTime: 0
   turnSpeed: 720
   lockStartTime: 0
-  lockedSpeedRate: 1
-  lockedTurnSpeedRate: 1
+  lockedSpeedRate: 1.8
+  lockedTurnSpeedRate: 0
   isNeedLock: 1
   isLockFlat: 0
 --- !u!135 &13541138

@@ -5,7 +5,6 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class PlayerController : MoveOfCharacter
-//public class PlayerController : MoveOfVelocity
 {
     [SerializeField]
     private bool isAttackAndTurn;

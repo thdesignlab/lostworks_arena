@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class WeaponController : Photon.MonoBehaviour
 {
@@ -54,9 +55,16 @@ public class WeaponController : Photon.MonoBehaviour
 
     protected AimingController aimingCtrl;
     protected bool isAction = false;
+    protected bool isActiveSceane = true;
 
     protected virtual void Awake()
     {
+        if (SceneManager.GetActiveScene().name == Common.CO.SCENE_CUSTOM)
+        {
+            //カスタム画面
+            isActiveSceane = false;
+        }
+
         myTran = transform;
         audioCtrl = myTran.GetComponent<AudioController>();
 
@@ -203,7 +211,10 @@ public class WeaponController : Photon.MonoBehaviour
 
     public virtual bool IsEnableFire()
     {
-        if (GameController.Instance.isGameReady) return false;
+        if (isActiveSceane)
+        {
+            if (GameController.Instance.isGameReady) return false;
+        }
         return isEnabledFire;
     }
 

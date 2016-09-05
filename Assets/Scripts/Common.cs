@@ -224,6 +224,10 @@ namespace Common
         public const int RESULT_LOSE_COUNT = 2;
         public const int RESULT_BATTLE_RATE = 3;
 
+        //ミッション項目
+        public const int MISSION_LEVEL = 0;
+        public const int MISSION_STAGE = 1;
+
     }
 
     //### 共通関数 ###
@@ -392,7 +396,7 @@ namespace Common
             {1, new string[]{ "Hero2", "Dango", "", OBTAIN_TYPE_INIT, "10001"}},
             {1000, new string[]{ "Npc1", "Capsule1", "", OBTAIN_TYPE_NONE, "10002"}},
             {1001, new string[]{ "Npc2", "Capsule2", "", OBTAIN_TYPE_NONE, "10003,10004"}},
-            {1002, new string[]{ "Npc3", "Capsule3", "", OBTAIN_TYPE_NONE, "10000"}},
+            {1002, new string[]{ "Npc3", "Capsule3", "", OBTAIN_TYPE_NONE, "10001,10004"}},
         };
 
         public static string[] GetCharacterInfo(int characterNo)
@@ -640,6 +644,39 @@ namespace Common
             { 5, 1 },
         };
 
+        //レベル
+        public static Dictionary<int, string> levelNameDic = new Dictionary<int, string>
+        {
+            { 1, "Easy" },
+            { 2, "Normal" },
+            { 3, "Hard" },
+            { 4, "Heavy" },
+            { 5, "Another" },
+            { 6, "Expert" },
+            { 7, "Challenge" },
+            { 8, "Nightmare" },
+            { 9, "Inferno" },
+            { 10, "Infinite" },
+        };
+        public static string GetLevelName(int level)
+        {
+            string name = "";
+            if (level > 0)
+            {
+                if (levelNameDic.ContainsKey(level))
+                {
+                    name = levelNameDic[level];
+                }
+                else
+                {
+                    name = levelNameDic[levelNameDic.Count];
+                    int over = levelNameDic.Count - level + 1;
+                    name += over.ToString();
+                }
+            }
+            return name;
+        }
+
         //NPCステータス
         public const int STATUS_MAX_HP = 0;
         public const int STATUS_RECOVER_SP = 1;
@@ -656,7 +693,7 @@ namespace Common
         {
                             //hp, sp, run, boost, turn, atk%, atkI, boostI, tagI
             { 0, new int[]{ 1200, 50, 35, 70, 20, 100, 2, 2, 3, 1 , 50} },
-            { 1, new int[]{ 1200, 40, 30, 70, 20, 120, 2, 2, 3, 1 , 250} },
+            { 1, new int[]{ 1200, 50, 30, 70, 20, 120, 2, 2, 3, 1 , 250} },
             { 1000, new int[]{ 600, 20, 15, 30, 10, 50, 3, 3, 5, 0 , 200} },
             { 1001, new int[]{ 800, 25, 25, 50, 15, 70, 3, 3, 5, 0 , 200} },
             { 1002, new int[]{ 1000, 30, 30, 60, 20, 90, 3, 3, 5, 0 , 100} },
@@ -666,14 +703,14 @@ namespace Common
         public static Dictionary<int, float[]> npcLevelStatusDic = new Dictionary<int, float[]>()
         {
                             //hp, sp, run, boost, turn, atk%, atkI, boostI, tagI
-            { 1, new float[] { 1, 1, 0.75f, 0.75f, 0.5f, 0.5f, 1.5f, 1.5f, 1.5f} },
+            { 1, new float[] { 0.75f, 1, 0.75f, 0.75f, 0.75f, 0.75f, 1.5f, 1.5f, 1.5f} },
             { 2, new float[] { 1, 1, 1, 1, 1, 1, 1, 1, 1} },
-            { 3, new float[] { 1.1f, 1.2f, 1.1f, 1.1f, 1.25f, 1, 0.75f, 0.8f, 0.5f} },
-            { 4, new float[] { 1.25f, 1.5f, 1.2f, 1.2f, 1.5f, 1.2f, 0.6f, 0.7f, 0.4f } },
-            { 5, new float[] { 1.5f, 2.0f, 1.25f, 1.25f, 1.5f, 1.25f, 0.5f, 0.5f, 0.3f } },
+            { 3, new float[] { 1.1f, 1.2f, 1.1f, 1.1f, 1.25f, 1, 0.9f, 0.8f, 0.5f} },
+            { 4, new float[] { 1.2f, 1.5f, 1.2f, 1.2f, 1.5f, 1, 0.8f, 0.7f, 0.4f } },
+            { 5, new float[] { 1.3f, 1.5f, 1.25f, 1.25f, 1.8f, 1, 0.75f, 0.5f, 0.3f } },
         };
         //設定レベル以上の場合の追加Rate
-        public static float[] overLevelState = new float[] { 0.1f, 0.1f, 0, 0, 0, 0.05f, 0, 0, 0};
+        public static float[] overLevelState = new float[] { 0.05f, 0.05f, 0, 0, 0, 0.05f, 0, 0, 0};
 
         //NPC武器
         public static Dictionary<int, int[]> npcWeaponDic = new Dictionary<int, int[]>()
