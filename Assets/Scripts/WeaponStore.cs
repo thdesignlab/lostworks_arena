@@ -103,7 +103,7 @@ public class WeaponStore : SingletonMonoBehaviour<WeaponStore>
 
     public void SetMyTran()
     {
-        myPlayerTran = GameObject.Find("GameController").GetComponent<GameController>().GetMyTran();
+        myPlayerTran = GameController.Instance.GetMyTran();
     }
 
     public void CustomMenuOpen()

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class GameController : Photon.MonoBehaviour
+public class GameController : SingletonMonoBehaviour<GameController>
 {
     [SerializeField]
     private GameObject stageStructure;
@@ -88,8 +88,11 @@ public class GameController : Photon.MonoBehaviour
     //[HideInInspector]
     //public bool isDebugMode = false;
 
-    void Awake()
+    protected override void Awake()
     {
+        isDontDestroyOnLoad = false;
+        base.Awake();
+
         Init();
         CheckMode();
         SpawnMyPlayerEverywhere();

@@ -89,7 +89,6 @@ public class PlayerStatus : Photon.MonoBehaviour {
     private float defaultAttackRate;
 
     private BaseMoveController moveCtrl;
-    private GameController gameCtrl;
     private bool isActiveSceane = true;
 
     //強制無敵状態
@@ -147,8 +146,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
 
         isNpc = GetComponent<PlayerSetting>().isNpc;
         moveCtrl = GetComponent<BaseMoveController>();
-
-        gameCtrl = GameObject.Find("GameController").GetComponent<GameController>();
+        
         isDispBattleLog = MyDebug.Instance.isDebugMode;
 
         //ステータス構造
@@ -293,7 +291,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
 
     public bool AddDamage(int damage, string name = "Unknown", bool isSlipDamage = false)
     {
-        if (gameCtrl == null || !gameCtrl.isGameStart || gameCtrl.isGameEnd) return false;
+        if (!GameController.Instance.isGameStart || GameController.Instance.isGameEnd) return false;
 
         if (isForceInvincible) return false;
 
@@ -500,7 +498,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
                     logType = BATTLE_LOG_DAMAGE;
                 }
             }
-            if (!isNpc && (isDead || gameCtrl.isGameEnd))
+            if (!isNpc && (isDead || GameController.Instance.isGameEnd))
             {
                 int[] logTypes = new int[] { BATTLE_LOG_ATTACK, BATTLE_LOG_DAMAGE };
                 foreach (int logType in logTypes)
@@ -844,7 +842,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
     public void ResetWinMark()
     {
         bool markFlg = false;
-        if (gameCtrl.gameMode == GameController.GAME_MODE_VS) markFlg = true;
+        if (GameController.Instance.gameMode == GameController.GAME_MODE_VS) markFlg = true;
         foreach (GameObject obj in winCountMineList)
         {
             obj.SetActive(markFlg);
@@ -858,7 +856,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
 
     public void SetWinMark(int winCount, int loseCount)
     {
-        if (gameCtrl.gameMode == GameController.GAME_MODE_VS)
+        if (GameController.Instance.gameMode == GameController.GAME_MODE_VS)
         {
             ResetWinMark();
             return;
@@ -976,7 +974,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
         }
 
         //ダメージソース
-        gameCtrl.SetDamageSource(logType, name, damage);
+        GameController.Instance.SetDamageSource(logType, name, damage);
     }
 
     public bool SwitchBattleLog()

@@ -30,7 +30,6 @@ public class WeaponController : Photon.MonoBehaviour
     protected AudioController audioCtrl;
     protected Animator charaAnimator;
     protected string motionParam = "";
-    protected GameController gameCtrl;
 
     protected bool isEnabledFire = true;
 
@@ -60,11 +59,6 @@ public class WeaponController : Photon.MonoBehaviour
     {
         myTran = transform;
         audioCtrl = myTran.GetComponent<AudioController>();
-        GameObject gameObj = GameObject.Find("GameController");
-        if (gameObj != null)
-        {
-            gameCtrl = gameObj.GetComponent<GameController>();
-        }
 
         //Bit用
         foreach (Transform child in myTran)
@@ -209,10 +203,7 @@ public class WeaponController : Photon.MonoBehaviour
 
     public virtual bool IsEnableFire()
     {
-        if (gameCtrl != null)
-        {
-            if (gameCtrl.isGameReady) return false;
-        }
+        if (GameController.Instance.isGameReady) return false;
         return isEnabledFire;
     }
 

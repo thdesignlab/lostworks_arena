@@ -15,7 +15,6 @@ public class MenuController : Photon.MonoBehaviour
     private bool isRight = false;
 
     private Transform myTran;
-    private GameController gameCtrl;
     private GameObject pauseButton;
     private GameObject npcButton;
 
@@ -37,26 +36,21 @@ public class MenuController : Photon.MonoBehaviour
         Transform npcTran = menuObj.FindChild(BUTTON_CPU_BATTLE);
         if (npcTran != null) npcButton = npcTran.gameObject;
 
-        gameCtrl = GameObject.Find("GameController").GetComponent<GameController>();
-
         bool isEnabledCpu = false;
-        if (gameCtrl != null)
+
+        switch (GameController.Instance.gameMode)
         {
+            case GameController.GAME_MODE_PLACTICE:
+                //CPU生成ボタン表示
+                isEnabledCpu = true;
+                break;
 
-            switch (gameCtrl.gameMode)
-            {
-                case GameController.GAME_MODE_PLACTICE:
-                    //CPU生成ボタン表示
-                    isEnabledCpu = true;
-                    break;
-
-                case GameController.GAME_MODE_VS:
-                    //一時停止禁止
-                    pauseButton.SetActive(false);
-                    //CPU生成ボタン表示
-                    isEnabledCpu = true;
-                    break;
-            }
+            case GameController.GAME_MODE_VS:
+                //一時停止禁止
+                pauseButton.SetActive(false);
+                //CPU生成ボタン表示
+                isEnabledCpu = true;
+                break;
         }
 
         //CPU生成ボタンON/OFF
@@ -125,31 +119,31 @@ public class MenuController : Photon.MonoBehaviour
     //アプリ終了
     public void OnExitButton()
     {
-        DialogController.OpenDialog("アプリを終了します", () => gameCtrl.Exit(), true);
+        DialogController.OpenDialog("アプリを終了します", () => GameController.Instance.Exit(), true);
     }
 
     //タイトルへ戻る
     public void OnTitleButton()
     {
-        DialogController.OpenDialog("タイトルに戻ります", () => gameCtrl.GoToTitle(), true);
+        DialogController.OpenDialog("タイトルに戻ります", () => GameController.Instance.GoToTitle(), true);
     }
 
     //一時停止
     public void OnPauseButton()
     {
-        if (gameCtrl == null || gameCtrl.gameMode == GameController.GAME_MODE_VS)
+        if (GameController.Instance.gameMode == GameController.GAME_MODE_VS)
         {
             //一時停止禁止
             return;
         }
 
-        gameCtrl.isPause = true;
+        GameController.Instance.isPause = true;
         DialogController.OpenDialog("一時停止中", "再開", () => ResetPause(), false);
         Time.timeScale = 0;
     }
     public void ResetPause()
     {
-        gameCtrl.isPause = false;
+        GameController.Instance.isPause = false;
         Time.timeScale = 1;
     }
 
@@ -162,14 +156,14 @@ public class MenuController : Photon.MonoBehaviour
     //NPC生成
     public void OnNpcCreateButton(int charaNo = 0)
     {
-        if (gameCtrl.gameMode == GameController.GAME_MODE_MISSION) return;
+        if (GameController.Instance.gameMode == GameController.GAME_MODE_MISSION) return;
 
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
         if (PhotonNetwork.countOfPlayersInRooms > 1 || players.Length > 1)
         {
             return;
         }
-        gameCtrl.NpcSpawn(charaNo);
+        GameController.Instance.NpcSpawn(charaNo);
         OnNpcSelectButton(false);
     }
 
@@ -195,10 +189,10 @@ public class MenuController : Photon.MonoBehaviour
     {
         OnDebugMenuButton(false);
         if (!MyDebug.Instance.isDebugMode) return;
-        if (gameCtrl.GetMyTran() != null) return;
+        if (GameController.Instance.GetMyTran() != null) return;
 
         Destroy(Camera.main.gameObject);
-        gameCtrl.SpawnMyPlayerEverywhere();
+        GameController.Instance.SpawnMyPlayerEverywhere();
     }
 
     //装備カスタム

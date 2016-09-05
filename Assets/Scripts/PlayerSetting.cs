@@ -18,8 +18,6 @@ public class PlayerSetting : Photon.MonoBehaviour
     public bool isNpc = false;
     string[] charaInfo = new string[] { };
 
-    private GameController gameCtrl;
-
     private bool isCustomEnd = false;
     private int customizeTime = 15;
     private int leftCustomizeTime = 0;
@@ -50,8 +48,6 @@ public class PlayerSetting : Photon.MonoBehaviour
             return;
         }
 
-        gameCtrl = GameObject.Find("GameController").GetComponent<GameController>();
-
         if (photonView.isMine)
         {
             //Debug.Log("isMine:"+transform.name);
@@ -64,7 +60,7 @@ public class PlayerSetting : Photon.MonoBehaviour
 
 
                 //NPC名変更
-                charaInfo = Common.Character.GetCharacterInfo(gameCtrl.npcNo);
+                charaInfo = Common.Character.GetCharacterInfo(GameController.Instance.npcNo);
                 myTran.name = charaInfo[Common.Character.DETAIL_NAME_NO];
 
                 //メインボディ生成
@@ -74,13 +70,13 @@ public class PlayerSetting : Photon.MonoBehaviour
                 EquipWeaponNpc();
 
                 //NPC情報設定
-                gameCtrl.SetTarget(myTran);
-                gameCtrl.SetNpcTran(myTran);
+                GameController.Instance.SetTarget(myTran);
+                GameController.Instance.SetNpcTran(myTran);
 
                 //カスタマイズ完了FLG
                 isCustomEnd = true;
 
-                gameCtrl.ResetGame();
+                GameController.Instance.ResetGame();
             }
             else
             {
@@ -94,7 +90,7 @@ public class PlayerSetting : Photon.MonoBehaviour
                 playerCam.SetActive(true);
 
                 //自分の情報を保存
-                gameCtrl.SetMyTran(myTran);
+                GameController.Instance.SetMyTran(myTran);
 
                 //メインボディ生成
                 CreateMainBody();
@@ -116,7 +112,7 @@ public class PlayerSetting : Photon.MonoBehaviour
             playerCam.SetActive(false);
 
             //ターゲットを登録
-            gameCtrl.SetTarget(myTran);
+            GameController.Instance.SetTarget(myTran);
 
             //親子設定
             SetMainBodyParent();
@@ -230,7 +226,7 @@ public class PlayerSetting : Photon.MonoBehaviour
     private void EquipWeaponNpc()
     {
         //武器リスト取得
-        int[] weaponArray = Common.Mission.npcWeaponDic[gameCtrl.npcNo];
+        int[] weaponArray = Common.Mission.npcWeaponDic[GameController.Instance.npcNo];
 
         foreach (int partsNo in Common.CO.partsNameArray.Keys)
         {
@@ -238,7 +234,7 @@ public class PlayerSetting : Photon.MonoBehaviour
             int weaponNo = -1;
             if (partsNo == Common.CO.PARTS_EXTRA_NO)
             {
-                weaponNo = Common.Weapon.GetExtraWeaponNo(gameCtrl.npcNo);
+                weaponNo = Common.Weapon.GetExtraWeaponNo(GameController.Instance.npcNo);
             }
             else if (0 < weaponArray.Length && partsNo < weaponArray.Length)
             {

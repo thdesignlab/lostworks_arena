@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class ExtraWeaponController : Photon.MonoBehaviour
 {
@@ -17,7 +18,6 @@ public class ExtraWeaponController : Photon.MonoBehaviour
     private PlayerStatus playerStatus;
     private Transform myParentTran;
     private GameObject extraBtn;
-    private GameController gameCtrl;
 
     private const string TAG_ANIMATION_WAIT = "Wait";
     private const string TAG_ANIMATION_EXTRA = "Extra";
@@ -26,6 +26,15 @@ public class ExtraWeaponController : Photon.MonoBehaviour
     private const int FREE_HP_CONDITION = 15;   //使用回数無制限になるHP割合
 
     private bool isShooting = false;
+    private bool isActiveScene = true;
+
+    void Awake()
+    {
+        if (SceneManager.GetActiveScene().name == Common.CO.SCENE_CUSTOM)
+        {
+            isActiveScene = false;
+        }
+    }
 
     void Start()
     {
@@ -38,9 +47,6 @@ public class ExtraWeaponController : Photon.MonoBehaviour
         charaAnimator = anim;
         playerStatus = status;
         myParentTran = playerStatus.transform;
-        GameObject gameObj = GameObject.Find("GameController");
-        if (gameObj != null) gameCtrl = gameObj.GetComponent<GameController>();
-        wepCtrl.SwitchBtn(false);
     }
 
     public void Fire(Transform targetTran = null)
@@ -157,7 +163,7 @@ public class ExtraWeaponController : Photon.MonoBehaviour
             if (!stateInfo.IsTag(TAG_ANIMATION_WAIT)) return false;
         }
 
-        if (gameCtrl == null || !gameCtrl.isGameStart) return true;
+        if (isActiveScene || !GameController.Instance.isGameStart) return true;
         if (!IsLeftUsableCount()) return false;
         
         return true;
@@ -188,7 +194,7 @@ public class ExtraWeaponController : Photon.MonoBehaviour
             {
                 //ボタン表示切替
                 bool isEnabled = false;
-                if (gameCtrl != null && gameCtrl.isGameReady)
+                if (isActiveScene && GameController.Instance.isGameReady)
                 {
                     //ゲーム開始準備期間に使用回数をリセット
                     useCount = 0;
@@ -196,7 +202,7 @@ public class ExtraWeaponController : Photon.MonoBehaviour
                 }
                 else
                 {
-                    if (gameCtrl != null && !gameCtrl.isGameStart)
+                    if (isActiveScene && !GameController.Instance.isGameStart)
                     {
                         //ゲーム開始前
                         isEnabled = true;

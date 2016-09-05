@@ -7,7 +7,6 @@ public class LockOnController : Photon.MonoBehaviour
 {
     private Transform myTran;
     private PlayerStatus status;
-    private GameController gameCtrl;
 
     private RectTransform CanvasRect;
     private RawImage targetMarkImg;
@@ -32,7 +31,6 @@ public class LockOnController : Photon.MonoBehaviour
         }
 
         myTran = transform;
-        gameCtrl = GameObject.Find("GameController").GetComponent<GameController>();
     }
 
     void OnBecameInvisible()
@@ -83,7 +81,7 @@ public class LockOnController : Photon.MonoBehaviour
 
         if (status == null || targetMarkRectTran == null)
         {
-            if (!gameCtrl.isGameStart) return;
+            if (!GameController.Instance.isGameStart) return;
 
             CanvasRect = GameObject.FindGameObjectWithTag("PlayerCanvas").GetComponent<RectTransform>();
             GameObject targetObj = Camera.main.transform.FindChild(Common.CO.SCREEN_CANVAS + Common.CO.TARGET_MARK).gameObject;

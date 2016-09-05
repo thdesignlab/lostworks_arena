@@ -16,8 +16,7 @@ public class PlayerController : MoveOfCharacter
     [SerializeField]
     private GameObject circleArrow;
     private Transform circleArrowTran;
-
-    private GameController gameCtrl;
+    
     private PlayerMotionController motionCtrl;
     private Animator animator;
     private PlayerStatus status;
@@ -65,8 +64,6 @@ public class PlayerController : MoveOfCharacter
 
             if (isActiveSceane)
             {
-                gameCtrl = GameObject.Find("GameController").GetComponent<GameController>();
-
                 if (circleArrow != null)
                 {
                     circleArrowTran = circleArrow.transform;
@@ -274,7 +271,7 @@ public class PlayerController : MoveOfCharacter
     {
         if (targetTran != null) return;
 
-        Transform tran = gameCtrl.GetTarget();
+        Transform tran = GameController.Instance.GetTarget();
 
         if (SetTarget(tran)) return;
 
@@ -293,7 +290,7 @@ public class PlayerController : MoveOfCharacter
         if (tran == null) return false;
         targetTran = tran;
         targetStatus = tran.gameObject.GetComponent<PlayerStatus>();
-        gameCtrl.SetTarget(tran);
+        GameController.Instance.SetTarget(tran);
         SetWeapon();
         return true;
     }

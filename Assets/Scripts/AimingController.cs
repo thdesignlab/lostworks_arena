@@ -20,12 +20,6 @@ public class AimingController: BaseMoveController
     protected override void Start()
     {
         base.Start();
-
-        GameObject gameObj = GameObject.Find("GameController");
-        if (gameObj)
-        {
-            //myStatus = gameObj.GetComponent<GameController>().GetMyTran().GetComponent<PlayerStatus>();
-        }
     }
 
     protected override void Update()

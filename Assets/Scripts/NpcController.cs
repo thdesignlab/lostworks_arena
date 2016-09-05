@@ -7,7 +7,6 @@ public class NpcController : MoveOfCharacter
     private PlayerStatus status;
     private Transform targetTran;
     private Vector3 randomDirection;
-    private GameController gameCtrl;
 
     private int targetType = 0;
     private float walkRadius = 150.0f;  //移動半径
@@ -35,7 +34,6 @@ public class NpcController : MoveOfCharacter
     protected override void Awake()
     {
         base.Awake();
-        gameCtrl = GameObject.Find("GameController").GetComponent<GameController>();
         status = GetComponent<PlayerStatus>();
         preHp = status.GetNowHp();
         motionCtrl = GetComponent<PlayerMotionController>();
@@ -107,8 +105,6 @@ public class NpcController : MoveOfCharacter
 
     public void SetLevel(int level)
     {
-        if (gameCtrl == null) gameCtrl = GameObject.Find("GameController").GetComponent<GameController>();
-
         //レベル決定
         if (level < 0) level = 0;
         int settingMaxLevel = Common.Mission.npcLevelStatusDic.Count;
@@ -120,7 +116,7 @@ public class NpcController : MoveOfCharacter
         }
 
         //キャラステータス取得
-        int[] npcStatusArray = Common.Mission.npcStatusDic[gameCtrl.npcNo];
+        int[] npcStatusArray = Common.Mission.npcStatusDic[GameController.Instance.npcNo];
         float[] statusLevelRate = Common.Mission.npcLevelStatusDic[level];
         if (overLevel > 0)
         {
@@ -268,7 +264,7 @@ public class NpcController : MoveOfCharacter
         int weaponNo = 0;
         for (;;)
         {
-            if (!gameCtrl.isGameStart)
+            if (!GameController.Instance.isGameStart)
             {
                 yield return null;
                 continue;
