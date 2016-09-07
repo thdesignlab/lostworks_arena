@@ -502,8 +502,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e0b6e32d0dd0f643900bab2426b2e37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pvCache: {fileID: 0}
+  isDontDestroyOnLoad: 1
   isDebugMode: 1
   guiSkin: {fileID: 0}
+  logCount: 50
+  btnDownTime: 3
+  btnDown: 0
+  dispLog: 0
+  textAreaWidth: 217
+  textAreaheight: 192
+  space: 24
 --- !u!4 &643649360
 Transform:
   m_ObjectHideFlags: 0
@@ -609,7 +618,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0167c456d92e1674eb63e9881923a473, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pvCache: {fileID: 0}
+  isDontDestroyOnLoad: 1
+  myTran: {fileID: 0}
+  fadeImg: {fileID: 0}
+  messageText: {fileID: 0}
   fadeTime: 0.5
+  isUiFade: 0
 --- !u!114 &683336037
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -723,6 +738,16 @@ MonoBehaviour:
   roomCancelBtn: {fileID: 150170, guid: 2682fdbaada5cd24894df9654d85917a, type: 2}
   roomSelectBtn: {fileID: 104298, guid: 27d0e671175bd684690cc7d8de2877c8, type: 2}
   roomFullBtn: {fileID: 197022, guid: 477831dba2975e540840af1cd1e4c994, type: 2}
+  selectableMode: 3
+  isTapToStart: 0
+  isConnectFailed: 0
+  isDialogOpen: 0
+  isNetworkMode: 0
+  processTime: 0
+  roomNameIF: {fileID: 0}
+  roomStatusText: {fileID: 0}
+  moveScene: 
+  loadmessage: 
 --- !u!4 &777969914
 Transform:
   m_ObjectHideFlags: 0
@@ -1144,48 +1169,6 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 46d698a26a08ceb4d92569ef38a7d15a, type: 2}
   m_IsPrefabParent: 0
---- !u!1001 &1039921842
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 406884, guid: 6ce57e9e80db0fc4caa8828eb24be596, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: -0.001270316
-      objectReference: {fileID: 0}
-    - target: {fileID: 406884, guid: 6ce57e9e80db0fc4caa8828eb24be596, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 406884, guid: 6ce57e9e80db0fc4caa8828eb24be596, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: -0.00029145146
-      objectReference: {fileID: 0}
-    - target: {fileID: 406884, guid: 6ce57e9e80db0fc4caa8828eb24be596, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: -0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 406884, guid: 6ce57e9e80db0fc4caa8828eb24be596, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 406884, guid: 6ce57e9e80db0fc4caa8828eb24be596, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 406884, guid: 6ce57e9e80db0fc4caa8828eb24be596, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 406884, guid: 6ce57e9e80db0fc4caa8828eb24be596, type: 2}
-      propertyPath: m_RootOrder
-      value: 12
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: 6ce57e9e80db0fc4caa8828eb24be596, type: 2}
-  m_IsPrefabParent: 0
 --- !u!1001 &1158104576
 Prefab:
   m_ObjectHideFlags: 0
@@ -1278,6 +1261,64 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b7480a9deaf5b414480b560e083388d8, type: 2}
   m_IsPrefabParent: 0
+--- !u!1001 &1790560810
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 425490, guid: f4dd53eb6dfa4fe42b5157a0b6c3362c, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 425490, guid: f4dd53eb6dfa4fe42b5157a0b6c3362c, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 425490, guid: f4dd53eb6dfa4fe42b5157a0b6c3362c, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 425490, guid: f4dd53eb6dfa4fe42b5157a0b6c3362c, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 425490, guid: f4dd53eb6dfa4fe42b5157a0b6c3362c, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 425490, guid: f4dd53eb6dfa4fe42b5157a0b6c3362c, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 425490, guid: f4dd53eb6dfa4fe42b5157a0b6c3362c, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 425490, guid: f4dd53eb6dfa4fe42b5157a0b6c3362c, type: 2}
+      propertyPath: m_RootOrder
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 11427710, guid: f4dd53eb6dfa4fe42b5157a0b6c3362c, type: 2}
+      propertyPath: viewIdField
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 11427710, guid: f4dd53eb6dfa4fe42b5157a0b6c3362c, type: 2}
+      propertyPath: instantiationId
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 11488008, guid: f4dd53eb6dfa4fe42b5157a0b6c3362c, type: 2}
+      propertyPath: viewIdField
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 11488008, guid: f4dd53eb6dfa4fe42b5157a0b6c3362c, type: 2}
+      propertyPath: instantiationId
+      value: 4
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: f4dd53eb6dfa4fe42b5157a0b6c3362c, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &1942694739
 GameObject:
   m_ObjectHideFlags: 0
@@ -1361,8 +1402,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pvCache: {fileID: 0}
   ownerId: 0
   group: 0
+  mixedModeIsReliable: 0
   prefixBackup: -1
   observed: {fileID: 0}
   synchronization: 0
@@ -1374,4 +1417,8 @@ MonoBehaviour:
   ObservedComponentsFoldoutOpen: 1
   viewIdField: 2
   instantiationId: 2
+  didAwake: 0
   isRuntimeInstantiated: 0
+  removedFromLocalViewList: 0
+  RpcMonoBehaviours: []
+  failedToFindOnSerialize: 0

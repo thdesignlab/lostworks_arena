@@ -7,10 +7,10 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: hosi3
-  m_Shader: {fileID: 10708, guid: 0000000000000000f000000000000000, type: 0}
+  m_Shader: {fileID: 103, guid: 0000000000000000f000000000000000, type: 0}
   m_ShaderKeywords: 
   m_LightmapFlags: 5
-  m_CustomRenderQueue: 2000
+  m_CustomRenderQueue: 1000
   stringTagMap: {}
   m_SavedProperties:
     serializedVersion: 2
@@ -34,6 +34,13 @@ Material:
           name: _DetailNormalMap
         second:
           m_Texture: {fileID: 0}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0, y: 0}
+      data:
+        first:
+          name: _Tex
+        second:
+          m_Texture: {fileID: 8900000, guid: ebacc4443c7cdbd479fa349c51926703, type: 3}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
       data:
@@ -93,6 +100,10 @@ Material:
         second: 0.5
       data:
         first:
+          name: _Exposure
+        second: 1
+      data:
+        first:
           name: _Parallax
         second: 0.02
       data:
@@ -127,6 +138,10 @@ Material:
         first:
           name: _Metallic
         second: 0
+      data:
+        first:
+          name: _Rotation
+        second: 0
     m_Colors:
       data:
         first:
@@ -136,3 +151,7 @@ Material:
         first:
           name: _Color
         second: {r: 0.588, g: 0.588, b: 0.588, a: 1}
+      data:
+        first:
+          name: _Tint
+        second: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}
