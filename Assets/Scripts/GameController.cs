@@ -24,6 +24,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
     private float baseAlpha = 0.6f;
 
     private Transform myTran;
+    private PlayerStatus myStatus;
     private Transform targetTran;
     private Transform npcTran;
     [HideInInspector]
@@ -38,7 +39,6 @@ public class GameController : SingletonMonoBehaviour<GameController>
     public bool isGameEnd = false;
     private List<PlayerStatus> playerStatuses = new List<PlayerStatus>();
     private PlayerSetting playerSetting;
-    private PlayerStatus playerStatus;
     private SpriteStudioController spriteStudioCtrl;
     private Script_SpriteStudio_Root scriptRoot;
 
@@ -352,7 +352,6 @@ public class GameController : SingletonMonoBehaviour<GameController>
                                 if (SetNextStage())
                                 {
                                     isStageSetting = true;
-                                    //SetTextUp(MESSAGE_STAGE_NEXT + MESSAGE_STAGE_READY + "...", colorWait);
                                     SetTextLine(MESSAGE_STAGE_NEXT + MESSAGE_STAGE_READY + "...", colorLine);
                                 }
                                 else
@@ -365,7 +364,6 @@ public class GameController : SingletonMonoBehaviour<GameController>
                             {
                                 //NextRound
                                 isStageSetting = true;
-                                //SetTextUp(MESSAGE_STAGE_NEXT + MESSAGE_ROUND_READY + "...", colorWait);
                                 SetTextLine(MESSAGE_STAGE_NEXT + MESSAGE_ROUND_READY + "...", colorLine);
                             }
                         }
@@ -646,6 +644,8 @@ public class GameController : SingletonMonoBehaviour<GameController>
             if (weponCtrl == null) continue;
             weponCtrl.SetEnable(true);
         }
+
+        if (myStatus.voiceManager != null) myStatus.voiceManager.BattleStart();
     }
 
     private void GameStart()
@@ -666,6 +666,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
             winCount++;
             isWin = true;
             SetTextCenter(spriteStudioCtrl.ANIMATION_TEXT_WIN, colorWin);
+            if (myStatus.voiceManager != null) myStatus.voiceManager.Win();
         }
         else
         {
@@ -674,7 +675,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
             SetTextCenter(spriteStudioCtrl.ANIMATION_TEXT_LOSE, colorLose);
         }
         isGameEnd = true;
-        playerStatus.SetWinMark(winCount, loseCount);
+        myStatus.SetWinMark(winCount, loseCount);
     }
 
     public static string OnUGuiButton(Vector3 _scrPos)
@@ -723,7 +724,6 @@ public class GameController : SingletonMonoBehaviour<GameController>
 
             //解放ミッションチェック
             int maxLevel = UserManager.userOpenMissions[Common.PP.MISSION_LEVEL];
-            Debug.Log(maxLevel);
 
             //レベル設定ダイアログ
             RectTransform content = levelSelectCanvas.transform.FindChild("ScrollView/Viewport/Content").GetComponent<RectTransform>();
@@ -772,7 +772,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
         stageNo++;
         winCount = 0;
         loseCount = 0;
-        playerStatus.ResetWinMark();
+        myStatus.ResetWinMark();
 
         return true;
     }
@@ -837,10 +837,10 @@ public class GameController : SingletonMonoBehaviour<GameController>
         string charaName = Common.CO.CHARACTER_BASE;
         GameObject player = SpawnProcess(charaName);
         playerSetting = player.GetComponent<PlayerSetting>();
-        playerStatus = player.GetComponent<PlayerStatus>();
+        myStatus = player.GetComponent<PlayerStatus>();
         SetCanvasInfo();
         ResetGame();
-        playerStatus.SetWinMark(winCount, loseCount);
+        myStatus.SetWinMark(winCount, loseCount);
     }
 
     //NPC生成

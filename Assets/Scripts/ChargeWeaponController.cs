@@ -42,6 +42,7 @@ public class ChargeWeaponController : BulletWeaponController
                 else
                 {
                     //発射
+                    PlayVoice();
                     isCharge = false;
                     base.EndAction();
                     base.StopAudio(0);

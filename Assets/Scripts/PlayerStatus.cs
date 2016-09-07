@@ -115,6 +115,10 @@ public class PlayerStatus : Photon.MonoBehaviour {
     private string[] preSlipDmgName = new string[] { "", "" };
     private int[] slipTotalDmg = new int[] { 0, 0 };
 
+    [HideInInspector]
+    public VoiceManager voiceManager;
+
+
     void Awake()
     {
         if (shield != null)
@@ -200,6 +204,10 @@ public class PlayerStatus : Photon.MonoBehaviour {
 
     void Start()
     {
+        //ボイス管理
+        Transform charaTran = transform.Find(Common.Func.GetBodyStructure());
+        if (charaTran) voiceManager = charaTran.GetComponent<VoiceManager>();
+
         if (!isActiveSceane) return;
         
         StartCoroutine(DamageSync());
@@ -310,6 +318,9 @@ public class PlayerStatus : Photon.MonoBehaviour {
         {
             SetHp(0);
         }
+
+        //被ダメボイス
+        if (voiceManager != null) voiceManager.Damage();
 
         //被ダメージログ
         SetBattleLog(BATTLE_LOG_DAMAGE, damage, name, isSlipDamage);
@@ -511,6 +522,10 @@ public class PlayerStatus : Photon.MonoBehaviour {
 
             if (isDead)
             {
+                //被ダメボイス
+                if (voiceManager != null) voiceManager.Dead();
+                voiceManager = null;
+
                 //戦闘不能
                 //transform.DetachChildren();
                 if (!isNpc)
@@ -916,6 +931,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
         moveCtrl.ActionRecoil(forceVector, speed, limit);
     }
 
+    
     //##### バトルログ #####
 
     public void SetBattleLog(int logType, int damage, string name, bool isSlipDamage = false)

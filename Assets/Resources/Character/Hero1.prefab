@@ -375,6 +375,8 @@ GameObject:
   - 114: {fileID: 11427710}
   - 114: {fileID: 11454128}
   - 114: {fileID: 11462246}
+  - 114: {fileID: 11438942}
+  - 82: {fileID: 8264768}
   m_Layer: 0
   m_Name: MainBody
   m_TagString: Untagged
@@ -2626,6 +2628,81 @@ MeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
+--- !u!82 &8264768
+AudioSource:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 127986}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 24357822, guid: 4817c32da9beaeb43b7c44b180d41730,
+    type: 2}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 2
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0.002
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - time: 1
+      value: 0.002
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
 --- !u!95 &9558052
 Animator:
   serializedVersion: 3
@@ -2663,12 +2740,41 @@ MonoBehaviour:
   onSerializeRigidBodyOption: 2
   ownershipTransfer: 0
   ObservedComponents:
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 11454128}
+  - {fileID: 11462246}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 0
-  instantiationId: -1
+  viewIdField: 2
+  instantiationId: 2
   isRuntimeInstantiated: 0
+--- !u!114 &11438942
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 127986}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ea7933daf6de674089138336535a70f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackVoiceList:
+  - {fileID: 8300000, guid: 10c3030f8b5a17a49a44cdc43f953469, type: 3}
+  - {fileID: 8300000, guid: f3fd6f76e8e15434b84e877fb656844a, type: 3}
+  - {fileID: 8300000, guid: 66dfad18f04fe354d964d211147811d4, type: 3}
+  extraAttackVoiceList:
+  - {fileID: 8300000, guid: 4b402b5e7b128c544aad830b9a483de4, type: 3}
+  - {fileID: 8300000, guid: a5be863c98bbaa046a4904e6a7c8e003, type: 3}
+  damageVoiceList:
+  - {fileID: 8300000, guid: fa2ed46056292f34caae88aedfe0ba18, type: 3}
+  - {fileID: 8300000, guid: 0915ab80cce65d740aeb35f1c84105f4, type: 3}
+  deadVoiceList:
+  - {fileID: 8300000, guid: 281683ede27b2ff4690f64fb5a2dc2b5, type: 3}
+  - {fileID: 8300000, guid: 6150e58169385e942a3c0d4bd0c92096, type: 3}
+  winVoiceList:
+  - {fileID: 8300000, guid: d4689050ebd1f274e8ea088c9350e1a1, type: 3}
+  battleStartVoiceList:
+  - {fileID: 8300000, guid: a16a2a5c95f7f5543956fa22dc3f6f88, type: 3}
+  - {fileID: 8300000, guid: 3a059d30f568dc14f84ded0f639726cf, type: 3}
 --- !u!114 &11454128
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2813,8 +2919,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 0}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 0
-  instantiationId: -1
+  viewIdField: 3
+  instantiationId: 3
   isRuntimeInstantiated: 0
 --- !u!137 &13770256
 SkinnedMeshRenderer:

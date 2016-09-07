@@ -56,6 +56,7 @@ public class WeaponController : Photon.MonoBehaviour
     protected AimingController aimingCtrl;
     protected bool isAction = false;
     protected bool isActiveSceane = true;
+    protected bool isExtra = false;
 
     protected virtual void Awake()
     {
@@ -88,6 +89,8 @@ public class WeaponController : Photon.MonoBehaviour
             StartCoroutine(CheckPlayerStatus());
 
             aimingCtrl = GetComponent<AimingController>();
+
+            if (myTran.GetComponentInChildren<ExtraWeaponController>() != null) isExtra = true;
         }
     }
 
@@ -155,6 +158,9 @@ public class WeaponController : Photon.MonoBehaviour
 
         //モーション開始
         StartMotion();
+
+        //ボイス
+        PlayVoice();
     }
     protected virtual void EndAction()
     {
@@ -514,4 +520,17 @@ public class WeaponController : Photon.MonoBehaviour
         }
     }
 
+    protected void PlayVoice()
+    {
+        if (playerStatus == null || playerStatus.voiceManager == null) return;
+
+        if (isExtra)
+        {
+            playerStatus.voiceManager.ExtraAttack();
+        }
+        else
+        {
+            playerStatus.voiceManager.Attack();
+        }
+    }
 }
