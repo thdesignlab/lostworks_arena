@@ -149,6 +149,8 @@ GameObject:
   - 114: {fileID: 11466440}
   - 114: {fileID: 11414812}
   - 114: {fileID: 11437094}
+  - 114: {fileID: 11420532}
+  - 82: {fileID: 8276690}
   m_Layer: 0
   m_Name: MainBody
   m_TagString: Untagged
@@ -2212,6 +2214,81 @@ MeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
+--- !u!82 &8276690
+AudioSource:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 110516}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 24357822, guid: 4817c32da9beaeb43b7c44b180d41730,
+    type: 2}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 2
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0.002
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - time: 1
+      value: 0.002
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
 --- !u!95 &9587228
 Animator:
   serializedVersion: 3
@@ -2279,6 +2356,35 @@ MonoBehaviour:
   m_SynchronizeLayers:
   - SynchronizeType: 1
     LayerIndex: 0
+--- !u!114 &11420532
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 110516}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ea7933daf6de674089138336535a70f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackVoiceList:
+  - {fileID: 8300000, guid: 3d866d7ab14689243b19d9cbfb0f16c8, type: 3}
+  - {fileID: 8300000, guid: e01445f0cafc07242b6a74df05a6bdb7, type: 3}
+  - {fileID: 8300000, guid: 249d61900abfc204d9709304a240fd3e, type: 3}
+  extraAttackVoiceList:
+  - {fileID: 8300000, guid: 6450276a9f3d6a5478663cb0a2321dba, type: 3}
+  - {fileID: 8300000, guid: 1ad34cfa48f95824a80220f30b0cf114, type: 3}
+  damageVoiceList:
+  - {fileID: 8300000, guid: 96fdc95a735623a45a40c52358be07d3, type: 3}
+  - {fileID: 8300000, guid: b1f0ab796afa36b4387842344a13828d, type: 3}
+  - {fileID: 8300000, guid: 443defa461b5aee4eab0f55c3f7e5051, type: 3}
+  deadVoiceList:
+  - {fileID: 8300000, guid: d8237028b4f2c4d49b0b181400fb7e25, type: 3}
+  winVoiceList:
+  - {fileID: 8300000, guid: 8fbf1b9bcb98671408930bb902ce52f0, type: 3}
+  battleStartVoiceList:
+  - {fileID: 8300000, guid: 13de55a93b9ad414ba880f5387e68a51, type: 3}
+  - {fileID: 8300000, guid: 7d8c267b928cb2d438f1851a08891eeb, type: 3}
 --- !u!114 &11437094
 MonoBehaviour:
   m_ObjectHideFlags: 1
