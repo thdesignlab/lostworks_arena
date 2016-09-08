@@ -299,6 +299,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
 
     public bool AddDamage(int damage, string name = "Unknown", bool isSlipDamage = false)
     {
+        if (!isActiveSceane) return false;
         if (!GameController.Instance.isGameStart || GameController.Instance.isGameEnd) return false;
 
         if (isForceInvincible) return false;

@@ -104,7 +104,7 @@ public class BulletController : MoveOfCharacter
             //Debug.Log("OnHit:" + myTran.name + " >> " + otherObj.name + " / " + otherObj.tag);
 
             //ダメージを与える
-            AddDamage(otherObj, damage);
+            AddDamage(otherObj);
 
             //対象を破壊
             TargetDestory(otherObj);
@@ -123,12 +123,12 @@ public class BulletController : MoveOfCharacter
             if (IsSafety(otherObj, false)) return;
 
             //ダメージを与える
-            AddSlipDamage(otherObj, damagePerSecond);
+            AddSlipDamage(otherObj);
         }
     }
 
     //ダメージ処理
-    protected void AddDamage(GameObject hitObj, int dmg = 0)
+    protected void AddDamage(GameObject hitObj)
     {
         //ダメージ系処理は所有者のみ行う
         if (photonView.isMine)
@@ -145,6 +145,7 @@ public class BulletController : MoveOfCharacter
                 if (damage > 0)
                 {
                     //ダメージ
+                    if (ownerStatus != null) damage = (int)(damage * ownerStatus.attackRate / 100);
                     AddDamageProccess(status, damage);
                     //Debug.Log(hitObj.name + " >> " + myTran.name + "(" + damage + ")");
 
@@ -178,12 +179,14 @@ public class BulletController : MoveOfCharacter
     }
 
     //継続ダメージ処理
-    protected void AddSlipDamage(GameObject hitObj, int dmg = 0)
+    protected void AddSlipDamage(GameObject hitObj)
     {
         //ダメージ処理は所有者のみ行う
         if (photonView.isMine)
         {
             //ダメージ計算
+            float dmg = damagePerSecond;
+            if (ownerStatus != null) dmg = (int)(dmg * ownerStatus.attackRate / 100);
             float fltDmg = dmg * Time.deltaTime;
             int addDmg = (int)Mathf.Floor(fltDmg);
             dmg -= addDmg;

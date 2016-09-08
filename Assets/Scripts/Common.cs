@@ -692,25 +692,25 @@ namespace Common
         public static Dictionary<int, int[]> npcStatusDic = new Dictionary<int, int[]>()
         {
                             //hp, sp, run, boost, turn, atk%, atkI, boostI, tagI
-            { 0, new int[]{ 1200, 50, 35, 70, 20, 100, 2, 2, 3, 1 , 50} },
-            { 1, new int[]{ 1200, 50, 30, 70, 20, 120, 2, 2, 3, 1 , 250} },
-            { 1000, new int[]{ 600, 20, 15, 30, 10, 50, 3, 3, 5, 0 , 200} },
-            { 1001, new int[]{ 800, 25, 25, 50, 15, 70, 3, 3, 5, 0 , 200} },
-            { 1002, new int[]{ 1000, 30, 30, 60, 20, 90, 3, 3, 5, 0 , 100} },
+            { 0, new int[]{ 1000, 50, 35, 70, 20, 100, 2, 2, 3, 1 , 50} },
+            { 1, new int[]{ 1000, 50, 30, 70, 20, 110, 2, 2, 3, 1 , 250} },
+            { 1000, new int[]{ 600, 25, 20, 40, 15, 80, 3, 3, 5, 0 , 200} },
+            { 1001, new int[]{ 700, 30, 25, 50, 15, 80, 3, 3, 5, 0 , 200} },
+            { 1002, new int[]{ 800, 35, 30, 60, 20, 80, 2, 2, 4, 0 , 100} },
         };
 
         //レベルによるステータス変化
         public static Dictionary<int, float[]> npcLevelStatusDic = new Dictionary<int, float[]>()
         {
                             //hp, sp, run, boost, turn, atk%, atkI, boostI, tagI
-            { 1, new float[] { 0.75f, 1, 0.75f, 0.75f, 0.75f, 0.75f, 1.5f, 1.5f, 1.5f} },
-            { 2, new float[] { 1, 1, 1, 1, 1, 1, 1, 1, 1} },
-            { 3, new float[] { 1.1f, 1.2f, 1.1f, 1.1f, 1.25f, 1, 0.9f, 0.8f, 0.5f} },
-            { 4, new float[] { 1.2f, 1.5f, 1.2f, 1.2f, 1.5f, 1, 0.8f, 0.7f, 0.4f } },
-            { 5, new float[] { 1.3f, 1.5f, 1.25f, 1.25f, 1.8f, 1, 0.75f, 0.5f, 0.3f } },
+            { 1, new float[] { 0.7f, 1.0f, 0.8f, 0.7f, 0.7f, 0.6f, 1.5f, 1.5f, 1.5f } },
+            { 2, new float[] { 0.8f, 1.0f, 0.9f, 0.8f, 1.0f, 0.8f, 1.2f, 1.2f, 1.0f } },
+            { 3, new float[] { 1.0f, 1.2f, 1.0f, 1.0f, 1.2f, 1.0f, 1.0f, 1.0f, 0.7f } },
+            { 4, new float[] { 1.1f, 1.3f, 1.1f, 1.1f, 1.5f, 1.0f, 0.8f, 0.7f, 0.5f } },
+            { 5, new float[] { 1.2f, 1.5f, 1.2f, 1.2f, 2.0f, 1.0f, 0.7f, 0.5f, 0.3f } },
         };
         //設定レベル以上の場合の追加Rate
-        public static float[] overLevelState = new float[] { 0.05f, 0.05f, 0, 0, 0, 0.05f, 0, 0, 0};
+        public static float[] overLevelState = new float[] { 0.05f, 0.1f, 0.01f, 0.02f, 0.02f, 0.03f, 0, 0, 0};
 
         //NPC武器
         public static Dictionary<int, int[]> npcWeaponDic = new Dictionary<int, int[]>()

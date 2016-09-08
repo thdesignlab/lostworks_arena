@@ -10,7 +10,7 @@ public class MyDebug : SingletonMonoBehaviour<MyDebug>
     private GUISkin guiSkin;
 
     private Queue logQueue = new Queue();
-    private int logCount = 50;
+    private int logCount = 100;
     private int btnDownTime = 3;
     private float btnDown = 0;
     private bool dispLog = false;

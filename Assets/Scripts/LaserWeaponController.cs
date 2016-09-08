@@ -108,6 +108,7 @@ public class LaserWeaponController : WeaponController
             laserSwitchTime += Time.deltaTime;
 
             //発射位置固定
+            if (laserTran == null) break;
             laserTran.position = muzzle.position;
             laserTran.rotation = muzzle.rotation;
 
@@ -197,16 +198,6 @@ public class LaserWeaponController : WeaponController
         if (Physics.Raycast(ray, out hit, length, layerMask))
         {
             length = Vector3.Distance(laserMuzzle.position, hit.transform.position);
-            //StructureController structureCtrl = hit.transform.GetComponent<StructureController>();
-            //if (structureCtrl != null)
-            //{
-            //    hitCnt++;
-            //    if (hitCnt >= 10)
-            //    {
-            //        structureCtrl.AddDamage(Random.Range(0, 20));
-            //        hitCnt = 0;
-            //    }
-            //}
         }
         return length;
     }
