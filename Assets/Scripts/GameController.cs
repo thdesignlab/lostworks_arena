@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.Events;
 
 public class GameController : SingletonMonoBehaviour<GameController>
 {
@@ -358,6 +359,15 @@ public class GameController : SingletonMonoBehaviour<GameController>
                                 {
                                     //全ステージクリア
                                     SetTextCenter(MESSAGE_MISSION_CLEAR, colorWait);
+                                    yield return new WaitForSeconds(1.0f);
+
+                                    //ダイアログ
+                                    string text = "Next level\n「"+Common.Mission.GetLevelName(stageLevel+1) +"」";
+                                    List<string> buttons = new List<string>() { "Next", "Title" };
+                                    List<UnityAction> actions = new List<UnityAction>() {
+                                        () => OnNextLevel(), () => GoToTitle()
+                                    };
+                                    DialogController.OpenDialog(text, buttons, actions);
                                 }
                             }
                             else
@@ -374,6 +384,15 @@ public class GameController : SingletonMonoBehaviour<GameController>
                             {
                                 //ゲームオーバー
                                 SetTextCenter(MESSAGE_GAME_OVER, colorWin);
+                                yield return new WaitForSeconds(1.0f);
+
+                                //ダイアログ
+                                string text = "広告やで(｀・д・´)";
+                                List<string> buttons = new List<string>() { "Continue", "Title" };
+                                List<UnityAction> actions = new List<UnityAction>() {
+                                        () => Continue(), () => GoToTitle()
+                                    };
+                                DialogController.OpenDialog(text, buttons, actions);
                             }
                             else
                             {
@@ -755,6 +774,14 @@ public class GameController : SingletonMonoBehaviour<GameController>
         levelSelectCanvas.SetActive(false);
     }
 
+    //次のレベル挑戦
+    public void OnNextLevel()
+    {
+        stageLevel++;
+        stageNo = 1;
+        Continue();
+    }
+
     //現在のステージNo取得
     public int GetStageNo()
     {
@@ -772,9 +799,26 @@ public class GameController : SingletonMonoBehaviour<GameController>
         stageNo++;
         winCount = 0;
         loseCount = 0;
-        myStatus.ResetWinMark();
+        ResetWinMark();
 
         return true;
+    }
+
+    //勝敗リセット
+    private void ResetWinMark()
+    {
+        winCount = 0;
+        loseCount = 0;
+        myStatus.ResetWinMark();
+    }
+
+    //コンティニュー
+    public void Continue()
+    {
+        winCount = 0;
+        loseCount = 0;
+        ResetWinMark();
+        StageSetting();
     }
 
     //結果ダイアログ表示
@@ -915,4 +959,35 @@ public class GameController : SingletonMonoBehaviour<GameController>
         }
         return text;
     }
+
+    void OnApplicationPause(bool pauseStatus)
+    {
+        if (pauseStatus)
+        {
+            //ホームボタンを押してアプリがバックグランドに移行した時
+            Pause();
+        }
+        else
+        {
+            //アプリを終了しないでホーム画面からアプリを起動して復帰した時
+        }
+    }
+    public void Pause()
+    {
+        if (gameMode == GAME_MODE_VS)
+        {
+            //一時停止禁止
+            return;
+        }
+
+        isPause = true;
+        DialogController.OpenDialog("一時停止中", "再開", () => ResetPause(), false);
+        Time.timeScale = 0;
+    }
+    public void ResetPause()
+    {
+        isPause = false;
+        Time.timeScale = 1;
+    }
+
 }

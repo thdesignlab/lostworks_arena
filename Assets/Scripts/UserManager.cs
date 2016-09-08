@@ -196,15 +196,17 @@ public class UserManager
 
     //##### 解放ミッション #####
 
-    public static void OpenNextMission(int nowLevel, int nowStage)
+    public static int OpenNextMission(int nowLevel, int nowStage)
     {
-        if (userOpenMissions[Common.PP.MISSION_LEVEL] != nowLevel) return;
-        if (userOpenMissions[Common.PP.MISSION_STAGE] != nowStage) return;
+        int newLevel = -1;
+        if (userOpenMissions[Common.PP.MISSION_LEVEL] != nowLevel) return newLevel;
+        if (userOpenMissions[Common.PP.MISSION_STAGE] != nowStage) return newLevel;
 
         if (nowStage == Common.Mission.stageNpcNoDic.Count)
         {
             //NextLevel
-            userOpenMissions[Common.PP.MISSION_LEVEL] = nowLevel + 1;
+            newLevel = nowLevel + 1;
+            userOpenMissions[Common.PP.MISSION_LEVEL] = newLevel;
             userOpenMissions[Common.PP.MISSION_STAGE] = 1;
         }
         else
@@ -214,6 +216,7 @@ public class UserManager
         }
         PlayerPrefsUtility.SaveList<int>(Common.PP.OPEN_MISSIONS, userOpenMissions);
         PlayerPrefs.Save();
+        return newLevel;
     }
 
     //##### デバッグ #####

@@ -131,20 +131,7 @@ public class MenuController : Photon.MonoBehaviour
     //一時停止
     public void OnPauseButton()
     {
-        if (GameController.Instance.gameMode == GameController.GAME_MODE_VS)
-        {
-            //一時停止禁止
-            return;
-        }
-
-        GameController.Instance.isPause = true;
-        DialogController.OpenDialog("一時停止中", "再開", () => ResetPause(), false);
-        Time.timeScale = 0;
-    }
-    public void ResetPause()
-    {
-        GameController.Instance.isPause = false;
-        Time.timeScale = 1;
+        GameController.Instance.Pause();
     }
 
     //NPC選択表示切替

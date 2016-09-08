@@ -1632,11 +1632,12 @@ MonoBehaviour:
   reloadTime: 3
   fireEffect: {fileID: 0}
   bullet: {fileID: 170762, guid: b43123adbba7d9e498d1a648cb2b337f, type: 2}
-  rapidCount: 4
+  rapidCount: 6
   rapidInterval: 0.2
   spreadCount: 3
   spreadDiffAngle: 30
   focusDiff: 5
+  recoil: 0
   fixedTime: 3
   fixedDiffTime: 0.03
 --- !u!114 &11438692
