@@ -82,8 +82,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pvCache: {fileID: 0}
   ownerId: 0
   group: 0
+  mixedModeIsReliable: 0
   prefixBackup: -1
   observed: {fileID: 0}
   synchronization: 0
@@ -93,9 +95,13 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 0}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 2
-  instantiationId: 2
+  viewIdField: 0
+  instantiationId: -1
+  didAwake: 0
   isRuntimeInstantiated: 0
+  removedFromLocalViewList: 0
+  RpcMonoBehaviours: []
+  failedToFindOnSerialize: 0
 --- !u!114 &11424166
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -107,8 +113,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pvCache: {fileID: 0}
   ownerId: 0
   group: 0
+  mixedModeIsReliable: 0
   prefixBackup: -1
   observed: {fileID: 0}
   synchronization: 0
@@ -118,9 +126,13 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 0}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 3
-  instantiationId: 3
+  viewIdField: 0
+  instantiationId: -1
+  didAwake: 0
   isRuntimeInstantiated: 0
+  removedFromLocalViewList: 0
+  RpcMonoBehaviours: []
+  failedToFindOnSerialize: 0
 --- !u!114 &11427852
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -132,9 +144,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f086994b8c47ea443baf4face217f973, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pvCache: {fileID: 0}
   effectSpawn: {fileID: 0}
+  effectSpawnGroupId: 0
   activeLimitTime: 0
   activeLimitDistance: 0
+  myTran: {fileID: 0}
+  ownerTran: {fileID: 0}
+  ownerWeapon: 
 --- !u!114 &11439492
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -146,9 +163,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f086994b8c47ea443baf4face217f973, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pvCache: {fileID: 0}
   effectSpawn: {fileID: 0}
+  effectSpawnGroupId: 0
   activeLimitTime: 0
   activeLimitDistance: 0
+  myTran: {fileID: 0}
+  ownerTran: {fileID: 0}
+  ownerWeapon: 
 --- !u!114 &11464544
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -160,8 +182,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2e5adbf805b9ad44998ac7cc5991b11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pvCache: {fileID: 0}
   rollSpeed: 360
   rollAxis: {x: 0, y: 1, z: 0}
+  myTran: {fileID: 0}
 --- !u!114 &11466690
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -173,12 +197,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e612a74990ec7f4da8d009e952dbcdb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pvCache: {fileID: 0}
   damageEffect: {fileID: 0}
   damage: 100
   damagePerSecond: 0
   isPhysicsBulletBreak: 0
   isEnergyBulletBreak: 0
   ownDamageRate: 0
+  myTran: {fileID: 0}
+  ownerTran: {fileID: 0}
+  ownerStatus: {fileID: 0}
+  ownerWeapon: 
 --- !u!114 &11472352
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -190,10 +219,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42c6dc432c4d2e34fa6fb808c6464dc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pvCache: {fileID: 0}
+  myTran: {fileID: 0}
+  myRigidbody: {fileID: 0}
+  ptv: {fileID: 0}
+  weaponCtrl: {fileID: 0}
   isCheckGrounded: 0
   glideGravityRate: 1
   isLockOn: 0
+  leftPreserveSpeedTime: 0
+  groundCheckTran: {fileID: 0}
+  groundLimit: 0.5
+  isGrounded: 0
+  isMoving: 0
+  moveDiffVector: {x: 0, y: 0, z: 0}
+  flameTime: 0
+  isBoost: 0
+  isSpecialBoost: 0
+  knockBackBaseTime: 0.3
+  isKnockBack: 0
+  isNpc: 0
+  defaultMass: 100
+  leftBoostTime: 0
+  boostLimitTime: 0
+  boostVector: {x: 0, y: 0, z: 0}
+  startAngle: 45
+  totalAngle: 120
+  charaCtrl: {fileID: 0}
   UseGravity: 0
+  preGlideGRate: 0.85
+  preGlideG: {x: 0, y: 0, z: 0}
+  moveVector: {x: 0, y: 0, z: 0}
+  isCharacterController: 0
   hitEffect: {fileID: 0}
   speed: 0
   damage: 0
@@ -204,6 +261,17 @@ MonoBehaviour:
   isEnergyBulletBreak: 0
   isHitBreak: 0
   safetyTime: 0.1
+  isHit: 0
+  activeTime: 0
+  totalDamage: 0
+  targetTran: {fileID: 0}
+  targetStatus: {fileID: 0}
+  myCollider: {fileID: 0}
+  ownerTran: {fileID: 0}
+  ownerStatus: {fileID: 0}
+  ownerId: -1
+  ownerWeapon: 
+  audioCtrl: {fileID: 0}
 --- !u!114 &11492674
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -215,17 +283,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1d600a14ff695d4f9c4f4a7d7101de8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pvCache: {fileID: 0}
   damageEffect: {fileID: 0}
   damage: 100
   damagePerSecond: 300
   isPhysicsBulletBreak: 1
   isEnergyBulletBreak: 1
   ownDamageRate: 1
+  myTran: {fileID: 0}
+  ownerTran: {fileID: 0}
+  ownerStatus: {fileID: 0}
+  ownerWeapon: 
   startScale: {x: 0, y: 0, z: 0}
   endScale: {x: 7, y: 7, z: 7}
   scaleTime: 1
   scaleLateTime: 1.45
   isParticle: 1
+  myCollider: {fileID: 0}
+  waitTime: 0
+  activeTime: 0
 --- !u!135 &13509098
 SphereCollider:
   m_ObjectHideFlags: 1
