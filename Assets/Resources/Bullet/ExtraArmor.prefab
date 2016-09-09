@@ -93,8 +93,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 0}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 0
-  instantiationId: -1
+  viewIdField: 2
+  instantiationId: 2
   isRuntimeInstantiated: 0
 --- !u!114 &11424166
 MonoBehaviour:
@@ -118,8 +118,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 0}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 0
-  instantiationId: -1
+  viewIdField: 3
+  instantiationId: 3
   isRuntimeInstantiated: 0
 --- !u!114 &11427852
 MonoBehaviour:
@@ -216,15 +216,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageEffect: {fileID: 0}
-  damage: 50
-  damagePerSecond: 250
+  damage: 100
+  damagePerSecond: 300
   isPhysicsBulletBreak: 1
   isEnergyBulletBreak: 1
   ownDamageRate: 1
   startScale: {x: 0, y: 0, z: 0}
   endScale: {x: 7, y: 7, z: 7}
   scaleTime: 1
-  scaleLateTime: 2.2
+  scaleLateTime: 1.45
   isParticle: 1
 --- !u!135 &13509098
 SphereCollider:

@@ -2646,7 +2646,7 @@ AudioSource:
   Mute: 0
   Spatialize: 0
   Priority: 128
-  DopplerLevel: 1
+  DopplerLevel: 0
   MinDistance: 1
   MaxDistance: 500
   Pan2D: 0
@@ -2743,8 +2743,8 @@ MonoBehaviour:
   - {fileID: 11454128}
   - {fileID: 11462246}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 2
-  instantiationId: 2
+  viewIdField: 0
+  instantiationId: -1
   isRuntimeInstantiated: 0
 --- !u!114 &11438942
 MonoBehaviour:
@@ -2919,8 +2919,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 0}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 3
-  instantiationId: 3
+  viewIdField: 0
+  instantiationId: -1
   isRuntimeInstantiated: 0
 --- !u!137 &13770256
 SkinnedMeshRenderer:

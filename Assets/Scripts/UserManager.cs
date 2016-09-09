@@ -219,13 +219,11 @@ public class UserManager
             newLevel = nowLevel + 1;
             userOpenMissions[Common.PP.MISSION_LEVEL] = newLevel;
             userOpenMissions[Common.PP.MISSION_STAGE] = 1;
-            Debug.Log("next level: "+ userOpenMissions[Common.PP.MISSION_LEVEL] + " - "+ userOpenMissions[Common.PP.MISSION_STAGE]);
         }
         else
         {
             //NextStage
             userOpenMissions[Common.PP.MISSION_STAGE] = nowStage + 1;
-            Debug.Log("next stage: " + userOpenMissions[Common.PP.MISSION_LEVEL] + " - " + userOpenMissions[Common.PP.MISSION_STAGE]);
         }
         PlayerPrefsUtility.SaveList<int>(Common.PP.OPEN_MISSIONS, userOpenMissions);
         PlayerPrefs.Save();
@@ -249,8 +247,17 @@ public class UserManager
             Debug.Log(key + " >> " + userConfig[key]);
         }
     }
-    public static void DeleteUser()
+    public static void DeleteUser(string key = "")
     {
-
+        //データ削除(debug用)
+        if (key == "")
+        {
+            PlayerPrefs.DeleteAll();
+        }
+        else
+        {
+            PlayerPrefs.DeleteKey(key);
+        }
+        PlayerPrefs.Save();
     }
 }

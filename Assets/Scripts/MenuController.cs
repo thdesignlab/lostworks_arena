@@ -61,9 +61,6 @@ public class MenuController : Photon.MonoBehaviour
 
         //デバッグボタンON/OFF
         if (MyDebug.Instance.isDebugMode || UserManager.isAdmin) isEnabledDebug = true;
-        Debug.Log(MyDebug.Instance.isDebugMode +" || "+ UserManager.isAdmin);
-        Debug.Log("isEnabledDebug:" + isEnabledDebug);
-        Debug.Log("debugButton :" + debugButton);
         if (debugButton != null) debugButton.SetActive(isEnabledDebug);
     }
 

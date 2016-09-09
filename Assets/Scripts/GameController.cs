@@ -348,7 +348,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
                                 if (SetNextStage())
                                 {
                                     isStageSetting = true;
-                                    SetTextLine(MESSAGE_STAGE_NEXT + MESSAGE_STAGE_READY + "...", colorLine);
+                                    SetTextLine(MESSAGE_STAGE_NEXT + " " + MESSAGE_STAGE_READY + "...", colorLine);
                                 }
                                 else
                                 {
@@ -369,7 +369,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
                             {
                                 //NextRound
                                 isStageSetting = true;
-                                SetTextLine(MESSAGE_STAGE_NEXT + MESSAGE_ROUND_READY + "...", colorLine);
+                                SetTextLine(MESSAGE_STAGE_NEXT + " " + MESSAGE_ROUND_READY + "...", colorLine);
                             }
                         }
                         else
@@ -392,8 +392,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
                             else
                             {
                                 isStageSetting = true;
-                                //SetTextUp(MESSAGE_STAGE_NEXT + MESSAGE_ROUND_READY + "...", colorWait);
-                                SetTextLine(MESSAGE_STAGE_NEXT + MESSAGE_ROUND_READY + "...", colorLine);
+                                SetTextLine(MESSAGE_STAGE_NEXT + " " + MESSAGE_ROUND_READY + "...", colorLine);
                             }
                         }
 
@@ -593,11 +592,10 @@ public class GameController : SingletonMonoBehaviour<GameController>
     [PunRPC]
     private void CleanNpcRPC()
     {
-        GameObject npc = GameObject.Find("NPC");
+        Transform npc = GetNpcTran();
         if (npc != null)
         {
             npc.GetComponent<PlayerStatus>().AddDamage(99999);
-            //npc.GetComponent<ObjectController>().DestoryObject();
         }
     }
 
@@ -780,10 +778,9 @@ public class GameController : SingletonMonoBehaviour<GameController>
             //レベル設定ダイアログ
             RectTransform content = levelSelectCanvas.transform.FindChild("ScrollView/Viewport/Content").GetComponent<RectTransform>();
             content.sizeDelta = new Vector2(0, maxLevel * 200);
-            int setLevel = 0;
             for (int i = maxLevel; i > 0; i--)
             {
-                setLevel = i;
+                int setLevel = i;
                 GameObject btn = (GameObject)Instantiate(levelSelectButton, Vector3.zero, Quaternion.identity);
                 btn.transform.SetParent(content, false);
                 btn.transform.GetComponentInChildren<Text>().text = Common.Mission.GetLevelName(setLevel);
