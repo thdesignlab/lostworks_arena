@@ -194,6 +194,42 @@ public class ScreenManager : SingletonMonoBehaviour<ScreenManager>
         }
 
         return true;
-    } 
+    }
+
+    public void TextFadeOut(Text obj, float time = -1)
+    {
+        if (time <= 0) time = fadeTime;
+        StartCoroutine(TextFadeOutProc(obj, time));
+    }
+    IEnumerator TextFadeOutProc(Text obj, float time)
+    {
+        float startAlpha = obj.color.a;
+        float nowAlpha = startAlpha;
+        for (;;)
+        {
+            nowAlpha -= Time.deltaTime / time * startAlpha;
+            obj.color = new Color(obj.color.r, obj.color.g, obj.color.b, nowAlpha);
+            if (nowAlpha <= 0) break;
+            yield return null;
+        }
+    }
+
+    public void ImageFadeOut(Image obj, float time = -1)
+    {
+        if (time <= 0) time = fadeTime;
+        StartCoroutine(ImageFadeOutProc(obj, time));
+    }
+    IEnumerator ImageFadeOutProc(Image obj, float time)
+    {
+        float startAlpha = obj.color.a;
+        float nowAlpha = startAlpha;
+        for (;;)
+        {
+            nowAlpha -= Time.deltaTime / time * startAlpha;
+            obj.color = new Color(obj.color.r, obj.color.g, obj.color.b, nowAlpha);
+            if (nowAlpha <= 0) break;
+            yield return null;
+        }
+    }
 }
 

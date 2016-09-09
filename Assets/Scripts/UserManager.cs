@@ -13,6 +13,14 @@ public class UserManager
     public static List<int> userOpenWeapons = new List<int>();       //開放武器
     public static List<int> userOpenMissions = new List<int>() { 2, 1 };       //開放Mission(level, stage)
 
+    //管理ユーザーID
+    public static List<string> adminIdList = new List<string>()
+    {
+    };
+
+    public static bool isAdmin = false;
+
+
     //##### ユーザー情報 #####
 
     //初期データ作成
@@ -153,11 +161,6 @@ public class UserManager
 
     public static void SetUserInfo()
     {
-        //データ削除(debug用)
-        //PlayerPrefs.DeleteAll();
-        PlayerPrefs.DeleteKey(Common.PP.USER_INFO);
-        PlayerPrefs.DeleteKey(Common.PP.USER_RESULT);
-
         if (IsInitUser())
         {
             //新規ユーザー
@@ -173,6 +176,12 @@ public class UserManager
         userOpenCharacters = PlayerPrefsUtility.LoadList<int>(Common.PP.OPEN_CHARACTERS);
         userOpenWeapons = PlayerPrefsUtility.LoadList<int>(Common.PP.OPEN_WEAPONS);
         userOpenMissions = PlayerPrefsUtility.LoadList<int>(Common.PP.OPEN_MISSIONS);
+
+        //管理者判定
+        if (adminIdList.Contains(userInfo[Common.PP.INFO_USER_ID])) isAdmin = true;
+
+        //ログ表示
+        DispUserInfo();
     }
 
     public static void SetUserName(string userName)
@@ -198,6 +207,8 @@ public class UserManager
 
     public static int OpenNextMission(int nowLevel, int nowStage)
     {
+        Debug.Log("CheckNext: "+ nowLevel + " - "+ nowStage);
+        Debug.Log("open Missions: " + userOpenMissions[Common.PP.MISSION_LEVEL] + " - " + userOpenMissions[Common.PP.MISSION_STAGE]);
         int newLevel = -1;
         if (userOpenMissions[Common.PP.MISSION_LEVEL] != nowLevel) return newLevel;
         if (userOpenMissions[Common.PP.MISSION_STAGE] != nowStage) return newLevel;
@@ -208,11 +219,13 @@ public class UserManager
             newLevel = nowLevel + 1;
             userOpenMissions[Common.PP.MISSION_LEVEL] = newLevel;
             userOpenMissions[Common.PP.MISSION_STAGE] = 1;
+            Debug.Log("next level: "+ userOpenMissions[Common.PP.MISSION_LEVEL] + " - "+ userOpenMissions[Common.PP.MISSION_STAGE]);
         }
         else
         {
             //NextStage
             userOpenMissions[Common.PP.MISSION_STAGE] = nowStage + 1;
+            Debug.Log("next stage: " + userOpenMissions[Common.PP.MISSION_LEVEL] + " - " + userOpenMissions[Common.PP.MISSION_STAGE]);
         }
         PlayerPrefsUtility.SaveList<int>(Common.PP.OPEN_MISSIONS, userOpenMissions);
         PlayerPrefs.Save();
@@ -227,6 +240,7 @@ public class UserManager
         {
             Debug.Log(key+" >> "+userInfo[key]);
         }
+        Debug.Log("isAdmin >> "+isAdmin);
     }
     public static void DispUserConfig()
     {
@@ -235,5 +249,8 @@ public class UserManager
             Debug.Log(key + " >> " + userConfig[key]);
         }
     }
+    public static void DeleteUser()
+    {
 
+    }
 }

@@ -18,7 +18,7 @@ public class MyDebug : SingletonMonoBehaviour<MyDebug>
 
     void OnEnable()
     {
-        if (!isDebugMode) return;
+        if (!isDebugMode && !UserManager.isAdmin) return;
         //Application.RegisterLogCallback(HandleLog);
         Application.logMessageReceived += HandleLog;
     }
@@ -46,7 +46,7 @@ public class MyDebug : SingletonMonoBehaviour<MyDebug>
 
     void OnGUI()
     {
-        if (!isDebugMode) return;
+        if (!isDebugMode && !UserManager.isAdmin) return;
         Rect btnRect = new Rect(0, 0, space, space);
         Rect logRect = new Rect(0, space, textAreaWidth, textAreaheight);
 

@@ -89,10 +89,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
     private Dictionary<string, int> damageSourceMine = new Dictionary<string, int>();
     private Dictionary<string, int> damageSourceEnemy = new Dictionary<string, int>();
     private bool isResultCheck = false;
-
-    //[HideInInspector]
-    //public bool isDebugMode = false;
-
+    
     protected override void Awake()
     {
         isDontDestroyOnLoad = false;
@@ -136,9 +133,13 @@ public class GameController : SingletonMonoBehaviour<GameController>
     {
         SetText(textLine, text, color, fadeout, true);
     }
-    private void SetText(Text textObj, bool isLineText = false)
+    private void ClearText(Text textObj, bool isLineText = false)
     {
         SetText(textObj, "", default(Color), 0, isLineText);
+    }
+    private void FadeOutText(Text textObj, bool isLineText = false)
+    {
+        SetText(textObj, "", default(Color), 0.5f, isLineText);
     }
     private void SetText(Text textObj, string text, Color color = default(Color), float fadeout = 0, bool isLineText = false)
     {
@@ -174,16 +175,24 @@ public class GameController : SingletonMonoBehaviour<GameController>
                 }
                 else
                 {
-                    //Text
-                    textObj.enabled = false;
-                    textImage.enabled = false;
+                    //Text・Image
+                    if (fadeout > 0)
+                    {
+                        ScreenManager.Instance.TextFadeOut(textObj);
+                        ScreenManager.Instance.ImageFadeOut(textImage);
+                    }
+                    else
+                    {
+                        textObj.enabled = false;
+                        textImage.enabled = false;
+                    }
                 }
             }
             textObj.text = "";
         }
         else
         {
-            SetText(textObj, isLineText);
+            ClearText(textObj, isLineText);
 
             //Line表示
             if (isLineText)
@@ -218,13 +227,15 @@ public class GameController : SingletonMonoBehaviour<GameController>
                     Sprite img = GetSpriteText(text);
                     if (img != null)
                     {
-                        textObj.transform.GetComponentInChildren<Image>().sprite = img;
+                        textImage.sprite = img;
+                        textImage.color = Vector4.one;
                         textImage.enabled = true;
                     }
                     else
                     {
                         //Text
-                        if (color != default(Color)) textObj.color = new Color(color.r, color.g, color.b, baseAlpha);
+                        if (color != default(Color)) color = textObj.color;
+                        textObj.color = new Color(color.r, color.g, color.b, baseAlpha);
                         textObj.enabled = true;
                     }
                 }
@@ -260,24 +271,10 @@ public class GameController : SingletonMonoBehaviour<GameController>
         return img;
     }
 
-    IEnumerator MessageFadeOut(Text textObj, float fadeout)
-    {
-        float startAlpha = textObj.color.a;
-        float nowAlpha = startAlpha;
-        for (;;)
-        {
-            nowAlpha -= Time.deltaTime / fadeout * startAlpha;
-            textObj.color = new Color(textObj.color.r, textObj.color.g, textObj.color.b, nowAlpha);
-            if (nowAlpha <= 0) break;
-            yield return null;
-        }
-        textObj.enabled = false;
-    }
-
     IEnumerator MessageDelayDelete(Text textObj, float fadeout, bool isLineText = false)
     {
         yield return new WaitForSeconds(fadeout);
-        SetText(textObj, isLineText);
+        FadeOutText(textObj, isLineText);
     }
 
     public void ResetGame()
@@ -331,16 +328,14 @@ public class GameController : SingletonMonoBehaviour<GameController>
             {
                 //Debug.Log("GameEnd");
                 yield return new WaitForSeconds(3.0f);
-                if (!isResultCheck)
-                {
-                    //結果表示
-                    OpenResult();
-                }
+                //結果表示
+                bool isPassResult = OpenResult();
+
                 if (gameMode == GAME_MODE_MISSION)
                 {
                     //ミッションモード
 
-                    if (isResultCheck)
+                    if (isResultCheck || isPassResult)
                     {
                         bool isStageSetting = false;
                         if (isWin)
@@ -411,6 +406,36 @@ public class GameController : SingletonMonoBehaviour<GameController>
                     }
 
                 }
+                else
+                {
+                    if (isResultCheck || isPassResult)
+                    {
+                        //レート変化ダイアログ表示
+                        string text = "Rate : 1050(+50)仮";
+                        List<UnityAction> actions = new List<UnityAction>();
+                        List<string> buttons = new List<string>() { "Continue", "Title" };
+                        if (isWin)
+                        {
+                            //続けるorタイトルへ戻る
+                            actions.Add(() => Continue());
+                            actions.Add(() => GoToTitle());
+                            actions = new List<UnityAction>() { () => Continue(), () => GoToTitle() };
+                            buttons = new List<string>() { "Continue", "Title" };
+                            DialogController.OpenDialog(text, buttons, actions);
+                        }
+                        else
+                        {
+                            //タイトルへ戻るだけ
+                            text += "\n5秒後にTitleへもどります";
+                            actions = new List<UnityAction>() { () => GoToTitle() };
+                            buttons = new List<string>() { "Title" };
+                            DialogController.OpenDialog(text, buttons, actions);
+                            //自動でタイトルへ遷移
+                            yield return new WaitForSeconds(5.0f);
+                            GoToTitle();
+                        }
+                    }
+                }
                 yield return new WaitForSeconds(1.0f);
                 continue;
             }
@@ -478,17 +503,17 @@ public class GameController : SingletonMonoBehaviour<GameController>
                                 if (round == 1)
                                 {
                                     //ステージ文字
-                                    SetTextLine(MESSAGE_STAGE_READY + stageNo.ToString(), colorLine, 2.5f);
-                                    yield return new WaitForSeconds(3);
+                                    SetTextLine(MESSAGE_STAGE_READY + stageNo.ToString(), colorLine, 2.0f);
+                                    yield return new WaitForSeconds(2);
                                 }
                                 //ラウンド文字
-                                SetTextLine(MESSAGE_ROUND_READY + round.ToString(), colorLine, 2.5f);
-                                yield return new WaitForSeconds(3);
+                                SetTextLine(MESSAGE_ROUND_READY + round.ToString(), colorLine, 2.0f);
+                                yield return new WaitForSeconds(2);
                             }
 
                             //カウントダウン
                             SetTextCenter(MESSAGE_READY, colorReady);
-                            yield return new WaitForSeconds(3);
+                            yield return new WaitForSeconds(2);
                             for (int i = readyTime; i > 0; i--)
                             {
                                 SetTextCenter(i.ToString(), colorReady);
@@ -554,7 +579,13 @@ public class GameController : SingletonMonoBehaviour<GameController>
         PlayerSpawn();
     }
 
-    private void CleanNpc()
+    public void CleanPlayer()
+    {
+        if (myStatus == null) return;
+        myStatus.AddDamage(99999);
+    }
+
+    public void CleanNpc()
     {
         photonView.RPC("CleanNpcRPC", PhotonTargets.All);
     }
@@ -669,6 +700,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
 
     private void GameStart()
     {
+        Debug.Log("*** GameStart ***");
         foreach (PlayerStatus playerStatus in playerStatuses)
         {
             playerStatus.Init();
@@ -679,6 +711,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
 
     private void GameEnd()
     {
+        Debug.Log("*** GameEnd ***");
         if (targetTran == null)
         {
             //勝利
@@ -822,28 +855,29 @@ public class GameController : SingletonMonoBehaviour<GameController>
     }
 
     //結果ダイアログ表示
-    private void OpenResult()
+    private bool OpenResult()
     {
-        if (!MyDebug.Instance.isDebugMode)
-        {
-            isResultCheck = true;
-            return;
-        }
-        if (resultCanvas.GetActive()) return;
+        if (!MyDebug.Instance.isDebugMode && !UserManager.isAdmin) return true;
+        if (resultCanvas.GetActive()) return false;
 
         string resultMine = CreateDamageSourceText(PlayerStatus.BATTLE_LOG_ATTACK);
         string resultEnemy = CreateDamageSourceText(PlayerStatus.BATTLE_LOG_DAMAGE);
+        if (resultMine == "" && resultEnemy == "") return true;
 
         resultCanvas.SetActive(true);
         Transform resultTran = resultCanvas.transform.FindChild("DamageSource/Result");
         resultTran.FindChild("Mine").GetComponent<Text>().text = resultMine;
         resultTran.FindChild("Enemy").GetComponent<Text>().text = resultEnemy;
+        isResultCheck = false;
+        return false;
     }
 
     //結果確認ボタン押下
     public void OnResultCheck()
     {
         resultCanvas.SetActive(false);
+        damageSourceMine = new Dictionary<string, int>();
+        damageSourceEnemy = new Dictionary<string, int>();
         isResultCheck = true;
     }
 

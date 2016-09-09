@@ -151,8 +151,6 @@ public class PlayerStatus : Photon.MonoBehaviour {
         isNpc = GetComponent<PlayerSetting>().isNpc;
         moveCtrl = GetComponent<BaseMoveController>();
         
-        isDispBattleLog = MyDebug.Instance.isDebugMode;
-
         //ステータス構造
         Transform screenStatusTran = Camera.main.transform.FindChild(Common.CO.SCREEN_CANVAS + Common.CO.SCREEN_STATUS);
 
@@ -937,8 +935,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
 
     public void SetBattleLog(int logType, int damage, string name, bool isSlipDamage = false)
     {
-        if (!MyDebug.Instance.isDebugMode) return;
-
+        if (!isDispBattleLog) return;
         if (!photonView.isMine || isNpc) return;
 
         if (isSlipDamage)
@@ -967,28 +964,24 @@ public class PlayerStatus : Photon.MonoBehaviour {
             }
             PushBattleLog(logType, damage, name);
         }
-
     }
 
     private void PushBattleLog(int logType, int damage, string name, bool console = false)
     {
-        if (!MyDebug.Instance.isDebugMode) return;
+        if (!isDispBattleLog) return;
         if (!photonView.isMine || isNpc) return;
         if (name == "" || damage <= 0) return;
 
         //バトルログ
-        if (isDispBattleLog)
-        {
-            battleLogNo[logType]++;
-            name = name.Replace("(Clone)", "");
-            string logName = name;
-            if (logName.Length > 10) logName = logName.Substring(0, 10);
-            string text = "[" + battleLogNo[logType] + "]" + logName + " > " + damage.ToString();
+        battleLogNo[logType]++;
+        name = name.Replace("(Clone)", "");
+        string logName = name;
+        if (logName.Length > 10) logName = logName.Substring(0, 10);
+        string text = "[" + battleLogNo[logType] + "]" + logName + " > " + damage.ToString();
 
-            if (logBattleQueue[logType].Count >= BATTLE_LOG_COUNT) logBattleQueue[logType].Dequeue();
-            logBattleQueue[logType].Enqueue(text);
-            if (console) Debug.Log(text);
-        }
+        if (logBattleQueue[logType].Count >= BATTLE_LOG_COUNT) logBattleQueue[logType].Dequeue();
+        logBattleQueue[logType].Enqueue(text);
+        if (console) Debug.Log(text);
 
         //ダメージソース
         GameController.Instance.SetDamageSource(logType, name, damage);

@@ -33,12 +33,12 @@ public class OnAwakeUsePhotonView : Photon.MonoBehaviour {
     [PunRPC]
     public void OnAwakeRPC()
     {
-        Debug.Log("RPC: 'OnAwakeRPC' PhotonView: " + this.photonView);
+        //Debug.Log("RPC: 'OnAwakeRPC' PhotonView: " + this.photonView);
     }
 
     [PunRPC]
     public void OnAwakeRPC(byte myParameter)
     {
-        Debug.Log("RPC: 'OnAwakeRPC' Parameter: " + myParameter + " PhotonView: " + this.photonView);
+        //Debug.Log("RPC: 'OnAwakeRPC' Parameter: " + myParameter + " PhotonView: " + this.photonView);
     }
 }
