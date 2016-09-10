@@ -14,6 +14,8 @@ public class UnityAds : SingletonMonoBehaviour<UnityAds>
     [SerializeField]
     private string _unityAdsiosID, _unityAdsAndroidID;
 
+    private bool isAdPlaying = false;
+
     //=================================================================================
     //初期化
     //=================================================================================
@@ -59,50 +61,57 @@ public class UnityAds : SingletonMonoBehaviour<UnityAds>
     /// <summary>
     /// 動画再生
     /// </summary>
-    public void Play(Action OnFinished = null, Action OnFailed = null, Action OnSkipped = null)
+    public void Play(Action completeAction = null, string zoneId = null, Action OnFinished = null, Action OnFailed = null, Action OnSkipped = null)
     {
-
         //コールバック用メソッド作成、Result の値は Finished、Failed、Skipped
         Action<ShowResult> callBack = (result) => {
-
+            Debug.Log(result);
             if (result == ShowResult.Finished && OnFinished != null)
             {
-                Debug.Log("OnFinished");
                 OnFinished();
             }
             else if (result == ShowResult.Failed && OnFailed != null)
             {
-                Debug.Log("OnFailed");
                 OnFailed();
             }
             else if (result == ShowResult.Skipped && OnSkipped != null)
             {
-                Debug.Log("OnSkipped");
                 OnSkipped();
             }
+            if (completeAction != null)
+            {
+                completeAction();
+            }
+            isAdPlaying = false;
         };
 
+        //Options
+        ShowOptions options = new ShowOptions();
+        options.resultCallback = callBack;
+
+
         //動画再生
-        Advertisement.Show(null, new ShowOptions
-        {
-            //trueだとUnityが止まり、音もミュートになる
-            //pause = true,
-            //広告が表示された後のコールバック設定
-            resultCallback = callBack
-        });
-
+        isAdPlaying = true;
+        Advertisement.Show(zoneId, options);
     }
 
-    IEnumerator Start()
+    public bool IsPlaying()
     {
-        for (;;)
-        {
-            if (CanPlay())
-            {
-                Play();
-                yield break;
-            }
-            yield return null;
-        }
+        return isAdPlaying;
     }
+
+    //IEnumerator Start()
+    //{
+    //    Debug.Log("start");
+    //    for (;;)
+    //    {
+    //        if (CanPlay())
+    //        {
+    //            Debug.Log("play");
+    //            Play();
+    //            yield break;
+    //        }
+    //        yield return null;
+    //    }
+    //}
 }

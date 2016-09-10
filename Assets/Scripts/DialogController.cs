@@ -58,6 +58,13 @@ public class DialogController : MonoBehaviour
     const string BUTTON_OK_TEXT = "OK";
     const string BUTTON_CANCEL_TEXT = "Cancel";
 
+    //##### 広告ダイアログ表示 #####
+    public static void OpenDialogAd()
+    {
+        //OpenDialog("");
+        //UnityAds.Instance.Play();
+    }
+
     //##### ダイアログ表示 #####
     public static GameObject OpenDialog(string text, UnityAction okAction = null, bool isCancel = false)
     {

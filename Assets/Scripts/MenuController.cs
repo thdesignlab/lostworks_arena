@@ -26,7 +26,7 @@ public class MenuController : Photon.MonoBehaviour
     const string BUTTON_PAUSE = "PauseButton";
     const string BUTTON_CPU_BATTLE = "NpcButton";
 
-    void Awake()
+    void Start()
     {
         myTran = transform;
         Transform menuObj = myTran.FindChild(MENU_BUTTONS);
@@ -42,14 +42,14 @@ public class MenuController : Photon.MonoBehaviour
 
         switch (GameController.Instance.gameMode)
         {
-            case GameController.GAME_MODE_PLACTICE:
+            case GameController.GAME_MODE_MISSION:
                 isEnabledPause = true;
-                isEnabledCpu = true;
+                isEnabledCpu = false;
                 break;
 
             case GameController.GAME_MODE_VS:
                 isEnabledPause = false;
-                isEnabledCpu = true;
+                isEnabledCpu = false;
                 break;
         }
 

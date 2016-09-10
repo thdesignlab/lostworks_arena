@@ -31,6 +31,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
     [HideInInspector]
     public bool isPause = false;
 
+    private bool isContinue = false;
     private bool isWin = false;
     [HideInInspector]
     public bool isGameReady = false;
@@ -144,6 +145,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
     private void SetText(Text textObj, string text, Color color = default(Color), float fadeout = 0, bool isLineText = false)
     {
         //Debug.Log(textObj.name+" >> "+text);
+        if (textObj == null) return;
         Image textImage = textObj.transform.GetComponentInChildren<Image>();
         if (text == "")
         {
@@ -328,6 +330,8 @@ public class GameController : SingletonMonoBehaviour<GameController>
             {
                 //Debug.Log("GameEnd");
                 yield return new WaitForSeconds(3.0f);
+                if (isContinue) continue;
+
                 //結果表示
                 bool isPassResult = OpenResult();
 
@@ -385,7 +389,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
                                 string text = "広告やで(｀・д・´)";
                                 List<string> buttons = new List<string>() { "Continue", "Title" };
                                 List<UnityAction> actions = new List<UnityAction>() {
-                                        () => Continue(), () => GoToTitle()
+                                        () => Continue(true), () => GoToTitle()
                                     };
                                 DialogController.OpenDialog(text, buttons, actions);
                             }
@@ -399,7 +403,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
                         //ステージセッティング
                         if (isStageSetting)
                         {
-                            yield return new WaitForSeconds(5.0f);
+                            yield return new WaitForSeconds(3.0f);
                             StageSetting();
                         }
                     }
@@ -636,7 +640,6 @@ public class GameController : SingletonMonoBehaviour<GameController>
     public void GoToTitle()
     {
         PhotonNetwork.LeaveRoom();
-        //PhotonNetwork.LoadLevel(Common.CO.SCENE_TITLE);
         ScreenManager.Instance.Load(Common.CO.SCENE_TITLE, DialogController.MESSAGE_LOADING);
     }
 
@@ -681,7 +684,6 @@ public class GameController : SingletonMonoBehaviour<GameController>
     private void GameReady()
     {
         isGameReady = true;
-
         foreach (PlayerStatus playerStatus in playerStatuses)
         {
             playerStatus.Init();
@@ -703,6 +705,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
         {
             playerStatus.Init();
         }
+        isContinue = false;
         isGameReady = false;
         isGameStart = true;
     }
@@ -793,6 +796,9 @@ public class GameController : SingletonMonoBehaviour<GameController>
             //対戦モード
             gameMode = GAME_MODE_VS;
         }
+
+        //BGM再生
+        PlayStageBgm();
     }
 
 
@@ -843,12 +849,20 @@ public class GameController : SingletonMonoBehaviour<GameController>
     }
 
     //コンティニュー
-    public void Continue()
+    public void Continue(bool isAdPlay = false)
     {
-        winCount = 0;
-        loseCount = 0;
-        ResetWinMark();
-        StageSetting();
+        if (isAdPlay)
+        {
+            UnityAds.Instance.Play(() => Continue());
+        }
+        else
+        {
+            isContinue = true;
+            winCount = 0;
+            loseCount = 0;
+            ResetWinMark();
+            StageSetting();
+        }
     }
 
     //結果ダイアログ表示
@@ -927,8 +941,11 @@ public class GameController : SingletonMonoBehaviour<GameController>
         if (no > 0) stageNo = no;
         if (stageNo <= 0) stageNo = 1;
 
+        //BGM
+        PlayStageBgm();
+
         //NpcNo
-        npcNo = Common.Mission.stageNpcNoDic[stageNo];
+        npcNo = Common.Mission.stageNpcNoDic[stageNo][Common.Mission.STAGE_NPC_NAME];
 
         //ステージのNPC取得
         string npcName = "BaseNpc";
@@ -995,6 +1012,8 @@ public class GameController : SingletonMonoBehaviour<GameController>
     {
         if (pauseStatus)
         {
+            if (UnityAds.Instance.IsPlaying()) return;
+
             //ホームボタンを押してアプリがバックグランドに移行した時
             Pause();
         }
@@ -1021,4 +1040,17 @@ public class GameController : SingletonMonoBehaviour<GameController>
         Time.timeScale = 1;
     }
 
+    private void PlayStageBgm()
+    {
+        int bgmNo = -1;
+        if (gameMode == GAME_MODE_MISSION)
+        {
+            bgmNo = 0;
+            if (stageNo > 0)
+            {
+                bgmNo = Common.Mission.stageNpcNoDic[stageNo][Common.Mission.STAGE_NPC_BGM];
+            }
+        }
+        SoundManager.Instance.PlayBattleBgm(bgmNo);
+    }
 }

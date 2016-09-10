@@ -207,8 +207,8 @@ public class UserManager
 
     public static int OpenNextMission(int nowLevel, int nowStage)
     {
-        Debug.Log("CheckNext: "+ nowLevel + " - "+ nowStage);
-        Debug.Log("open Missions: " + userOpenMissions[Common.PP.MISSION_LEVEL] + " - " + userOpenMissions[Common.PP.MISSION_STAGE]);
+        //Debug.Log("CheckNext: "+ nowLevel + " - "+ nowStage);
+        //Debug.Log("open Missions: " + userOpenMissions[Common.PP.MISSION_LEVEL] + " - " + userOpenMissions[Common.PP.MISSION_STAGE]);
         int newLevel = -1;
         if (userOpenMissions[Common.PP.MISSION_LEVEL] != nowLevel) return newLevel;
         if (userOpenMissions[Common.PP.MISSION_STAGE] != nowStage) return newLevel;

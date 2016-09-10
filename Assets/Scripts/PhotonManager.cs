@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class PhotonManager : MonoBehaviour
 {
     public static bool isFirstScean = true;
+    public static bool isPlayAd = false;
 
     [SerializeField]
     private GameObject modeSelectArea;
@@ -68,6 +69,10 @@ public class PhotonManager : MonoBehaviour
 
         //ユーザー情報取得
         UserManager.SetUserInfo();
+
+        //広告テスト
+        DialogController.OpenDialogAd();
+
     }
 
     void Update()
@@ -175,6 +180,11 @@ public class PhotonManager : MonoBehaviour
     {
         Init(true);
         TapToStart();
+        if (isPlayAd)
+        {
+            UnityAds.Instance.Play();
+            isPlayAd = false;
+        }
     }
 
     //モードセレクトダイアログ切り替え
@@ -301,6 +311,7 @@ public class PhotonManager : MonoBehaviour
 
         PhotonNetwork.offlineMode = true;
         moveScene = Common.CO.SCENE_BATTLE;
+        isPlayAd = true;
         PhotonNetwork.CreateRoom(ROOM_NAME_PREFIX);
     }
 
@@ -314,6 +325,7 @@ public class PhotonManager : MonoBehaviour
         PhotonNetwork.automaticallySyncScene = true;
         PhotonNetwork.autoJoinLobby = true;
         moveScene = Common.CO.SCENE_BATTLE;
+        isPlayAd = true;
 
         // the following line checks if this client was just created (and not yet online). if so, we connect
         if (PhotonNetwork.connectionStateDetailed == PeerState.PeerCreated)

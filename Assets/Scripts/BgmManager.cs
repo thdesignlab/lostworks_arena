@@ -4,6 +4,8 @@ using UnityEngine.SceneManagement;
 
 public class BgmManager : MonoBehaviour
 {
+    [SerializeField]
+    private AudioClip audioClip;
     private AudioSource audioSource;
 
     //BGM再生設定
@@ -18,7 +20,7 @@ public class BgmManager : MonoBehaviour
 
     void Awake()
     {
-        audioSource = transform.GetComponent<AudioSource>();
+        audioSource = transform.parent.GetComponent<AudioSource>();
     }
 
     void Update()
@@ -39,6 +41,7 @@ public class BgmManager : MonoBehaviour
     public void Play()
     {
         if (audioSource == null) return;
+        audioSource.clip = audioClip;
         if (!audioSource.isPlaying)
         {
             audioSource.Play();

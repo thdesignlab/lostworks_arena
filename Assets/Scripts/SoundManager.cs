@@ -1,9 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 
 public class SoundManager : SingletonMonoBehaviour<SoundManager>
 {
+    [SerializeField]
+    private List<BgmManager> titleBgmList;
+    [SerializeField]
+    private List<BgmManager> customBgmList;
+    [SerializeField]
+    private List<BgmManager> battleBgmList;
+
     private Transform myTran;
     private BgmManager nowBgmMgr;
 
@@ -20,24 +28,40 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager>
         if (nowBgmMgr != null) nowBgmMgr.Play();
     }
 
-    public void PlayBgm(string sceneName = "")
+    private void Play(BgmManager bgmMgr)
     {
-        BgmManager bgmMgr = GetBgmManager(sceneName);
         if (bgmMgr != null)
         {
             if (nowBgmMgr != bgmMgr)
             {
                 //Debug.Log("BGM start:"+ audioSource.clip +" >> "+ audioClip);
-                nowBgmMgr.Stop();
+                if (nowBgmMgr != null) nowBgmMgr.Stop();
                 nowBgmMgr = bgmMgr;
             }
             nowBgmMgr.Play();
         }
-        else
+        //else
+        //{
+        //    if (nowBgmMgr != null) nowBgmMgr.Stop();
+        //    nowBgmMgr = null;
+        //}
+    }
+
+    public void PlayBgm(string sceneName = "")
+    {
+        BgmManager bgmMgr = GetBgmManager(sceneName);
+        Play(bgmMgr);
+    }
+
+    public void PlayBattleBgm(int no = -1)
+    {
+        if (no < 0 || battleBgmList.Count <= no)
         {
-            nowBgmMgr.Stop();
-            nowBgmMgr = null;
+            //ランダム
+            no = Random.Range(0, battleBgmList.Count);
         }
+        BgmManager bgmMgr = battleBgmList[no];
+        Play(bgmMgr);
     }
 
     public void StopBgm(string sceneName = "", bool isSameBgmStop = false)
@@ -62,15 +86,19 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager>
         if (sceneName == "") sceneName = SceneManager.GetActiveScene().name;
 
         BgmManager sceneBgm = null;
+        int index = 0;
         switch (sceneName)
         {
             case Common.CO.SCENE_TITLE:
+                sceneBgm = titleBgmList[index];
+                break;
+
             case Common.CO.SCENE_CUSTOM:
-                sceneBgm = myTran.FindChild("BgmCustom").GetComponent<BgmManager>();
+                sceneBgm = customBgmList[index];
                 break;
 
             case Common.CO.SCENE_BATTLE:
-                sceneBgm = myTran.FindChild("BgmBattle").GetComponent<BgmManager>();
+                //GameControllerで制御
                 break;
         }
         return sceneBgm;

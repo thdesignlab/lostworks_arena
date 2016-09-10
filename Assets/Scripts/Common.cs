@@ -635,13 +635,15 @@ namespace Common
     public static class Mission
     {
         //ステージ：NPC
-        public static Dictionary<int, int> stageNpcNoDic = new Dictionary<int, int>()
+        public const int STAGE_NPC_NAME = 0;
+        public const int STAGE_NPC_BGM = 1;
+        public static Dictionary<int, int[]> stageNpcNoDic = new Dictionary<int, int[]>()
         {
-            { 1, 1000 },
-            { 2, 1001 },
-            { 3, 1002 },
-            { 4, 0 },
-            { 5, 1 },
+            { 1, new int[] { 1000, 0 } },
+            { 2, new int[] { 1001, 0 } },
+            { 3, new int[] { 1002, 0 } },
+            { 4, new int[] { 0, 1 } },
+            { 5, new int[] { 1, 1 } },
         };
 
         //レベル
