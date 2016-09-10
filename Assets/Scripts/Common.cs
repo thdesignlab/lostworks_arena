@@ -694,7 +694,7 @@ namespace Common
         public static Dictionary<int, int[]> npcStatusDic = new Dictionary<int, int[]>()
         {
                             //hp, sp, run, boost, turn, atk%, atkI, boostI, tagI
-            { 0, new int[]{ 1000, 50, 35, 70, 20, 100, 2, 2, 3, 1 , 50} },
+            { 0, new int[]{ 1000, 50, 35, 70, 20, 100, 2, 2, 3, 1 , 30} },
             { 1, new int[]{ 1000, 50, 30, 70, 20, 110, 2, 2, 3, 1 , 250} },
             { 1000, new int[]{ 600, 25, 20, 40, 15, 80, 3, 3, 5, 0 , 200} },
             { 1001, new int[]{ 700, 30, 25, 50, 15, 80, 3, 3, 5, 0 , 200} },

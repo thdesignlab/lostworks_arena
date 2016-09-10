@@ -208,7 +208,7 @@ MonoBehaviour:
   hitEffect: {fileID: 0}
   speed: 0
   damage: 0
-  damagePerSecond: 90
+  damagePerSecond: 100
   stuckTime: 0
   knockBackRate: 0
   isPhysicsBulletBreak: 0
@@ -245,7 +245,7 @@ MonoBehaviour:
   damagePerSecond: 0
   isPhysicsBulletBreak: 1
   isEnergyBulletBreak: 1
-  ownDamageRate: 1
+  ownDamageRate: 0
 --- !u!114 &11457546
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -514,7 +514,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.04
+  m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!136 &13613692
 CapsuleCollider:

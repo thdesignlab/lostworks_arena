@@ -426,7 +426,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effectSpawn: {fileID: 0}
-  activeLimitTime: 5
+  activeLimitTime: 8
   activeLimitDistance: 0
 --- !u!114 &11435420
 MonoBehaviour:
@@ -446,8 +446,8 @@ MonoBehaviour:
   isEnergyBulletBreak: 0
   ownDamageRate: 1
   startScale: {x: 1, y: 1, z: 1}
-  endScale: {x: 15, y: 10, z: 15}
-  scaleTime: 3
+  endScale: {x: 20, y: 12, z: 20}
+  scaleTime: 5
   scaleLateTime: 0
   isParticle: 0
 --- !u!114 &11437082
@@ -466,18 +466,18 @@ MonoBehaviour:
   isLockOn: 0
   UseGravity: 0
   hitEffect: {fileID: 0}
-  speed: 60
-  damage: 50
+  speed: 15
+  damage: 30
   damagePerSecond: 100
   stuckTime: 0
   knockBackRate: 0
-  isPhysicsBulletBreak: 0
-  isEnergyBulletBreak: 0
+  isPhysicsBulletBreak: 1
+  isEnergyBulletBreak: 1
   isHitBreak: 0
   safetyTime: 0.05
-  turnSpeed: 60
+  turnSpeed: 120
   lockStartTime: 0
-  lockedSpeedRate: 1
+  lockedSpeedRate: 2.5
   lockedTurnSpeedRate: 1
   isNeedLock: 1
   isLockFlat: 1

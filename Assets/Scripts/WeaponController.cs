@@ -204,12 +204,15 @@ public class WeaponController : Photon.MonoBehaviour
             imgGage.fillAmount = 1;
             imgGage.color = NORMAL_GAGE_COLOR;
         }
-        if (spriteStudioCtrl && myBtn.gameObject.GetActive())
+        if (spriteStudioCtrl != null && myBtn.gameObject.GetActive())
         {
             Vector3 pos = spriteStudioCtrl.GetObjPos(myBtn.gameObject);
-            //Debug.Log(pos+" >> "+ scriptRoot.transform.position);
-            scriptRoot.transform.position = pos;
-            spriteStudioCtrl.Play(scriptRoot);
+            if (scriptRoot == null) scriptRoot = spriteStudioCtrl.CreateButtonFlash(myBtn.gameObject);
+            if (scriptRoot != null)
+            {
+                scriptRoot.transform.position = pos;
+                spriteStudioCtrl.Play(scriptRoot);
+            }
         }
 
         SetEnable(true);

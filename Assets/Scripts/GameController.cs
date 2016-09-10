@@ -275,7 +275,14 @@ public class GameController : SingletonMonoBehaviour<GameController>
 
     IEnumerator MessageDelayDelete(Text textObj, float fadeout, bool isLineText = false)
     {
-        yield return new WaitForSeconds(fadeout);
+        string txt = textObj.text;
+        for (;;)
+        {
+            fadeout -= Time.deltaTime;
+            if (fadeout < 0) break;
+            if (txt != textObj.text) yield break;
+            yield return null;
+        }
         FadeOutText(textObj, isLineText);
     }
 
@@ -392,6 +399,19 @@ public class GameController : SingletonMonoBehaviour<GameController>
                                         () => Continue(true), () => GoToTitle()
                                     };
                                 DialogController.OpenDialog(text, buttons, actions);
+                                //自動でタイトルへ遷移
+                                float waitTime = 10;
+                                for (;;)
+                                {
+                                    if (isContinue) break;
+                                    waitTime -= Time.deltaTime;
+                                    if (waitTime < 0)
+                                    {
+                                        GoToTitle();
+                                        yield break;
+                                    }
+                                    yield return null;
+                                }
                             }
                             else
                             {
@@ -436,6 +456,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
                             //自動でタイトルへ遷移
                             yield return new WaitForSeconds(5.0f);
                             GoToTitle();
+                            yield break;
                         }
                     }
                 }

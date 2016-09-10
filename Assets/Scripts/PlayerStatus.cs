@@ -523,7 +523,6 @@ public class PlayerStatus : Photon.MonoBehaviour {
             {
                 //被ダメボイス
                 if (voiceManager != null) voiceManager.Dead();
-                voiceManager = null;
 
                 //戦闘不能
                 //transform.DetachChildren();

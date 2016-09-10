@@ -61,10 +61,6 @@ public class VoiceManager : MonoBehaviour
     {
         Play(damageVoiceList, no, STATUS_DAMAGE);
     }
-    public void Dead(int no = -1)
-    {
-        Play(deadVoiceList, no, STATUS_DEAD);
-    }
     public void Win(int no = -1)
     {
         Play(winVoiceList, no, STATUS_WIN);
@@ -72,5 +68,17 @@ public class VoiceManager : MonoBehaviour
     public void BattleStart(int no = -1)
     {
         Play(battleStartVoiceList, no, STATUS_START);
+    }
+    public void Dead(int no = -1)
+    {
+        if (deadVoiceList.Count == 0) return;
+        if (audioSource != null && audioSource.isPlaying) audioSource.Stop();
+        AudioSource camAudio = Camera.main.transform.GetComponent<AudioSource>();
+        if (camAudio != null)
+        {
+            int index = Random.Range(0, deadVoiceList.Count);
+            camAudio.clip = deadVoiceList[index];
+            camAudio.Play();
+        }
     }
 }

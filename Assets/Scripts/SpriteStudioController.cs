@@ -44,10 +44,6 @@ public class SpriteStudioController : MonoBehaviour
     public Script_SpriteStudio_Root CreateAnimation(GameObject animation, GameObject targetObj)
     {
         string key = targetObj.name;
-        if (scriptRoots.ContainsKey(key))
-        {
-            return scriptRoots[key];
-        }
         Vector3 pos = GetObjPos(targetObj);
         return CreateAnimation(animation, key, pos);
     }
@@ -55,7 +51,7 @@ public class SpriteStudioController : MonoBehaviour
     {
         if (scriptRoots.ContainsKey(key))
         {
-            return scriptRoots[key];
+            if (scriptRoots[key] != null) return scriptRoots[key];
         }
 
         GameObject ob = (GameObject)Instantiate(animation, worldPos, Camera.main.transform.rotation);

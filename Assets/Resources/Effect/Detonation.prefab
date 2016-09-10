@@ -155,7 +155,7 @@ Transform:
   m_GameObject: {fileID: 125456}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 5, y: 5, z: 5}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 424056}
@@ -170,7 +170,7 @@ Transform:
   m_GameObject: {fileID: 120694}
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0.0021972656, y: 0.076049805, z: -0.037109375}
-  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 428812}
@@ -342,9 +342,9 @@ MonoBehaviour:
   isPhysicsBulletBreak: 1
   isEnergyBulletBreak: 1
   ownDamageRate: 0.2
-  startScale: {x: 1, y: 1, z: 1}
+  startScale: {x: 5, y: 5, z: 5}
   endScale: {x: 30, y: 30, z: 30}
-  scaleTime: 4
+  scaleTime: 2.5
   scaleLateTime: 0
   isParticle: 0
 --- !u!114 &11459882
@@ -385,7 +385,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effectSpawn: {fileID: 163966, guid: 65351d6cc2acb2741b5115144056024d, type: 2}
-  activeLimitTime: 5
+  activeLimitTime: 3
   activeLimitDistance: 0
 --- !u!135 &13540924
 SphereCollider:
