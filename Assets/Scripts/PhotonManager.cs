@@ -67,6 +67,7 @@ public class PhotonManager : MonoBehaviour
         {
             Init();
             isFirstScean = false;
+            Camera.main.transform.localRotation = topCameraQuat;
         }
         else
         {
@@ -166,6 +167,7 @@ public class PhotonManager : MonoBehaviour
         if (!isReturn)
         {
             SwitchModeSelectArea(false);
+            Camera.main.transform.localRotation = topCameraQuat;
         }
         DialogController.CloseMessage();
         SwitchNetworkArea(false);
@@ -176,19 +178,21 @@ public class PhotonManager : MonoBehaviour
         {
             PhotonNetwork.Disconnect();
         }
-
-        Camera.main.transform.localRotation = topCameraQuat;
     }
 
     public void ReturnModeSelect()
     {
-        Init(true);
-        TapToStart();
         if (isPlayAd)
         {
             UnityAds.Instance.Play();
             isPlayAd = false;
         }
+
+        UnityAction collback = () => { 
+            Init(true);
+            TapToStart();
+        };
+        CameraRotate(true, collback);
     }
 
     //モードセレクトダイアログ切り替え
