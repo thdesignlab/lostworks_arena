@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using UnityEngine.Events;
 
 public class PhotonManager : MonoBehaviour
 {
@@ -42,7 +43,11 @@ public class PhotonManager : MonoBehaviour
     private bool isNetworkMode = false;
 
     private float processTime = 0;
-    
+
+    private Quaternion topCameraQuat = Quaternion.AngleAxis(0, Vector3.up);
+    private Quaternion otherCameraQuat = Quaternion.AngleAxis(45, Vector3.up);
+    private float camRotateTime = 0.5f;
+
     private InputField roomNameIF;
     private Text roomStatusText;
 
@@ -69,10 +74,6 @@ public class PhotonManager : MonoBehaviour
 
         //ユーザー情報取得
         UserManager.SetUserInfo();
-
-        //広告テスト
-        DialogController.OpenDialogAd();
-
     }
 
     void Update()
@@ -174,6 +175,8 @@ public class PhotonManager : MonoBehaviour
         {
             PhotonNetwork.Disconnect();
         }
+
+        Camera.main.transform.localRotation = topCameraQuat;
     }
 
     public void ReturnModeSelect()
@@ -318,7 +321,7 @@ public class PhotonManager : MonoBehaviour
     //ネットワークモード選択
     public void NetworkModeSelect()
     {
-        DialogController.OpenMessage(DialogController.MESSAGE_LOADING, DialogController.MESSAGE_POSITION_RIGHT);
+        DialogController.OpenMessage(DialogController.MESSAGE_CONNECT, DialogController.MESSAGE_POSITION_RIGHT);
         SwitchModeSelectArea(false, true);
 
         PhotonNetwork.offlineMode = false;
@@ -347,7 +350,8 @@ public class PhotonManager : MonoBehaviour
         roomNameIF = networkArea.transform.FindChild("Room/Name").GetComponent<InputField>();
         roomStatusText = networkArea.transform.FindChild("RoomStatus").GetComponent<Text>();
 
-        isNetworkMode = true;
+        UnityAction callback = () => isNetworkMode = true;
+        CameraRotate(false, callback);
     }
 
     //カスタマイズ
@@ -364,7 +368,8 @@ public class PhotonManager : MonoBehaviour
     public void OnConfigButton()
     {
         SwitchModeSelectArea(false, true);
-        ConfigManager.Instance.OpenConfig();
+        UnityAction callback = () => ConfigManager.Instance.OpenConfig();
+        CameraRotate(false, callback);
     }
 
     // ##### 各操作 #####
@@ -415,6 +420,30 @@ public class PhotonManager : MonoBehaviour
         PhotonNetwork.JoinRandomRoom();
     }
 
+
+    //カメラ切り替え
+    private void CameraRotate(bool isTop = true, UnityAction callback = null)
+    {
+        Quaternion quat = topCameraQuat;
+        if (!isTop) quat = otherCameraQuat;
+        //Camera.main.transform.localRotation = quat;
+        StartCoroutine(CameraRotateProc(quat, callback));
+    }
+    IEnumerator CameraRotateProc(Quaternion toQuat, UnityAction callback)
+    {
+        float time = 0;
+        Quaternion fromQuat = Camera.main.transform.localRotation;
+        for (;;)
+        {
+            time += Time.deltaTime;
+            float rate = time / camRotateTime;
+            Camera.main.transform.localRotation = Quaternion.Lerp(fromQuat, toQuat, rate);
+            if (rate > 1) break;
+            yield return null;
+        }
+
+        if (callback != null) callback.Invoke();
+    }
 
     // ##### photon callback #####
 
