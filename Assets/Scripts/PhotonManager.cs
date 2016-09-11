@@ -34,6 +34,7 @@ public class PhotonManager : MonoBehaviour
     const int SELECTABLE_MODE_BOTH = 3;
     private int selectableMode = SELECTABLE_MODE_BOTH;
 
+    const int MAX_ROOM_COUNT = 10;
     const int MAX_ROOM_PLAYER_COUNT = 2;
     const string ROOM_NAME_PREFIX = "Room";
 
@@ -246,16 +247,20 @@ public class PhotonManager : MonoBehaviour
     //Room一覧更新
     private void SearchRoomList()
     {
+        int roomCnt = 0;
+        RectTransform roomListContent = roomListArea.transform.FindChild("Viewport/Content").GetComponent<RectTransform>();
+
         //中身をリセットする
-        foreach (Transform child in roomListArea.transform)
+        foreach (Transform child in roomListContent)
         {
             Destroy(child.gameObject);
         }
 
         //キャンセルボタン
         GameObject cancelBtn = (GameObject)Instantiate(roomCancelBtn);
-        cancelBtn.transform.SetParent(roomListArea.transform, false);
+        cancelBtn.transform.SetParent(roomListContent, false);
         cancelBtn.GetComponent<Button>().onClick.AddListener(() => SwitchRoomListArea(false, true));
+        roomCnt++;
 
         //Room一覧取得
         RoomInfo[] roomList = PhotonNetwork.GetRoomList();
@@ -270,11 +275,14 @@ public class PhotonManager : MonoBehaviour
                     roomBtn = roomFullBtn;
                 }
                 GameObject joinBtn = (GameObject)Instantiate(roomBtn);
-                joinBtn.transform.SetParent(roomListArea.transform, false);
-                joinBtn.GetComponent<Button>().onClick.AddListener(() => JoinRoom(roomName));
+                joinBtn.transform.SetParent(roomListContent, false);
+                joinBtn.GetComponent<Button>().onClick.AddListener(() => JoinRoom(room));
                 joinBtn.transform.FindChild("Text").GetComponent<Text>().text = roomName;
+                roomCnt++;
             }
         }
+
+        roomListContent.sizeDelta = new Vector2(0, 200 * roomCnt + 50);
     }
 
 
@@ -314,7 +322,6 @@ public class PhotonManager : MonoBehaviour
 
         PhotonNetwork.offlineMode = true;
         moveScene = Common.CO.SCENE_BATTLE;
-        isPlayAd = true;
         PhotonNetwork.CreateRoom(ROOM_NAME_PREFIX);
     }
 
@@ -328,7 +335,6 @@ public class PhotonManager : MonoBehaviour
         PhotonNetwork.automaticallySyncScene = true;
         PhotonNetwork.autoJoinLobby = true;
         moveScene = Common.CO.SCENE_BATTLE;
-        isPlayAd = true;
 
         // the following line checks if this client was just created (and not yet online). if so, we connect
         if (PhotonNetwork.connectionStateDetailed == PeerState.PeerCreated)
@@ -347,8 +353,8 @@ public class PhotonManager : MonoBehaviour
         // PhotonNetwork.logLevel = NetworkLogLevel.Full;
 
         //ネットワークエリア
-        roomNameIF = networkArea.transform.FindChild("Room/Name").GetComponent<InputField>();
-        roomStatusText = networkArea.transform.FindChild("RoomStatus").GetComponent<Text>();
+        roomNameIF = networkArea.transform.FindChild("Network/Room/Name").GetComponent<InputField>();
+        roomStatusText = networkArea.transform.FindChild("Network/RoomStatus").GetComponent<Text>();
 
         UnityAction callback = () => isNetworkMode = true;
         CameraRotate(false, callback);
@@ -393,23 +399,32 @@ public class PhotonManager : MonoBehaviour
     public void CreateRoom()
     {
         DialogController.OpenMessage(DialogController.MESSAGE_CREATE_ROOM, DialogController.MESSAGE_POSITION_RIGHT);
-        if (PhotonNetwork.countOfRooms >= 10)
+        if (PhotonNetwork.countOfRooms >= MAX_ROOM_COUNT)
         {
             DialogController.CloseMessage();
             DialogController.OpenDialog(MESSAGE_ROOM_LIMIT_FAILED);
             return;
         }
-        PhotonNetwork.CreateRoom(roomNameIF.text, new RoomOptions() { maxPlayers = 2 }, null);
+        string roomName = UserManager.userInfo[Common.PP.INFO_USER_NAME];
+        roomName += "["+UserManager.userResult[Common.PP.RESULT_BATTLE_RATE]+"]";
+        PhotonNetwork.CreateRoom(roomName, new RoomOptions() { maxPlayers = 2 }, null);
     }
 
     //入室
+    public void JoinRoom(RoomInfo roomInfo = null)
+    {
+        string roomName = "";
+        if (roomInfo != null) roomName = roomInfo.name;
+        JoinRoom(roomName);
+    }
     public void JoinRoom(string roomName = "")
     {
-        DialogController.OpenMessage(DialogController.MESSAGE_JOIN_ROOM, DialogController.MESSAGE_POSITION_RIGHT);
         if (roomName == "")
         {
-            roomName = roomNameIF.text;
+            RandomJoinRoom();
+            return;
         }
+        DialogController.OpenMessage(DialogController.MESSAGE_JOIN_ROOM, DialogController.MESSAGE_POSITION_RIGHT);
         PhotonNetwork.JoinRoom(roomName);
     }
 
@@ -450,6 +465,7 @@ public class PhotonManager : MonoBehaviour
     // We have two options here: we either joined(by title, list or random) or created a room.
     public void OnJoinedRoom()
     {
+        isPlayAd = true;
         //Debug.Log("OnJoinedRoom");
     }
 
