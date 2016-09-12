@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2c3e2fd293409448b70e6699a65a249, type: 3}
+  m_Name: Gameover
+  m_EditorClassIdentifier: 
+  ListDataCellMap:
+  - Name: gameover_anim
+    SizeOriginal: {x: 1024, y: 1024}
+    ListCell:
+    - Name: NewCell
+      Rectangle:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 1024
+        height: 208
+      Pivot: {x: 512, y: 104}

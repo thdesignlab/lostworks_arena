@@ -15,6 +15,8 @@ public class SpriteStudioController : MonoBehaviour
     public string ANIMATION_TEXT_WIN = "Win";
     [HideInInspector]
     public string ANIMATION_TEXT_LOSE = "Lose";
+    [HideInInspector]
+    public string MESSAGE_GAME_OVER = "GameOver";
 
 
     private GameObject view3D;

@@ -55,7 +55,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
     const string MESSAGE_ROUND_READY = "Round";
     const string MESSAGE_MISSION_CLEAR = "Mission Clear!!";
     const string MESSAGE_STAGE_NEXT = "Next";
-    const string MESSAGE_GAME_OVER = "GameOver";
+    //const string MESSAGE_GAME_OVER = "GameOver";
 
     private Dictionary<string, string[]> spriteTexts = new Dictionary<string, string[]>()
     {
@@ -389,7 +389,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
                             if (loseCount >= 3)
                             {
                                 //ゲームオーバー
-                                SetTextCenter(MESSAGE_GAME_OVER, colorWin);
+                                SetTextCenter(spriteStudioCtrl.MESSAGE_GAME_OVER, colorWin);
                                 yield return new WaitForSeconds(1.0f);
 
                                 //ダイアログ
@@ -527,7 +527,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
                                 if (round == 1)
                                 {
                                     //ステージ文字
-                                    SetTextLine(MESSAGE_STAGE_READY + stageNo.ToString(), colorLine, 2.0f);
+                                    SetTextLine(MESSAGE_STAGE_READY + stageNo.ToString(), colorLine);
                                     yield return new WaitForSeconds(2);
                                 }
                                 //ラウンド文字
