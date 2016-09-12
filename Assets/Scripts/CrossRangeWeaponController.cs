@@ -27,6 +27,7 @@ public class CrossRangeWeaponController : WeaponController
 
     private const string MOTION_RIGHT_SLASH = "SlashR";
     private const string MOTION_LEFT_SLASH = "SlashL";
+    private const string MOTION_CENTER_SLASH = "SlashC";
 
     protected override void Awake()
     {
@@ -163,7 +164,7 @@ public class CrossRangeWeaponController : WeaponController
                 break;
 
             default:
-                animationName = MOTION_RIGHT_SLASH;
+                animationName = MOTION_CENTER_SLASH;
                 break;
         }
     }

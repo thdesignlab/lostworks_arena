@@ -1,45 +1,59 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &155844
+--- !u!1 &142638
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 4
   m_Component:
-  - 4: {fileID: 452148}
-  - 198: {fileID: 19816656}
-  - 199: {fileID: 19918204}
-  - 114: {fileID: 11412434}
-  - 114: {fileID: 11463346}
-  - 114: {fileID: 11493428}
-  - 136: {fileID: 13652428}
+  - 4: {fileID: 472522}
+  - 198: {fileID: 19856476}
+  - 199: {fileID: 19947456}
+  - 114: {fileID: 11467102}
+  - 114: {fileID: 11410622}
+  - 114: {fileID: 11478674}
+  - 136: {fileID: 13631192}
   m_Layer: 0
-  m_Name: ClusterLaserChild
+  m_Name: ChargeArrow
   m_TagString: EnergyBullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &452148
+--- !u!4 &472522
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 155844}
+  m_GameObject: {fileID: 142638}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 58.79, y: -41.8, z: -23.7}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0.61, z: 1.48}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
---- !u!114 &11412434
+--- !u!114 &11410622
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 155844}
+  m_GameObject: {fileID: 142638}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f086994b8c47ea443baf4face217f973, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectSpawn: {fileID: 0}
+  activeLimitTime: 0
+  activeLimitDistance: 0
+--- !u!114 &11467102
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 142638}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
@@ -56,73 +70,65 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 0}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 0
-  instantiationId: -1
+  viewIdField: 2
+  instantiationId: 2
   isRuntimeInstantiated: 0
---- !u!114 &11463346
+--- !u!114 &11478674
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 155844}
+  m_GameObject: {fileID: 142638}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f086994b8c47ea443baf4face217f973, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  effectSpawn: {fileID: 0}
-  activeLimitTime: 1.5
-  activeLimitDistance: 0
---- !u!114 &11493428
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 155844}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4c39a9577c9d9ce419562d5c935a761e, type: 3}
+  m_Script: {fileID: 11500000, guid: 6be696df7517986458c85c46bae14738, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   isCheckGrounded: 0
   glideGravityRate: 1
-  isLockOn: 1
+  isLockOn: 0
   UseGravity: 0
   hitEffect: {fileID: 135988, guid: d7cd433d10510fe46a35c39bac480fe1, type: 2}
-  speed: 100
-  damage: 10
+  speed: 250
+  damage: 5
   damagePerSecond: 0
   stuckTime: 0
   knockBackRate: 0
-  isPhysicsBulletBreak: 0
+  isPhysicsBulletBreak: 1
   isEnergyBulletBreak: 0
-  isHitBreak: 0
-  safetyTime: 0
-  turnSpeed: 720
-  lockStartTime: 0.1
-  lockedSpeedRate: 1.8
-  lockedTurnSpeedRate: 0
+  isHitBreak: 1
+  safetyTime: 0.05
+  turnSpeed: 180
+  lockStartTime: 0
+  lockedSpeedRate: 1
+  lockedTurnSpeedRate: 1
   isNeedLock: 1
   isLockFlat: 0
---- !u!136 &13652428
+  chargeEffect: {fileID: 0}
+  maxChargeTime: 3
+  maxSpeedRate: 1
+  maxDamageRate: 5
+  maxSizeRate: 1
+  limitTime: 2
+--- !u!136 &13631192
 CapsuleCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 155844}
+  m_GameObject: {fileID: 142638}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
   m_Radius: 1
-  m_Height: 3
+  m_Height: 2.5
   m_Direction: 2
-  m_Center: {x: 0, y: 0, z: -0.5}
---- !u!198 &19816656
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!198 &19856476
 ParticleSystem:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 155844}
+  m_GameObject: {fileID: 142638}
   serializedVersion: 2
   lengthInSec: 5
   startDelay:
@@ -332,7 +338,7 @@ ParticleSystem:
         rgba: 4294967295
       maxColor:
         serializedVersion: 2
-        rgba: 4287184127
+        rgba: 4294948096
       minMaxState: 0
     startSize:
       scalar: 1
@@ -568,14 +574,9 @@ ParticleSystem:
           inSlope: 0
           outSlope: 0
           tangentMode: 0
-        - time: 1
-          value: 0
-          inSlope: 0
-          outSlope: 0
-          tangentMode: 0
         m_PreInfinity: 2
         m_PostInfinity: 2
-        m_RotationOrder: 4
+        m_RotationOrder: 0
       minMaxState: 1
   RotationModule:
     enabled: 1
@@ -1596,12 +1597,12 @@ ParticleSystem:
     subEmitterCollision1: {fileID: 0}
     subEmitterDeath: {fileID: 0}
     subEmitterDeath1: {fileID: 0}
---- !u!199 &19918204
+--- !u!199 &19947456
 ParticleSystemRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 155844}
+  m_GameObject: {fileID: 142638}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -1646,5 +1647,5 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 155844}
+  m_RootGameObject: {fileID: 142638}
   m_IsPrefabParent: 1

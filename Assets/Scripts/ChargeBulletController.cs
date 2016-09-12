@@ -80,6 +80,7 @@ public class ChargeBulletController : TrackingBulletController
 
     public void Fire(float chargeTime)
     {
+        activeTime = 0;
         Charging(chargeTime);
         isCharge = false;
         base.speed = (int)Mathf.Lerp(baseSpeed, baseSpeed * maxSpeedRate, chargeRate);

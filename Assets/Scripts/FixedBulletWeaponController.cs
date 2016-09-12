@@ -23,6 +23,7 @@ public class FixedBulletWeaponController : BulletWeaponController
 
         foreach (GameObject bullet in shootBullets)
         {
+            if (bullet == null) yield break;
             FixedTrackingBulletController ctrl = bullet.GetComponent<FixedTrackingBulletController>();
             if (ctrl != null)
             {
@@ -30,5 +31,6 @@ public class FixedBulletWeaponController : BulletWeaponController
                 if (fixedDiffTime > 0) yield return new WaitForSeconds(fixedDiffTime);
             }
         }
+        yield break;
     }
 }

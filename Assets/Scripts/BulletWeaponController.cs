@@ -176,7 +176,7 @@ public class BulletWeaponController : WeaponController
         ResetMuzzle(muzzleNo);
     }
 
-    private int GetNextMuzzleNo(int nowNo)
+    protected int GetNextMuzzleNo(int nowNo)
     {
         nowNo++;
         if (nowNo >= muzzles.Count) nowNo = 0;

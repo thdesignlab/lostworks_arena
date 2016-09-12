@@ -431,6 +431,7 @@ namespace Common
             { 1002, new string[]{ "BeamCannon", "", "", OBTAIN_TYPE_INIT}},
             { 1003, new string[]{ "PlasmaGun", "", "", OBTAIN_TYPE_INIT}},
             { 1004, new string[]{ "BlazePillar", "", "", OBTAIN_TYPE_INIT}},
+            { 1005, new string[]{ "CERifle", "", "", OBTAIN_TYPE_INIT}},
         };
         //ハンド武器(ダッシュ)リスト
         public static Dictionary<int, string[]> handDashWeaponLineUp = new Dictionary<int, string[]>()
@@ -441,6 +442,7 @@ namespace Common
             { 2003, new string[]{ "ThrowingDagger", "", "", OBTAIN_TYPE_INIT}},
             { 2004, new string[]{ "PenetrateDagger", "", "", OBTAIN_TYPE_INIT}},
             { 2005, new string[]{ "LaserBlade", "", "", OBTAIN_TYPE_INIT}},
+            { 2006, new string[]{ "BulletBomb", "", "", OBTAIN_TYPE_INIT}},
         };
         //背中武器リスト
         public static Dictionary<int, string[]> shoulderWeaponLineUp = new Dictionary<int, string[]>()
@@ -450,6 +452,7 @@ namespace Common
             { 3002, new string[]{ "SatelliteMissile", "", "", OBTAIN_TYPE_INIT}},
             { 3003, new string[]{ "Cyclone", "", "", OBTAIN_TYPE_INIT}},
             { 3004, new string[]{ "EnergyShield", "", "", OBTAIN_TYPE_INIT}},
+            { 3005, new string[]{ "ChargeArrow", "", "", OBTAIN_TYPE_INIT}},
         };
         //背中武器(ダッシュ)リスト
         public static Dictionary<int, string[]> shoulderDashWeaponLineUp = new Dictionary<int, string[]>()
@@ -458,6 +461,7 @@ namespace Common
             { 4001, new string[]{ "ClusterLaser", "", "", OBTAIN_TYPE_INIT}},
             { 4002, new string[]{ "GatlingCannon", "", "", OBTAIN_TYPE_INIT}},
             { 4003, new string[]{ "Shotgun", "", "", OBTAIN_TYPE_INIT}},
+            { 4004, new string[]{ "RoundMissile", "", "", OBTAIN_TYPE_INIT}},
         };
         //サブ武器リスト
         public static Dictionary<int, string[]> subWeaponLineUp = new Dictionary<int, string[]>()
