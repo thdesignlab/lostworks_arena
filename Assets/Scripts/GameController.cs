@@ -1066,11 +1066,9 @@ public class GameController : SingletonMonoBehaviour<GameController>
         int bgmNo = -1;
         if (gameMode == GAME_MODE_MISSION)
         {
-            bgmNo = 0;
-            if (stageNo > 0)
-            {
-                bgmNo = Common.Mission.stageNpcNoDic[stageNo][Common.Mission.STAGE_NPC_BGM];
-            }
+            int index = stageNo;
+            if (index < 1) index = 1;
+            bgmNo = Common.Mission.stageNpcNoDic[index][Common.Mission.STAGE_NPC_BGM];
         }
         SoundManager.Instance.PlayBattleBgm(bgmNo);
     }

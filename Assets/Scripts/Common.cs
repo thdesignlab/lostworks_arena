@@ -643,7 +643,7 @@ namespace Common
         public const int STAGE_NPC_BGM = 1;
         public static Dictionary<int, int[]> stageNpcNoDic = new Dictionary<int, int[]>()
         {
-            { 1, new int[] { 1000, 0 } },
+            { 1, new int[] { 1000, 2 } },
             { 2, new int[] { 1001, 0 } },
             { 3, new int[] { 1002, 0 } },
             { 4, new int[] { 0, 1 } },

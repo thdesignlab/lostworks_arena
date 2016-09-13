@@ -74,16 +74,17 @@ public class ChargeBulletController : TrackingBulletController
             if (chargeEffect != null) chargeEffect.SetActive(false);
         }
 
-        base.damage = (int)Mathf.Lerp(baseDamage, baseDamage * maxDamageRate, chargeRate);
-        base.myTran.localScale = Vector3.Lerp(baseScale, baseScale * maxSizeRate, chargeRate);
+        damage = (int)Mathf.Lerp(baseDamage, baseDamage * maxDamageRate, chargeRate);
+        if (myTran == null) return;
+        myTran.localScale = Vector3.Lerp(baseScale, baseScale * maxSizeRate, chargeRate);
     }
 
     public void Fire(float chargeTime)
     {
         Charging(chargeTime);
         isCharge = false;
-        base.speed = (int)Mathf.Lerp(baseSpeed, baseSpeed * maxSpeedRate, chargeRate);
-        base.defaultSpeed = base.speed;
+        speed = (int)Mathf.Lerp(baseSpeed, baseSpeed * maxSpeedRate, chargeRate);
+        defaultSpeed = speed;
 
         if (chargeEffect != null) chargeEffect.SetActive(false);
     }

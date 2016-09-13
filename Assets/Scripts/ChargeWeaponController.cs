@@ -34,17 +34,18 @@ public class ChargeWeaponController : BulletWeaponController
                     rapidIntervalTime += Time.deltaTime;
                     if (rapidCount > bulletCtrls.Count && rapidIntervalTime >= rapidInterval)
                     {
-                        int muzzleNo = GetNextMuzzleNo(bulletTrans.Count-1);
-                        CreateBullet(muzzleNo);
+                        int no = GetNextMuzzleNo(bulletTrans.Count-1);
+                        CreateBullet(no);
                     }
 
                     //弾にチャージ情報を送る
+                    int muzzleNo = 0;
                     for (int i = 0; i < bulletCtrls.Count; i++)
                     {
-                        int muzzleNo = GetNextMuzzleNo(i);
                         bulletCtrls[i].Charging(chargeTime);
                         bulletTrans[i].position = base.muzzles[muzzleNo].position;
                         bulletTrans[i].rotation = base.muzzles[muzzleNo].rotation;
+                        muzzleNo = GetNextMuzzleNo(i);
                     }
                     return;
                 }
@@ -95,7 +96,7 @@ public class ChargeWeaponController : BulletWeaponController
 
     protected void CreateBullet(int muzzleNo)
     {
-        GameObject ob = base.SpawnBullet(base.muzzles[muzzleNo].position, base.muzzles[muzzleNo].rotation, 0);
+        GameObject ob = SpawnBullet(muzzles[muzzleNo].position, muzzles[muzzleNo].rotation, 0);
         bulletTrans.Add(ob.transform);
         bulletCtrls.Add(ob.transform.GetComponent<ChargeBulletController>());
         rapidIntervalTime = 0;

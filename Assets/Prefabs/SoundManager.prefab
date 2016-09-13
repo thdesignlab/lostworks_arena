@@ -1,5 +1,53 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &100352
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 459210}
+  - 114: {fileID: 11436192}
+  m_Layer: 0
+  m_Name: BgmBattle2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &138166
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 447174}
+  - 114: {fileID: 11427632}
+  m_Layer: 0
+  m_Name: BgmCustom
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &149610
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 438460}
+  - 114: {fileID: 11422088}
+  m_Layer: 0
+  m_Name: BgmBattle1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &161140
 GameObject:
   m_ObjectHideFlags: 0
@@ -10,6 +58,7 @@ GameObject:
   - 4: {fileID: 415718}
   - 114: {fileID: 11499072}
   - 114: {fileID: 11448322}
+  - 82: {fileID: 8226404}
   m_Layer: 0
   m_Name: SoundManager
   m_TagString: Untagged
@@ -26,9 +75,8 @@ GameObject:
   m_Component:
   - 4: {fileID: 474348}
   - 114: {fileID: 11447158}
-  - 82: {fileID: 8241296}
   m_Layer: 0
-  m_Name: BgmBattle
+  m_Name: BgmBattle3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -43,9 +91,8 @@ GameObject:
   m_Component:
   - 4: {fileID: 491724}
   - 114: {fileID: 11404498}
-  - 82: {fileID: 8229642}
   m_Layer: 0
-  m_Name: BgmCustom
+  m_Name: BgmTitle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -63,9 +110,51 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 491724}
+  - {fileID: 447174}
+  - {fileID: 438460}
+  - {fileID: 459210}
   - {fileID: 474348}
   m_Father: {fileID: 0}
   m_RootOrder: 0
+--- !u!4 &438460
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 149610}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -73.05953, y: -46.59007, z: -24.43925}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 415718}
+  m_RootOrder: 2
+--- !u!4 &447174
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 138166}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -73.05953, y: -46.59007, z: -24.43925}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 415718}
+  m_RootOrder: 1
+--- !u!4 &459210
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100352}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -73.05953, y: -46.59007, z: -24.43925}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 415718}
+  m_RootOrder: 3
 --- !u!4 &474348
 Transform:
   m_ObjectHideFlags: 1
@@ -78,7 +167,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 415718}
-  m_RootOrder: 1
+  m_RootOrder: 4
 --- !u!4 &491724
 Transform:
   m_ObjectHideFlags: 1
@@ -92,92 +181,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 415718}
   m_RootOrder: 0
---- !u!82 &8229642
+--- !u!82 &8226404
 AudioSource:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 194226}
+  m_GameObject: {fileID: 161140}
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 24384928, guid: 4817c32da9beaeb43b7c44b180d41730,
     type: 2}
-  m_audioClip: {fileID: 8300000, guid: e55fa40bb414498448fe54d4bd5d1b1c, type: 3}
-  m_PlayOnAwake: 0
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 1
-  Mute: 0
-  Spatialize: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    - time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 0
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 0
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 0
---- !u!82 &8241296
-AudioSource:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 179030}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 24384928, guid: 4817c32da9beaeb43b7c44b180d41730,
-    type: 2}
-  m_audioClip: {fileID: 8300000, guid: dfe29d83f741b524f8d59c5d7207a896, type: 3}
+  m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -253,6 +267,52 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1537abaf576ea04cb2140bee386d45e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioClip: {fileID: 8300000, guid: e29fdef1d5d0fe54280b416f195d34ee, type: 3}
+  playStartTime: 0
+  loopStartTime: 0
+  loopEndTime: 32
+--- !u!114 &11422088
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 149610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1537abaf576ea04cb2140bee386d45e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioClip: {fileID: 8300000, guid: 54766217b2eedb744b722f8c05069a85, type: 3}
+  playStartTime: 0
+  loopStartTime: 0
+  loopEndTime: 0
+--- !u!114 &11427632
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 138166}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1537abaf576ea04cb2140bee386d45e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioClip: {fileID: 8300000, guid: e55fa40bb414498448fe54d4bd5d1b1c, type: 3}
+  playStartTime: 0
+  loopStartTime: 0
+  loopEndTime: 0
+--- !u!114 &11436192
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100352}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1537abaf576ea04cb2140bee386d45e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioClip: {fileID: 8300000, guid: 66a952c493dba53468320cdf4bfd4fe8, type: 3}
   playStartTime: 0
   loopStartTime: 0
   loopEndTime: 0
@@ -267,6 +327,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1537abaf576ea04cb2140bee386d45e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioClip: {fileID: 8300000, guid: 2b0f7910b0de62849a8c0f51be79b74d, type: 3}
   playStartTime: 0
   loopStartTime: 0
   loopEndTime: 0
@@ -281,6 +342,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59349c17086b92c42bc4e4029112d489, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  titleBgmList:
+  - {fileID: 11404498}
+  customBgmList:
+  - {fileID: 11427632}
+  battleBgmList:
+  - {fileID: 11422088}
+  - {fileID: 11436192}
+  - {fileID: 11447158}
 --- !u!114 &11499072
 MonoBehaviour:
   m_ObjectHideFlags: 1

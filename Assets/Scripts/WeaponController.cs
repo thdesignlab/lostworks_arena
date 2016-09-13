@@ -77,6 +77,7 @@ public class WeaponController : Photon.MonoBehaviour
                 myBitTran = child;
                 bitFromPos = myBitTran.localPosition;
                 bitAnimator = myBitTran.GetComponent<Animator>();
+                if (bitAnimator == null) bitAnimator = myBitTran.GetComponentInChildren<Animator>();
                 myBitTran.localScale = Vector3.zero;
             }
         }
@@ -231,7 +232,6 @@ public class WeaponController : Photon.MonoBehaviour
     {
         charaAnimator = a;
         motionParam = s;
-
         if (bitMotionType > 0)
         {
             bitMotionParam = Common.Func.GetBitMotionName(bitMotionType, s);
