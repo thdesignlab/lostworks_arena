@@ -956,6 +956,11 @@ public class GameController : SingletonMonoBehaviour<GameController>
     //NPC生成
     public void NpcSpawn(int no = -1)
     {
+        if (GameObject.FindGameObjectsWithTag("Player").Length >= 2)
+        {
+            CleanNpc();
+        }
+
         ResetGame();
 
         //ステージNo設定
