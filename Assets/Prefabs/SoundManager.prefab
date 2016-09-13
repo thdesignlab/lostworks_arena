@@ -269,7 +269,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioClip: {fileID: 8300000, guid: e29fdef1d5d0fe54280b416f195d34ee, type: 3}
   playStartTime: 0
-  loopStartTime: 0
+  loopStartTime: 0.1
   loopEndTime: 32
 --- !u!114 &11422088
 MonoBehaviour:
@@ -284,8 +284,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioClip: {fileID: 8300000, guid: 54766217b2eedb744b722f8c05069a85, type: 3}
   playStartTime: 0
-  loopStartTime: 0
-  loopEndTime: 0
+  loopStartTime: 0.01
+  loopEndTime: 69.74
 --- !u!114 &11427632
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -299,8 +299,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioClip: {fileID: 8300000, guid: e55fa40bb414498448fe54d4bd5d1b1c, type: 3}
   playStartTime: 0
-  loopStartTime: 0
-  loopEndTime: 0
+  loopStartTime: 0.01
+  loopEndTime: 16
 --- !u!114 &11436192
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -314,8 +314,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioClip: {fileID: 8300000, guid: 66a952c493dba53468320cdf4bfd4fe8, type: 3}
   playStartTime: 0
-  loopStartTime: 0
-  loopEndTime: 0
+  loopStartTime: 0.01
+  loopEndTime: 81.75
 --- !u!114 &11447158
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -330,7 +330,7 @@ MonoBehaviour:
   audioClip: {fileID: 8300000, guid: 2b0f7910b0de62849a8c0f51be79b74d, type: 3}
   playStartTime: 0
   loopStartTime: 0
-  loopEndTime: 0
+  loopEndTime: 46.8
 --- !u!114 &11448322
 MonoBehaviour:
   m_ObjectHideFlags: 1
