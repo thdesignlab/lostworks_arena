@@ -26,7 +26,7 @@ public class BgmManager : MonoBehaviour
     void Update()
     {
         // 再生中のBGMの再生時間を監視する
-        if (audioSource != null && audioSource.isPlaying)
+        if (audioSource != null && audioSource.clip == audioClip && audioSource.isPlaying)
         {
             if (loopEndTime > 0)
             {

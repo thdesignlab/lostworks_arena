@@ -2231,6 +2231,18 @@ Prefab:
       propertyPath: m_RootOrder
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 11404498, guid: b7480a9deaf5b414480b560e083388d8, type: 2}
+      propertyPath: loopEndTime
+      value: 32
+      objectReference: {fileID: 0}
+    - target: {fileID: 11404498, guid: b7480a9deaf5b414480b560e083388d8, type: 2}
+      propertyPath: playStartTime
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11404498, guid: b7480a9deaf5b414480b560e083388d8, type: 2}
+      propertyPath: loopStartTime
+      value: 0.1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b7480a9deaf5b414480b560e083388d8, type: 2}
   m_IsPrefabParent: 0
