@@ -18,6 +18,8 @@ public class FixedTrackingBulletController : BulletController
     [SerializeField]
     protected bool isNeedLock = false;    //誘導に要ロック(画面に捕らえている)
 
+    protected LaserPointerController pointCtrl;    //ロック後ポインター
+
     protected bool enableSetAngle = true;
     protected float defaultSpeed;
     protected float defaultRollSpeed;
@@ -39,6 +41,7 @@ public class FixedTrackingBulletController : BulletController
         {
             defaultBodyRot = rollBody.localRotation;
         }
+        pointCtrl = myTran.GetComponentInChildren<LaserPointerController>();
     }
     protected override void Update()
     {
@@ -116,6 +119,7 @@ public class FixedTrackingBulletController : BulletController
         {
             Vector3 diffVector = base.DifferentialCorrection(base.targetTran, fixedSpeed);
             myTran.LookAt(base.targetTran.position + diffVector);
+            if (pointCtrl != null) pointCtrl.SetOn();
         }
         else
         {
@@ -156,5 +160,6 @@ public class FixedTrackingBulletController : BulletController
     {
         base.speed = 0;
         fixedTurnSpeed = 0;
+        if (pointCtrl != null) pointCtrl.SetOff();
     }
 }

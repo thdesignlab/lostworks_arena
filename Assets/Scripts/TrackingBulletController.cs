@@ -16,6 +16,8 @@ public class TrackingBulletController : BulletController
     [SerializeField]
     protected bool isLockFlat = false;    //平面ロックFLG
 
+    protected LaserPointerController pointCtrl;    //ロック後ポインター
+
     protected bool enableSetAngle = true;
     protected float defaultSpeed;
     protected float defaultTurnSpeed;
@@ -28,6 +30,7 @@ public class TrackingBulletController : BulletController
         defaultSpeed = base.speed;
         defaultTurnSpeed = turnSpeed;
         if (isLockFlat) lockVector = new Vector3(1, 0, 1);
+        pointCtrl = myTran.GetComponentInChildren<LaserPointerController>();
     }
 
     protected override void Update()
@@ -56,6 +59,7 @@ public class TrackingBulletController : BulletController
                     //ロック時スピード
                     base.speed = defaultSpeed * lockedSpeedRate;
                     turnSpeed = defaultTurnSpeed * lockedTurnSpeedRate;
+                    if (pointCtrl != null) pointCtrl.SetOn();
                 }
             }
         }
