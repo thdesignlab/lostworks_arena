@@ -12,14 +12,12 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager>
     [SerializeField]
     private List<BgmManager> battleBgmList;
 
-    private Transform myTran;
     private BgmManager nowBgmMgr;
 
 
     protected override void Awake()
     {
         base.Awake();
-        myTran = transform;
     }
 
     void Start()
@@ -61,6 +59,12 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager>
             no = Random.Range(0, battleBgmList.Count);
         }
         BgmManager bgmMgr = battleBgmList[no];
+        Play(bgmMgr);
+    }
+
+    public void PlayStoreBgm()
+    {
+        BgmManager bgmMgr = customBgmList[0];
         Play(bgmMgr);
     }
 

@@ -7,8 +7,8 @@ public class LaserPointerController : MonoBehaviour
     private LineRenderer pointer;
     [SerializeField]
     private float maxLength = 200;
-    [SerializeField]
-    private float width = 0.1f;
+    //[SerializeField]
+    //private float width = 0.1f;
 
     private Transform myTran;
     private bool isActive = false;

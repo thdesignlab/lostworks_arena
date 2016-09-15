@@ -20,7 +20,7 @@ public class PlayerMotionController : MonoBehaviour
     private BaseMoveController moveCtrl;
     private MeshRenderer shadow;
     private Transform boostEffectTran;
-    private float leftBoostEffectTime = 0;
+    //private float leftBoostEffectTime = 0;
     private GameObject boostEffectAnim;
 
     void Awake()

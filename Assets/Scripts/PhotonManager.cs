@@ -374,6 +374,14 @@ public class PhotonManager : MonoBehaviour
         PhotonNetwork.CreateRoom(ROOM_NAME_PREFIX);
     }
 
+    //Store
+    public void OnStoreButton()
+    {
+        SwitchModeSelectArea(false, true);
+        UnityAction callback = () => StoreManager.Instance.OpenStore();
+        CameraRotate(false, callback);
+    }
+
     //コンフィグ
     public void OnConfigButton()
     {
@@ -381,6 +389,13 @@ public class PhotonManager : MonoBehaviour
         UnityAction callback = () => ConfigManager.Instance.OpenConfig();
         CameraRotate(false, callback);
     }
+
+    //ランキング
+    public void OnRankingButton()
+    {
+        DialogController.OpenDialog("はいはい\n1位1位(´-д-)-3");
+    }
+
 
     // ##### 各操作 #####
 

@@ -26,7 +26,7 @@ public class NpcController : MoveOfCharacter
     private Vector3 randomMoveTarget = Vector3.zero;
 
 
-    private PlayerMotionController motionCtrl;
+    //private PlayerMotionController motionCtrl;
     private Animator animator;
     private ExtraWeaponController extraCtrl;
 
@@ -36,7 +36,7 @@ public class NpcController : MoveOfCharacter
         base.Awake();
         status = GetComponent<PlayerStatus>();
         preHp = status.GetNowHp();
-        motionCtrl = GetComponent<PlayerMotionController>();
+        //motionCtrl = GetComponent<PlayerMotionController>();
     }
 
     protected override void Start()
