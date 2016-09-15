@@ -48,7 +48,6 @@ public class ConfigManager : SingletonMonoBehaviour<ConfigManager>
 
         //プレイヤー名TEXT
         playerNameText = configCanvasTran.FindChild("List/Name/InputField").GetComponent<InputField>();
-        playerNameText.text = UserManager.userInfo[Common.PP.INFO_USER_NAME];
 
         //スライダー
         bgmSlider = configCanvasTran.FindChild("List/Bgm/Slider").GetComponent<Slider>();
@@ -66,6 +65,7 @@ public class ConfigManager : SingletonMonoBehaviour<ConfigManager>
         foreach (int kind in configDic.Keys)
         {
             //Debug.Log(kind+" >> "+configDic[kind]);
+            playerNameText.text = UserManager.userInfo[Common.PP.INFO_USER_NAME];
             if (volumeNameDic.ContainsKey(kind))
             {
                 //UI設定

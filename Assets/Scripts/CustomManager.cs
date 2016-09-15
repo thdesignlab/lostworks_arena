@@ -42,7 +42,9 @@ public class CustomManager : Photon.MonoBehaviour
     [SerializeField]
     private GameObject selectedWeaponButton;
     [SerializeField]
-    private Color weaponSelectedColor = Color.gray;
+    private Color weaponOtherSelectedColor = Color.gray;
+    [SerializeField]
+    private Color weaponSelectedColor = Color.blue;
     [SerializeField]
     private Color weaponNotSelectedColor = Color.yellow;
     private int maxWeaponButtonCount = 8;
@@ -499,7 +501,10 @@ public class CustomManager : Photon.MonoBehaviour
             SetWeaponDescription(weaponNo);
 
             //装備
-            EquipWeapon(selectedPartsNo, weaponNo);
+            GameObject weaponObj = EquipWeapon(selectedPartsNo, weaponNo);
+
+            //Bit画像設定
+            SetBitIcon(selectedPartsNo, weaponObj);
 
             //武器文字色変更
             foreach (Transform btn in weaponButtonArea)
@@ -518,8 +523,16 @@ public class CustomManager : Photon.MonoBehaviour
         Color col = weaponNotSelectedColor;
         if (UserManager.userEquipment.ContainsValue(weaponNo))
         {
-            col = weaponSelectedColor;
+            if (UserManager.userEquipment[Common.CO.partsNameArray[selectedPartsNo]] == weaponNo)
+            {
+                col = weaponSelectedColor;
+            }
+            else
+            {
+                col = weaponOtherSelectedColor;
+            }
         }
+
         return col;
     }
 

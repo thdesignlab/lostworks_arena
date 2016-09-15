@@ -469,7 +469,13 @@ public class PhotonManager : MonoBehaviour
     // We have two options here: we either joined(by title, list or random) or created a room.
     public void OnJoinedRoom()
     {
-        isPlayAd = true;
+        switch (moveScene)
+        {
+            case Common.CO.SCENE_BATTLE:
+                isPlayAd = true;
+                break;
+        }
+
         //Debug.Log("OnJoinedRoom");
     }
 

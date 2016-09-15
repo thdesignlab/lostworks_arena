@@ -66,7 +66,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 0e33c197e543d9f498b4b357ab6fa1e3, type: 3}
   - {fileID: 21300000, guid: 07ec6a9b8a61d77408a6a382bd25b555, type: 3}
   selectedWeaponButton: {fileID: 140286, guid: ef7eefbbe4460264485034479c7efd4a, type: 2}
-  weaponSelectedColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  weaponOtherSelectedColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  weaponSelectedColor: {r: 0, g: 0.37931037, b: 1, a: 1}
   weaponNotSelectedColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!1001 &100100000
 Prefab:
