@@ -17,6 +17,8 @@ public class ConfigManager : SingletonMonoBehaviour<ConfigManager>
     [SerializeField]
     private AudioSource voiceAudio;
 
+    private InputField playerNameText;
+
     private Slider bgmSlider;
     private Slider seSlider;
     private Slider voiceSlider;
@@ -42,14 +44,20 @@ public class ConfigManager : SingletonMonoBehaviour<ConfigManager>
 
         configCanvas.SetActive(false);
 
+        Transform configCanvasTran = configCanvas.transform;
+
+        //プレイヤー名TEXT
+        playerNameText = configCanvasTran.FindChild("List/Name/InputField").GetComponent<InputField>();
+        playerNameText.text = UserManager.userInfo[Common.PP.INFO_USER_NAME];
+
         //スライダー
-        bgmSlider = configCanvas.transform.FindChild("List/Bgm/Slider").GetComponent<Slider>();
-        seSlider = configCanvas.transform.FindChild("List/Se/Slider").GetComponent<Slider>();
-        voiceSlider = configCanvas.transform.FindChild("List/Voice/Slider").GetComponent<Slider>();
+        bgmSlider = configCanvasTran.FindChild("List/Bgm/Slider").GetComponent<Slider>();
+        seSlider = configCanvasTran.FindChild("List/Se/Slider").GetComponent<Slider>();
+        voiceSlider = configCanvasTran.FindChild("List/Voice/Slider").GetComponent<Slider>();
         //トグル
-        bgmToggle = configCanvas.transform.FindChild("List/Bgm/Toggle").GetComponent<Toggle>();
-        seToggle = configCanvas.transform.FindChild("List/Se/Toggle").GetComponent<Toggle>();
-        voiceToggle = configCanvas.transform.FindChild("List/Voice/Toggle").GetComponent<Toggle>();
+        bgmToggle = configCanvasTran.FindChild("List/Bgm/Toggle").GetComponent<Toggle>();
+        seToggle = configCanvasTran.FindChild("List/Se/Toggle").GetComponent<Toggle>();
+        voiceToggle = configCanvasTran.FindChild("List/Voice/Toggle").GetComponent<Toggle>();
     }
 
     void Start()
@@ -171,5 +179,12 @@ public class ConfigManager : SingletonMonoBehaviour<ConfigManager>
             float volumeDB = 20 * Mathf.Log10(value / SLIDER_COUNT);
             mixer.SetFloat(volumeNameDic[kind], Mathf.Clamp(volumeDB, MIN_DECIBEL, MAX_DECIBEL));
         }
+    }
+
+    public void CheckName(string input)
+    {
+        //名前チェック
+        //保存
+        UserManager.SetUserName(input);
     }
 }

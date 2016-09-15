@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 448fa39e20a754c49a39a1544c65cedd
-timeCreated: 1471526039
+timeCreated: 1473946259
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -65,8 +65,10 @@ TextureImporter:
   textureType: 8
   buildTargetSettings: []
   spriteSheet:
+    serializedVersion: 2
     sprites:
-    - name: Custom_img_0
+    - serializedVersion: 2
+      name: Custom_img_0
       rect:
         serializedVersion: 2
         x: 16
@@ -76,12 +78,9 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 5, y: 5, z: 5, w: 5}
-      outline:
-      - - {x: -178, y: 28.5}
-        - {x: -178, y: -28.5}
-        - {x: 178, y: -28.5}
-        - {x: 178, y: 28.5}
-    - name: Custom_img_1
+      outline: []
+    - serializedVersion: 2
+      name: Custom_img_1
       rect:
         serializedVersion: 2
         x: 198
@@ -91,14 +90,9 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -24.5, y: 50.5}
-        - {x: -24.5, y: -51.5}
-        - {x: 6.5, y: -51.5}
-        - {x: 24.5, y: -7.5}
-        - {x: 24.5, y: 11.5}
-        - {x: 0.5, y: 50.5}
-    - name: Custom_img_2
+      outline: []
+    - serializedVersion: 2
+      name: Custom_img_2
       rect:
         serializedVersion: 2
         x: 322
@@ -108,16 +102,9 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 13.5, y: 18.5}
-        - {x: -13.5, y: 18.5}
-        - {x: -62.5, y: 2.5}
-        - {x: -62.5, y: -14.5}
-        - {x: -61.5, y: -16.5}
-        - {x: 64.5, y: -16.5}
-        - {x: 64.5, y: 3.5}
-        - {x: 63.5, y: 8.5}
-    - name: Custom_img_3
+      outline: []
+    - serializedVersion: 2
+      name: Custom_img_3
       rect:
         serializedVersion: 2
         x: 644
@@ -127,12 +114,9 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -188.5, y: 441}
-        - {x: -188.5, y: -441}
-        - {x: 188.5, y: -441}
-        - {x: 188.5, y: 441}
-    - name: Custom_img_4
+      outline: []
+    - serializedVersion: 2
+      name: Custom_img_4
       rect:
         serializedVersion: 2
         x: 16
@@ -142,12 +126,9 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 12, y: 12, z: 10, w: 9}
-      outline:
-      - - {x: -177.5, y: 120.5}
-        - {x: -177.5, y: -120.5}
-        - {x: 177.5, y: -120.5}
-        - {x: 177.5, y: 120.5}
-    - name: Custom_img_5
+      outline: []
+    - serializedVersion: 2
+      name: Custom_img_5
       rect:
         serializedVersion: 2
         x: 388
@@ -156,13 +137,10 @@ TextureImporter:
         height: 90
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -45, y: 45}
-        - {x: -45, y: -45}
-        - {x: 45, y: -45}
-        - {x: 45, y: 45}
-    - name: Custom_img_6
+      border: {x: 5, y: 5, z: 5, w: 5}
+      outline: []
+    - serializedVersion: 2
+      name: Custom_img_6
       rect:
         serializedVersion: 2
         x: 509
@@ -171,13 +149,10 @@ TextureImporter:
         height: 90
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -45, y: 45}
-        - {x: -45, y: -45}
-        - {x: 45, y: -45}
-        - {x: 45, y: 45}
-    - name: Custom_img_7
+      border: {x: 5, y: 5, z: 5, w: 5}
+      outline: []
+    - serializedVersion: 2
+      name: Custom_img_7
       rect:
         serializedVersion: 2
         x: 22
@@ -187,15 +162,9 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -21.5, y: -24.5}
-        - {x: -18.5, y: -27.5}
-        - {x: 15.5, y: -27.5}
-        - {x: 15.5, y: 18.5}
-        - {x: 12.5, y: 26.5}
-        - {x: -20.5, y: 26.5}
-        - {x: -21.5, y: 23.5}
-    - name: Custom_img_8
+      outline: []
+    - serializedVersion: 2
+      name: Custom_img_8
       rect:
         serializedVersion: 2
         x: 286
@@ -205,21 +174,9 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 64, y: 17.5}
-        - {x: -31, y: 17.5}
-        - {x: -31, y: -27.5}
-        - {x: 75, y: -27.5}
-        - {x: 76, y: -25.5}
-        - {x: 76, y: 4.5}
-      - - {x: -74, y: -23.5}
-        - {x: -71, y: -26.5}
-        - {x: -37, y: -26.5}
-        - {x: -37, y: 19.5}
-        - {x: -40, y: 27.5}
-        - {x: -73, y: 27.5}
-        - {x: -74, y: 24.5}
-    - name: Custom_img_9
+      outline: []
+    - serializedVersion: 2
+      name: Custom_img_9
       rect:
         serializedVersion: 2
         x: 22
@@ -229,14 +186,9 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -23, y: 28.5}
-        - {x: -23, y: -27.5}
-        - {x: 14, y: -27.5}
-        - {x: 20, y: -21.5}
-        - {x: 20, y: 24.5}
-        - {x: 12, y: 28.5}
-    - name: Custom_img_10
+      outline: []
+    - serializedVersion: 2
+      name: Custom_img_10
       rect:
         serializedVersion: 2
         x: 22
@@ -246,19 +198,9 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -80, y: 29.5}
-        - {x: -80, y: -26.5}
-        - {x: -43, y: -26.5}
-        - {x: -37, y: -20.5}
-        - {x: -37, y: 25.5}
-        - {x: -45, y: 29.5}
-      - - {x: -30, y: 18.5}
-        - {x: -30, y: -26.5}
-        - {x: 77, y: -26.5}
-        - {x: 77, y: 9.5}
-        - {x: 65, y: 18.5}
-    - name: Custom_img_11
+      outline: []
+    - serializedVersion: 2
+      name: Custom_img_11
       rect:
         serializedVersion: 2
         x: 22
@@ -268,14 +210,9 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -21, y: 26}
-        - {x: -24, y: 25}
-        - {x: -24, y: -28}
-        - {x: 21, y: -28}
-        - {x: 21, y: 17}
-        - {x: 17, y: 26}
-    - name: Custom_img_12
+      outline: []
+    - serializedVersion: 2
+      name: Custom_img_12
       rect:
         serializedVersion: 2
         x: 284
@@ -285,21 +222,9 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 67, y: 18.5}
-        - {x: -28, y: 18.5}
-        - {x: -28, y: -26.5}
-        - {x: 78, y: -26.5}
-        - {x: 79, y: -24.5}
-        - {x: 79, y: 5.5}
-      - - {x: -42, y: 28.5}
-        - {x: -80, y: 28.5}
-        - {x: -80, y: -22.5}
-        - {x: -79, y: -25.5}
-        - {x: -35, y: -25.5}
-        - {x: -35, y: 20.5}
-        - {x: -40, y: 26.5}
-    - name: Custom_img_13
+      outline: []
+    - serializedVersion: 2
+      name: Custom_img_13
       rect:
         serializedVersion: 2
         x: 22
@@ -309,15 +234,9 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -35.5, y: 28.5}
-        - {x: -40.5, y: 24.5}
-        - {x: -40.5, y: -27.5}
-        - {x: 34.5, y: -27.5}
-        - {x: 39.5, y: -24.5}
-        - {x: 39.5, y: 10.5}
-        - {x: 27.5, y: 28.5}
-    - name: Custom_img_14
+      outline: []
+    - serializedVersion: 2
+      name: Custom_img_14
       rect:
         serializedVersion: 2
         x: 6
@@ -328,7 +247,8 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: Custom_img_15
+    - serializedVersion: 2
+      name: Custom_img_15
       rect:
         serializedVersion: 2
         x: 8
@@ -337,12 +257,8 @@ TextureImporter:
         height: 103
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -375, y: 51.5}
-        - {x: -375, y: -51.5}
-        - {x: 375, y: -51.5}
-        - {x: 375, y: 51.5}
+      border: {x: 10, y: 10, z: 10, w: 10}
+      outline: []
     outline: []
   spritePackingTag: 
   userData: 

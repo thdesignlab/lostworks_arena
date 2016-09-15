@@ -186,7 +186,9 @@ public class UserManager
 
     public static void SetUserName(string userName)
     {
-        //PlayerPrefs.SetString(Common.PP.INFO_USER_NAME, userName);
+        userInfo[Common.PP.INFO_USER_NAME] = userName;
+        PlayerPrefsUtility.SaveDict<int, string>(Common.PP.USER_INFO, userInfo);
+        PlayerPrefs.Save();
     }
 
     //##### ユーザー戦績 #####
