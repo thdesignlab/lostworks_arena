@@ -355,16 +355,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50109fa70c4f9e0429ec3eb57d72f11d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pointer: {fileID: 12036782}
+  pointer: {fileID: 0}
+  impactPoint: {fileID: 169900, guid: c63314ceed9215d4da6af309a2d2b891, type: 2}
   maxLength: 250
-  width: 0.1
+  pointSize: 0.3
 --- !u!120 &12036782
 LineRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 184668}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_Materials:
