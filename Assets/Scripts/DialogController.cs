@@ -84,6 +84,7 @@ public class DialogController : MonoBehaviour
         if (buttons.Count <= 0 || actions.Count <= 0) return null;
 
         dialog = Instantiate((GameObject)Resources.Load(RESOURCE_DIALOG));
+        ScreenManager.Instance.FadeDialog(dialog, true);
         Text textMessage = dialog.transform.FindChild("DialogArea/Message").GetComponent<Text>();
         GameObject buttonOkObj = dialog.transform.FindChild("DialogArea/ButtonArea/OK").gameObject;
         GameObject buttonCancelObj = dialog.transform.FindChild("DialogArea/ButtonArea/Cancel").gameObject;
@@ -116,7 +117,8 @@ public class DialogController : MonoBehaviour
 
     public static void CloseDialog()
     {
-        Destroy(dialog);
+        ScreenManager.Instance.FadeDialog(dialog, false);
+        //Destroy(dialog);
     }
 
     private static void SetBtn(GameObject btnObj, string btnText, UnityAction btnAction)

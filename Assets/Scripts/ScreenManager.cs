@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using UnityEngine.Events;
 
 public class ScreenManager : SingletonMonoBehaviour<ScreenManager>
 {
@@ -102,7 +103,7 @@ public class ScreenManager : SingletonMonoBehaviour<ScreenManager>
         StartCoroutine(LoadUIProccess(fadeOutObj, fadeInObj, isChild));
     }
 
-    public void FadeUI(GameObject uiObj, bool isFadeIn, bool isChild = true)
+    public void FadeUI(GameObject uiObj, bool isFadeIn, bool isChild = true, UnityAction callback = null)
     {
         GameObject fadeOutObj = null;
         GameObject fadeInObj = null;
@@ -114,10 +115,17 @@ public class ScreenManager : SingletonMonoBehaviour<ScreenManager>
         {
             fadeOutObj = uiObj;
         }
-        StartCoroutine(LoadUIProccess(fadeOutObj, fadeInObj, isChild));
+        StartCoroutine(LoadUIProccess(fadeOutObj, fadeInObj, isChild, callback));
     }
 
-    IEnumerator LoadUIProccess(GameObject fadeOutObj, GameObject fadeInObj, bool isChild)
+    public void FadeDialog(GameObject dialog, bool isFadeIn)
+    {
+        UnityAction callback = null;
+        if (!isFadeIn) callback = () => Destroy(dialog);
+        FadeUI(dialog, isFadeIn, true, callback);
+    }
+
+    IEnumerator LoadUIProccess(GameObject fadeOutObj, GameObject fadeInObj, bool isChild, UnityAction callback = null)
     {
         if (isUiFade)
         {
@@ -168,6 +176,7 @@ public class ScreenManager : SingletonMonoBehaviour<ScreenManager>
             //Debug.Log("Fade in end:" + fadeInObj.name);
             yield return fadeIn;
         }
+        if (callback != null) callback.Invoke();
         isUiFade = false;
     }
 
