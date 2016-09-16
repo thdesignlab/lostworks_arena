@@ -296,8 +296,8 @@ public class CustomManager : Photon.MonoBehaviour
     //武器試射可否チェック
     private bool IsEnabledFire()
     {
-        if (charaAnimator.GetCurrentAnimatorStateInfo(0).fullPathHash != waitHash) return false;
         if (leftShootInterval > 0) return false;
+        if (charaAnimator.GetCurrentAnimatorStateInfo(0).fullPathHash != waitHash) return false;
         return true;
     }
 
@@ -357,13 +357,15 @@ public class CustomManager : Photon.MonoBehaviour
     {
         if (!isSwipe)
         {
+            //if (tapObj != null) Debug.Log(tapObj.name + " : " + tapObj.tag);
+
             if (tapObj != null)
             {
                 //Debug.Log(tapObj.name + " : " + tapObj.tag);
-                if (tapObj.GetComponent<Button>() != null)
-                {
-                    //ボタン押下
-                }
+                //if (tapObj.GetComponent<Button>() != null)
+                //{
+                //    //ボタン押下
+                //}
             }
             else
             {
@@ -497,24 +499,43 @@ public class CustomManager : Photon.MonoBehaviour
             //装備可能チェック
             if (!WeaponStore.Instance.IsEnabledEquip(weaponNo)) return;
 
-            //武器説明表示
-            SetWeaponDescription(weaponNo);
-
             //装備
-            GameObject weaponObj = EquipWeapon(selectedPartsNo, weaponNo);
+            StartCoroutine(SetWeapon(weaponNo));
+        }
+        else
+        {
+            //試射
+            Fire(selectedPartsNo);
+        }
+    }
 
-            //Bit画像設定
-            SetBitIcon(selectedPartsNo, weaponObj);
+    IEnumerator SetWeapon(int weaponNo, bool isFire = true)
+    {
+        DialogController.OpenMessage(DialogController.MESSAGE_LOADING, DialogController.MESSAGE_POSITION_RIGHT);
+        for (;;)
+        {
+            if (IsEnabledFire()) break;
+            yield return null;
+        }
+        DialogController.CloseMessage();
 
-            //武器文字色変更
-            foreach (Transform btn in weaponButtonArea)
-            {
-                btn.FindChild("Text").GetComponent<Text>().color = GetWeaponTextColor(int.Parse(btn.name));
-            }
+        //武器説明表示
+        SetWeaponDescription(weaponNo);
+
+        //装備
+        GameObject weaponObj = EquipWeapon(selectedPartsNo, weaponNo);
+
+        //Bit画像設定
+        SetBitIcon(selectedPartsNo, weaponObj);
+
+        //武器文字色変更
+        foreach (Transform btn in weaponButtonArea)
+        {
+            btn.FindChild("Text").GetComponent<Text>().color = GetWeaponTextColor(int.Parse(btn.name));
         }
 
         //試射
-        Fire(selectedPartsNo);
+        if (isFire) Fire(selectedPartsNo);
     }
 
     //武器文字色取得
