@@ -85,7 +85,7 @@ public class DialogController : MonoBehaviour
 
         dialog = Instantiate((GameObject)Resources.Load(RESOURCE_DIALOG));
         ScreenManager.Instance.FadeDialog(dialog, true);
-        Text textMessage = dialog.transform.FindChild("DialogArea/Message").GetComponent<Text>();
+        textMessage = dialog.transform.FindChild("DialogArea/Message").GetComponent<Text>();
         GameObject buttonOkObj = dialog.transform.FindChild("DialogArea/ButtonArea/OK").gameObject;
         GameObject buttonCancelObj = dialog.transform.FindChild("DialogArea/ButtonArea/Cancel").gameObject;
 
@@ -136,6 +136,12 @@ public class DialogController : MonoBehaviour
         }
         CloseDialog();
     }
+
+    public static Text GetDialogText()
+    {
+        return textMessage;
+    }
+
 
     public static GameObject OpenMessage(string text, int msgPos = MESSAGE_POSITION_CENTER)
     {

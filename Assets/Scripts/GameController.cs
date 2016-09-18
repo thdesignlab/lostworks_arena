@@ -396,7 +396,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
                                 string text = "広告やで(｀・д・´)";
                                 List<string> buttons = new List<string>() { "Continue", "Title" };
                                 List<UnityAction> actions = new List<UnityAction>() {
-                                        () => Continue(true), () => GoToTitle()
+                                        () => ContinueMission(true), () => GoToTitle()
                                     };
                                 DialogController.OpenDialog(text, buttons, actions);
                                 //自動でタイトルへ遷移
@@ -434,27 +434,38 @@ public class GameController : SingletonMonoBehaviour<GameController>
                     if (isResultCheck || isPassResult)
                     {
                         //レート変化ダイアログ表示
-                        string text = "Rate : 1050(+50)仮";
+                        string rateText = "Rate : 1050(+50)仮\n\n";
+                        int waitTime = 10;
                         List<UnityAction> actions = new List<UnityAction>();
                         List<string> buttons = new List<string>() { "Continue", "Title" };
                         if (isWin)
                         {
                             //続けるorタイトルへ戻る
-                            actions.Add(() => Continue());
+                            actions = new List<UnityAction>();
+                            actions.Add(() => ContinueVs());
                             actions.Add(() => GoToTitle());
-                            actions = new List<UnityAction>() { () => Continue(), () => GoToTitle() };
                             buttons = new List<string>() { "Continue", "Title" };
-                            DialogController.OpenDialog(text, buttons, actions);
                         }
                         else
                         {
                             //タイトルへ戻るだけ
-                            text += "\n5秒後にTitleへもどります";
+                            waitTime = 5;
                             actions = new List<UnityAction>() { () => GoToTitle() };
                             buttons = new List<string>() { "Title" };
-                            DialogController.OpenDialog(text, buttons, actions);
-                            //自動でタイトルへ遷移
-                            yield return new WaitForSeconds(5.0f);
+                        }
+                        DialogController.OpenDialog(rateText, buttons, actions);
+                        Text DialogText = DialogController.GetDialogText();
+
+                        //自動でタイトルへ遷移
+                        for (int i = waitTime; i > 0; i--)
+                        {
+                            if (isContinue) break;
+                            string text = rateText + "後" + i + "秒でTitleへもどります";
+                            DialogText.text = text;
+                            yield return new WaitForSeconds(1.0f);
+                        }
+                        if (!isContinue)
+                        {
                             GoToTitle();
                             yield break;
                         }
@@ -836,7 +847,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
     {
         stageLevel++;
         stageNo = 1;
-        Continue();
+        ContinueMission();
     }
 
     //現在のステージNo取得
@@ -870,11 +881,11 @@ public class GameController : SingletonMonoBehaviour<GameController>
     }
 
     //コンティニュー
-    public void Continue(bool isAdPlay = false)
+    public void ContinueMission(bool isAdPlay = false)
     {
         if (isAdPlay)
         {
-            UnityAds.Instance.Play(() => Continue());
+            UnityAds.Instance.Play(() => ContinueMission());
         }
         else
         {
@@ -884,6 +895,12 @@ public class GameController : SingletonMonoBehaviour<GameController>
             ResetWinMark();
             StageSetting();
         }
+    }
+
+    //
+    public void ContinueVs()
+    {
+        isContinue = true;
     }
 
     //結果ダイアログ表示

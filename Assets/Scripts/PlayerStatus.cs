@@ -755,15 +755,31 @@ public class PlayerStatus : Photon.MonoBehaviour {
         {
             if (isSendRpc)
             {
-                object[] args = new object[] { limit, effect };
+                int effectViewId = -1;
+                PhotonView pv = PhotonView.Get(effect);
+                if (pv != null) effectViewId = pv.viewID;
+                object[] args = new object[] { limit, effectViewId };
                 photonView.RPC("InterfareMoveRPC", PhotonTargets.Others, args);
             }
         }
     }
 
     [PunRPC]
-    public void InterfareMoveRPC(float limit, GameObject effect = null)
+    public void InterfareMoveRPC(float limit, int effectViewId)
     {
+        GameObject effect = null;
+        PhotonView pv = PhotonView.Find(effectViewId);
+        if (pv != null)
+        {
+            effect = pv.gameObject;
+        }
+        else
+        {
+            if (stuckEffect != null && PhotonView.Get(stuckEffect).viewID == effectViewId)
+            {
+                effect = stuckEffect;
+            }
+        }
         InterfareMove(limit, effect, false);
     }
 

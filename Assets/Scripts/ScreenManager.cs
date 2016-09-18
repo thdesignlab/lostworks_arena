@@ -22,6 +22,7 @@ public class ScreenManager : SingletonMonoBehaviour<ScreenManager>
         myTran = transform;
         Transform fadeTran = myTran.FindChild("FadeImage");
         fadeImg = fadeTran.GetComponent<Image>();
+        fadeImg.raycastTarget = false;
     }
 
     public void Load(string sceneName, string message = "")
@@ -75,23 +76,27 @@ public class ScreenManager : SingletonMonoBehaviour<ScreenManager>
             procTime += Time.deltaTime;
             float procRate = procTime / fadeTime;
             if (procRate > 1) procRate = 1;
-            if (isFadeIn)
+            Color startColor;
+            Color endColor;
+            foreach (Image img in imgs)
             {
-                //フェードイン
-                foreach (Image img in imgs)
+                if (!IsFadeImage(img)) continue;
+                img.raycastTarget = isBlackOut;
+
+                if (isFadeIn)
                 {
-                    if (!IsFadeImage(img)) continue;
-                    img.color = Color.Lerp(alphaOne, alphaZero, procRate);
+                    //フェードイン
+                    startColor = alphaOne;
+                    endColor = alphaZero;
                 }
-            }
-            else
-            {
-                //フェードアウト
-                foreach (Image img in imgs)
+                else
                 {
-                    if (!IsFadeImage(img)) continue;
-                    img.color = Color.Lerp(alphaZero, alphaOne, procRate);
+                    //フェードアウト
+                    startColor = alphaZero;
+                    endColor = alphaOne;
                 }
+                img.color = Color.Lerp(startColor, endColor, procRate);
+                if (procRate >= 1) img.raycastTarget = !isBlackOut;
             }
             if (procRate >= 1) break;
             yield return null;
