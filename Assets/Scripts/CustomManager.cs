@@ -100,6 +100,7 @@ public class CustomManager : Photon.MonoBehaviour
 
     private const float SHOOT_INTERVAL = 1.0f;
     private float leftShootInterval = 0;
+    private bool isWeaponSelecting = false;
 
     //partsフレームの設置順
     private Dictionary<int, string> partsSelectNameMap = new Dictionary<int, string>()
@@ -490,6 +491,7 @@ public class CustomManager : Photon.MonoBehaviour
     private void WeaponSelect(int weaponNo)
     {
         //Debug.Log("WeaponSelect:"+weaponNo);
+        if (isWeaponSelecting) return;
 
         //現在装備中チェック
         string partsName = Common.CO.partsNameArray[selectedPartsNo];
@@ -511,6 +513,7 @@ public class CustomManager : Photon.MonoBehaviour
 
     IEnumerator SetWeapon(int weaponNo, bool isFire = true)
     {
+        isWeaponSelecting = true;
         DialogController.OpenMessage(DialogController.MESSAGE_LOADING, DialogController.MESSAGE_POSITION_RIGHT);
         for (;;)
         {
@@ -536,6 +539,7 @@ public class CustomManager : Photon.MonoBehaviour
 
         //試射
         if (isFire) Fire(selectedPartsNo);
+        isWeaponSelecting = false;
     }
 
     //武器文字色取得
