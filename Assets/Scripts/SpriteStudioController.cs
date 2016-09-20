@@ -17,7 +17,8 @@ public class SpriteStudioController : MonoBehaviour
     public string ANIMATION_TEXT_LOSE = "Lose";
     [HideInInspector]
     public string MESSAGE_GAME_OVER = "GameOver";
-
+    [HideInInspector]
+    public string MESSAGE_MISSION_CLEAR = "MissionClear";
 
     private GameObject view3D;
     public Dictionary<string, Script_SpriteStudio_Root> scriptRoots = new Dictionary<string, Script_SpriteStudio_Root>();

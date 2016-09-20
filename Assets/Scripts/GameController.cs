@@ -44,16 +44,16 @@ public class GameController : SingletonMonoBehaviour<GameController>
     private SpriteStudioController spriteStudioCtrl;
     private Script_SpriteStudio_Root scriptRoot;
 
-    const string MESSAGE_WAITING = "Player Waiting...";
-    const string MESSAGE_CUSTOMIZE = "Customizing...";
+    const string MESSAGE_WAITING = "PlayerWaiting...";
+    const string MESSAGE_CUSTOMIZE = "Customizing";
     const string MESSAGE_READY = "Ready";
     const string MESSAGE_START = "Go";
     //const string MESSAGE_WIN = "Win";
     //const string MESSAGE_LOSE = "Lose";
-    const string MESSAGE_LEVEL_SELECT = "Mode Selecting...";
+    const string MESSAGE_LEVEL_SELECT = "ModeSelecting...";
     const string MESSAGE_STAGE_READY = "Stage";
     const string MESSAGE_ROUND_READY = "Round";
-    const string MESSAGE_MISSION_CLEAR = "Mission Clear!!";
+    //const string MESSAGE_MISSION_CLEAR = "MissionClear";
     const string MESSAGE_STAGE_NEXT = "Next";
     //const string MESSAGE_GAME_OVER = "GameOver";
 
@@ -61,6 +61,8 @@ public class GameController : SingletonMonoBehaviour<GameController>
     {
         { MESSAGE_READY, new string[] { "ReadyGo", "ReadyGo_0" } },
         { MESSAGE_START, new string[] { "ReadyGo", "ReadyGo_1" } },
+        { MESSAGE_WAITING, new string[] { "PlayerWaiting", "PlayerWaiting" } },
+        { MESSAGE_LEVEL_SELECT, new string[] { "ModeSelecting", "ModeSelecting" } },
     };
 
     [HideInInspector]
@@ -364,7 +366,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
                                 else
                                 {
                                     //全ステージクリア
-                                    SetTextCenter(MESSAGE_MISSION_CLEAR, colorWait);
+                                    SetTextCenter(spriteStudioCtrl.MESSAGE_MISSION_CLEAR, colorWait);
                                     yield return new WaitForSeconds(1.0f);
 
                                     //ダイアログ

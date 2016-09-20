@@ -10,6 +10,8 @@ public class PhotonManager : MonoBehaviour
     public static bool isPlayAd = false;
 
     [SerializeField]
+    private GameObject titleLogo;
+    [SerializeField]
     private GameObject modeSelectArea;
     [SerializeField]
     private GameObject networkArea;
@@ -65,12 +67,14 @@ public class PhotonManager : MonoBehaviour
         //初期化
         if (isFirstScean)
         {
+            titleLogo.SetActive(true);
             Init();
             isFirstScean = false;
             Camera.main.transform.localRotation = topCameraQuat;
         }
         else
         {
+            titleLogo.SetActive(false);
             ReturnModeSelect();
         }
 
@@ -87,7 +91,8 @@ public class PhotonManager : MonoBehaviour
             Text messageText = DialogController.GetMessageTextObj();
             if (Input.GetMouseButtonDown(0))
             {
-                TapToStart();
+                isTapToStart = false;
+                ScreenManager.Instance.Load(Common.CO.SCENE_TITLE, DialogController.MESSAGE_LOADING);
             }
             if (message != null)
             {
@@ -289,11 +294,11 @@ public class PhotonManager : MonoBehaviour
         roomListContent.sizeDelta = new Vector2(0, 200 * roomCnt + 50);
     }
 
-
     //タイトル画面から進む
     private void TapToStart()
     {
         isTapToStart = false;
+
         SwitchModeSelectArea(true, true);
 
         //現在はBOTHのみ
