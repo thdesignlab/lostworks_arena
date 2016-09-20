@@ -71,8 +71,8 @@ public class PlayerStatus : Photon.MonoBehaviour {
     private Image hitEffect;
     private float leftHitEffectTime = 0;
     private const float HIT_EFFECT_TIME = 0.5f;
-    private Color hitNoiseStart = new Color(0, 1, 1, 0.25f);
-    private Color hitNoiseEnd = new Color(0, 1, 1, 0);
+    private Color hitNoiseStart = new Color(1, 1, 1, 1);
+    private Color hitNoiseEnd = new Color(1, 1, 1, 0);
 
     //private CameraController camCtrl;
     private bool isLocked = false;

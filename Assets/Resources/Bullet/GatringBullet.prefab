@@ -134,8 +134,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 0}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 0
-  instantiationId: -1
+  viewIdField: 2
+  instantiationId: 2
   isRuntimeInstantiated: 0
 --- !u!114 &11474612
 MonoBehaviour:
@@ -154,9 +154,9 @@ MonoBehaviour:
   UseGravity: 0
   hitEffect: {fileID: 135988, guid: d7cd433d10510fe46a35c39bac480fe1, type: 2}
   speed: 350
-  damage: 10
+  damage: 5
   damagePerSecond: 0
-  stuckTime: 0
+  stuckTime: 0.1
   knockBackRate: 0
   isPhysicsBulletBreak: 1
   isEnergyBulletBreak: 0
