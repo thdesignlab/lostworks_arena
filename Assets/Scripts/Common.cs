@@ -382,6 +382,7 @@ namespace Common
         //獲得タイプ
         public const string OBTAIN_TYPE_NONE = "NONE";
         public const string OBTAIN_TYPE_INIT = "INIT";
+        public const string OBTAIN_TYPE_STORE = "STORE";
 
         //武器リストNo
         public const int DETAIL_PREFAB_NAME_NO = 0;     //プレハブ名
@@ -397,7 +398,7 @@ namespace Common
             {1, new string[]{ "Hero2", "Dango", "0", OBTAIN_TYPE_INIT, "10001"}},
             {2, new string[]{ "Hero3", "Nekomimi", "0", OBTAIN_TYPE_INIT, "10005"}},
             {3, new string[]{ "Hero1", "Luri", "1", OBTAIN_TYPE_INIT, "10000"}},
-            {4, new string[]{ "Hero2", "Dango", "1", OBTAIN_TYPE_INIT, "10001"}},
+            {4, new string[]{ "Hero2", "Dango", "1", OBTAIN_TYPE_STORE, "10001"}},
             {1000, new string[]{ "Npc1", "Capsule1", "0", OBTAIN_TYPE_NONE, "10002"}},
             {1001, new string[]{ "Npc2", "Capsule2", "0", OBTAIN_TYPE_NONE, "10003,10004"}},
             {1002, new string[]{ "Npc3", "Capsule3", "0", OBTAIN_TYPE_NONE, "10001,10004"}},

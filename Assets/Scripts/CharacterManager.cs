@@ -16,7 +16,7 @@ public class CharacterManager
     }
 
     //選択可能キャラ取得
-    public static List<int> GetSelectableCharacter(bool isSelected = true)
+    public static List<int> GetSelectableCharacterNo(bool isSelected = true)
     {
         List<int> characters = new List<int>();
         foreach (int charaNo in Common.Character.characterLineUp.Keys)
@@ -30,6 +30,26 @@ public class CharacterManager
             characters.Add(charaNo);
         }
         return characters;
+    }
+    //選択可能キャラ取得(プレハブサマリ)
+    public static Dictionary<string, List<int>> GetSelectableCharacter()
+    {
+        Dictionary<string, List<int>> characterList = new Dictionary<string, List<int>>(); 
+        foreach (int charaNo in Common.Character.characterLineUp.Keys)
+        {
+            //取得条件チェック
+            if (!IsSelectableCharacter(charaNo)) continue;
+
+            //キャラ情報
+            string[] charaInfo = Common.Character.characterLineUp[charaNo];
+            string key = charaInfo[Common.Character.DETAIL_PREFAB_NAME_NO];
+            if (!characterList.ContainsKey(key))
+            {
+                characterList[key] = new List<int>();
+            }
+            characterList[key].Add(charaNo);
+        }
+        return characterList;
     }
 
     //所持キャラチェック

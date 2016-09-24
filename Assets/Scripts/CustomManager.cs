@@ -30,6 +30,8 @@ public class CustomManager : Photon.MonoBehaviour
     private GameObject partsUpArrow;
     [SerializeField]
     private GameObject weaponCloseArrow;
+    [SerializeField]
+    private GameObject colorChangeButton;
 
     [SerializeField]
     private Sprite partsSelectedSprite;
@@ -54,10 +56,11 @@ public class CustomManager : Photon.MonoBehaviour
     private PlayerController playerCtrl;
     private Animator charaAnimator;
 	private int waitHash = Animator.StringToHash("Base Layer.Wait");
-    private List<int> selectableCharaNoList = new List<int>();
+    private List<List<int>> selectableCharaList = new List<List<int>>();
 
     //キャラテーブルステータス
     private int charaIndex = 0;
+    private int colorIndex = 0;
     private int tableIndex = 0;
     private float charaChangeAngle = 120.0f;
     private float charaChangeTime = 1.0f;
@@ -156,10 +159,22 @@ public class CustomManager : Photon.MonoBehaviour
         }
 
         //ユーザー情報取得
-        charaIndex = UserManager.userSetCharacter;
+        int charaNo = UserManager.userSetCharacter;
 
         //所持キャラクター取得
-        selectableCharaNoList = CharacterManager.GetSelectableCharacter();
+        Dictionary<string, List<int>> tmpCharaList = CharacterManager.GetSelectableCharacter();
+        int index = 0;
+        foreach (string name in tmpCharaList.Keys)
+        {
+            int col = tmpCharaList[name].IndexOf(charaNo);
+            if (col >= 0)
+            {
+                charaIndex = index;
+                colorIndex = col;
+            }
+            selectableCharaList.Add(tmpCharaList[name]);
+            index++;
+        }
 
         //キャラ生成
         SpawnCharacter();
@@ -191,10 +206,17 @@ public class CustomManager : Photon.MonoBehaviour
     private void SpawnCharacter()
     {
         //キャラ情報取得
-        charaIndex = charaIndex % selectableCharaNoList.Count;
-        int charaNo = selectableCharaNoList[charaIndex];
+        charaIndex = charaIndex % selectableCharaList.Count;
+        colorIndex = colorIndex % selectableCharaList[charaIndex].Count;
+        int charaNo = selectableCharaList[charaIndex][colorIndex];
         string[] charaInfo = CharacterManager.GetCharacterInfo(charaNo);
         if (charaInfo == null) return;
+
+        //カラー変更ボタン
+        if (colorChangeButton != null)
+        {
+            colorChangeButton.SetActive(selectableCharaList[charaIndex].Count >= 2);
+        }
 
         //キャラセット情報更新
         UserManager.userSetCharacter = charaNo;
@@ -673,14 +695,28 @@ public class CustomManager : Photon.MonoBehaviour
         charaIndex += factor;
         if (charaIndex < 0)
         {
-            charaIndex = selectableCharaNoList.Count - 1;
+            charaIndex = selectableCharaList.Count - 1;
         }
-        else if (charaIndex >= selectableCharaNoList.Count)
+        else if (charaIndex >= selectableCharaList.Count)
         {
             charaIndex = 0;
         }
 
+        //カラーIndex
+        colorIndex = 0;
+
         StartCoroutine(TurnCharaTable(charaChangeAngle * factor, charaChangeTime, true));
+        SpawnCharacter();
+    }
+
+    //カラー切り替え
+    public void ColorSelect()
+    {
+        colorIndex++;
+        foreach (Transform child in spawnPoints[tableIndex])
+        {
+            Destroy(child.gameObject);
+        }
         SpawnCharacter();
     }
 
