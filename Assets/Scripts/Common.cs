@@ -395,12 +395,37 @@ namespace Common
         {
             {0, new string[]{ "Hero1", "Luri", "0", OBTAIN_TYPE_INIT, "10000"}},
             {1, new string[]{ "Hero2", "Dango", "0", OBTAIN_TYPE_INIT, "10001"}},
-            {2, new string[]{ "Hero3", "Nekomimi", "0", OBTAIN_TYPE_INIT, "10001"}},
+            {2, new string[]{ "Hero3", "Nekomimi", "0", OBTAIN_TYPE_INIT, "10005"}},
             {3, new string[]{ "Hero1", "Luri", "1", OBTAIN_TYPE_INIT, "10000"}},
             {4, new string[]{ "Hero2", "Dango", "1", OBTAIN_TYPE_INIT, "10001"}},
             {1000, new string[]{ "Npc1", "Capsule1", "0", OBTAIN_TYPE_NONE, "10002"}},
             {1001, new string[]{ "Npc2", "Capsule2", "0", OBTAIN_TYPE_NONE, "10003,10004"}},
             {1002, new string[]{ "Npc3", "Capsule3", "0", OBTAIN_TYPE_NONE, "10001,10004"}},
+        };
+
+        //ステータス
+        public const int STATUS_MAX_HP = 0;
+        public const int STATUS_RECOVER_SP = 1;
+        public const int STATUS_RUN_SPEED = 2;
+        public const int STATUS_BOOST_SPEED = 3;
+        public const int STATUS_TURN_SPEED = 4;
+        public const int STATUS_ATTACK_RATE = 5;
+        public const int STATUS_ATTACK_INTERVAL = 6;
+        public const int STATUS_BOOST_INTERVAL = 7;
+        public const int STATUS_TARGET_INTERVAL = 8;
+        public const int STATUS_TARGET_TYPE = 9;
+        public const int STATUS_TARGET_DISTANCE = 10;
+        public static Dictionary<int, int[]> StatusDic = new Dictionary<int, int[]>()
+        {
+                            //hp, sp, run, boost, turn, atk%, atkI, boostI, tagI
+            { 0, new int[]{ 1000, 50, 35, 70, 20, 100, 2, 2, 3, 1 , 20} },
+            { 1, new int[]{ 1000, 50, 30, 70, 20, 110, 2, 2, 3, 1 , 250} },
+            { 2, new int[]{ 1000, 75, 35, 70, 20, 100, 2, 2, 3, 1 , 150} },
+            { 3, new int[]{ 1000, 50, 35, 70, 20, 100, 2, 2, 3, 1 , 20} },
+            { 4, new int[]{ 1000, 50, 30, 70, 20, 110, 2, 2, 3, 1 , 250} },
+            { 1000, new int[]{ 600, 25, 20, 40, 15, 80, 3, 3, 5, 0 , 200} },
+            { 1001, new int[]{ 700, 30, 25, 50, 15, 80, 3, 3, 5, 0 , 200} },
+            { 1002, new int[]{ 800, 35, 30, 60, 20, 80, 2, 2, 4, 0 , 100} },
         };
 
         public static string[] GetCharacterInfo(int characterNo)
@@ -483,6 +508,7 @@ namespace Common
             { 10002, new string[]{ "ExtraBurning", "ExBurning", "突撃するよ！", OBTAIN_TYPE_INIT}},
             { 10003, new string[]{ "ExtraRifle", "ExRifle", "ふっとばすよ！", OBTAIN_TYPE_INIT}},
             { 10004, new string[]{ "ExtraShadowSewing", "ExShadowDagger", "拘束するよ！", OBTAIN_TYPE_INIT}},
+            { 10005, new string[]{ "ExtraClaw", "ExClaw", "ひっかくよw", OBTAIN_TYPE_INIT}},
         };
 
         //部位ごとの武器リスト取得
@@ -648,10 +674,11 @@ namespace Common
         public static Dictionary<int, int[]> stageNpcNoDic = new Dictionary<int, int[]>()
         {
             { 1, new int[] { 1000, 0 } },
-            { 2, new int[] { 1001, 0 } },
-            { 3, new int[] { 1002, 1 } },
-            { 4, new int[] { 0, 1 } },
-            { 5, new int[] { 1, 2 } },
+            { 2, new int[] { 0, 1 } },
+            { 3, new int[] { 1, 2 } },
+            { 4, new int[] { 2, 3 } },
+            { 5, new int[] { 3, 1 } },
+            { 6, new int[] { 4, 2 } },
         };
 
         //レベル
@@ -687,28 +714,6 @@ namespace Common
             return name;
         }
 
-        //NPCステータス
-        public const int STATUS_MAX_HP = 0;
-        public const int STATUS_RECOVER_SP = 1;
-        public const int STATUS_RUN_SPEED = 2;
-        public const int STATUS_BOOST_SPEED = 3;
-        public const int STATUS_TURN_SPEED = 4;
-        public const int STATUS_ATTACK_RATE = 5;
-        public const int STATUS_ATTACK_INTERVAL = 6;
-        public const int STATUS_BOOST_INTERVAL = 7;
-        public const int STATUS_TARGET_INTERVAL = 8;
-        public const int STATUS_TARGET_TYPE = 9;
-        public const int STATUS_TARGET_DISTANCE = 10;
-        public static Dictionary<int, int[]> npcStatusDic = new Dictionary<int, int[]>()
-        {
-                            //hp, sp, run, boost, turn, atk%, atkI, boostI, tagI
-            { 0, new int[]{ 1000, 50, 35, 70, 20, 100, 2, 2, 3, 1 , 30} },
-            { 1, new int[]{ 1000, 50, 30, 70, 20, 110, 2, 2, 3, 1 , 250} },
-            { 1000, new int[]{ 600, 25, 20, 40, 15, 80, 3, 3, 5, 0 , 200} },
-            { 1001, new int[]{ 700, 30, 25, 50, 15, 80, 3, 3, 5, 0 , 200} },
-            { 1002, new int[]{ 800, 35, 30, 60, 20, 80, 2, 2, 4, 0 , 100} },
-        };
-
         //レベルによるステータス変化
         public static Dictionary<int, float[]> npcLevelStatusDic = new Dictionary<int, float[]>()
         {
@@ -725,8 +730,12 @@ namespace Common
         //NPC武器
         public static Dictionary<int, int[]> npcWeaponDic = new Dictionary<int, int[]>()
         {
+            { -1, new int[]{ 0, 0, 0, 0, 0, 0, 0} },
             { 0, new int[]{ 2005, 1004, 2005, 2002, 3004, 4003, 5003} },
             { 1, new int[]{ 1002, 4002, 2004, 1001, 3002, 4000, 5001} },
+            { 2, new int[]{ 0, 0, 0, 0, 0, 0, 0} },
+            { 3, new int[]{ 2005, 1004, 2005, 2002, 3004, 4003, 5003} },
+            { 4, new int[]{ 1002, 4002, 2004, 1001, 3002, 4000, 5001} },
             { 1000, new int[]{ 0, 0, 2000, 2001, 0, 0, 5002} },
             { 1001, new int[]{ 1000, 1002, 0, 0, 0, 0, 5002} },
             { 1002, new int[]{ 2002, 2002, 2003, 2003, 3001, 4001, 5003} },

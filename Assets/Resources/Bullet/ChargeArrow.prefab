@@ -71,8 +71,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 11485758}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 0
-  instantiationId: -1
+  viewIdField: 2
+  instantiationId: 2
   isRuntimeInstantiated: 0
 --- !u!114 &11478674
 MonoBehaviour:
@@ -91,7 +91,7 @@ MonoBehaviour:
   UseGravity: 0
   hitEffect: {fileID: 135988, guid: d7cd433d10510fe46a35c39bac480fe1, type: 2}
   speed: 250
-  damage: 5
+  damage: 1
   damagePerSecond: 0
   stuckTime: 0
   knockBackRate: 0
@@ -108,7 +108,7 @@ MonoBehaviour:
   chargeEffect: {fileID: 0}
   maxChargeTime: 3
   maxSpeedRate: 1
-  maxDamageRate: 5
+  maxDamageRate: 25
   maxSizeRate: 1
   limitTime: 2
 --- !u!114 &11485758

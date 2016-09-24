@@ -20,6 +20,7 @@ public class ExtraWeaponController : Photon.MonoBehaviour
     private GameObject extraBtn;
 
     private const string TAG_ANIMATION_WAIT = "Wait";
+    private const string TAG_ANIMATION_RUN = "Run";
     private const string TAG_ANIMATION_EXTRA = "Extra";
 
     private int useCount = 0;   //使用回数
@@ -160,7 +161,7 @@ public class ExtraWeaponController : Photon.MonoBehaviour
         if (charaAnimator != null && !playerStatus.IsNpc())
         {
             AnimatorStateInfo stateInfo = charaAnimator.GetCurrentAnimatorStateInfo(0);
-            if (!stateInfo.IsTag(TAG_ANIMATION_WAIT)) return false;
+            if (!stateInfo.IsTag(TAG_ANIMATION_WAIT) && !stateInfo.IsTag(TAG_ANIMATION_RUN)) return false;
         }
 
         if (!isActiveScene || !GameController.Instance.isGameStart) return true;

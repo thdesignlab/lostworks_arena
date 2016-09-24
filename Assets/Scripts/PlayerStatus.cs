@@ -627,31 +627,31 @@ public class PlayerStatus : Photon.MonoBehaviour {
     public void SetStatus(int[] defaultStatus, float[] levelRate)
     {
         //MaxHp
-        int index = Common.Mission.STATUS_MAX_HP;
+        int index = Common.Character.STATUS_MAX_HP;
         maxHp = (int)(defaultStatus[index] * levelRate[index]);
         SetHp(maxHp);
 
         //RecoverSp
-        index = Common.Mission.STATUS_RECOVER_SP;
+        index = Common.Character.STATUS_RECOVER_SP;
         recoverSp = (int)(defaultStatus[index] * levelRate[index]);
         defaultRecoverSp = recoverSp;
 
         //RunSpeed
-        index = Common.Mission.STATUS_RUN_SPEED;
+        index = Common.Character.STATUS_RUN_SPEED;
         runSpeed = defaultStatus[index] * levelRate[index];
         defaultRunSpeed = runSpeed;
 
         //BoostSpeed
-        index = Common.Mission.STATUS_BOOST_SPEED;
+        index = Common.Character.STATUS_BOOST_SPEED;
         boostSpeed = defaultStatus[index] * levelRate[index];
         defaultBoostSpeed = boostSpeed;
 
         //TurnSpeed
-        index = Common.Mission.STATUS_TURN_SPEED;
+        index = Common.Character.STATUS_TURN_SPEED;
         turnSpeed = defaultStatus[index] * levelRate[index];
         defaultTurnSpeed = turnSpeed;
 
-        index = Common.Mission.STATUS_ATTACK_RATE;
+        index = Common.Character.STATUS_ATTACK_RATE;
         attackRate = defaultStatus[index] * levelRate[index];
         defaultAttackRate = attackRate;
     }

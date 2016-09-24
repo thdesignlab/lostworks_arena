@@ -116,7 +116,7 @@ public class NpcController : MoveOfCharacter
         }
 
         //キャラステータス取得
-        int[] npcStatusArray = Common.Mission.npcStatusDic[GameController.Instance.npcNo];
+        int[] npcStatusArray = Common.Character.StatusDic[GameController.Instance.npcNo];
         float[] statusLevelRate = Common.Mission.npcLevelStatusDic[level];
         if (overLevel > 0)
         {
@@ -132,20 +132,20 @@ public class NpcController : MoveOfCharacter
         status.SetStatus(npcStatusArray, statusLevelRate);
 
         //攻撃間隔
-        int index = Common.Mission.STATUS_ATTACK_INTERVAL;
+        int index = Common.Character.STATUS_ATTACK_INTERVAL;
         atackIntervalTime = npcStatusArray[index] * statusLevelRate[index];
 
         //ブースト間隔
-        index = Common.Mission.STATUS_BOOST_INTERVAL;
+        index = Common.Character.STATUS_BOOST_INTERVAL;
         boostIntervalTime = npcStatusArray[index] * statusLevelRate[index];
 
         //ターゲット間隔
-        index = Common.Mission.STATUS_TARGET_INTERVAL;
+        index = Common.Character.STATUS_TARGET_INTERVAL;
         quickTargetTime = npcStatusArray[index] * statusLevelRate[index];
 
         //ターゲットタイプ
-        targetType = npcStatusArray[Common.Mission.STATUS_TARGET_TYPE];
-        walkRadius = npcStatusArray[Common.Mission.STATUS_TARGET_DISTANCE];
+        targetType = npcStatusArray[Common.Character.STATUS_TARGET_TYPE];
+        walkRadius = npcStatusArray[Common.Character.STATUS_TARGET_DISTANCE];
 
         //Debug.Log("level:" + level + "(" + overLevel + ")");
         //Debug.Log("atackIntervalTime:" + atackIntervalTime);

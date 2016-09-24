@@ -238,7 +238,11 @@ public class PlayerSetting : Photon.MonoBehaviour
     private void EquipWeaponNpc()
     {
         //武器リスト取得
-        int[] weaponArray = Common.Mission.npcWeaponDic[GameController.Instance.npcNo];
+        int[] weaponArray = Common.Mission.npcWeaponDic[-1];
+        if (Common.Mission.npcWeaponDic.ContainsKey(GameController.Instance.npcNo))
+        {
+            weaponArray = Common.Mission.npcWeaponDic[GameController.Instance.npcNo];
+        }
 
         foreach (int partsNo in Common.CO.partsNameArray.Keys)
         {
