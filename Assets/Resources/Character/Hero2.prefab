@@ -151,6 +151,7 @@ GameObject:
   - 114: {fileID: 11437094}
   - 114: {fileID: 11420532}
   - 82: {fileID: 8276690}
+  - 114: {fileID: 11495432}
   m_Layer: 0
   m_Name: MainBody
   m_TagString: Untagged
@@ -2508,6 +2509,26 @@ MonoBehaviour:
   viewIdField: 0
   instantiationId: -1
   isRuntimeInstantiated: 0
+--- !u!114 &11495432
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 110516}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd2e8e865a3c82242acd158a326c16fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hairTextureList:
+  - {fileID: 2800000, guid: d758a3b58bbc05c4a924b8207d8cf0bd, type: 3}
+  - {fileID: 2800000, guid: 9fc3aad005cf15346bcdb118d66aa0ca, type: 3}
+  faceTextureList:
+  - {fileID: 2800000, guid: 0373d57bebe97f840bbb23f2ff523072, type: 3}
+  - {fileID: 2800000, guid: 7e75fe38d5020d24bae27045c2a732bb, type: 3}
+  bodyTextureList:
+  - {fileID: 2800000, guid: 3805f56c6f0aa3d4cb542a25288e272a, type: 3}
+  - {fileID: 2800000, guid: f0ccafc551b501549aaf9d6076717d68, type: 3}
 --- !u!137 &13778526
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1

@@ -80,6 +80,7 @@ namespace Common
         //キャラベース
         public const string CHARACTER_BASE = "BaseHero";
         public const string PARTS_BODY = "Body";
+        public const string PARTS_BOX = "Box";
         public const string PARTS_MAIN_BODY = "MainBody";
         public const string PARTS_GROUNDED = "Grounded";
 
@@ -385,19 +386,21 @@ namespace Common
         //武器リストNo
         public const int DETAIL_PREFAB_NAME_NO = 0;     //プレハブ名
         public const int DETAIL_NAME_NO = 1;            //キャラ名
-        public const int DETAIL_DESCRIPTION_NO = 2;     //説明
+        public const int DETAIL_COLOR_NO = 2;           //カラー
         public const int DETAIL_OBTAIN_TYPE_NO = 3;     //取得タイプ
         public const int DETAIL_EXTRA_WEAPONS_NO = 4;     //必殺武器No
 
         //キャラクターリスト
         public static Dictionary<int, string[]> characterLineUp = new Dictionary<int, string[]>()
         {
-            {0, new string[]{ "Hero1", "Luri", "", OBTAIN_TYPE_INIT, "10000"}},
-            {1, new string[]{ "Hero2", "Dango", "", OBTAIN_TYPE_INIT, "10001"}},
-            {2, new string[]{ "Hero3", "Nekomimi", "", OBTAIN_TYPE_INIT, "10001"}},
-            {1000, new string[]{ "Npc1", "Capsule1", "", OBTAIN_TYPE_NONE, "10002"}},
-            {1001, new string[]{ "Npc2", "Capsule2", "", OBTAIN_TYPE_NONE, "10003,10004"}},
-            {1002, new string[]{ "Npc3", "Capsule3", "", OBTAIN_TYPE_NONE, "10001,10004"}},
+            {0, new string[]{ "Hero1", "Luri", "0", OBTAIN_TYPE_INIT, "10000"}},
+            {1, new string[]{ "Hero2", "Dango", "0", OBTAIN_TYPE_INIT, "10001"}},
+            {2, new string[]{ "Hero3", "Nekomimi", "0", OBTAIN_TYPE_INIT, "10001"}},
+            {3, new string[]{ "Hero1", "Luri", "1", OBTAIN_TYPE_INIT, "10000"}},
+            {4, new string[]{ "Hero2", "Dango", "1", OBTAIN_TYPE_INIT, "10001"}},
+            {1000, new string[]{ "Npc1", "Capsule1", "0", OBTAIN_TYPE_NONE, "10002"}},
+            {1001, new string[]{ "Npc2", "Capsule2", "0", OBTAIN_TYPE_NONE, "10003,10004"}},
+            {1002, new string[]{ "Npc3", "Capsule3", "0", OBTAIN_TYPE_NONE, "10001,10004"}},
         };
 
         public static string[] GetCharacterInfo(int characterNo)

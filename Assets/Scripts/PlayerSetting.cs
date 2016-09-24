@@ -134,6 +134,10 @@ public class PlayerSetting : Photon.MonoBehaviour
         charaMainObj.name = Common.CO.PARTS_BODY;
         Transform charaMainTran = charaMainObj.transform;
 
+        //カラー設定
+        CharacterColor charaColor = charaMainTran.GetComponentInChildren<CharacterColor>();
+        if (charaColor != null) charaColor.SetColor(charaInfo[Common.Character.DETAIL_COLOR_NO]);
+
         //メインボディ紐付け
         charaMainTran.SetParent(myTran, false);
         charaMainTran.localPosition = Vector3.zero;
@@ -154,6 +158,14 @@ public class PlayerSetting : Photon.MonoBehaviour
         GameObject charaMainObj = PhotonNetwork.Instantiate(Common.Func.GetResourceCharacter(charaInfo[Common.Character.DETAIL_PREFAB_NAME_NO]), Vector3.zero, Quaternion.identity, 0);
         charaMainObj.name = Common.CO.PARTS_BODY;
         Transform charaMainTran = charaMainObj.transform;
+
+        //カラー設定
+        Transform charaBoxTran = charaMainTran.FindChild(Common.CO.PARTS_MAIN_BODY);
+        if (charaBoxTran != null)
+        {
+            CharacterColor charaColor = charaBoxTran.GetComponentInChildren<CharacterColor>();
+            if (charaColor != null) charaColor.SetColor(charaInfo[Common.Character.DETAIL_COLOR_NO]);
+        }
 
         //メインボディ紐付け
         charaMainTran.SetParent(myTran, false);
