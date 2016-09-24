@@ -2339,8 +2339,8 @@ MonoBehaviour:
   onSerializeRigidBodyOption: 2
   ownershipTransfer: 0
   ObservedComponents:
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 11475430}
+  - {fileID: 11435734}
   ObservedComponentsFoldoutOpen: 1
   viewIdField: 0
   instantiationId: -1
@@ -2357,23 +2357,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackVoiceList:
-  - {fileID: 8300000, guid: 3d866d7ab14689243b19d9cbfb0f16c8, type: 3}
-  - {fileID: 8300000, guid: e01445f0cafc07242b6a74df05a6bdb7, type: 3}
-  - {fileID: 8300000, guid: 249d61900abfc204d9709304a240fd3e, type: 3}
+  - {fileID: 8300000, guid: ccc023849d863bf4abd32f39b576342d, type: 3}
+  - {fileID: 8300000, guid: b71933fb640c4d545953850fe87141d9, type: 3}
+  - {fileID: 8300000, guid: 469819fe4755fa04b997ab590032ac5f, type: 3}
   extraAttackVoiceList:
-  - {fileID: 8300000, guid: 6450276a9f3d6a5478663cb0a2321dba, type: 3}
-  - {fileID: 8300000, guid: 1ad34cfa48f95824a80220f30b0cf114, type: 3}
+  - {fileID: 8300000, guid: 05ed9d668c225964788d4b2c1127a510, type: 3}
+  - {fileID: 8300000, guid: 0d21c023e8c79074bafadfda3d1d08ed, type: 3}
+  - {fileID: 8300000, guid: 41d34e9e459fd18439debd811f5150d7, type: 3}
   damageVoiceList:
-  - {fileID: 8300000, guid: 96fdc95a735623a45a40c52358be07d3, type: 3}
-  - {fileID: 8300000, guid: b1f0ab796afa36b4387842344a13828d, type: 3}
-  - {fileID: 8300000, guid: 443defa461b5aee4eab0f55c3f7e5051, type: 3}
+  - {fileID: 8300000, guid: 85b47e3fa0b9e4348bd15ec6e92eb59e, type: 3}
+  - {fileID: 8300000, guid: 9ab2c76553f1a7b409602b0ee5e7f7d3, type: 3}
+  - {fileID: 8300000, guid: 4a16ec94bb458bc4b86fef3ce3c43df2, type: 3}
   deadVoiceList:
-  - {fileID: 8300000, guid: d8237028b4f2c4d49b0b181400fb7e25, type: 3}
+  - {fileID: 8300000, guid: eafc9697dab59534bad3cfa90fe2609c, type: 3}
   winVoiceList:
-  - {fileID: 8300000, guid: 8fbf1b9bcb98671408930bb902ce52f0, type: 3}
+  - {fileID: 8300000, guid: f2918435a5e08b04d9c755fc094e7901, type: 3}
   battleStartVoiceList:
-  - {fileID: 8300000, guid: 13de55a93b9ad414ba880f5387e68a51, type: 3}
-  - {fileID: 8300000, guid: 7d8c267b928cb2d438f1851a08891eeb, type: 3}
+  - {fileID: 8300000, guid: 62221efb63d19be4a8bcacfad3556bc6, type: 3}
+  - {fileID: 8300000, guid: 96c96168c835e6f40b15caa63561efe5, type: 3}
+  - {fileID: 8300000, guid: 67e555c38edeeea4c946054a1042ea61, type: 3}
 --- !u!114 &11435734
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2386,8 +2388,41 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowLayerWeightsInspector: 1
-  ShowParameterInspector: 0
-  m_SynchronizeParameters: []
+  ShowParameterInspector: 1
+  m_SynchronizeParameters:
+  - Type: 4
+    SynchronizeType: 1
+    Name: Run
+  - Type: 4
+    SynchronizeType: 1
+    Name: Jump
+  - Type: 4
+    SynchronizeType: 1
+    Name: Down
+  - Type: 4
+    SynchronizeType: 1
+    Name: Dush
+  - Type: 4
+    SynchronizeType: 1
+    Name: LeftAttack
+  - Type: 4
+    SynchronizeType: 1
+    Name: RightAttack
+  - Type: 4
+    SynchronizeType: 1
+    Name: ShoulderAttack
+  - Type: 4
+    SynchronizeType: 1
+    Name: UseSub
+  - Type: 4
+    SynchronizeType: 1
+    Name: ExtraAttack
+  - Type: 1
+    SynchronizeType: 1
+    Name: VerticalMove
+  - Type: 1
+    SynchronizeType: 1
+    Name: HorizontalMove
   m_SynchronizeLayers:
   - SynchronizeType: 1
     LayerIndex: 0

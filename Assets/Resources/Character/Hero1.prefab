@@ -2758,23 +2758,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackVoiceList:
-  - {fileID: 8300000, guid: 10c3030f8b5a17a49a44cdc43f953469, type: 3}
-  - {fileID: 8300000, guid: f3fd6f76e8e15434b84e877fb656844a, type: 3}
-  - {fileID: 8300000, guid: 66dfad18f04fe354d964d211147811d4, type: 3}
+  - {fileID: 8300000, guid: 384b99e280dd54f4b8cf9025c63b7c77, type: 3}
+  - {fileID: 8300000, guid: 417d738d4fed83c46ba7ed2569c44386, type: 3}
+  - {fileID: 8300000, guid: 7b2f3efdcaf9cff4ebb0fdd24bd13742, type: 3}
   extraAttackVoiceList:
-  - {fileID: 8300000, guid: 4b402b5e7b128c544aad830b9a483de4, type: 3}
-  - {fileID: 8300000, guid: a5be863c98bbaa046a4904e6a7c8e003, type: 3}
+  - {fileID: 8300000, guid: c93612e25e5fdc446ac5c4d44ff30c88, type: 3}
+  - {fileID: 8300000, guid: f6b8c83a3228ee649a8c108748228de3, type: 3}
   damageVoiceList:
-  - {fileID: 8300000, guid: fa2ed46056292f34caae88aedfe0ba18, type: 3}
-  - {fileID: 8300000, guid: 0915ab80cce65d740aeb35f1c84105f4, type: 3}
+  - {fileID: 8300000, guid: 7b2f95142b6684b4ba5a28c82063c286, type: 3}
+  - {fileID: 8300000, guid: 4c3a09f9ae2e5484ab8a9cbb93793316, type: 3}
   deadVoiceList:
-  - {fileID: 8300000, guid: 281683ede27b2ff4690f64fb5a2dc2b5, type: 3}
-  - {fileID: 8300000, guid: 6150e58169385e942a3c0d4bd0c92096, type: 3}
+  - {fileID: 8300000, guid: f62d039346cbee74aa360ea3283dc319, type: 3}
   winVoiceList:
-  - {fileID: 8300000, guid: d4689050ebd1f274e8ea088c9350e1a1, type: 3}
+  - {fileID: 8300000, guid: 9ceba637deee28f4d819dfc453867508, type: 3}
   battleStartVoiceList:
-  - {fileID: 8300000, guid: a16a2a5c95f7f5543956fa22dc3f6f88, type: 3}
-  - {fileID: 8300000, guid: 3a059d30f568dc14f84ded0f639726cf, type: 3}
+  - {fileID: 8300000, guid: d79af1f8d0fb7384e9cc48a93a817507, type: 3}
+  - {fileID: 8300000, guid: 11ea738aff56d864da172c8c1a2b4492, type: 3}
 --- !u!114 &11454128
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2787,7 +2786,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowLayerWeightsInspector: 1
-  ShowParameterInspector: 0
+  ShowParameterInspector: 1
   m_SynchronizeParameters:
   - Type: 4
     SynchronizeType: 1
@@ -2811,7 +2810,7 @@ MonoBehaviour:
     SynchronizeType: 1
     Name: UseSub
   - Type: 4
-    SynchronizeType: 0
+    SynchronizeType: 1
     Name: Down
   - Type: 4
     SynchronizeType: 0

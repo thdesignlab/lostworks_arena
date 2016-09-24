@@ -59,7 +59,7 @@ namespace Common
         public const string MOTION_CROSS_RANGE_ATTACK = "CrossRangeAttack";
         public const string MOTION_EXTRA_ATTACK = "ExtraAttack";
         public const string MOTION_USE_SUB = "UseSub";
-        public static string[] attackMotionArray = new string[]
+        public static readonly string[] attackMotionArray = new string[]
         {
             MOTION_LEFT_ATTACK,
             MOTION_RIGHT_ATTACK,
@@ -394,6 +394,7 @@ namespace Common
         {
             {0, new string[]{ "Hero1", "Luri", "", OBTAIN_TYPE_INIT, "10000"}},
             {1, new string[]{ "Hero2", "Dango", "", OBTAIN_TYPE_INIT, "10001"}},
+            {2, new string[]{ "Hero3", "Nekomimi", "", OBTAIN_TYPE_INIT, "10001"}},
             {1000, new string[]{ "Npc1", "Capsule1", "", OBTAIN_TYPE_NONE, "10002"}},
             {1001, new string[]{ "Npc2", "Capsule2", "", OBTAIN_TYPE_NONE, "10003,10004"}},
             {1002, new string[]{ "Npc3", "Capsule3", "", OBTAIN_TYPE_NONE, "10001,10004"}},
