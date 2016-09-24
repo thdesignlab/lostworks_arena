@@ -11,21 +11,21 @@ public class ChargeWeaponController : BulletWeaponController
 
     private float npcChargeTime = 0;
     private float rapidIntervalTime = 0;
+    private GameObject GameCtrlObj;
 
+    protected override void Awake()
+    {
+        base.Awake();
+
+        GameCtrlObj = GameObject.Find("GameController");
+    }
     void Update()
     {
         if (photonView.isMine)
         {
             if (isCharge)
             {
-                if (bulletTrans.Count == 0 || bulletCtrls.Count == 0)
-                {
-                    isCharge = false;
-                    base.EndAction();
-                    return;
-                }
-
-                if ((GameObject.Find("GameController") == null || !GameController.Instance.isGameReady)
+                if ((GameCtrlObj == null || !GameController.Instance.isGameReady)
                     && ((Input.GetMouseButton(0) && !base.isNpc) || (chargeTime <= npcChargeTime && base.isNpc))
                 )
                 {
@@ -42,6 +42,11 @@ public class ChargeWeaponController : BulletWeaponController
                     int muzzleNo = 0;
                     for (int i = 0; i < bulletCtrls.Count; i++)
                     {
+                        if (bulletCtrls[i] == null)
+                        {
+                            ForceChargeEnd();
+                            return;
+                        }
                         bulletCtrls[i].Charging(chargeTime);
                         bulletTrans[i].position = base.muzzles[muzzleNo].position;
                         bulletTrans[i].rotation = base.muzzles[muzzleNo].rotation;
@@ -66,6 +71,12 @@ public class ChargeWeaponController : BulletWeaponController
         }
     }
 
+    private void ForceChargeEnd()
+    {
+        isCharge = false;
+        base.EndAction();
+    }
+
     protected override void Action()
     {
         if (isCharge) return;
@@ -84,6 +95,7 @@ public class ChargeWeaponController : BulletWeaponController
 
         //チャージ開始
         isCharge = true;
+
         chargeTime = 0;
         base.PlayAudio(0);
 
