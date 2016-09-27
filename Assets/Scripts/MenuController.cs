@@ -233,6 +233,12 @@ public class MenuController : Photon.MonoBehaviour
     public void ResetUserInfo()
     {
         if (!CommonDebug()) return;
-        GameController.Instance.CleanPlayer();
+        DialogController.OpenDialog("端末内のユーザー情報を削除します", () => ResetUserInfoExe(), true);
+    }
+    public void ResetUserInfoExe()
+    {
+        if (!CommonDebug()) return;
+        UserManager.DeleteUser();
+        GameController.Instance.ReStart();
     }
 }

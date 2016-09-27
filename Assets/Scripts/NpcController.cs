@@ -251,7 +251,7 @@ public class NpcController : MoveOfCharacter
             }
             else
             {
-                randomMoveTarget = targetTran.position;
+                if (targetTran != null) randomMoveTarget = targetTran.position;
             }
             leftTargetSearch = 5.0f;
         }

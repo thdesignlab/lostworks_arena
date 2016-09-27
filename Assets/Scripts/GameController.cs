@@ -671,6 +671,14 @@ public class GameController : SingletonMonoBehaviour<GameController>
         Application.Quit();
     }
 
+    public void ReStart()
+    {
+        PhotonManager.isFirstScean = true;
+        PhotonManager.isPlayAd = false;
+        PhotonNetwork.LeaveRoom();
+        ScreenManager.Instance.Load(Common.CO.SCENE_TITLE, DialogController.MESSAGE_LOADING);
+    }
+
     public void GoToTitle()
     {
         PhotonNetwork.LeaveRoom();
