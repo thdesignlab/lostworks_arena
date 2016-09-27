@@ -10,6 +10,8 @@ public class ConfigManager : SingletonMonoBehaviour<ConfigManager>
     [SerializeField]
     private GameObject configCanvas;
     [SerializeField]
+    private GameObject helpCanvas;
+    [SerializeField]
     private AudioMixer mixer;
 
     [SerializeField]
@@ -43,6 +45,7 @@ public class ConfigManager : SingletonMonoBehaviour<ConfigManager>
         base.Awake();
 
         configCanvas.SetActive(false);
+        helpCanvas.SetActive(false);
 
         Transform configCanvasTran = configCanvas.transform;
 
@@ -186,5 +189,17 @@ public class ConfigManager : SingletonMonoBehaviour<ConfigManager>
         //名前チェック
         //保存
         UserManager.SetUserName(input);
+    }
+
+    //ヘルプ表示
+    public void OpenHelp()
+    {
+        ScreenManager.Instance.FadeUI(helpCanvas, true);        
+    }
+
+    //ヘルプ非表示
+    public void CloseHelp()
+    {
+        ScreenManager.Instance.FadeUI(helpCanvas, false);
     }
 }

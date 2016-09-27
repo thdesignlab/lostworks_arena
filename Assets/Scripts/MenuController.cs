@@ -217,11 +217,20 @@ public class MenuController : Photon.MonoBehaviour
     public void OnForceWin()
     {
         if (!CommonDebug()) return;
+        GameController.Instance.SetFinalRound();
         GameController.Instance.CleanNpc();
     }
 
     //強制敗北
     public void OnForceLose()
+    {
+        if (!CommonDebug()) return;
+        GameController.Instance.SetFinalRound();
+        GameController.Instance.CleanPlayer();
+    }
+
+    //端末情報リセット
+    public void ResetUserInfo()
     {
         if (!CommonDebug()) return;
         GameController.Instance.CleanPlayer();

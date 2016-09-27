@@ -882,6 +882,14 @@ public class GameController : SingletonMonoBehaviour<GameController>
         myStatus.ResetWinMark();
     }
 
+    //デバッグ用
+    public void SetFinalRound()
+    {
+        winCount = 2;
+        loseCount = 2;
+        myStatus.ResetWinMark();
+    }
+
     //コンティニュー
     public void ContinueMission(bool isAdPlay = false)
     {
