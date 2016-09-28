@@ -1071,6 +1071,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
 
     void OnApplicationPause(bool pauseStatus)
     {
+        Debug.Log("OnApplicationPause" + pauseStatus);
         if (pauseStatus)
         {
             if (UnityAds.Instance.IsPlaying()) return;

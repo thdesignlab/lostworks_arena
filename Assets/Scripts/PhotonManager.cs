@@ -71,6 +71,9 @@ public class PhotonManager : MonoBehaviour
             Init();
             isFirstScean = false;
             Camera.main.transform.localRotation = topCameraQuat;
+
+            ApplicationChrome.statusBarState = ApplicationChrome.States.Visible;
+            ApplicationChrome.navigationBarState = ApplicationChrome.States.Hidden;
         }
         else
         {
