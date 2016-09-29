@@ -822,14 +822,22 @@ public class GameController : SingletonMonoBehaviour<GameController>
 
             //レベル設定ダイアログ
             RectTransform content = levelSelectCanvas.transform.FindChild("ScrollView/Viewport/Content").GetComponent<RectTransform>();
-            content.sizeDelta = new Vector2(0, maxLevel * 200);
-            for (int i = maxLevel; i > 0; i--)
+            content.sizeDelta = new Vector2(0, (maxLevel + 1) * 180);
+            for (int i = maxLevel + 1; i > 0; i--)
             {
                 int setLevel = i;
                 GameObject btn = (GameObject)Instantiate(levelSelectButton, Vector3.zero, Quaternion.identity);
                 btn.transform.SetParent(content, false);
                 btn.transform.GetComponentInChildren<Text>().text = Common.Mission.GetLevelName(setLevel);
-                btn.transform.GetComponent<Button>().onClick.AddListener(() => OnSelectLevel(setLevel));
+                if (i > maxLevel)
+                {
+                    btn.transform.GetComponent<Button>().interactable = false;
+                    btn.transform.GetComponentInChildren<Text>().color = Color.grey;
+                }
+                else
+                {
+                    btn.transform.GetComponent<Button>().onClick.AddListener(() => OnSelectLevel(setLevel));
+                }
             }
             levelSelectCanvas.SetActive(true);
         }
