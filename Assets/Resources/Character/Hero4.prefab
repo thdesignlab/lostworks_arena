@@ -1558,7 +1558,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 151606}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.2021484, y: 0.43818665, z: -0.3486328}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -1907,7 +1907,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 197536}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.2021484, y: -3.4381866, z: 0.3486328}
+  m_LocalPosition: {x: 0, y: -2.8, z: 0}
   m_LocalScale: {x: 6.5, y: 6.5, z: 6.5}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -2371,14 +2371,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hairTextureList:
-  - {fileID: 2800000, guid: a38dbc1821badf54580d9f889f344955, type: 3}
-  - {fileID: 2800000, guid: fc75253111a68a2449182ba8cb54c811, type: 3}
+  - {fileID: 2800000, guid: 549707c31245fb44d93da46315eaa6a7, type: 3}
+  - {fileID: 2800000, guid: 149277068e7ce174e94e6dea170138b8, type: 3}
   faceTextureList:
-  - {fileID: 2800000, guid: cdc9f90ce81f0a549aead263c1861146, type: 3}
-  - {fileID: 2800000, guid: 0aebf9d0ed071414ab4f39ce129b09ec, type: 3}
+  - {fileID: 2800000, guid: cabb8d5ea0be65e4eb094992eb0c625a, type: 3}
+  - {fileID: 2800000, guid: 21530b9c9865d0144aaa3aba41f0c84d, type: 3}
   bodyTextureList:
-  - {fileID: 2800000, guid: 79b3b0060080bbb408f418fee8c0e595, type: 3}
-  - {fileID: 2800000, guid: 713e2669abb6035428ac59a1269a444a, type: 3}
+  - {fileID: 2800000, guid: 536cc301d6a54ee48a8d6eaff70b8a96, type: 3}
+  - {fileID: 2800000, guid: b76b37ae0efc3ed4c89d81c081acc693, type: 3}
 --- !u!114 &11410470
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2424,8 +2424,8 @@ MonoBehaviour:
   onSerializeRigidBodyOption: 2
   ownershipTransfer: 0
   ObservedComponents:
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 11453708}
+  - {fileID: 11404010}
   ObservedComponentsFoldoutOpen: 1
   viewIdField: 0
   instantiationId: -1
@@ -2514,25 +2514,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackVoiceList:
-  - {fileID: 8300000, guid: ccc023849d863bf4abd32f39b576342d, type: 3}
-  - {fileID: 8300000, guid: b71933fb640c4d545953850fe87141d9, type: 3}
-  - {fileID: 8300000, guid: 469819fe4755fa04b997ab590032ac5f, type: 3}
+  - {fileID: 8300000, guid: 4d526d69541a6a74581714e8268679be, type: 3}
+  - {fileID: 8300000, guid: 59ff34a8fa8683c4cbb8ed375b897eb8, type: 3}
+  - {fileID: 8300000, guid: e550fda4feaed7b44a20a8bb253b0079, type: 3}
   extraAttackVoiceList:
-  - {fileID: 8300000, guid: 05ed9d668c225964788d4b2c1127a510, type: 3}
-  - {fileID: 8300000, guid: 0d21c023e8c79074bafadfda3d1d08ed, type: 3}
-  - {fileID: 8300000, guid: 41d34e9e459fd18439debd811f5150d7, type: 3}
+  - {fileID: 8300000, guid: b13878a7b8b9d6b438b75eebb1fb4c02, type: 3}
+  - {fileID: 8300000, guid: 3d8b6d6dc78cfa6458f89b9664d0dfd6, type: 3}
   damageVoiceList:
-  - {fileID: 8300000, guid: 85b47e3fa0b9e4348bd15ec6e92eb59e, type: 3}
-  - {fileID: 8300000, guid: 9ab2c76553f1a7b409602b0ee5e7f7d3, type: 3}
-  - {fileID: 8300000, guid: 4a16ec94bb458bc4b86fef3ce3c43df2, type: 3}
+  - {fileID: 8300000, guid: 1d3d675839df3a042a3d82cf22dec3c0, type: 3}
+  - {fileID: 8300000, guid: 28dcbafe7e0c5684cbfd35902393256a, type: 3}
+  - {fileID: 8300000, guid: 31129dc02f17aa54ab3cd7f5d1a82089, type: 3}
   deadVoiceList:
-  - {fileID: 8300000, guid: eafc9697dab59534bad3cfa90fe2609c, type: 3}
+  - {fileID: 8300000, guid: f1b9cd60b32b7df4592cbe8475cf0ea8, type: 3}
   winVoiceList:
-  - {fileID: 8300000, guid: f2918435a5e08b04d9c755fc094e7901, type: 3}
+  - {fileID: 8300000, guid: 3e85e87643c819e439580a4182dfc119, type: 3}
   battleStartVoiceList:
-  - {fileID: 8300000, guid: 62221efb63d19be4a8bcacfad3556bc6, type: 3}
-  - {fileID: 8300000, guid: 96c96168c835e6f40b15caa63561efe5, type: 3}
-  - {fileID: 8300000, guid: 67e555c38edeeea4c946054a1042ea61, type: 3}
+  - {fileID: 8300000, guid: 5bb59f0473bdd97458accdeb75e36a94, type: 3}
+  - {fileID: 8300000, guid: 48759fb7deb58e6418de2d9afe0b3c8d, type: 3}
 --- !u!137 &13772548
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1

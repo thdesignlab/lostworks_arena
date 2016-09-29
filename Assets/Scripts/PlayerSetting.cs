@@ -151,7 +151,7 @@ public class PlayerSetting : Photon.MonoBehaviour
         string[] charaInfo = CharacterManager.GetCharacterInfo(charaNo);
         if (charaInfo == null)
         {
-            charaInfo = CharacterManager.GetCharacterInfo(0);
+            charaInfo = CharacterManager.GetCharacterInfo();
         }
 
         //メインボディ生成

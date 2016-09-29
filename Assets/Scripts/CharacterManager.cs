@@ -5,10 +5,18 @@ using System.Collections.Generic;
 public class CharacterManager
 {
     //キャラ情報取得
-    public static string[] GetCharacterInfo(int charaNo)
+    public static string[] GetCharacterInfo(int charaNo = -1)
     {
         string[] charaInfo = null;
-        if (Common.Character.characterLineUp.ContainsKey(charaNo))
+        if (charaNo < 0)
+        {
+            foreach (int index in Common.Character.characterLineUp.Keys)
+            {
+                charaInfo = Common.Character.characterLineUp[index];
+                break;
+            }
+        }
+        else if (Common.Character.characterLineUp.ContainsKey(charaNo))
         {
             charaInfo = Common.Character.characterLineUp[charaNo];
         }
