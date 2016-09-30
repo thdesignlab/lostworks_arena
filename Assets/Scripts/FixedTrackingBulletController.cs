@@ -17,6 +17,8 @@ public class FixedTrackingBulletController : BulletController
     protected float fixedTurnSpeed; //固定解除後の旋回速度
     [SerializeField]
     protected bool isNeedLock = false;    //誘導に要ロック(画面に捕らえている)
+    [SerializeField]
+    protected bool isStickable = false;    //地面・障害物に当たった際に刺さる
 
     protected LaserPointerController pointCtrl;    //ロック後ポインター
 
@@ -140,14 +142,17 @@ public class FixedTrackingBulletController : BulletController
     //衝突時処理(共通)
     protected override void OnHit(GameObject otherObj)
     {
-        //床に刺さる
-        if (otherObj.layer == LayerMask.NameToLayer(Common.CO.LAYER_STRUCTURE)
-            || otherObj.layer == LayerMask.NameToLayer(Common.CO.LAYER_FLOOR)
-        )
+        if (isStickable)
         {
-            base.speed = 0;
-            fixedTurnSpeed = 0;
-            photonView.RPC("StopStructure", PhotonTargets.Others);
+            //床に刺さる
+            if (otherObj.layer == LayerMask.NameToLayer(Common.CO.LAYER_STRUCTURE)
+                || otherObj.layer == LayerMask.NameToLayer(Common.CO.LAYER_FLOOR)
+            )
+            {
+                base.speed = 0;
+                fixedTurnSpeed = 0;
+                photonView.RPC("StopStructure", PhotonTargets.Others);
+            }
         }
 
         base.OnHit(otherObj);

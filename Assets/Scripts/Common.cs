@@ -400,8 +400,8 @@ namespace Common
             {201, new string[]{ "Hero2", "Dango", "1", OBTAIN_TYPE_INIT, "10001"}},
             {300, new string[]{ "Hero3", "Nekomimi", "0", OBTAIN_TYPE_INIT, "10005"}},
             {301, new string[]{ "Hero3", "Nekomimi", "1", OBTAIN_TYPE_INIT, "10005"}},
-            {400, new string[]{ "Hero4", "Meisai", "0", OBTAIN_TYPE_INIT, "10004"}},
-            {401, new string[]{ "Hero4", "Meisai", "1", OBTAIN_TYPE_INIT, "10004"}},
+            {400, new string[]{ "Hero4", "Meisai", "0", OBTAIN_TYPE_INIT, "10006,10007"}},
+            {401, new string[]{ "Hero4", "Meisai", "1", OBTAIN_TYPE_INIT, "10006,10007"}},
             {10000, new string[]{ "Npc1", "Capsule1", "0", OBTAIN_TYPE_NONE, "10002"}},
             {10001, new string[]{ "Npc2", "Capsule2", "0", OBTAIN_TYPE_NONE, "10003,10004"}},
             {10002, new string[]{ "Npc3", "Capsule3", "0", OBTAIN_TYPE_NONE, "10001,10004"}},
@@ -515,7 +515,9 @@ namespace Common
             { 10002, new string[]{ "ExtraBurning", "ExBurning", "突撃するよ！", OBTAIN_TYPE_INIT}},
             { 10003, new string[]{ "ExtraRifle", "ExRifle", "ふっとばすよ！", OBTAIN_TYPE_INIT}},
             { 10004, new string[]{ "ExtraShadowSewing", "ExShadowDagger", "拘束するよ！", OBTAIN_TYPE_INIT}},
-            { 10005, new string[]{ "ExtraClaw", "ExClaw", "ひっかくよw", OBTAIN_TYPE_INIT}},
+            { 10005, new string[]{ "ExtraClaw", "ExClaw", "にゃー！", OBTAIN_TYPE_INIT}},
+            { 10006, new string[]{ "ExtraHolyRay", "ExHolyRay", "光の裁きを！", OBTAIN_TYPE_INIT}},
+            { 10007, new string[]{ "ExtraHolyRay2", "ExHolyRay2", "光の裁きを！", OBTAIN_TYPE_INIT}},
         };
 
         //部位ごとの武器リスト取得
