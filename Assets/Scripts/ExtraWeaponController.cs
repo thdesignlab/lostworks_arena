@@ -35,6 +35,8 @@ public class ExtraWeaponController : Photon.MonoBehaviour
         {
             isActiveScene = false;
         }
+        if (extraCam != null) extraCam.SetActive(false);
+        if (extraEffect != null) extraEffect.SetActive(false);
     }
 
     void Start()

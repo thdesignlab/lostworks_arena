@@ -233,7 +233,7 @@ MonoBehaviour:
   childBullet: {fileID: 181058, guid: 7d862371856c8d34f99693c5c11a03d5, type: 2}
   childeBulletCount: 1
   purgeDistance: 0
-  purgeTime: 2.5
+  purgeTime: 1.8
   isPurgeDestroy: 0
 --- !u!114 &11437972
 MonoBehaviour:
@@ -271,8 +271,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 0}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 3
-  instantiationId: 3
+  viewIdField: 0
+  instantiationId: -1
   isRuntimeInstantiated: 0
 --- !u!114 &11467262
 MonoBehaviour:
@@ -308,8 +308,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 0}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 2
-  instantiationId: 2
+  viewIdField: 0
+  instantiationId: -1
   isRuntimeInstantiated: 0
 --- !u!114 &11481706
 MonoBehaviour:
@@ -323,7 +323,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effectSpawn: {fileID: 0}
-  activeLimitTime: 3
+  activeLimitTime: 2
   activeLimitDistance: 0
 --- !u!114 &11494352
 MonoBehaviour:

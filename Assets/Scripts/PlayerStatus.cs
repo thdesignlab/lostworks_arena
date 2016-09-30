@@ -838,6 +838,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
         invincibleTime = defaultInvincibleTime;
     }
 
+    //Ex武器用
     public void SetForceInvincible(bool flg)
     {
         photonView.RPC("SetForceInvincibleRPC", PhotonTargets.All, flg);
@@ -846,6 +847,9 @@ public class PlayerStatus : Photon.MonoBehaviour {
     private void SetForceInvincibleRPC(bool flg)
     {
         isForceInvincible = flg;
+        float limit = 0;
+        if (flg) limit = 10;
+        InterfareMove(limit, null, false);
     }
 
     //エフェクト切り替え
