@@ -73,6 +73,8 @@ public class ClusterBulletController : TrackingBulletController
             {
                 base.myTran.Rotate(Vector3.forward, moveAngle);
                 GameObject ob = PhotonNetwork.Instantiate(Common.Func.GetResourceBullet(childBullet.name), muzzle.position, muzzle.rotation, 0);
+                int bulletNo = Common.Func.GetBulletNo(myTran.root.name);
+                ob.name = ob.name + "_" + bulletNo.ToString();
                 BulletController bulletCtrl = ob.GetComponent<BulletController>();
                 bulletCtrl.SetTarget(targetTran);
                 bulletCtrl.SetOwner(ownerTran, ownerWeapon);

@@ -16,9 +16,15 @@ public class FixedTrackingBulletController : BulletController
     [SerializeField]
     protected float fixedTurnSpeed; //固定解除後の旋回速度
     [SerializeField]
+    protected float searchTurnSpeed; //索敵時旋回速度
+    [SerializeField]
     protected bool isNeedLock = false;    //誘導に要ロック(画面に捕らえている)
     [SerializeField]
     protected bool isStickable = false;    //地面・障害物に当たった際に刺さる
+    [SerializeField]
+    protected float autoFireTime = 0;    //武器からの命令無しで固定解除
+    [SerializeField]
+    protected float autoFireDiff = 0;    //固定解除差分
 
     protected LaserPointerController pointCtrl;    //ロック後ポインター
 
@@ -45,6 +51,7 @@ public class FixedTrackingBulletController : BulletController
         }
         pointCtrl = myTran.GetComponentInChildren<LaserPointerController>();
     }
+
     protected override void Update()
     {
         base.Update();
@@ -57,6 +64,13 @@ public class FixedTrackingBulletController : BulletController
                 //固定
                 base.speed = 0;
                 isFix = true;
+                if (pointCtrl != null && searchTurnSpeed > 0) pointCtrl.SetOn();
+
+                if (autoFireTime > 0 && autoFireDiff > 0)
+                {
+                    int no = Common.Func.GetBulletNo(myTran.name);
+                    autoFireTime += autoFireDiff * no;
+                }
             }
         }
 
@@ -75,9 +89,10 @@ public class FixedTrackingBulletController : BulletController
             }
 
             //向き調整
+            bool isSetAngleFinish = false;
             if (enableSetAngle)
             {
-                base.SetAngle(base.targetTran, fixedTurnSpeed);
+                isSetAngleFinish = base.SetAngle(base.targetTran, fixedTurnSpeed);
             }
         }
         else
@@ -95,19 +110,28 @@ public class FixedTrackingBulletController : BulletController
                 }
                 rollBody.Rotate(fixedRollVector, fixedRollSpeed * Time.deltaTime);
             }
+            
+            if (isFix && searchTurnSpeed > 0)
+            {
+                if (SetAngle(targetTran, searchTurnSpeed)) Shoot();
+            }
+
+            if (autoFireTime > 0 && autoFireTime + fixTime <= activeTime) Shoot();
         }
     }
 
     public void Shoot()
     {
+        if (isShoot) return;
+
         //ロック可能チェック
         enableSetAngle = true;
         if (isNeedLock)
         {
             enableSetAngle = false;
-            if (base.targetStatus != null)
+            if (targetStatus != null)
             {
-                enableSetAngle = base.targetStatus.IsLocked();
+                enableSetAngle = targetStatus.IsLocked();
             }
         }
         photonView.RPC("ShootRPC", PhotonTargets.All, enableSetAngle);
@@ -119,8 +143,11 @@ public class FixedTrackingBulletController : BulletController
         //向き調整
         if (isSetAngle)
         {
-            Vector3 diffVector = base.DifferentialCorrection(base.targetTran, fixedSpeed);
-            myTran.LookAt(base.targetTran.position + diffVector);
+            if (searchTurnSpeed == 0)
+            {
+                Vector3 diffVector = DifferentialCorrection(targetTran, fixedSpeed);
+                myTran.LookAt(targetTran.position + diffVector);
+            }
             if (pointCtrl != null) pointCtrl.SetOn();
         }
         else

@@ -24,7 +24,7 @@ public class LaserPointerController : MonoBehaviour
     void Awake()
     {
         myTran = transform;
-        impactScale = new Vector3(pointSize, impactPoint.transform.localScale.y, pointSize);
+        if (impactPoint != null) impactScale = new Vector3(pointSize, impactPoint.transform.localScale.y, pointSize);
         int layerNo = LayerMask.NameToLayer(Common.CO.LAYER_FLOOR);
         layerMask = 1 << layerNo;
         SetOff();
@@ -41,7 +41,8 @@ public class LaserPointerController : MonoBehaviour
             }
             else
             {
-                SetOff();
+                SetPointerLength(maxLength);
+                //SetOff();
             }
         }
     }
@@ -91,12 +92,20 @@ public class LaserPointerController : MonoBehaviour
         }
     }
 
+    private void SetPointerLength(float distance)
+    {
+        if (pointer != null)
+        {
+            pointer.SetPosition(1, Vector3.forward * distance);
+        }
+    }
+
     private void SetDistance(RaycastHit hit)
     {
         if (pointer != null)
         {
             float distance = Vector3.Distance(myTran.position, hit.point);
-            pointer.SetPosition(1, Vector3.forward * distance);
+            SetPointerLength(distance);
         }
         if (pointTran != null) pointTran.position = hit.point;
     }
@@ -106,7 +115,6 @@ public class LaserPointerController : MonoBehaviour
         isActive = true;
         RaycastHit hit;
         GetRaycastHit(out hit);
-
         if (pointer != null) pointer.enabled = true;
     }
 

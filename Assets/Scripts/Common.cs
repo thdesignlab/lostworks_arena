@@ -374,6 +374,25 @@ namespace Common
             return CO.PARTS_BODY + "/" + CO.PARTS_MAIN_BODY; 
         }
 
+        //BulletNo取得
+        public static int GetBulletNo(string bulletName)
+        {
+            int no = 0;
+            int index = bulletName.IndexOf("_");
+            if (index >= 0)
+            {
+                string noStr = bulletName.Substring(index + 1);
+                try
+                {
+                    no = int.Parse(noStr);
+                }
+                catch (UnityException e)
+                {
+                }
+            }
+            //Debug.Log(bulletName+" >> " +no);
+            return no;
+        }
     }
 
     //### キャラクター詳細 ###
@@ -400,8 +419,8 @@ namespace Common
             {201, new string[]{ "Hero2", "Dango", "1", OBTAIN_TYPE_INIT, "10001"}},
             {300, new string[]{ "Hero3", "Nekomimi", "0", OBTAIN_TYPE_INIT, "10005"}},
             {301, new string[]{ "Hero3", "Nekomimi", "1", OBTAIN_TYPE_INIT, "10005"}},
-            {400, new string[]{ "Hero4", "Meisai", "0", OBTAIN_TYPE_INIT, "10006,10007"}},
-            {401, new string[]{ "Hero4", "Meisai", "1", OBTAIN_TYPE_INIT, "10006,10007"}},
+            {400, new string[]{ "Hero4", "Meisai", "0", OBTAIN_TYPE_INIT, "10006"}},
+            {401, new string[]{ "Hero4", "Meisai", "1", OBTAIN_TYPE_INIT, "10006"}},
             {10000, new string[]{ "Npc1", "Capsule1", "0", OBTAIN_TYPE_NONE, "10002"}},
             {10001, new string[]{ "Npc2", "Capsule2", "0", OBTAIN_TYPE_NONE, "10003,10004"}},
             {10002, new string[]{ "Npc3", "Capsule3", "0", OBTAIN_TYPE_NONE, "10001,10004"}},
@@ -468,6 +487,8 @@ namespace Common
             { 1003, new string[]{ "PlasmaGun", "", "", OBTAIN_TYPE_INIT}},
             { 1004, new string[]{ "BlazePillar", "", "", OBTAIN_TYPE_INIT}},
             { 1005, new string[]{ "CERifle", "", "", OBTAIN_TYPE_INIT}},
+            { 1006, new string[]{ "Stinger", "", "", OBTAIN_TYPE_INIT}},
+            { 1007, new string[]{ "TridentPillar", "", "", OBTAIN_TYPE_INIT}},
         };
         //ハンド武器(ダッシュ)リスト
         public static Dictionary<int, string[]> handDashWeaponLineUp = new Dictionary<int, string[]>()
@@ -489,6 +510,7 @@ namespace Common
             { 3003, new string[]{ "Cyclone", "", "", OBTAIN_TYPE_INIT}},
             { 3004, new string[]{ "EnergyShield", "", "", OBTAIN_TYPE_INIT}},
             { 3005, new string[]{ "ChargeArrow", "", "", OBTAIN_TYPE_INIT}},
+            { 3006, new string[]{ "SearchRay", "", "", OBTAIN_TYPE_INIT}},
         };
         //背中武器(ダッシュ)リスト
         public static Dictionary<int, string[]> shoulderDashWeaponLineUp = new Dictionary<int, string[]>()
@@ -498,6 +520,7 @@ namespace Common
             { 4002, new string[]{ "GatlingCannon", "", "", OBTAIN_TYPE_INIT}},
             { 4003, new string[]{ "Shotgun", "", "", OBTAIN_TYPE_INIT}},
             { 4004, new string[]{ "RoundMissile", "", "", OBTAIN_TYPE_INIT}},
+            { 4005, new string[]{ "AssaultCharge", "", "", OBTAIN_TYPE_INIT}},
         };
         //サブ武器リスト
         public static Dictionary<int, string[]> subWeaponLineUp = new Dictionary<int, string[]>()
@@ -517,7 +540,6 @@ namespace Common
             { 10004, new string[]{ "ExtraShadowSewing", "ExShadowDagger", "拘束するよ！", OBTAIN_TYPE_INIT}},
             { 10005, new string[]{ "ExtraClaw", "ExClaw", "にゃー！", OBTAIN_TYPE_INIT}},
             { 10006, new string[]{ "ExtraHolyRay", "ExHolyRay", "光の裁きを！", OBTAIN_TYPE_INIT}},
-            { 10007, new string[]{ "ExtraHolyRay2", "ExHolyRay2", "光の裁きを！", OBTAIN_TYPE_INIT}},
         };
 
         //部位ごとの武器リスト取得

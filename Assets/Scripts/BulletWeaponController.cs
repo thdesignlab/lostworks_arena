@@ -29,6 +29,7 @@ public class BulletWeaponController : WeaponController
     protected float startMuzzleAngle = 0;
     //protected List<float> startMuzzleAngles = new List<float>();
 
+    protected int bulletNo = 0;
 
     protected override void Awake()
     {
@@ -103,6 +104,7 @@ public class BulletWeaponController : WeaponController
 
     protected override void Action()
     {
+        bulletNo = 0;
         shootBullets = new List<GameObject>();
 
         if (bitMoveTime  > 0)
@@ -210,6 +212,8 @@ public class BulletWeaponController : WeaponController
         }
         //弾生成
         GameObject ob = PhotonNetwork.Instantiate(Common.Func.GetResourceBullet(bullet.name), pos, quat, groupId);
+        bulletNo++;
+        ob.name = ob.name + "_" + bulletNo.ToString();
         SetBulletTarget(ob);
         base.PlayAudio();
 

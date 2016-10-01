@@ -26,7 +26,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 404188}
   - 114: {fileID: 11438246}
-  - 114: {fileID: 11485142}
   - 135: {fileID: 13587630}
   - 114: {fileID: 11475272}
   m_Layer: 0
@@ -587,7 +586,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1d600a14ff695d4f9c4f4a7d7101de8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageEffect: {fileID: 0}
+  damageEffect: {fileID: 133516, guid: e2d7ae54e3828d840bad804c87cfcfe4, type: 2}
   damage: 500
   damagePerSecond: 0
   isPhysicsBulletBreak: 0
@@ -598,20 +597,6 @@ MonoBehaviour:
   scaleTime: 1
   scaleLateTime: 0
   isParticle: 0
---- !u!114 &11485142
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 113064}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f086994b8c47ea443baf4face217f973, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  effectSpawn: {fileID: 163966, guid: 65351d6cc2acb2741b5115144056024d, type: 2}
-  activeLimitTime: 0
-  activeLimitDistance: 0
 --- !u!135 &13587630
 SphereCollider:
   m_ObjectHideFlags: 1
