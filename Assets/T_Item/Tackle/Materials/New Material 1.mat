@@ -6,7 +6,7 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: efe5
+  m_Name: New Material 1
   m_Shader: {fileID: 200, guid: 0000000000000000f000000000000000, type: 0}
   m_ShaderKeywords: 
   m_LightmapFlags: 5
@@ -21,7 +21,7 @@ Material:
         second:
           m_Texture: {fileID: 2800000, guid: 7a00a73dc9e01744383bc0cda70b6343, type: 3}
           m_Scale: {x: 1, y: 1}
-          m_Offset: {x: 0.21035385, y: 0.17529297}
+          m_Offset: {x: 0.105176926, y: 0}
       data:
         first:
           name: _BumpMap
@@ -139,8 +139,8 @@ Material:
       data:
         first:
           name: _Color
-        second: {r: 0.588, g: 0.588, b: 0.588, a: 1}
+        second: {r: 1, g: 1, b: 1, a: 1}
       data:
         first:
           name: _TintColor
-        second: {r: 0.66176474, g: 0.36336657, b: 0.09245244, a: 0.403}
+        second: {r: 1, g: 0.49472615, b: 0.2205882, a: 0.5}
