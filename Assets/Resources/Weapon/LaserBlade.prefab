@@ -37,7 +37,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &108530
 GameObject:
   m_ObjectHideFlags: 1
@@ -1938,7 +1938,7 @@ MonoBehaviour:
   isEnergyBulletBreak: 1
   ownDamageRate: 0
   startScale: {x: 0.5, y: 0.5, z: 0.5}
-  endScale: {x: 3, y: 3, z: 2}
+  endScale: {x: 3.5, y: 3.5, z: 2.5}
   scaleTime: 0.1
   scaleLateTime: 0.2
   isParticle: 1

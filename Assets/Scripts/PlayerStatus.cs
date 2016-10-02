@@ -33,9 +33,9 @@ public class PlayerStatus : Photon.MonoBehaviour {
     [SerializeField]
     private int recoverSp = 10; //SP回復量
     [SerializeField]
-    private int bonusRecoverSpRate = 2; //移動していない場合の追加SP回復量
+    private float bonusRecoverSpRate = 2; //移動していない場合の追加SP回復量
     [SerializeField]
-    private int bonusRecoverSpTime = 3; //ボーナスを受け取るのに必要な時間
+    private float bonusRecoverSpTime = 3; //ボーナスを受け取るのに必要な時間
 
     public int boostCost = 25;   //ブースト時消費SP
 
