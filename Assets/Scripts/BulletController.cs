@@ -300,11 +300,22 @@ public class BulletController : MoveOfCharacter
     public void SetOwner(Transform owner, string weaponName)
     {
         if (owner == null) return;
-        ownerTran = owner;
-        ownerStatus = ownerTran.GetComponent<PlayerStatus>();
-        ownerWeapon = weaponName;
-        PhotonView pv = PhotonView.Get(ownerTran.gameObject);
-        if (pv != null) ownerId = pv.ownerId;
+        object[] args = new object[] { PhotonView.Get(owner.gameObject).viewID, weaponName };
+        photonView.RPC("SetOwnerRPC", PhotonTargets.All, args);
+    }
+
+    [PunRPC]
+    protected virtual void SetOwnerRPC(int ownerViewId, string weaponName)
+    {
+        PhotonView ownerView = PhotonView.Find(ownerViewId);
+        if (ownerView != null)
+        {
+            ownerTran = ownerView.gameObject.transform;
+            ownerStatus = ownerTran.GetComponent<PlayerStatus>();
+            ownerWeapon = weaponName;
+            PhotonView pv = PhotonView.Get(ownerTran.gameObject);
+            if (pv != null) ownerId = pv.ownerId;
+        }
     }
 
     public virtual string GetBulletDescription()

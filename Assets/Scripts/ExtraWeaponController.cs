@@ -231,4 +231,9 @@ public class ExtraWeaponController : Photon.MonoBehaviour
     {
         return isShooting;
     }
+
+    public void ExtraFree()
+    {
+        useHpPerCondition = 0;
+    }
 }

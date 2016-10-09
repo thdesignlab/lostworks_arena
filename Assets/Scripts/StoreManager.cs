@@ -8,8 +8,7 @@ public class StoreManager : SingletonMonoBehaviour<StoreManager>
     [SerializeField]
     private GameObject storeCanvas;
 
-    private int dailyPlayCount = 10;
-    private int freeCount = 1;
+    //private int dailyPlayCount = 10;
     private int minPoint = 10;
     private int maxPoint = 50;
 

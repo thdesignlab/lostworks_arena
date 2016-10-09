@@ -55,7 +55,7 @@ public class PhotonManager : MonoBehaviour
     private Text roomStatusText;
 
     private string moveScene = "";
-    private string loadmessage = "";
+    //private string loadmessage = "";
 
     const string MESSAGE_CONNECT_FAILED = "ネットワーク接続に失敗しました\n通信状況をご確認の上\n再度お試しください";
     const string MESSAGE_CREATE_ROOM_FAILED = "Room作成に失敗しました\n既に存在するRoom名です";

@@ -89,10 +89,9 @@ public class FixedTrackingBulletController : BulletController
             }
 
             //向き調整
-            bool isSetAngleFinish = false;
             if (enableSetAngle)
             {
-                isSetAngleFinish = base.SetAngle(base.targetTran, fixedTurnSpeed);
+                base.SetAngle(base.targetTran, fixedTurnSpeed);
             }
         }
         else

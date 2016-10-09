@@ -12,7 +12,9 @@ public class UnityAds : SingletonMonoBehaviour<UnityAds>
 
     //Unityの広告ID
     [SerializeField]
-    private string _unityAdsiosID, _unityAdsAndroidID;
+    private string _unityAdsiosID;
+    [SerializeField]
+    private string _unityAdsAndroidID;
 
     private bool isAdPlaying = false;
 

@@ -388,6 +388,7 @@ namespace Common
                 }
                 catch (UnityException e)
                 {
+                    Debug.Log(e);
                 }
             }
             //Debug.Log(bulletName+" >> " +no);
@@ -527,6 +528,7 @@ namespace Common
             { 5000, new string[]{ "InvincibleShield", "", "", OBTAIN_TYPE_NONE}},
             { 5002, new string[]{ "BoostRecoverSp", "", "", OBTAIN_TYPE_INIT}},
             { 5003, new string[]{ "SpeedBurst", "", "", OBTAIN_TYPE_INIT}},
+            { 5004, new string[]{ "AttackBurst", "", "", OBTAIN_TYPE_INIT}},
         };
         //スペシャル武器リスト
         public static Dictionary<int, string[]> extraWeaponLineUp = new Dictionary<int, string[]>()

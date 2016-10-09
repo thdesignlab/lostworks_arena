@@ -536,4 +536,9 @@ public class WeaponController : Photon.MonoBehaviour
             playerStatus.voiceManager.Attack();
         }
     }
+
+    public void ReloadFree()
+    {
+        reloadTime = 1;
+    }
 }

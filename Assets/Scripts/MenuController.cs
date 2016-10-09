@@ -179,16 +179,6 @@ public class MenuController : Photon.MonoBehaviour
         return isEnabledDebug;
     }
 
-    ////復活
-    //public void OnRespawnButton()
-    //{
-    //    if (!CommonDebug()) return;
-    //    if (GameController.Instance.GetMyTran() != null) return;
-
-    //    Destroy(Camera.main.gameObject);
-    //    GameController.Instance.SpawnMyPlayerEverywhere();
-    //}
-
     //装備カスタム
     public void OnCustomButton()
     {
@@ -240,5 +230,22 @@ public class MenuController : Photon.MonoBehaviour
         if (!CommonDebug()) return;
         UserManager.DeleteUser();
         GameController.Instance.ReStart();
+    }
+    //武器使用フリー
+    public void WeaponFree()
+    {
+        if (!CommonDebug()) return;
+        foreach (int partsNo in Common.CO.partsNameArray.Keys)
+        {
+            Transform playerTran = GameController.Instance.GetMyTran();
+            string partsName = Common.Func.GetPartsStructure(Common.CO.partsNameArray[partsNo]);
+            Transform parts = playerTran.FindChild(partsName);
+            if (parts == null) continue;
+            WeaponController wepCtrl = parts.GetComponentInChildren<WeaponController>();
+            if (wepCtrl == null) continue;
+            wepCtrl.ReloadFree();
+            ExtraWeaponController extraCtrl = parts.GetComponentInChildren<ExtraWeaponController>();
+            if (extraCtrl != null) extraCtrl.ExtraFree();
+        }
     }
 }

@@ -84,9 +84,9 @@ public class PlayerStatus : Photon.MonoBehaviour {
     private float defaultBoostSpeed;
     private float defaultTurnSpeed;
     private float defaultBoostTurnSpeed;
-    private float defaultInvincibleTime;
-    private int defaultRecoverSp;
-    private float defaultAttackRate;
+    //private float defaultInvincibleTime;
+    //private int defaultRecoverSp;
+    //private float defaultAttackRate;
 
     private BaseMoveController moveCtrl;
     private bool isActiveSceane = true;
@@ -137,9 +137,9 @@ public class PlayerStatus : Photon.MonoBehaviour {
         defaultBoostSpeed = boostSpeed;
         defaultTurnSpeed = turnSpeed;
         defaultBoostTurnSpeed = boostTurnSpeed;
-        defaultInvincibleTime = invincibleTime;
-        defaultRecoverSp = recoverSp;
-        defaultAttackRate = attackRate;
+        //defaultInvincibleTime = invincibleTime;
+        //defaultRecoverSp = recoverSp;
+        //defaultAttackRate = attackRate;
 
         if (SceneManager.GetActiveScene().name == Common.CO.SCENE_CUSTOM)
         {
@@ -224,8 +224,8 @@ public class PlayerStatus : Photon.MonoBehaviour {
         boostSpeed = defaultBoostSpeed;
         turnSpeed = defaultTurnSpeed;
         boostTurnSpeed = defaultBoostTurnSpeed;
-        invincibleTime = defaultInvincibleTime;
-        recoverSp = defaultRecoverSp;
+        //invincibleTime = defaultInvincibleTime;
+        //recoverSp = defaultRecoverSp;
 
         if (photonView.isMine)
         {
@@ -634,7 +634,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
         //RecoverSp
         index = Common.Character.STATUS_RECOVER_SP;
         recoverSp = (int)(defaultStatus[index] * levelRate[index]);
-        defaultRecoverSp = recoverSp;
+        //defaultRecoverSp = recoverSp;
 
         //RunSpeed
         index = Common.Character.STATUS_RUN_SPEED;
@@ -653,9 +653,8 @@ public class PlayerStatus : Photon.MonoBehaviour {
 
         index = Common.Character.STATUS_ATTACK_RATE;
         attackRate = defaultStatus[index] * levelRate[index];
-        defaultAttackRate = attackRate;
+        //defaultAttackRate = attackRate;
     }
-
 
     //SP回復量(自分専用)
     public void AccelerateRecoverSp(float rate, float limit, GameObject effect = null)
@@ -664,11 +663,46 @@ public class PlayerStatus : Photon.MonoBehaviour {
     }
     IEnumerator CheckAccelerateRecoverSp(float rate, float limit, GameObject effect = null)
     {
-        recoverSp = (int)(recoverSp * rate);
+        int changeValue = (int)(recoverSp * rate - recoverSp);
+        recoverSp += changeValue;
         SwitchEffect(effect, true);
         yield return new WaitForSeconds(limit);
         SwitchEffect(effect, false);
-        recoverSp = defaultRecoverSp;
+        recoverSp -= changeValue;
+    }
+
+    //攻撃力
+    public bool ChangeAttackRate(float rate, float limit, GameObject effect = null, bool isSendRpc = true)
+    {
+        if (photonView.isMine)
+        {
+            StartCoroutine(ChangeAttackRateProc(rate, limit, effect));
+        }
+        else
+        {
+            if (isSendRpc)
+            {
+                object[] args = new object[] { rate, limit, effect };
+                photonView.RPC("AccelerateRunSpeedRPC", PhotonTargets.Others, args);
+            }
+        }
+        return true;
+    }
+
+    [PunRPC]
+    public void ChangeAttackRateRPC(float rate, float limit, GameObject effect = null)
+    {
+        ChangeAttackRate(rate, limit, effect, false);
+    }
+
+    IEnumerator ChangeAttackRateProc(float rate, float limit, GameObject effect = null)
+    {
+        int changeValue = (int)(attackRate * rate - attackRate);
+        attackRate += changeValue;
+        SwitchEffect(effect, true);
+        yield return new WaitForSeconds(limit);
+        SwitchEffect(effect, false);
+        attackRate -= changeValue;
     }
 
     //移動速度アップ・ダウン(負の効果優先)
@@ -831,11 +865,12 @@ public class PlayerStatus : Photon.MonoBehaviour {
     }
     IEnumerator CheckAvoidBurst(float rate, float limit, GameObject effect = null)
     {
-        invincibleTime *= rate;
+        float changeValue = invincibleTime * rate - invincibleTime;
+        invincibleTime += changeValue;
         SwitchEffect(effect, true);
         yield return new WaitForSeconds(limit);
         SwitchEffect(effect, false);
-        invincibleTime = defaultInvincibleTime;
+        invincibleTime -= changeValue;
     }
 
     //Ex武器用
