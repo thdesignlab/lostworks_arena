@@ -28,7 +28,7 @@ GameObject:
   - 114: {fileID: 11484644}
   - 114: {fileID: 11483748}
   - 114: {fileID: 11442964}
-  - 135: {fileID: 13500878}
+  - 136: {fileID: 13691154}
   m_Layer: 0
   m_Name: ExtraScythe
   m_TagString: ExtraBullet
@@ -411,8 +411,8 @@ MonoBehaviour:
   glideGravityRate: 1
   isLockOn: 0
   UseGravity: 0
-  hitEffect: {fileID: 0}
-  speed: 150
+  hitEffect: {fileID: 135988, guid: d7cd433d10510fe46a35c39bac480fe1, type: 2}
+  speed: 200
   damage: 350
   damagePerSecond: 0
   stuckTime: 0
@@ -473,8 +473,8 @@ MonoBehaviour:
   viewIdField: 0
   instantiationId: -1
   isRuntimeInstantiated: 0
---- !u!135 &13500878
-SphereCollider:
+--- !u!136 &13691154
+CapsuleCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
@@ -482,9 +482,10 @@ SphereCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.65
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Radius: 1
+  m_Height: 3
+  m_Direction: 2
+  m_Center: {x: 0, y: 0.5, z: 3}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

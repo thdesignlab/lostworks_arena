@@ -24,7 +24,7 @@ public class ExtraWeaponController : Photon.MonoBehaviour
     private const string TAG_ANIMATION_EXTRA = "Extra";
 
     private int useCount = 0;   //使用回数
-    private const int FREE_HP_CONDITION = 15;   //使用回数無制限になるHP割合
+    private const int FREE_HP_CONDITION = 10;   //使用回数無制限になるHP割合
 
     private bool isShooting = false;
     private bool isActiveScene = true;

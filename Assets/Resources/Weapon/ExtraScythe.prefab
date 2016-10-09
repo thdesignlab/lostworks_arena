@@ -537,7 +537,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 123946}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 2}
+  m_LocalPosition: {x: 0, y: -2.8, z: 2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
@@ -1087,13 +1087,13 @@ MonoBehaviour:
   bitMotionType: 0
   bitMoveTime: 0
   isBitFixed: 0
-  reloadTime: 1
+  reloadTime: 15
   fireEffect: {fileID: 0}
   bullet: {fileID: 108770, guid: a5aba4b6c436ff941afbc1d06a8c212b, type: 2}
   rapidCount: 1
   rapidInterval: 0
   spreadCount: 3
-  spreadDiffAngle: 15
+  spreadDiffAngle: 10
   focusDiff: 0
   recoil: 0
 --- !u!114 &11458646
@@ -1121,7 +1121,7 @@ MonoBehaviour:
   extraCam: {fileID: 102984}
   extraEffect: {fileID: 105566}
   fireTimeInAnim: 0.85
-  useHpPerCondition: 0
+  useHpPerCondition: 25
 --- !u!114 &11469304
 MonoBehaviour:
   m_ObjectHideFlags: 1

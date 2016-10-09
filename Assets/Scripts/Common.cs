@@ -422,9 +422,7 @@ namespace Common
             {400, new string[]{ "Hero4", "Meisai", "0", OBTAIN_TYPE_INIT, "10006"}},
             {401, new string[]{ "Hero4", "Meisai", "1", OBTAIN_TYPE_INIT, "10006"}},
             {500, new string[]{ "Hero5", "Unknown", "0", OBTAIN_TYPE_INIT, "10007"}},
-            {10000, new string[]{ "Npc1", "Capsule1", "0", OBTAIN_TYPE_NONE, "10002"}},
-            {10001, new string[]{ "Npc2", "Capsule2", "0", OBTAIN_TYPE_NONE, "10003,10004"}},
-            {10002, new string[]{ "Npc3", "Capsule3", "0", OBTAIN_TYPE_NONE, "10001,10004"}},
+            {10000, new string[]{ "Npc1", "Capsule1", "0", OBTAIN_TYPE_NONE, "10002,10003,10004"}},
         };
 
         //ステータス
@@ -442,18 +440,16 @@ namespace Common
         public static Dictionary<int, int[]> StatusDic = new Dictionary<int, int[]>()
         {
                             //hp, sp, run, boost, turn, atk%, atkI, boostI, tagI
-            { 100, new int[]{ 1000, 50, 35, 70, 20, 100, 2, 2, 3, 1 , 20} },
-            { 101, new int[]{ 1000, 50, 35, 70, 20, 100, 2, 2, 3, 1 , 20} },
-            { 200, new int[]{ 1000, 50, 30, 70, 20, 110, 2, 2, 3, 1 , 250} },
-            { 201, new int[]{ 1000, 50, 30, 70, 20, 110, 2, 2, 3, 1 , 250} },
-            { 300, new int[]{ 1000, 75, 35, 70, 20, 100, 2, 2, 3, 1 , 150} },
-            { 301, new int[]{ 1000, 75, 35, 70, 20, 100, 2, 2, 3, 1 , 150} },
+            { 100, new int[]{ 1000, 45, 35, 75, 20, 100, 2, 2, 3, 1 , 20} },
+            { 101, new int[]{ 1000, 45, 35, 75, 20, 100, 2, 2, 3, 1 , 20} },
+            { 200, new int[]{ 1000, 45, 30, 70, 20, 110, 2, 2, 3, 1 , 250} },
+            { 201, new int[]{ 1000, 45, 30, 70, 20, 110, 2, 2, 3, 1 , 250} },
+            { 300, new int[]{ 1000, 55, 30, 70, 20, 100, 2, 2, 3, 1 , 150} },
+            { 301, new int[]{ 1000, 55, 30, 70, 20, 100, 2, 2, 3, 1 , 150} },
             { 400, new int[]{ 1200, 50, 30, 70, 20, 100, 2, 2, 3, 1 , 50} },
             { 401, new int[]{ 1200, 50, 30, 70, 20, 100, 2, 2, 3, 1 , 50} },
-            { 500, new int[]{ 1100, 60, 32, 72, 22, 105, 2, 2, 3, 1 , 150} },
-            { 10000, new int[]{ 600, 25, 20, 40, 15, 80, 3, 3, 5, 0 , 200} },
-            { 10001, new int[]{ 700, 30, 25, 50, 15, 80, 3, 3, 5, 0 , 200} },
-            { 10002, new int[]{ 800, 35, 30, 60, 20, 80, 2, 2, 4, 0 , 100} },
+            { 500, new int[]{ 1200, 35, 35, 75, 25, 110, 2, 2, 3, 1 , 150} },
+            { 10000, new int[]{ 800, 35, 25, 50, 20, 80, 3, 3, 4, 0 , 100} },
         };
 
         public static string[] GetCharacterInfo(int characterNo)
@@ -708,9 +704,9 @@ namespace Common
         {
             { 1, new int[] { 10000, 0 } },
             { 2, new int[] { 100, 1 } },
-            { 3, new int[] { 200, 2 } },
-            { 4, new int[] { 300, 3 } },
-            { 5, new int[] { 400, 4 } },
+            { 3, new int[] { 200, 1 } },
+            { 4, new int[] { 300, 2 } },
+            { 5, new int[] { 400, 3 } },
             { 6, new int[] { 500, 4 } },
         };
 

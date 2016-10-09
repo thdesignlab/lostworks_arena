@@ -248,7 +248,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   effectSpawn: {fileID: 0}
   activeLimitTime: 8
-  activeLimitDistance: 300
+  activeLimitDistance: 350
 --- !u!114 &11490154
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -280,7 +280,7 @@ MonoBehaviour:
   fixedRollVector: {x: 0, y: 0, z: 0}
   fixedSpeed: 200
   fixedTurnSpeed: 10
-  searchTurnSpeed: 30
+  searchTurnSpeed: 45
   isNeedLock: 1
   isStickable: 0
   autoFireTime: 0

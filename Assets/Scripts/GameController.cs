@@ -59,8 +59,8 @@ public class GameController : SingletonMonoBehaviour<GameController>
 
     private Dictionary<string, string[]> spriteTexts = new Dictionary<string, string[]>()
     {
-        { MESSAGE_READY, new string[] { "ReadyGo", "ReadyGo_0" } },
-        { MESSAGE_START, new string[] { "ReadyGo", "ReadyGo_1" } },
+        { MESSAGE_READY, new string[] { "Ready", "Ready" } },
+        { MESSAGE_START, new string[] { "Go", "Go" } },
         { MESSAGE_WAITING, new string[] { "PlayerWaiting", "PlayerWaiting" } },
         { MESSAGE_LEVEL_SELECT, new string[] { "ModeSelecting", "ModeSelecting" } },
     };
@@ -556,7 +556,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
                                 SetTextCenter(i.ToString(), colorReady);
                                 yield return new WaitForSeconds(1);
                             }
-                            SetTextCenter(MESSAGE_START, colorReady, 3);
+                            SetTextCenter(MESSAGE_START, colorReady, 2);
 
                             //対戦スタート
                             GameStart();
