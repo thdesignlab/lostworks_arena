@@ -717,8 +717,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effectSpawn: {fileID: 0}
-  activeLimitTime: 0
-  activeLimitDistance: 200
+  activeLimitTime: 0.5
+  activeLimitDistance: 0
 --- !u!114 &11467052
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -735,8 +735,8 @@ MonoBehaviour:
   isLockOn: 0
   UseGravity: 0
   hitEffect: {fileID: 0}
-  speed: 150
-  damage: 400
+  speed: 400
+  damage: 450
   damagePerSecond: 0
   stuckTime: 0
   knockBackRate: 0
@@ -761,9 +761,9 @@ MonoBehaviour:
   isPhysicsBulletBreak: 0
   isEnergyBulletBreak: 0
   ownDamageRate: 1
-  startScale: {x: 1, y: 1, z: 1}
+  startScale: {x: 10, y: 10, z: 10}
   endScale: {x: 50, y: 50, z: 50}
-  scaleTime: 3
+  scaleTime: 0.5
   scaleLateTime: 0
   isParticle: 0
 --- !u!114 &11474946

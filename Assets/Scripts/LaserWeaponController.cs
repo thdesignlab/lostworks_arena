@@ -63,24 +63,24 @@ public class LaserWeaponController : WeaponController
     IEnumerator LaserShoot()
     {
         //Bit移動
-        base.StartBitMove(bitFromPos, bitToPos);
+        StartBitMove(bitFromPos, bitToPos);
         yield return new WaitForSeconds(bitMoveTime);
         laserSwitchTime = 0;
 
         //モーション開始
         StartMotion();
 
-        if (base.playerStatus != null)
+        if (playerStatus != null)
         {
             //移動・回転制限
-            base.playerStatus.AccelerateRunSpeed(runSpeedRate, effectiveTime, null, false);
-            base.playerStatus.InterfareTurn(turnSpeedRate, effectiveTime);
+            playerStatus.AccelerateRunSpeed(runSpeedRate, effectiveTime, null, false);
+            playerStatus.InterfareTurn(turnSpeedRate, effectiveTime);
             if (aimingCtrl != null) aimingCtrl.SetAimSpeed(turnSpeedRate);
         }
 
         //レーザー生成
         PlayVoice();
-        base.PlayAudio();
+        PlayAudio();
         GameObject laser = PhotonNetwork.Instantiate(Common.Func.GetResourceBullet(laserPrefab.name), muzzle.position, muzzle.rotation, 0);
         SetBulletTarget(laser);
         Transform laserTran = laser.transform;
@@ -183,7 +183,7 @@ public class LaserWeaponController : WeaponController
 
         if (aimingCtrl != null) aimingCtrl.SetAimSpeed();
 
-        base.StopAudio();
+        StopAudio();
         base.EndAction();
     }
 
