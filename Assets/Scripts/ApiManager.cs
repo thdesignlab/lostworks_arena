@@ -1,26 +1,32 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
 using System;
 using System.Text;
+using LitJson;
 
 public class ApiManager : SingletonMonoBehaviour<ApiManager>
 {
     const string BASE_URL = "http://lostworks.th-designlab.com/";
 
-    public void Post(string uri, string paramJson = "", Action<WWW> callback = null)
+    //APIリクエスト
+    public void Post(string uri, string paramJson = "", Action<string> callback = null)
     {
         StartCoroutine(PostRoutine(uri, paramJson, callback));
     }
 
-    IEnumerator PostRoutine(string uri, string paramJson = "", Action<WWW> callback = null)
+    IEnumerator PostRoutine(string uri, string paramJson = "", Action<string> callback = null)
     {
         //ヘッダー
         Dictionary<string, string> header = new Dictionary<string, string>();
         header.Add("Content-Type", "application/json; charset=UTF-8");
-        header.Add("Token", "abcde");
-        header.Add("UA", "123456789");
+        header.Add("Token", UserManager.apiToken);
+        header.Add("UserAgent", SystemInfo.operatingSystem);
         header.Add("Lostworks", "api");
+        //Debug.Log(SystemInfo.deviceType);
+        //Debug.Log(SystemInfo.operatingSystem);
+        //Debug.Log(SystemInfo.);
 
         //パラメータ
         byte[] postBytes = null;
@@ -30,38 +36,18 @@ public class ApiManager : SingletonMonoBehaviour<ApiManager>
         WWW www = new WWW(BASE_URL + uri, postBytes, header);
         yield return www;
 
-        //コールバック
-        if (callback != null)
-        {
-            callback(www);
-        }
-        else
-        {
-            DefaultCallback(www);
-        }
-    }
-
-    private void DefaultCallback(WWW www)
-    {
         if (www.error == null)
         {
-            Debug.Log(www.text);
+            //JSON取得
+            string json = Encoding.UTF8.GetString(www.bytes);
+
+            //コールバック
+            callback.Invoke(json);
         }
         else
         {
             Debug.Log(www.error);
+            DialogController.OpenDialog("接続エラー", () => SceneManager.LoadScene(Common.CO.SCENE_TITLE));
         }
-    }
-
-    public string ToJson<T>(T obj)
-    {
-        string json = JsonUtility.ToJson(obj);
-        return json;
-    }
-
-    public T FromJson<T>(string json)
-    {
-        T obj = JsonUtility.FromJson<T>(json);
-        return obj;
     }
 }

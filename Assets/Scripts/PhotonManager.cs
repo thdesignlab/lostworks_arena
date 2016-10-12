@@ -74,15 +74,15 @@ public class PhotonManager : MonoBehaviour
 
             ApplicationChrome.statusBarState = ApplicationChrome.States.Visible;
             ApplicationChrome.navigationBarState = ApplicationChrome.States.Hidden;
+
+            //ユーザー情報取得
+            UserManager.SetPlayerPrefs();
         }
         else
         {
             titleLogo.SetActive(false);
             ReturnModeSelect();
         }
-
-        //ユーザー情報取得
-        UserManager.SetUserInfo();
     }
 
     void Update()

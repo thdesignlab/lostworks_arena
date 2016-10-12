@@ -6,7 +6,7 @@ public class ApiTest : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
     {
-        UserAccount.Model model = new UserAccount.Model();
-        model.Get();
+        Auth.Login authLogin = new Auth.Login();
+        authLogin.Exe();
     }
 }

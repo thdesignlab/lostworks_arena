@@ -210,6 +210,14 @@ namespace Common
         //ユーザー情報項目
         public const int INFO_USER_ID = 0;
         public const int INFO_USER_NAME = 1;
+        public const int INFO_UUID = 3;
+        public const int INFO_PASSWORD = 4;
+
+        //バトル結果項目
+        public const int RESULT_BATTLE_COUNT = 0;
+        public const int RESULT_WIN_COUNT = 1;
+        public const int RESULT_LOSE_COUNT = 2;
+        public const int RESULT_BATTLE_RATE = 3;
 
         //コンフィグ情報項目
         public const int CONFIG_BGM_VALUE = 0;
@@ -219,16 +227,9 @@ namespace Common
         public const int CONFIG_VOICE_VALUE = 4;
         public const int CONFIG_VOICE_MUTE = 5;
 
-        //バトル結果項目
-        public const int RESULT_BATTLE_COUNT = 0;
-        public const int RESULT_WIN_COUNT = 1;
-        public const int RESULT_LOSE_COUNT = 2;
-        public const int RESULT_BATTLE_RATE = 3;
-
         //ミッション項目
         public const int MISSION_LEVEL = 0;
         public const int MISSION_STAGE = 1;
-
     }
 
     //### 共通関数 ###

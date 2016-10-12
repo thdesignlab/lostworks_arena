@@ -9,181 +9,338 @@ public class UserManager
     public static Dictionary<string, int> userEquipment = new Dictionary<string, int>();    //ユーザー装備
     public static Dictionary<int, int> userConfig = new Dictionary<int, int>();    //設定
     public static int userSetCharacter = 0;   //ユーザー設定キャラ
-    public static List<int> userOpenCharacters = new List<int>();    //開放キャラクター
-    public static List<int> userOpenWeapons = new List<int>();       //開放武器
-    public static List<int> userOpenMissions = new List<int>() { 2, 1 };       //開放Mission(level, stage)
-
-    //管理ユーザーID
-    public static List<string> adminIdList = new List<string>()
-    {
-    };
+    public static List<int> userOpenCharacters = new List<int>() { };    //開放キャラクター
+    public static List<int> userOpenWeapons = new List<int>() { };       //開放武器
+    public static List<int> userOpenMissions = new List<int>() { 2, 1};       //開放Mission(level, stage)
 
     public static bool isAdmin = false;
+    public static int userPoint = 0;   //ポイント
+    public static string apiToken = "";
 
+    //ユーザー情報設定
+    public static void SetPlayerPrefs()
+    {
+        //データロード
+        SetUserInfo();
+        SetUserResult();
+        SetUserEquipment();
+        SetUserConfig();
+        SetUserSetCharacter();
+        SetUserOpenCharacters();
+        SetUserOpenWeapons();
+        SetUserOpenMissions();
+        PlayerPrefs.Save();
+
+        //DB登録情報取得
+        User.Get userGet = new User.Get();
+        userGet.Exe();
+    }
+
+    //◆UserInfo
+    private static void SetUserInfo()
+    {
+        string key = Common.PP.USER_INFO;
+        bool isUpdate = false;
+
+        if (PlayerPrefs.HasKey(key))
+        {
+            //データ取得
+            userInfo = PlayerPrefsUtility.LoadDict<int, string>(key);
+        }
+
+        //ユーザーID
+        if (!userInfo.ContainsKey(Common.PP.INFO_USER_ID))
+        {
+            userInfo.Add(Common.PP.INFO_USER_ID, "");
+            isUpdate = true;
+        }
+        //ユーザー名
+        if (!userInfo.ContainsKey(Common.PP.INFO_USER_NAME))
+        {
+            userInfo.Add(Common.PP.INFO_USER_NAME, "Guest" + Random.Range(1, 99999));
+            isUpdate = true;
+        }
+        //UUID
+        if (!userInfo.ContainsKey(Common.PP.INFO_UUID))
+        {
+            userInfo.Add(Common.PP.INFO_UUID, "");
+            isUpdate = true;
+        }
+        //password
+        if (!userInfo.ContainsKey(Common.PP.INFO_PASSWORD))
+        {
+            userInfo.Add(Common.PP.INFO_PASSWORD, "");
+            isUpdate = true;
+        }
+
+        //保存
+        if (isUpdate) PlayerPrefsUtility.SaveDict<int, string>(key, userInfo);
+    }
+
+    //◆UserResult
+    private static void SetUserResult()
+    {
+        string key = Common.PP.USER_RESULT;
+        bool isUpdate = false;
+
+        if (PlayerPrefs.HasKey(key))
+        {
+            //データ取得
+            userResult = PlayerPrefsUtility.LoadDict<int, int>(key);
+        }
+
+        //バトル回数
+        if (!userResult.ContainsKey(Common.PP.RESULT_BATTLE_COUNT))
+        {
+            userResult.Add(Common.PP.RESULT_BATTLE_COUNT, 0);
+            isUpdate = true;
+        }
+        //Win回数
+        if (!userResult.ContainsKey(Common.PP.RESULT_WIN_COUNT))
+        {
+            userResult.Add(Common.PP.RESULT_WIN_COUNT, 0);
+            isUpdate = true;
+        }
+        //Lose回数
+        if (!userResult.ContainsKey(Common.PP.RESULT_LOSE_COUNT))
+        {
+            userResult.Add(Common.PP.RESULT_LOSE_COUNT, 0);
+            isUpdate = true;
+        }
+        //レート
+        if (!userResult.ContainsKey(Common.PP.RESULT_BATTLE_RATE))
+        {
+            userResult.Add(Common.PP.RESULT_BATTLE_RATE, 1000);
+            isUpdate = true;
+        }
+
+        //保存
+        if (isUpdate) PlayerPrefsUtility.SaveDict<int, int>(key, userResult);
+    }
+
+    //◆UserEquipment
+    private static void SetUserEquipment()
+    {
+        string key = Common.PP.USER_EQUIP;
+        bool isUpdate = false;
+
+        if (PlayerPrefs.HasKey(key))
+        {
+            //データ取得
+            userEquipment = PlayerPrefsUtility.LoadDict<string, int>(key);
+        }
+
+        //RightHand, LeftHand
+        foreach (int weaponNo in Common.Weapon.handWeaponLineUp.Keys)
+        {
+            if (!userEquipment.ContainsKey(Common.CO.PARTS_LEFT_HAND))
+            {
+                userEquipment[Common.CO.PARTS_LEFT_HAND] = weaponNo;
+                isUpdate = true;
+                continue;
+            }
+            if (!userEquipment.ContainsKey(Common.CO.PARTS_RIGHT_HAND))
+            {
+                userEquipment[Common.CO.PARTS_RIGHT_HAND] = weaponNo;
+                isUpdate = true;
+                continue;
+            }
+            break;
+        }
+        //LeftHandDash, RightHandDash
+        foreach (int weaponNo in Common.Weapon.handDashWeaponLineUp.Keys)
+        {
+            if (!userEquipment.ContainsKey(Common.CO.PARTS_LEFT_HAND_DASH))
+            {
+                userEquipment[Common.CO.PARTS_LEFT_HAND_DASH] = weaponNo;
+                isUpdate = true;
+                continue;
+            }
+            if (!userEquipment.ContainsKey(Common.CO.PARTS_RIGHT_HAND_DASH))
+            {
+                userEquipment[Common.CO.PARTS_RIGHT_HAND_DASH] = weaponNo;
+                isUpdate = true;
+                continue;
+            }
+            break;
+        }
+        //Shoulder
+        foreach (int weaponNo in Common.Weapon.shoulderWeaponLineUp.Keys)
+        {
+            if (!userEquipment.ContainsKey(Common.CO.PARTS_SHOULDER))
+            {
+                userEquipment[Common.CO.PARTS_SHOULDER] = weaponNo;
+                isUpdate = true;
+                continue;
+            }
+            break;
+        }
+        //ShoulderDash
+        foreach (int weaponNo in Common.Weapon.shoulderDashWeaponLineUp.Keys)
+        {
+            if (!userEquipment.ContainsKey(Common.CO.PARTS_SHOULDER_DASH))
+            {
+                userEquipment[Common.CO.PARTS_SHOULDER_DASH] = weaponNo;
+                isUpdate = true;
+                continue;
+            }
+            break;
+        }
+        //Sub
+        foreach (int weaponNo in Common.Weapon.subWeaponLineUp.Keys)
+        {
+            if (!userEquipment.ContainsKey(Common.CO.PARTS_SUB))
+            {
+                userEquipment[Common.CO.PARTS_SUB] = weaponNo;
+                isUpdate = true;
+                continue;
+            }
+            break;
+        }
+        //Extra
+        if (!userEquipment.ContainsKey(Common.CO.PARTS_EXTRA))
+        {
+            userEquipment[Common.CO.PARTS_EXTRA] = 0;
+            isUpdate = true;
+        }
+
+        //保存
+        if (isUpdate) PlayerPrefsUtility.SaveDict<string, int>(key, userEquipment);
+    }
+
+    //◆UserConfig
+    private static void SetUserConfig()
+    {
+        string key = Common.PP.USER_CONFIG;
+        bool isUpdate = false;
+
+        if (PlayerPrefs.HasKey(key))
+        {
+            //データ取得
+            userConfig = PlayerPrefsUtility.LoadDict<int, int>(key);
+        }
+
+        //BGMValue
+        if (!userConfig.ContainsKey(Common.PP.CONFIG_BGM_VALUE))
+        {
+            userConfig.Add(Common.PP.CONFIG_BGM_VALUE, ConfigManager.SLIDER_COUNT / 2);
+            isUpdate = true;
+        }
+        //BGMMute
+        if (!userConfig.ContainsKey(Common.PP.CONFIG_BGM_MUTE))
+        {
+            userConfig.Add(Common.PP.CONFIG_BGM_MUTE, 0);
+            isUpdate = true;
+        }
+        //SEValue
+        if (!userConfig.ContainsKey(Common.PP.CONFIG_SE_VALUE))
+        {
+            userConfig.Add(Common.PP.CONFIG_SE_VALUE, ConfigManager.SLIDER_COUNT / 2);
+            isUpdate = true;
+        }
+        //SEMute
+        if (!userConfig.ContainsKey(Common.PP.CONFIG_SE_MUTE))
+        {
+            userConfig.Add(Common.PP.CONFIG_SE_MUTE, 0);
+            isUpdate = true;
+        }
+        //VoiceValue
+        if (!userConfig.ContainsKey(Common.PP.CONFIG_VOICE_VALUE))
+        {
+            userConfig.Add(Common.PP.CONFIG_VOICE_VALUE, ConfigManager.SLIDER_COUNT / 2);
+            isUpdate = true;
+        }
+        //VoiceMute
+        if (!userConfig.ContainsKey(Common.PP.CONFIG_VOICE_MUTE))
+        {
+            userConfig.Add(Common.PP.CONFIG_VOICE_MUTE, 0);
+            isUpdate = true;
+        }
+
+        //保存
+        if (isUpdate) PlayerPrefsUtility.SaveDict<int, int>(key, userConfig);
+    }
+
+    //◆UserSetCharacter
+    private static void SetUserSetCharacter()
+    {
+        string key = Common.PP.USER_CHARACTER;
+
+        if (PlayerPrefs.HasKey(key))
+        {
+            //データ取得
+            userSetCharacter = PlayerPrefsUtility.Load(key, userSetCharacter);
+        }
+        else
+        {
+            //保存
+            PlayerPrefsUtility.Save(key, userSetCharacter);
+        }
+    }
+
+    //◆UserOpenCharacters
+    private static void SetUserOpenCharacters()
+    {
+        string key = Common.PP.OPEN_CHARACTERS;
+
+        if (PlayerPrefs.HasKey(key))
+        {
+            //データ取得
+            userOpenCharacters = PlayerPrefsUtility.LoadList<int>(key);
+        }
+        else
+        {
+            //保存
+            PlayerPrefsUtility.SaveList<int>(key, userOpenCharacters);
+        }
+    }
+
+    //◆UserOpenWeapons
+    private static void SetUserOpenWeapons()
+    {
+        string key = Common.PP.OPEN_WEAPONS;
+
+        if (PlayerPrefs.HasKey(key))
+        {
+            //データ取得
+            userOpenCharacters = PlayerPrefsUtility.LoadList<int>(key);
+        }
+        else
+        {
+            //保存
+            PlayerPrefsUtility.SaveList<int>(key, userOpenWeapons);
+        }
+    }
+
+    //◆UserOpenMissions
+    private static void SetUserOpenMissions()
+    {
+        string key = Common.PP.OPEN_MISSIONS;
+
+        if (PlayerPrefs.HasKey(key))
+        {
+            //データ取得
+            userOpenMissions = PlayerPrefsUtility.LoadList<int>(key);
+        }
+        else
+        {
+            //保存
+            PlayerPrefsUtility.SaveList<int>(key, userOpenMissions);
+        }
+    }
 
     //##### ユーザー情報 #####
 
-    //初期データ作成
-    private static void InitUserInfo()
+    //API用情報
+    public static void SetApiInfo(string uuid, string password)
     {
-        //ユーザー情報
-        if (!PlayerPrefs.HasKey(Common.PP.USER_INFO))
-        {
-            userInfo[Common.PP.INFO_USER_ID] = SystemInfo.deviceUniqueIdentifier;
-            userInfo[Common.PP.INFO_USER_NAME] = "Guest" + Random.Range(1, 99999);
-            PlayerPrefsUtility.SaveDict<int, string>(Common.PP.USER_INFO, userInfo);
-        }
-
-        //戦歴
-        if (!PlayerPrefs.HasKey(Common.PP.USER_RESULT))
-        {
-            userResult[Common.PP.RESULT_BATTLE_COUNT] = 0;
-            userResult[Common.PP.RESULT_WIN_COUNT] = 0;
-            userResult[Common.PP.RESULT_LOSE_COUNT] = 0;
-            userResult[Common.PP.RESULT_BATTLE_RATE] = 1000;
-            PlayerPrefsUtility.SaveDict<int, int>(Common.PP.USER_RESULT, userResult);
-        }
-
-        //装備
-        if (!PlayerPrefs.HasKey(Common.PP.USER_EQUIP))
-        {
-            foreach (int key in Common.Weapon.handWeaponLineUp.Keys)
-            {
-                if (!userEquipment.ContainsKey(Common.CO.PARTS_LEFT_HAND))
-                {
-                    userEquipment[Common.CO.PARTS_LEFT_HAND] = key;
-                    continue;
-                }
-                else if (!userEquipment.ContainsKey(Common.CO.PARTS_RIGHT_HAND))
-                {
-                    userEquipment[Common.CO.PARTS_RIGHT_HAND] = key;
-                    continue;
-                }
-                break;
-            }
-            foreach (int key in Common.Weapon.handDashWeaponLineUp.Keys)
-            {
-                if (!userEquipment.ContainsKey(Common.CO.PARTS_LEFT_HAND_DASH))
-                {
-                    userEquipment[Common.CO.PARTS_LEFT_HAND_DASH] = key;
-                    continue;
-                }
-                else if (!userEquipment.ContainsKey(Common.CO.PARTS_RIGHT_HAND_DASH))
-                {
-                    userEquipment[Common.CO.PARTS_RIGHT_HAND_DASH] = key;
-                    continue;
-                }
-                break;
-            }
-            foreach (int key in Common.Weapon.shoulderWeaponLineUp.Keys)
-            {
-                if (!userEquipment.ContainsKey(Common.CO.PARTS_SHOULDER))
-                {
-                    userEquipment[Common.CO.PARTS_SHOULDER] = key;
-                    continue;
-                }
-                break;
-            }
-            foreach (int key in Common.Weapon.shoulderDashWeaponLineUp.Keys)
-            {
-                if (!userEquipment.ContainsKey(Common.CO.PARTS_SHOULDER_DASH))
-                {
-                    userEquipment[Common.CO.PARTS_SHOULDER_DASH] = key;
-                    continue;
-                }
-                break;
-            }
-            foreach (int key in Common.Weapon.subWeaponLineUp.Keys)
-            {
-                if (!userEquipment.ContainsKey(Common.CO.PARTS_SUB))
-                {
-                    userEquipment[Common.CO.PARTS_SUB] = key;
-                    continue;
-                }
-                break;
-            }
-            userEquipment[Common.CO.PARTS_EXTRA] = Common.Weapon.GetExtraWeaponNo(userSetCharacter);
-            PlayerPrefsUtility.SaveDict<string, int>(Common.PP.USER_EQUIP, userEquipment);
-        }
-
-        //コンフィグ
-        if (!PlayerPrefs.HasKey(Common.PP.USER_CONFIG))
-        {
-            userConfig[Common.PP.CONFIG_BGM_VALUE] = ConfigManager.SLIDER_COUNT / 2;
-            userConfig[Common.PP.CONFIG_BGM_MUTE] = 0;
-            userConfig[Common.PP.CONFIG_SE_VALUE] = ConfigManager.SLIDER_COUNT / 2;
-            userConfig[Common.PP.CONFIG_SE_MUTE] = 0;
-            userConfig[Common.PP.CONFIG_VOICE_VALUE] = ConfigManager.SLIDER_COUNT / 2;
-            userConfig[Common.PP.CONFIG_VOICE_MUTE] = 0;
-            SaveConfig(false);
-        }
-        
-
-        //設定キャラ
-        if (!PlayerPrefs.HasKey(Common.PP.USER_CHARACTER))
-        {
-            PlayerPrefsUtility.Save(Common.PP.USER_CHARACTER, userSetCharacter);
-        }
-
-        //開放キャラ
-        if (!PlayerPrefs.HasKey(Common.PP.OPEN_CHARACTERS))
-        {
-            PlayerPrefsUtility.SaveList<int>(Common.PP.OPEN_CHARACTERS, userOpenCharacters);
-        }
-
-        //開放武器
-        if (!PlayerPrefs.HasKey(Common.PP.OPEN_WEAPONS))
-        {
-            PlayerPrefsUtility.SaveList<int>(Common.PP.OPEN_WEAPONS, userOpenWeapons);
-        }
-
-        //開放Mission
-        if (!PlayerPrefs.HasKey(Common.PP.OPEN_MISSIONS))
-        {
-            PlayerPrefsUtility.SaveList<int>(Common.PP.OPEN_MISSIONS, userOpenMissions);
-        }
-
+        userInfo[Common.PP.INFO_UUID] = uuid;
+        userInfo[Common.PP.INFO_PASSWORD] = password;
+        PlayerPrefsUtility.SaveDict<int, string>(Common.PP.USER_INFO, userInfo);
         PlayerPrefs.Save();
     }
 
-    private static bool IsInitUser()
-    {
-        if (!PlayerPrefs.HasKey(Common.PP.USER_INFO)) return true;
-        if (!PlayerPrefs.HasKey(Common.PP.USER_RESULT)) return true;
-        if (!PlayerPrefs.HasKey(Common.PP.USER_EQUIP)) return true;
-        if (!PlayerPrefs.HasKey(Common.PP.USER_CONFIG)) return true;
-        if (!PlayerPrefs.HasKey(Common.PP.USER_CHARACTER)) return true;
-        if (!PlayerPrefs.HasKey(Common.PP.OPEN_CHARACTERS)) return true;
-        if (!PlayerPrefs.HasKey(Common.PP.OPEN_WEAPONS)) return true;
-        if (!PlayerPrefs.HasKey(Common.PP.OPEN_MISSIONS)) return true;
-        return false;
-    }
-
-    public static void SetUserInfo()
-    {
-        if (IsInitUser())
-        {
-            //新規ユーザー
-            InitUserInfo();
-        }
-
-        //ユーザー情報取得
-        userInfo = PlayerPrefsUtility.LoadDict<int, string>(Common.PP.USER_INFO);
-        userResult = PlayerPrefsUtility.LoadDict<int, int>(Common.PP.USER_RESULT);
-        userEquipment = PlayerPrefsUtility.LoadDict<string, int>(Common.PP.USER_EQUIP);
-        userConfig = PlayerPrefsUtility.LoadDict<int, int>(Common.PP.USER_CONFIG);
-        userSetCharacter = PlayerPrefsUtility.Load(Common.PP.USER_CHARACTER, 0);
-        userOpenCharacters = PlayerPrefsUtility.LoadList<int>(Common.PP.OPEN_CHARACTERS);
-        userOpenWeapons = PlayerPrefsUtility.LoadList<int>(Common.PP.OPEN_WEAPONS);
-        userOpenMissions = PlayerPrefsUtility.LoadList<int>(Common.PP.OPEN_MISSIONS);
-
-        //管理者判定
-        if (adminIdList.Contains(userInfo[Common.PP.INFO_USER_ID])) isAdmin = true;
-
-        //ログ表示
-        DispUserInfo();
-    }
-
+    //ユーザー名変更
     public static void SetUserName(string userName)
     {
         userInfo[Common.PP.INFO_USER_NAME] = userName;
