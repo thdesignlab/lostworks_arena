@@ -376,6 +376,11 @@ public class GameController : SingletonMonoBehaviour<GameController>
                                         () => OnNextLevel(), () => GoToTitle()
                                     };
                                     DialogController.OpenDialog(text, buttons, actions);
+                                    for (;;)
+                                    {
+                                        if (isContinue) break;
+                                        yield return null;
+                                    }
                                 }
                             }
                             else
@@ -631,9 +636,15 @@ public class GameController : SingletonMonoBehaviour<GameController>
     private void CleanNpcRPC()
     {
         Transform npc = GetNpcTran();
-        if (npc != null)
+        if (npc != null) StartCoroutine(CleanNpcProc(npc));
+    }
+    IEnumerator CleanNpcProc(Transform npc)
+    {
+        for (;;)
         {
+            if (npc == null) break;
             npc.GetComponent<PlayerStatus>().AddDamage(99999);
+            yield return null;
         }
     }
 

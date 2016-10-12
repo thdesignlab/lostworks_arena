@@ -424,6 +424,7 @@ namespace Common
             {400, new string[]{ "Hero4", "Meisai", "0", OBTAIN_TYPE_INIT, "10006"}},
             {401, new string[]{ "Hero4", "Meisai", "1", OBTAIN_TYPE_INIT, "10006"}},
             {500, new string[]{ "Hero5", "Unknown", "0", OBTAIN_TYPE_INIT, "10007"}},
+            {501, new string[]{ "Hero5", "Unknown", "1", OBTAIN_TYPE_INIT, "10007"}},
             {10000, new string[]{ "Npc1", "Capsule1", "0", OBTAIN_TYPE_NONE, "10002,10003,10004"}},
         };
 
@@ -451,6 +452,7 @@ namespace Common
             { 400, new int[]{ 1200, 50, 30, 70, 20, 100, 2, 2, 3, 1 , 50} },
             { 401, new int[]{ 1200, 50, 30, 70, 20, 100, 2, 2, 3, 1 , 50} },
             { 500, new int[]{ 1200, 35, 35, 75, 25, 110, 2, 2, 3, 1 , 150} },
+            { 501, new int[]{ 1200, 35, 35, 75, 25, 110, 2, 2, 3, 1 , 150} },
             { 10000, new int[]{ 800, 35, 25, 50, 20, 80, 3, 3, 4, 0 , 100} },
         };
 
