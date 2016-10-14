@@ -10,6 +10,8 @@ namespace Common
         public const string SCENE_TITLE = "Title";
         public const string SCENE_BATTLE = "Battle";
         public const string SCENE_CUSTOM = "Custom";
+        public const string SCENE_STORE = "Store";
+        public const string SCENE_RANKING = "Ranking";
 
         //NPCの名前
         public const string NPC_NAME = "NPC";

@@ -3,69 +3,71 @@ using System.Collections;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 
-public class ShortCut : MonoBehaviour
+public class Shortcut
 {
     private static string[] sceneList = new string[]
     {
-        "Title",    //0
-        "Battle",   //1
-        "Custom",   //2
+        Common.CO.SCENE_TITLE,      //1
+        Common.CO.SCENE_BATTLE,     //2
+        Common.CO.SCENE_CUSTOM,     //3
+        Common.CO.SCENE_STORE,      //4
+        Common.CO.SCENE_RANKING,    //5
     };
 
-
-    //&:Alt
-    //#:Shift
-    //%:Ctrl
     [MenuItem("Tools/PlayGame &q")]
-    public static void PlayFromPrelaunchScene()
+    public static void PlayGame()
     {
-        try {
-            // プレイ中ならば停止する
+        try
+        {
+            //実行中の場合は停止
             if (EditorApplication.isPlaying == true)
             {
                 EditorApplication.isPlaying = false;
                 return;
             }
-
-            // 再生したいシーンの読み込み->再生
-            OpenScene(0);
-            EditorApplication.isPlaying = true;
+            //実行したいシーンへ移動後に再生
+            if (OpenScene(1)) EditorApplication.isPlaying = true;
         }
         catch
         {
-            Debug.Log("Error");
+            Debug.Log("[Err]PlayFromPrelaunchScene");
         }
     }
 
-    private static void OpenScene(int sceneNo)
+    private static bool OpenScene(int sceneIndex)
     {
-        try {
-            //EditorApplication.SaveCurrentSceneIfUserWantsTo();    ～5.2
-            //EditorApplication.OpenScene("Assets/Scenes/" + sceneList[sceneNo] + ".Unity");
-            EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo();
-            EditorSceneManager.OpenScene("Assets/Scenes/" + sceneList[sceneNo] + ".Unity");
+        bool isSuccess = false;
+        try
+        {
+            //変更チェック
+            if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
+            {
+                //Cancel以外
+                EditorSceneManager.OpenScene("Assets/Scenes/" + sceneList[sceneIndex - 1] + ".Unity");
+                isSuccess = true;
+            }
         }
         catch
         {
-
+            Debug.Log("[Err]OpenScene >> "+ sceneIndex.ToString());
         }
+        return isSuccess;
     }
 
-    [MenuItem("Tools/OpenScene(0) &z")]
-    public static void OpenScene_0()
-    {
-        OpenScene(0);
-    }
-
-    [MenuItem("Tools/OpenScene(1) &x")]
-    public static void OpenScene_1()
-    {
-        OpenScene(1);
-    }
-
-    [MenuItem("Tools/OpenScene(2) &c")]
-    public static void OpenScene_2()
-    {
-        OpenScene(2);
-    }
+    [MenuItem("Tools/OpenScene/Title &1")]
+    public static void OpenScene1() { OpenScene(1);}
+    [MenuItem("Tools/OpenScene/Battle &2")]
+    public static void OpenScene2() { OpenScene(2); }
+    [MenuItem("Tools/OpenScene/Custom &3")]
+    public static void OpenScene3() { OpenScene(3); }
+    [MenuItem("Tools/OpenScene/Store &4")]
+    public static void OpenScene4() { OpenScene(4); }
+    [MenuItem("Tools/OpenScene/Ranking &5")]
+    public static void OpenScene5() { OpenScene(5); }
+    [MenuItem("Tools/OpenScene/6 &6")]
+    public static void OpenScene6() { OpenScene(6); }
+    [MenuItem("Tools/OpenScene/7 &7")]
+    public static void OpenScene7() { OpenScene(7); }
+    [MenuItem("Tools/OpenScene/8 &8")]
+    public static void OpenScene8() { OpenScene(8); }
 }
