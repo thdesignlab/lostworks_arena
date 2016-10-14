@@ -5,40 +5,82 @@ using System.Collections;
 using System.Text;
 using LitJson;
 
-public class BaseApi
+public abstract class BaseApi
 {
-    protected bool isNeedToken = true;
+    protected abstract string uri { get; }                      //APIuri
+    protected virtual bool isNeedToken { get { return true; } } //要TokenFLG
 
-    protected void Exe(string uri, Action<string> callback = null)
+    protected bool isIgnoreError = false;           //API接続エラー無視FLG
+    protected Action apiErrorCallback = null;       //API接続エラー時処理
+    protected Action apiFinishCallback = null;      //API完了後処理
+
+    //protected override void Exe(Action<string> apiCallback)
+    //{
+    //    if (!isIgnoreError && apiErrorCallback == null) apiErrorCallback = () => GoToTitle();
+    //    Post(apiCallback, apiErrorCallback);
+    //}
+
+    ////API実行入口(接続エラー無視)
+    //public void ExeIgnoreError(Action callback = null)
+    //{
+    //    Api(callback);
+    //}
+
+    //API完了時コールバック設定
+    public void SetApiFinishCallback(Action action)
     {
-        Exe(uri, "", callback);
+        apiFinishCallback = action;
     }
-    protected void Exe(string uri, string paramJson = "", Action<string> callback = null)
+
+    //接続エラー時コールバック設定
+    public void SetApiErrorCallback(Action errorAction)
     {
+        apiErrorCallback = errorAction;
+    }
+
+    //接続エラー無視FLG設定
+    public void SetApiErrorIngnore()
+    {
+        isIgnoreError = true;
+    }
+
+    //POST
+    protected void Post(Action<string> callback = null)
+    {
+        Post("", callback);
+    }
+    protected void Post(string paramJson = "", Action<string> callback = null)
+    {
+        //APIエラー時処理
+        if (!isIgnoreError && apiErrorCallback == null) apiErrorCallback = () => GoToTitle();
+
+        Action action = () => ApiManager.Instance.Post(uri, paramJson, callback, apiErrorCallback);
         if (isNeedToken)
         {
-            Action action = () => ApiManager.Instance.Post(uri, paramJson, callback);
             if (string.IsNullOrEmpty(UserManager.userInfo[Common.PP.INFO_UUID])
                || string.IsNullOrEmpty(UserManager.userInfo[Common.PP.INFO_PASSWORD]))
             {
                 //ユーザー新規作成
                 User.Create userCreate = new User.Create();
-                userCreate.Exe(action);
+                userCreate.SetApiFinishCallback(action);
+                userCreate.Exe();
                 return;
             }
             else if (string.IsNullOrEmpty(UserManager.apiToken))
             {
                 //ログイン
                 Auth.Login authLogin = new Auth.Login();
-                authLogin.Exe(action);
+                authLogin.SetApiFinishCallback(action);
+                authLogin.Exe();
                 return;
             }
         }
 
-        //API実行
-        ApiManager.Instance.Post(uri, paramJson, callback);
+        //送信
+        action.Invoke();
     }
 
+    //レスポンスからdata取得
     protected T GetData<T>(string json, bool isErrorThrough = false)
     {
         Debug.Log(this.ToString()+" >> "+json);

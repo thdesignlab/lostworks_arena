@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
@@ -192,7 +193,8 @@ public class PhotonManager : MonoBehaviour
     {
         if (isPlayAd)
         {
-            UnityAds.Instance.Play();
+            //広告表示
+            //UnityAds.Instance.Play();
             isPlayAd = false;
         }
 
@@ -341,35 +343,42 @@ public class PhotonManager : MonoBehaviour
     public void NetworkModeSelect()
     {
         DialogController.OpenMessage(DialogController.MESSAGE_CONNECT, DialogController.MESSAGE_POSITION_RIGHT);
-        SwitchModeSelectArea(false, true);
 
-        PhotonNetwork.offlineMode = false;
-        PhotonNetwork.automaticallySyncScene = true;
-        PhotonNetwork.autoJoinLobby = true;
-        moveScene = Common.CO.SCENE_BATTLE;
-
-        // the following line checks if this client was just created (and not yet online). if so, we connect
-        if (PhotonNetwork.connectionStateDetailed == PeerState.PeerCreated)
+        Action callback = () =>
         {
-            // Connect to the photon master-server. We use the settings saved in PhotonServerSettings (a .asset file in this project)
-            PhotonNetwork.ConnectUsingSettings("0.9");
-        }
+            SwitchModeSelectArea(false, true);
 
-        // generate a name for this player, if none is assigned yet
-        //if (string.IsNullOrEmpty(PhotonNetwork.playerName))
-        //{
-        PhotonNetwork.playerName = UserManager.userInfo[Common.PP.INFO_USER_NAME];
-        //}
+            PhotonNetwork.offlineMode = false;
+            PhotonNetwork.automaticallySyncScene = true;
+            PhotonNetwork.autoJoinLobby = true;
+            moveScene = Common.CO.SCENE_BATTLE;
 
-        // if you wanted more debug out, turn this on:
-        // PhotonNetwork.logLevel = NetworkLogLevel.Full;
+            // the following line checks if this client was just created (and not yet online). if so, we connect
+            if (PhotonNetwork.connectionStateDetailed == PeerState.PeerCreated)
+            {
+                // Connect to the photon master-server. We use the settings saved in PhotonServerSettings (a .asset file in this project)
+                PhotonNetwork.ConnectUsingSettings("0.9");
+            }
 
-        //ネットワークエリア
-        roomNameIF = networkArea.transform.FindChild("Network/Room/Name").GetComponent<InputField>();
-        roomStatusText = networkArea.transform.FindChild("Network/RoomStatus").GetComponent<Text>();
+            // generate a name for this player, if none is assigned yet
+            //if (string.IsNullOrEmpty(PhotonNetwork.playerName))
+            //{
+            PhotonNetwork.playerName = UserManager.userInfo[Common.PP.INFO_USER_NAME];
+            //}
 
-        UnityAction callback = () => isNetworkMode = true;
-        CameraRotate(false, callback);
+            // if you wanted more debug out, turn this on:
+            // PhotonNetwork.logLevel = NetworkLogLevel.Full;
+
+            //ネットワークエリア
+            roomNameIF = networkArea.transform.FindChild("Network/Room/Name").GetComponent<InputField>();
+            roomStatusText = networkArea.transform.FindChild("Network/RoomStatus").GetComponent<Text>();
+
+            UnityAction uniAction = () => isNetworkMode = true;
+            CameraRotate(false, uniAction);
+        };
+
+        //ユーザー情報取得
+        GetUserData(callback);
     }
 
     //カスタマイズ
@@ -385,9 +394,18 @@ public class PhotonManager : MonoBehaviour
     //Store
     public void OnStoreButton()
     {
-        SwitchModeSelectArea(false, true);
-        UnityAction callback = () => StoreManager.Instance.OpenStore();
-        CameraRotate(false, callback);
+        DialogController.OpenMessage(DialogController.MESSAGE_LOADING, DialogController.MESSAGE_POSITION_RIGHT);
+
+        Action callback = () =>
+        {
+            DialogController.CloseMessage();
+            SwitchModeSelectArea(false, true);
+            UnityAction action = () => StoreManager.Instance.OpenStore();
+            CameraRotate(false, action);
+        };
+
+        //ポイント情報取得
+        GetUserPoint(callback);
     }
 
     //コンフィグ
@@ -401,6 +419,9 @@ public class PhotonManager : MonoBehaviour
     //ランキング
     public void OnRankingButton()
     {
+        //ランキング情報取得
+        GetRankingData();
+
         DialogController.OpenDialog("はいはい\n1位1位(´-д-)-3");
     }
 
@@ -546,4 +567,31 @@ public class PhotonManager : MonoBehaviour
         Debug.Log("OnFailedToConnectToPhoton. StatusCode: " + parameters + " ServerAddress: " + PhotonNetwork.ServerAddress);
     }
 
+
+    //##### 登録情報取得 #####
+
+    //ユーザー情報取得
+    private void GetUserData(Action callback = null)
+    {
+        //ユーザー情報
+        User.Get userGet = new User.Get();
+        userGet.SetApiFinishCallback(callback);
+        userGet.Exe();
+
+        //戦歴
+
+    }
+    //ポイント情報取得
+    private void GetUserPoint(Action callback = null)
+    {
+        //所持ポイント取得
+        Point.Get pointGet = new Point.Get();
+        pointGet.SetApiFinishCallback(callback);
+        pointGet.Exe();
+    }
+    //ランキング情報取得
+    private void GetRankingData(Action callback = null)
+    {
+
+    }
 }

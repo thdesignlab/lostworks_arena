@@ -4,25 +4,43 @@ using System.Collections.Generic;
 
 public class UserManager
 {
-    public static Dictionary<int, string> userInfo = new Dictionary<int, string>();   //ユーザー情報
-    public static Dictionary<int, int> userResult = new Dictionary<int, int>();       //ユーザー戦歴
-    public static Dictionary<string, int> userEquipment = new Dictionary<string, int>();    //ユーザー装備
-    public static Dictionary<int, int> userConfig = new Dictionary<int, int>();    //設定
-    public static int userSetCharacter = 0;   //ユーザー設定キャラ
-    public static List<int> userOpenCharacters = new List<int>() { };    //開放キャラクター
-    public static List<int> userOpenWeapons = new List<int>() { };       //開放武器
-    public static List<int> userOpenMissions = new List<int>() { 2, 1};       //開放Mission(level, stage)
+    public static Dictionary<int, string> userInfo;         //ユーザー情報
+    public static Dictionary<string, int> userEquipment;    //ユーザー装備
+    public static Dictionary<int, int> userConfig;          //設定
+    public static int userSetCharacter;                     //ユーザー設定キャラ
+    public static List<int> userOpenCharacters;             //開放キャラクター
+    public static List<int> userOpenWeapons;                //開放武器
+    public static List<int> userOpenMissions;               //開放Mission(level, stage)
 
-    public static bool isAdmin = false;
-    public static int userPoint = 0;   //ポイント
-    public static string apiToken = "";
+    public static bool isAdmin;                     //管理者FLG
+    public static Dictionary<int, int> userResult;  //ユーザー戦歴
+    public static int userPoint;                    //所持ポイント
+    public static string apiToken;                  //API接続用Token
+
+    //ユーザー情報初期値設定
+    private static void InitPlayerPrefs()
+    {
+        userInfo = new Dictionary<int, string>();
+        userEquipment = new Dictionary<string, int>();
+        userConfig = new Dictionary<int, int>();
+        userSetCharacter = 0;
+        userOpenCharacters = new List<int>() { };
+        userOpenWeapons = new List<int>() { };
+        userOpenMissions = new List<int>() { 2, 1 };
+        isAdmin = false;
+        userResult = new Dictionary<int, int>();
+        userPoint = 0;
+        apiToken = "";
+    }
 
     //ユーザー情報設定
     public static void SetPlayerPrefs()
     {
+        //初期化
+        InitPlayerPrefs();
+
         //データロード
         SetUserInfo();
-        SetUserResult();
         SetUserEquipment();
         SetUserConfig();
         SetUserSetCharacter();
@@ -30,10 +48,6 @@ public class UserManager
         SetUserOpenWeapons();
         SetUserOpenMissions();
         PlayerPrefs.Save();
-
-        //DB登録情報取得
-        User.Get userGet = new User.Get();
-        userGet.Exe();
     }
 
     //◆UserInfo
@@ -75,47 +89,6 @@ public class UserManager
 
         //保存
         if (isUpdate) PlayerPrefsUtility.SaveDict<int, string>(key, userInfo);
-    }
-
-    //◆UserResult
-    private static void SetUserResult()
-    {
-        string key = Common.PP.USER_RESULT;
-        bool isUpdate = false;
-
-        if (PlayerPrefs.HasKey(key))
-        {
-            //データ取得
-            userResult = PlayerPrefsUtility.LoadDict<int, int>(key);
-        }
-
-        //バトル回数
-        if (!userResult.ContainsKey(Common.PP.RESULT_BATTLE_COUNT))
-        {
-            userResult.Add(Common.PP.RESULT_BATTLE_COUNT, 0);
-            isUpdate = true;
-        }
-        //Win回数
-        if (!userResult.ContainsKey(Common.PP.RESULT_WIN_COUNT))
-        {
-            userResult.Add(Common.PP.RESULT_WIN_COUNT, 0);
-            isUpdate = true;
-        }
-        //Lose回数
-        if (!userResult.ContainsKey(Common.PP.RESULT_LOSE_COUNT))
-        {
-            userResult.Add(Common.PP.RESULT_LOSE_COUNT, 0);
-            isUpdate = true;
-        }
-        //レート
-        if (!userResult.ContainsKey(Common.PP.RESULT_BATTLE_RATE))
-        {
-            userResult.Add(Common.PP.RESULT_BATTLE_RATE, 1000);
-            isUpdate = true;
-        }
-
-        //保存
-        if (isUpdate) PlayerPrefsUtility.SaveDict<int, int>(key, userResult);
     }
 
     //◆UserEquipment
@@ -406,17 +379,11 @@ public class UserManager
             Debug.Log(key + " >> " + userConfig[key]);
         }
     }
-    public static void DeleteUser(string key = "")
+    public static void DeleteUser()
     {
         //データ削除(debug用)
-        if (key == "")
-        {
-            PlayerPrefs.DeleteAll();
-        }
-        else
-        {
-            PlayerPrefs.DeleteKey(key);
-        }
+        PlayerPrefs.DeleteAll();
+        InitPlayerPrefs();
         PlayerPrefs.Save();
     }
 }

@@ -206,6 +206,7 @@ namespace Common
         public const string OPEN_CHARACTERS = "OpenCharacters";
         public const string OPEN_WEAPONS = "OpenWeapons";
         public const string OPEN_MISSIONS = "OpenMissions";
+        //public static string[] KEYS = new string[] { USER_INFO , USER_RESULT, USER_EQUIP, USER_CONFIG , USER_CHARACTER , OPEN_CHARACTERS , OPEN_WEAPONS , OPEN_MISSIONS };
 
         //ユーザー情報項目
         public const int INFO_USER_ID = 0;

@@ -11,12 +11,12 @@ public class ApiManager : SingletonMonoBehaviour<ApiManager>
     const string BASE_URL = "http://lostworks.th-designlab.com/";
 
     //APIリクエスト
-    public void Post(string uri, string paramJson = "", Action<string> callback = null)
+    public void Post(string uri, string paramJson = "", Action<string> callback = null, Action errorCallback = null)
     {
-        StartCoroutine(PostRoutine(uri, paramJson, callback));
+        StartCoroutine(PostRoutine(uri, paramJson, callback, errorCallback));
     }
 
-    IEnumerator PostRoutine(string uri, string paramJson = "", Action<string> callback = null)
+    IEnumerator PostRoutine(string uri, string paramJson = "", Action<string> apiCallback = null, Action errorCallback = null)
     {
         //ヘッダー
         Dictionary<string, string> header = new Dictionary<string, string>();
@@ -42,12 +42,12 @@ public class ApiManager : SingletonMonoBehaviour<ApiManager>
             string json = Encoding.UTF8.GetString(www.bytes);
 
             //コールバック
-            callback.Invoke(json);
+            apiCallback.Invoke(json);
         }
         else
         {
             Debug.Log(www.error);
-            DialogController.OpenDialog("接続エラー", () => SceneManager.LoadScene(Common.CO.SCENE_TITLE));
+            errorCallback.Invoke();
         }
     }
 }
