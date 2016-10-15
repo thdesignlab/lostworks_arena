@@ -238,6 +238,23 @@ namespace Common
     //### 共通関数 ###
     public static class Func
     {
+        //platform確認
+        public static bool IsAndroid()
+        {
+            if (Application.platform == RuntimePlatform.Android) return true;
+            return false;
+        }
+        public static bool IsIos()
+        {
+            if (Application.platform == RuntimePlatform.IPhonePlayer) return true;
+            return false;
+        }
+        public static bool IsPc()
+        {
+            if (IsAndroid() || IsIos()) return false;
+            return true;
+        }
+
         //リソース取得
         public static string GetResourceBullet(string name)
         {
@@ -375,7 +392,7 @@ namespace Common
         //アニメーションボディ構造取得
         public static string GetBodyStructure()
         {
-            return CO.PARTS_BODY + "/" + CO.PARTS_MAIN_BODY; 
+            return CO.PARTS_BODY + "/" + CO.PARTS_MAIN_BODY;
         }
 
         //BulletNo取得
@@ -466,7 +483,7 @@ namespace Common
             {
                 charaInfo = characterLineUp[characterNo];
             }
-            return charaInfo; 
+            return charaInfo;
         }
     }
 
@@ -762,7 +779,7 @@ namespace Common
             { 5, new float[] { 1.2f, 1.5f, 1.2f, 1.2f, 2.0f, 1.0f, 0.7f, 0.5f, 0.3f } },
         };
         //設定レベル以上の場合の追加Rate
-        public static float[] overLevelState = new float[] { 0.05f, 0.1f, 0.01f, 0.02f, 0.02f, 0.03f, 0, 0, 0};
+        public static float[] overLevelState = new float[] { 0.05f, 0.1f, 0.01f, 0.02f, 0.02f, 0.03f, 0, 0, 0 };
 
         //NPC武器
         public static Dictionary<int, int[]> npcWeaponDic = new Dictionary<int, int[]>()
@@ -780,4 +797,5 @@ namespace Common
             { 10002, new int[]{ 2002, 2002, 2003, 2003, 3001, 4001, 5003} },
         };
     }
+
 }

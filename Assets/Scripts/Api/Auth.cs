@@ -29,7 +29,7 @@ namespace Auth
             LoginResponse data = GetData<LoginResponse>(json);
             if (string.IsNullOrEmpty(data.token)) GoToTitle();
             UserManager.apiToken = data.token;
-            apiFinishCallback.Invoke();
+            ApiFinishCallback();
         }
     }
 

@@ -394,14 +394,12 @@ public class PhotonManager : MonoBehaviour
     //Store
     public void OnStoreButton()
     {
-        DialogController.OpenMessage(DialogController.MESSAGE_LOADING, DialogController.MESSAGE_POSITION_RIGHT);
+        DialogController.OpenMessage(DialogController.MESSAGE_CONNECT, DialogController.MESSAGE_POSITION_RIGHT);
 
         Action callback = () =>
         {
+            ScreenManager.Instance.Load(Common.CO.SCENE_STORE, DialogController.MESSAGE_LOADING);
             DialogController.CloseMessage();
-            SwitchModeSelectArea(false, true);
-            UnityAction action = () => StoreManager.Instance.OpenStore();
-            CameraRotate(false, action);
         };
 
         //ポイント情報取得

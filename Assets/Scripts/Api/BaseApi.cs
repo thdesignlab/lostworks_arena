@@ -14,23 +14,16 @@ public abstract class BaseApi
     protected Action apiErrorCallback = null;       //API接続エラー時処理
     protected Action apiFinishCallback = null;      //API完了後処理
 
-    //protected override void Exe(Action<string> apiCallback)
-    //{
-    //    if (!isIgnoreError && apiErrorCallback == null) apiErrorCallback = () => GoToTitle();
-    //    Post(apiCallback, apiErrorCallback);
-    //}
-
-    ////API実行入口(接続エラー無視)
-    //public void ExeIgnoreError(Action callback = null)
-    //{
-    //    Api(callback);
-    //}
-
     //API完了時コールバック設定
     public void SetApiFinishCallback(Action action)
     {
         apiFinishCallback = action;
     }
+    protected void ApiFinishCallback()
+    {
+        if (apiFinishCallback != null) apiFinishCallback.Invoke();
+    }
+
 
     //接続エラー時コールバック設定
     public void SetApiErrorCallback(Action errorAction)
@@ -99,10 +92,15 @@ public abstract class BaseApi
         return res.data;
     }
 
-    protected void GoToTitle()
+    public void GoToTitle()
     {
         //タイトルへ
-        DialogController.OpenDialog("接続エラー", () => SceneManager.LoadScene(Common.CO.SCENE_TITLE));
+        DialogController.OpenDialog("接続エラー", GoToTtileExe);
+    }
+    public void GoToTtileExe()
+    {
+        PhotonManager.isFirstScean = true;
+        ScreenManager.Instance.Load(Common.CO.SCENE_TITLE);
     }
 }
 

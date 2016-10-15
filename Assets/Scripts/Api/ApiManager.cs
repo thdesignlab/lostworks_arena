@@ -31,7 +31,7 @@ public class ApiManager : SingletonMonoBehaviour<ApiManager>
         //パラメータ
         byte[] postBytes = null;
         if (paramJson != "") postBytes = Encoding.Default.GetBytes(paramJson);
-        
+
         //送信
         WWW www = new WWW(BASE_URL + uri, postBytes, header);
         yield return www;
@@ -47,7 +47,7 @@ public class ApiManager : SingletonMonoBehaviour<ApiManager>
         else
         {
             Debug.Log(www.error);
-            errorCallback.Invoke();
+            if (errorCallback != null) errorCallback.Invoke();
         }
     }
 }

@@ -20,7 +20,7 @@ namespace User
 
             //名前に変更がある場合更新
 
-            apiFinishCallback.Invoke();
+            ApiFinishCallback();
         }
     }
     [Serializable]
