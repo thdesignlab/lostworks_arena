@@ -10,25 +10,27 @@ public abstract class BaseApi
     protected abstract string uri { get; }                      //APIuri
     protected virtual bool isNeedToken { get { return true; } } //要TokenFLG
 
-    protected bool isIgnoreError = false;           //API接続エラー無視FLG
-    protected Action apiErrorCallback = null;       //API接続エラー時処理
-    protected Action apiFinishCallback = null;      //API完了後処理
+    protected bool isIgnoreError = false;                   //APIエラー無視FLG
+    protected Action apiFinishCallback = null;              //API完了後処理
+    protected Action<string> apiFinishErrorCallback = null; //API結果エラー後処理(errorCode)
+    protected Action apiConnectErrorCallback = null;        //API接続エラー時処理
 
-    //API完了時コールバック設定
+    //API完了時コールバック
     public void SetApiFinishCallback(Action action)
     {
         apiFinishCallback = action;
     }
-    protected void ApiFinishCallback()
+
+    //API完了時エラーコールバック
+    public void SetApiFinishErrorCallback(Action<string> errorAction)
     {
-        if (apiFinishCallback != null) apiFinishCallback.Invoke();
+        apiFinishErrorCallback = errorAction;
     }
 
-
     //接続エラー時コールバック設定
-    public void SetApiErrorCallback(Action errorAction)
+    public void SetConnectErrorCallback(Action errorAction)
     {
-        apiErrorCallback = errorAction;
+        apiConnectErrorCallback = errorAction;
     }
 
     //接続エラー無視FLG設定
@@ -38,16 +40,17 @@ public abstract class BaseApi
     }
 
     //POST
-    protected void Post(Action<string> callback = null)
+    //protected void Post<T>(Action callback = null)
+    //{
+    //    Post<T>("", callback);
+    //}
+    protected void Post<T>(string paramJson = "")
     {
-        Post("", callback);
-    }
-    protected void Post(string paramJson = "", Action<string> callback = null)
-    {
-        //APIエラー時処理
-        if (!isIgnoreError && apiErrorCallback == null) apiErrorCallback = () => GoToTitle();
+        Action action = () =>
+        {
+            ApiManager.Instance.Post(uri, paramJson, (json) => Finish<T>(json), ConnectError);
+        };
 
-        Action action = () => ApiManager.Instance.Post(uri, paramJson, callback, apiErrorCallback);
         if (isNeedToken)
         {
             if (string.IsNullOrEmpty(UserManager.userInfo[Common.PP.INFO_UUID])
@@ -73,25 +76,77 @@ public abstract class BaseApi
         action.Invoke();
     }
 
-    //レスポンスからdata取得
-    protected T GetData<T>(string json, bool isErrorThrough = false)
+    //APIレスポンスコールバック
+    protected void Finish<T>(string json)
     {
-        Debug.Log(this.ToString()+" >> "+json);
-        ResponseData<T> res = JsonMapper.ToObject<ResponseData<T>>(json);
-
-        //エラーチェック
-        if (!string.IsNullOrEmpty(res.error_code))
+        Debug.Log(this.ToString() + " >> " + json);
+        string errorCode = "";
+        try
         {
-            Debug.Log("[ERR]" + res.error_code);
-            if (!isErrorThrough) GoToTitle();
+            ResponseData<T> responseData = GetResponseData<T>(json);
+            errorCode = responseData.error_code;
+            if (string.IsNullOrEmpty(errorCode))
+            {
+                //正常
+                FinishCallback(json);
+                apiFinishCallback.Invoke();
+                return;
+            }
+        }
+        catch
+        {
+            
         }
 
-        //管理者FLG
-        UserManager.isAdmin = res.admin;
+        //エラー処理
+        Debug.Log("[ERR]" + errorCode);
+        if (apiFinishErrorCallback != null)
+        {
+            apiFinishErrorCallback.Invoke(errorCode);
+        }
+        else if (!isIgnoreError)
+        {
+            GoToTitle();
+        }
+    }
+    protected virtual void FinishCallback(string json)
+    {
+        return;
+    }
+    protected virtual void FinishErrorCallback(string errorCode)
+    {
+        if (apiFinishErrorCallback != null)
+        {
+            apiFinishErrorCallback.Invoke(errorCode);
+        }
+        else if (!isIgnoreError)
+        {
+            GoToTitle();
+        }
+    }
 
+    //接続エラー
+    protected void ConnectError()
+    {
+        if (apiConnectErrorCallback != null) apiConnectErrorCallback.Invoke();
+    }
+
+    //JSONよりResponseData取得
+    protected ResponseData<T> GetResponseData<T>(string json)
+    {
+        ResponseData<T> res = JsonMapper.ToObject<ResponseData<T>>(json);
+        UserManager.isAdmin = res.admin;
+        return res;
+    }
+
+    //JSONよりdata取得
+    protected T GetData<T>(string json)
+    {
+        ResponseData<T> res = JsonMapper.ToObject<ResponseData<T>>(json);
         return res.data;
     }
 
+    //タイトルへ強制遷移
     public void GoToTitle()
     {
         //タイトルへ

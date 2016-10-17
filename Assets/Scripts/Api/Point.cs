@@ -13,19 +13,13 @@ namespace Point
         public void Exe()
         {
             //実行
-            Post(GetCollback);
+            Post<GetResponse>();
         }
-        public void GetCollback(string json)
+        protected override void FinishCallback(string json)
         {
             GetResponse data = GetData<GetResponse>(json);
             UserManager.userPoint = data.point;
-            ApiFinishCallback();
         }
-    }
-    [Serializable]
-    public class GetResponse
-    {
-        public int point;
     }
 
     //### ポイント加算 ###
@@ -40,13 +34,33 @@ namespace Point
             string paramJson = JsonUtility.ToJson(data);
 
             //実行
-            Post(paramJson, AddCollback);
+            Post<GetResponse>(paramJson);
         }
-        public void AddCollback(string json)
+        protected override void FinishCallback(string json)
         {
             GetResponse data = GetData<GetResponse>(json);
             UserManager.userPoint = data.point;
-            ApiFinishCallback();
+        }
+    }
+
+    //### ポイント消費 ###
+    public class Use : BaseApi
+    {
+        protected override string uri { get { return "point/used"; } }
+
+        public void Exe(int usePoint)
+        {
+            GetResponse data = new GetResponse();
+            data.point = usePoint;
+            string paramJson = JsonUtility.ToJson(data);
+
+            //実行
+            Post<GetResponse>(paramJson);
+        }
+        protected override void FinishCallback(string json)
+        {
+            GetResponse data = GetData<GetResponse>(json);
+            UserManager.userPoint = data.point;
         }
     }
 
@@ -58,12 +72,21 @@ namespace Point
         public void Exe()
         {
             //実行
-            Post(TableCollback);
+            Post<List<MasterPoint>>();
         }
-        public void TableCollback(string json)
+        protected override void FinishCallback(string json)
         {
-            MasterManager.mstPointList = GetData<List<MasterPoint>>(json);
-            ApiFinishCallback();
+            List<MasterPoint> data = GetData<List<MasterPoint>>(json);
+            MasterManager.mstPointList = data;
+            foreach (MasterPoint row in MasterManager.mstPointList)
+            {
+                Debug.Log(row);
+            }
         }
+    }
+
+    public class GetResponse
+    {
+        public int point;
     }
 }

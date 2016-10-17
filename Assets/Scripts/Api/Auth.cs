@@ -17,19 +17,14 @@ namespace Auth
             data.password = UserManager.userInfo[Common.PP.INFO_PASSWORD];
             string paramJson = JsonUtility.ToJson(data);
 
-            ////コールバック
-            //Action<string> baseCollback = (json) => LoginCollback(json, callback);
-
             //実行
-            Post(paramJson, LoginCollback);
+            Post<LoginResponse>(paramJson);
         }
-
-        public void LoginCollback(string json)
+        protected override void FinishCallback(string json)
         {
             LoginResponse data = GetData<LoginResponse>(json);
             if (string.IsNullOrEmpty(data.token)) GoToTitle();
             UserManager.apiToken = data.token;
-            ApiFinishCallback();
         }
     }
 

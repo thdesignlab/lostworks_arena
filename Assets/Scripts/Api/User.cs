@@ -12,15 +12,13 @@ namespace User
         public void Exe()
         {
             //実行
-            Post(GetCollback);
+            Post<GetResponse>();
         }
-        public void GetCollback(string json)
+        protected override void FinishCallback(string json)
         {
             GetResponse data = GetData<GetResponse>(json);
 
-            //名前に変更がある場合更新
-
-            ApiFinishCallback();
+            //名前とかチェック
         }
     }
     [Serializable]
@@ -48,9 +46,9 @@ namespace User
             string paramJson = JsonUtility.ToJson(data);
 
             //実行
-            Post(paramJson, CreateCollback);
+            Post<CreateResponse>(paramJson);
         }
-        public void CreateCollback(string json)
+        protected override void FinishCallback(string json)
         {
             CreateResponse data = GetData<CreateResponse>(json);
             UserManager.SetApiInfo(data.uuid, data.password);

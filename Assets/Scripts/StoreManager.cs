@@ -94,6 +94,41 @@ public class StoreManager : SingletonMonoBehaviour<StoreManager>
         DialogController.OpenDialog(pt + "pt獲得!!");
     }
 
+    //購入
+    public void Buy()
+    {
+        int pt = 100;
+
+        //point消費
+        Point.Use pointUse = new Point.Use();
+        pointUse.SetApiFinishCallback(BuyProc);
+        pointUse.SetApiFinishErrorCallback(BuyErrorProc);
+        pointUse.SetApiErrorIngnore();
+        pointUse.Exe(pt);
+    }
+
+    //購入成功処理
+    public void BuyProc()
+    {
+        //所持ポイント表示
+        textPoint.text = UserManager.userPoint.ToString();
+
+        DialogController.OpenDialog("武器GET！");
+    }
+
+    //購入失敗処理
+    public void BuyErrorProc(string errorCode)
+    {
+        string errorMessage = "購入失敗";
+        switch (errorCode)
+        {
+            case "300000":
+                errorMessage += "\nポイントが足りません";
+                break;
+        }
+        DialogController.OpenDialog(errorMessage);
+    }
+
     //抽選
     private T Draw<T>(Dictionary<T, int> targets)
     {

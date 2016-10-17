@@ -50,4 +50,5 @@ public class ApiManager : SingletonMonoBehaviour<ApiManager>
             if (errorCallback != null) errorCallback.Invoke();
         }
     }
+
 }
