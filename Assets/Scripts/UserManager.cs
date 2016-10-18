@@ -13,7 +13,7 @@ public class UserManager
     public static List<int> userOpenMissions;               //開放Mission(level, stage)
 
     public static bool isAdmin;                     //管理者FLG
-    public static Dictionary<int, int> userResult;  //ユーザー戦歴
+    //public static Dictionary<int, int> userResult;  //ユーザー戦歴
     public static int userPoint;                    //所持ポイント
     public static string apiToken;                  //API接続用Token
 
@@ -28,7 +28,7 @@ public class UserManager
         userOpenWeapons = new List<int>() { };
         userOpenMissions = new List<int>() { 2, 1 };
         isAdmin = false;
-        userResult = new Dictionary<int, int>();
+        //userResult = new Dictionary<int, int>();
         userPoint = 0;
         apiToken = "";
     }

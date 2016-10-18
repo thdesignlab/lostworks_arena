@@ -452,7 +452,7 @@ public class PhotonManager : MonoBehaviour
             return;
         }
         string roomName = UserManager.userInfo[Common.PP.INFO_USER_NAME];
-        roomName += "["+UserManager.userResult[Common.PP.RESULT_BATTLE_RATE]+"]";
+        //roomName += "["+UserManager.userResult[Common.PP.RESULT_BATTLE_RATE]+"]";
         PhotonNetwork.CreateRoom(roomName, new RoomOptions() { maxPlayers = 2 }, null);
     }
 
@@ -573,12 +573,18 @@ public class PhotonManager : MonoBehaviour
     {
         //ユーザー情報
         User.Get userGet = new User.Get();
-        userGet.SetApiFinishCallback(callback);
+        userGet.SetApiFinishCallback(() => GetBattleResult(callback));
         userGet.Exe();
-
-        //戦歴
-
     }
+
+    //戦績取得
+    private void GetBattleResult(Action callback = null)
+    {
+        Battle.Record battleRecord = new Battle.Record();
+        battleRecord.SetApiFinishCallback(callback);
+        battleRecord.Exe();
+    }
+
     //ポイント情報取得
     private void GetUserPoint(Action callback = null)
     {
@@ -587,6 +593,7 @@ public class PhotonManager : MonoBehaviour
         pointGet.SetApiFinishCallback(callback);
         pointGet.Exe();
     }
+    
     //ランキング情報取得
     private void GetRankingData(Action callback = null)
     {

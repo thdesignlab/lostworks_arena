@@ -201,7 +201,7 @@ namespace Common
     {
         //保存情報
         public const string USER_INFO = "UserInfo";
-        public const string USER_RESULT = "UserResult";
+        //public const string USER_RESULT = "UserResult";
         public const string USER_EQUIP = "UserEquipment";
         public const string USER_CONFIG = "UserConfig";
         public const string USER_CHARACTER = "UserCharacter";
@@ -216,11 +216,11 @@ namespace Common
         public const int INFO_UUID = 3;
         public const int INFO_PASSWORD = 4;
 
-        //バトル結果項目
-        public const int RESULT_BATTLE_COUNT = 0;
-        public const int RESULT_WIN_COUNT = 1;
-        public const int RESULT_LOSE_COUNT = 2;
-        public const int RESULT_BATTLE_RATE = 3;
+        ////バトル結果項目
+        //public const int RESULT_BATTLE_COUNT = 0;
+        //public const int RESULT_WIN_COUNT = 1;
+        //public const int RESULT_LOSE_COUNT = 2;
+        //public const int RESULT_BATTLE_RATE = 3;
 
         //コンフィグ情報項目
         public const int CONFIG_BGM_VALUE = 0;
