@@ -417,10 +417,16 @@ public class PhotonManager : MonoBehaviour
     //ランキング
     public void OnRankingButton()
     {
-        //ランキング情報取得
-        GetRankingData();
+        DialogController.OpenMessage(DialogController.MESSAGE_CONNECT, DialogController.MESSAGE_POSITION_RIGHT);
 
-        DialogController.OpenDialog("はいはい\n1位1位(´-д-)-3");
+        Action callback = () =>
+        {
+            ScreenManager.Instance.Load(Common.CO.SCENE_RANKING, DialogController.MESSAGE_LOADING);
+            DialogController.CloseMessage();
+        };
+
+        //ランキング情報取得
+        GetRankingData(callback);
     }
 
 
@@ -597,6 +603,6 @@ public class PhotonManager : MonoBehaviour
     //ランキング情報取得
     private void GetRankingData(Action callback = null)
     {
-
+        callback.Invoke();
     }
 }
