@@ -19,16 +19,15 @@ namespace User
             GetResponse data = GetData<GetResponse>(json);
 
             //名前とかチェック
+            UserManager.userInfo[Common.PP.INFO_USER_ID] = data.user_id.ToString();
+            if (UserManager.userInfo[Common.PP.INFO_USER_NAME] != data.user_name
+                || UserManager.userSetCharacter != data.character_id)
+            {
+                Update update = new Update();
+                update.SetApiErrorIngnore();
+                update.Exe();
+            }
         }
-    }
-    [Serializable]
-    public class GetResponse
-    {
-        public string user_name;
-        public string terminal_id;
-        public string user_agent;
-        public string session_id;
-        public int status;
     }
 
     //### ユーザー作成 ###
@@ -58,6 +57,39 @@ namespace User
             authLogin.SetApiFinishCallback(apiFinishCallback);
             authLogin.Exe();
         }
+    }
+
+    //### ユーザー情報更新 ###
+    public class Update : BaseApi
+    {
+        protected override string uri { get { return "user/update"; } }
+
+        public void Exe()
+        {
+            //パラメータ設定
+            UpdateRequest data = new UpdateRequest();
+            data.user_name = UserManager.userInfo[Common.PP.INFO_USER_NAME];
+            data.character_id = UserManager.userSetCharacter;
+            string paramJson = JsonUtility.ToJson(data);
+
+            //実行
+            Post<GetResponse>(paramJson);
+        }
+    }
+
+    [Serializable]
+    public class GetResponse
+    {
+        public int user_id;
+        public string user_name;
+        public int character_id;
+        public int status;
+    }
+    [Serializable]
+    public class UpdateRequest
+    {
+        public string user_name;
+        public int character_id;
     }
     [Serializable]
     public class CreateRequest

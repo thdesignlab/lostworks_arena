@@ -89,7 +89,7 @@ public abstract class BaseApi
             {
                 //正常
                 FinishCallback(json);
-                apiFinishCallback.Invoke();
+                if (apiFinishCallback != null) apiFinishCallback.Invoke();
                 return;
             }
         }
