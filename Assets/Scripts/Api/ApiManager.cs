@@ -11,12 +11,12 @@ public class ApiManager : SingletonMonoBehaviour<ApiManager>
     const string BASE_URL = "http://lostworks.th-designlab.com/";
 
     //APIリクエスト
-    public void Post(string uri, string paramJson = "", Action<string> callback = null, Action errorCallback = null)
+    public void Post(string uri, string paramJson = "", Action<string> callback = null, Action errorCallback = null, int retry = 1)
     {
-        StartCoroutine(PostRoutine(uri, paramJson, callback, errorCallback));
+        StartCoroutine(PostRoutine(uri, paramJson, callback, errorCallback, retry));
     }
 
-    IEnumerator PostRoutine(string uri, string paramJson = "", Action<string> apiCallback = null, Action errorCallback = null)
+    IEnumerator PostRoutine(string uri, string paramJson = "", Action<string> apiCallback = null, Action errorCallback = null, int retry = 1)
     {
         //ヘッダー
         Dictionary<string, string> header = new Dictionary<string, string>();
@@ -32,23 +32,34 @@ public class ApiManager : SingletonMonoBehaviour<ApiManager>
         byte[] postBytes = null;
         if (paramJson != "") postBytes = Encoding.Default.GetBytes(paramJson);
 
-        //送信
-        WWW www = new WWW(BASE_URL + uri, postBytes, header);
-        yield return www;
-
-        if (www.error == null)
+        int exeCount = 1;
+        for (;;)
         {
-            //JSON取得
-            string json = Encoding.UTF8.GetString(www.bytes);
+            //送信
+            WWW www = new WWW(BASE_URL + uri, postBytes, header);
+            yield return www;
 
-            //コールバック
-            apiCallback.Invoke(json);
-        }
-        else
-        {
-            Debug.Log(www.error);
-            if (errorCallback != null) errorCallback.Invoke();
+            if (www.error == null)
+            {
+                //JSON取得
+                string json = Encoding.UTF8.GetString(www.bytes);
+                Debug.Log(uri + " >> " + json);
+
+                //コールバック
+                apiCallback.Invoke(json);
+                yield break;
+            }
+            else
+            {
+                Debug.Log(uri+" >> "+www.error);
+                if (exeCount >= retry)
+                {
+                    if (errorCallback != null) errorCallback.Invoke();
+                    yield break;
+                }
+            }
+            exeCount++;
+            yield return null;
         }
     }
-
 }

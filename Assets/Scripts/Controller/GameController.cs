@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
@@ -347,7 +348,6 @@ public class GameController : SingletonMonoBehaviour<GameController>
                 if (gameMode == GAME_MODE_MISSION)
                 {
                     //ミッションモード
-
                     if (isResultCheck || isPassResult)
                     {
                         bool isStageSetting = false;
@@ -434,41 +434,54 @@ public class GameController : SingletonMonoBehaviour<GameController>
                             StageSetting();
                         }
                     }
-
                 }
                 else
                 {
+                    //対戦モード
                     if (isResultCheck || isPassResult)
                     {
                         //レート変化ダイアログ表示
-                        string rateText = "Rate : 1050(+50)仮\n\n";
+                        int preRate = ModelManager.battleRecord.battle_rate;
                         int waitTime = 10;
                         List<UnityAction> actions = new List<UnityAction>();
-                        List<string> buttons = new List<string>() { "Continue", "Title" };
+                        List<string> buttons = new List<string>();
                         if (isWin)
                         {
-                            //続けるorタイトルへ戻る
-                            actions = new List<UnityAction>();
-                            actions.Add(() => ContinueVs());
-                            actions.Add(() => GoToTitle());
-                            buttons = new List<string>() { "Continue", "Title" };
+                            //続ける
+                            actions = new List<UnityAction>() { null };
+                            buttons = new List<string>() { "OK" };
                         }
                         else
                         {
                             //タイトルへ戻るだけ
-                            waitTime = 5;
                             actions = new List<UnityAction>() { () => GoToTitle() };
-                            buttons = new List<string>() { "Title" };
+                            buttons = new List<string>() { "Titleへ" };
                         }
-                        DialogController.OpenDialog(rateText, buttons, actions);
-                        Text DialogText = DialogController.GetDialogText();
+                        Action apiCallback = () =>
+                        {
+                            int diffRate = ModelManager.battleRecord.battle_rate - preRate;
+                            string diffRateSign = diffRate >= 0 ? "+" : "";
+                            string rateText = "Rate : " + ModelManager.battleRecord.battle_rate + "(" + diffRateSign + diffRate.ToString() + ")";
+                            DialogController.OpenDialog(rateText, buttons, actions);
+                            if (isWin) ContinueVs();
+                        };
+                        Battle.Finish battleFinish = new Battle.Finish();
+                        battleFinish.SetApiFinishCallback(apiCallback);
+                        battleFinish.SetRetryCount(3);
+                        battleFinish.SetApiErrorIngnore();
+                        battleFinish.Exe(isWin);
 
                         //自動でタイトルへ遷移
+                        string defaultText = "";
                         for (int i = waitTime; i > 0; i--)
                         {
                             if (isContinue) break;
-                            string text = rateText + "後" + i + "秒でTitleへもどります";
-                            DialogText.text = text;
+                            Text dialogText = DialogController.GetDialogText();
+                            if (dialogText != null)
+                            {
+                                if (string.IsNullOrEmpty(defaultText)) defaultText = dialogText.text;
+                                dialogText.text = defaultText + "\n" + i + "秒後にTitleへ戻ります";
+                            }
                             yield return new WaitForSeconds(1.0f);
                         }
                         if (!isContinue)
@@ -692,6 +705,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
 
     public void GoToTitle()
     {
+        SoundManager.Instance.StopBgm();
         PhotonNetwork.LeaveRoom();
         ScreenManager.Instance.Load(Common.CO.SCENE_TITLE, DialogController.MESSAGE_LOADING);
     }
@@ -718,17 +732,18 @@ public class GameController : SingletonMonoBehaviour<GameController>
         GameObject spawnObj = spawnPoints[0];
         if (player != null)
         {
-            Transform playerTran = player.transform;
-            float preDistance = -1;
-            foreach (GameObject spawnPoint in spawnPoints)
-            {
-                float distance = Vector3.Distance(playerTran.position, spawnPoint.transform.position);
-                if (preDistance < 0 || preDistance < distance)
-                {
-                    spawnObj = spawnPoint;
-                    preDistance = distance;
-                }
-            }
+            spawnObj = spawnPoints[0];
+            //Transform playerTran = player.transform;
+            //float preDistance = -1;
+            //foreach (GameObject spawnPoint in spawnPoints)
+            //{
+            //    float distance = Vector3.Distance(playerTran.position, spawnPoint.transform.position);
+            //    if (preDistance < 0 || preDistance < distance)
+            //    {
+            //        spawnObj = spawnPoint;
+            //        preDistance = distance;
+            //    }
+            //}
         }
         //int index = PhotonNetwork.countOfPlayersInRooms;
         return spawnObj.transform;
@@ -754,13 +769,34 @@ public class GameController : SingletonMonoBehaviour<GameController>
     private void GameStart()
     {
         Debug.Log("*** GameStart ***");
+        int enemyUserid = -1;
         foreach (PlayerStatus playerStatus in playerStatuses)
         {
+            if (playerStatus == null) return;
             playerStatus.Init();
+            if (playerStatus.userId.ToString() != UserManager.userInfo[Common.PP.INFO_USER_ID]) enemyUserid = playerStatus.userId;
+        }
+        if (PhotonNetwork.isMasterClient && gameMode == GAME_MODE_VS)
+        {
+            //バトル開始ログ作成
+            Battle.Start battleStart = new Battle.Start();
+            battleStart.SetRetryCount(5);
+            battleStart.SetApiFinishCallback(BattleStartCallback);
+            battleStart.SetApiErrorIngnore();
+            battleStart.Exe(enemyUserid);
         }
         isContinue = false;
         isGameReady = false;
         isGameStart = true;
+    }
+    private void BattleStartCallback()
+    {
+        photonView.RPC("SetBattleIdRPC", PhotonTargets.Others, ModelManager.battleInfo.battle_id);
+    }
+    [PunRPC]
+    private void SetBattleIdRPC(int battleId)
+    {
+        ModelManager.battleInfo.battle_id = battleId;
     }
 
     private void GameEnd()

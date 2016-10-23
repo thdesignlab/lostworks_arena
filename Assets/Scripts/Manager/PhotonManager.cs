@@ -4,6 +4,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine.Events;
+using System.Text.RegularExpressions;
+
 
 public class PhotonManager : MonoBehaviour
 {
@@ -52,7 +54,10 @@ public class PhotonManager : MonoBehaviour
     private Quaternion otherCameraQuat = Quaternion.AngleAxis(45, Vector3.up);
     private float camRotateTime = 0.5f;
 
-    private InputField roomNameIF;
+    const float ROOM_LIST_RELOAD_TIME = 5;
+    private float roomListReloadTime = 0;
+
+    //private InputField roomNameIF;
     private Text roomStatusText;
 
     private string moveScene = "";
@@ -78,6 +83,7 @@ public class PhotonManager : MonoBehaviour
 
             //ユーザー情報取得
             UserManager.SetPlayerPrefs();
+            GetUserData();
         }
         else
         {
@@ -126,9 +132,21 @@ public class PhotonManager : MonoBehaviour
                 {
                     //接続状況更新
                     roomStatusText.text = "Room :" + PhotonNetwork.countOfRooms + " / Player :" + PhotonNetwork.countOfPlayers;
-                    if (roomNameIF.text == ROOM_NAME_PREFIX)
+                    //if (roomNameIF.text == ROOM_NAME_PREFIX)
+                    //{
+                    //    roomNameIF.text = ROOM_NAME_PREFIX + (PhotonNetwork.countOfRooms + 1).ToString();
+                    //}
+
+                    //ルームリスト更新
+
+                    if (roomListArea.GetActive())
                     {
-                        roomNameIF.text = ROOM_NAME_PREFIX + (PhotonNetwork.countOfRooms + 1).ToString();
+                        roomListReloadTime += Time.deltaTime;
+                        if (roomListReloadTime >= ROOM_LIST_RELOAD_TIME)
+                        {
+                            roomListReloadTime = 0;
+                            SearchRoomList();
+                        }
                     }
                 }
                 else
@@ -140,7 +158,7 @@ public class PhotonManager : MonoBehaviour
 
                     //初期値設定
                     PlayerPrefs.SetString("playerName", PhotonNetwork.playerName);
-                    roomNameIF.text = ROOM_NAME_PREFIX;
+                    //roomNameIF.text = ROOM_NAME_PREFIX;
                     //roomStatusText.text = "Room :" + PhotonNetwork.countOfRooms + " / Player :" + PhotonNetwork.countOfPlayers;
                     //isConnected = true;
                 }
@@ -282,7 +300,7 @@ public class PhotonManager : MonoBehaviour
         {
             foreach (RoomInfo room in roomList)
             {
-                string roomName = room.name;
+                string roomName = Regex.Replace(room.name, "_[0-9]*$", "");
                 GameObject roomBtn = roomSelectBtn;
                 if (room.playerCount >= MAX_ROOM_PLAYER_COUNT)
                 {
@@ -370,7 +388,7 @@ public class PhotonManager : MonoBehaviour
             // PhotonNetwork.logLevel = NetworkLogLevel.Full;
 
             //ネットワークエリア
-            roomNameIF = networkArea.transform.FindChild("Network/Room/Name").GetComponent<InputField>();
+            //roomNameIF = networkArea.transform.FindChild("Network/Room/Name").GetComponent<InputField>();
             roomStatusText = networkArea.transform.FindChild("Network/RoomStatus").GetComponent<Text>();
 
             UnityAction uniAction = () => isNetworkMode = true;
@@ -457,8 +475,8 @@ public class PhotonManager : MonoBehaviour
             DialogController.OpenDialog(MESSAGE_ROOM_LIMIT_FAILED);
             return;
         }
-        string roomName = UserManager.userInfo[Common.PP.INFO_USER_NAME];
-        //roomName += "["+UserManager.userResult[Common.PP.RESULT_BATTLE_RATE]+"]";
+
+        string roomName = Common.Func.CreateRoomName();
         PhotonNetwork.CreateRoom(roomName, new RoomOptions() { maxPlayers = 2 }, null);
     }
 
@@ -579,7 +597,14 @@ public class PhotonManager : MonoBehaviour
     {
         //ユーザー情報
         User.Get userGet = new User.Get();
-        userGet.SetApiFinishCallback(() => GetBattleResult(callback));
+        if (callback != null)
+        {
+            userGet.SetApiFinishCallback(() => GetBattleResult(callback));
+        }
+        else
+        {
+            userGet.SetApiErrorIngnore();
+        }
         userGet.Exe();
     }
 

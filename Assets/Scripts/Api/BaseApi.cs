@@ -14,6 +14,7 @@ public abstract class BaseApi
     protected Action apiFinishCallback = null;              //API完了後処理
     protected Action<string> apiFinishErrorCallback = null; //API結果エラー後処理(errorCode)
     protected Action apiConnectErrorCallback = null;        //API接続エラー時処理
+    protected int retry = 1;
 
     //API完了時コールバック
     public void SetApiFinishCallback(Action action)
@@ -39,6 +40,12 @@ public abstract class BaseApi
         isIgnoreError = true;
     }
 
+    //リトライ回数
+    public void SetRetryCount(int count)
+    {
+        retry = count;
+    }
+
     //POST
     //protected void Post<T>(Action callback = null)
     //{
@@ -48,7 +55,7 @@ public abstract class BaseApi
     {
         Action action = () =>
         {
-            ApiManager.Instance.Post(uri, paramJson, (json) => Finish<T>(json), ConnectError);
+            ApiManager.Instance.Post(uri, paramJson, (json) => Finish<T>(json), ConnectError, retry);
         };
 
         if (isNeedToken)
@@ -79,8 +86,8 @@ public abstract class BaseApi
     //APIレスポンスコールバック
     protected void Finish<T>(string json)
     {
-        Debug.Log(this.ToString() + " >> " + json);
         string errorCode = "";
+        string errorMessage = "";
         try
         {
             ResponseData<T> responseData = GetResponseData<T>(json);
@@ -93,13 +100,13 @@ public abstract class BaseApi
                 return;
             }
         }
-        catch
+        catch (Exception e)
         {
-            
+            errorMessage = e.Message;
         }
 
         //エラー処理
-        Debug.Log("[ERR]" + errorCode);
+        Debug.Log("[ERR]" + errorCode + " >> " + errorMessage);
         if (apiFinishErrorCallback != null)
         {
             apiFinishErrorCallback.Invoke(errorCode);

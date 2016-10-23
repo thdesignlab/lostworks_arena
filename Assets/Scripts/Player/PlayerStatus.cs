@@ -118,6 +118,10 @@ public class PlayerStatus : Photon.MonoBehaviour {
     [HideInInspector]
     public VoiceManager voiceManager;
 
+    //ユーザー情報
+    [HideInInspector]
+    public int userId = -1;
+    public string userName = "";
 
     void Awake()
     {
@@ -207,9 +211,25 @@ public class PlayerStatus : Photon.MonoBehaviour {
         if (charaTran) voiceManager = charaTran.GetComponent<VoiceManager>();
 
         if (!isActiveSceane) return;
-        
+
+        //ユーザーIDセット
+        if (!isNpc)
+        {
+            userId = int.Parse(UserManager.userInfo[Common.PP.INFO_USER_ID]);
+            userName = UserManager.userInfo[Common.PP.INFO_USER_NAME];
+            object[] args = new object[] { userId, userName };
+            photonView.RPC("SetUserInfoRPC", PhotonTargets.Others, args);
+        }
+
         StartCoroutine(DamageSync());
         StartCoroutine(RecoverSp());
+    }
+
+    [PunRPC]
+    private void SetUserInfoRPC(int id, string name)
+    {
+        userId = id;
+        userName = name;
     }
 
     public void Init()

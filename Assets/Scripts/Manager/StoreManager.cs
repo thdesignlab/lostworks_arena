@@ -40,10 +40,10 @@ public class StoreManager : SingletonMonoBehaviour<StoreManager>
 
     public void SetPointTable()
     {
-        if (MasterManager.mstPointList.Count != 0)
+        if (ModelManager.mstPointList.Count != 0)
         {
             pointTable = new Dictionary<int, int>();
-            foreach (MasterPoint mstPoint in MasterManager.mstPointList)
+            foreach (MasterPoint mstPoint in ModelManager.mstPointList)
             {
                 pointTable.Add(mstPoint.point, mstPoint.rate);
             }

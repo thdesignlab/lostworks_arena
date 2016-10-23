@@ -77,8 +77,8 @@ namespace Point
         protected override void FinishCallback(string json)
         {
             List<MasterPoint> data = GetData<List<MasterPoint>>(json);
-            MasterManager.mstPointList = data;
-            foreach (MasterPoint row in MasterManager.mstPointList)
+            ModelManager.mstPointList = data;
+            foreach (MasterPoint row in ModelManager.mstPointList)
             {
                 Debug.Log(row);
             }

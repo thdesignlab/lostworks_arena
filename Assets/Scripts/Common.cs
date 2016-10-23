@@ -415,6 +415,15 @@ namespace Common
             //Debug.Log(bulletName+" >> " +no);
             return no;
         }
+
+        public static string CreateRoomName()
+        {
+            string roomName = "[" + ModelManager.battleRecord.battle_rate.ToString() + "]";
+            roomName += UserManager.userInfo[Common.PP.INFO_USER_NAME];
+            roomName += "_" + UserManager.userInfo[Common.PP.INFO_USER_ID];
+
+            return roomName;
+        }
     }
 
     //### キャラクター詳細 ###
