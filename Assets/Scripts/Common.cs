@@ -233,6 +233,7 @@ namespace Common
         //ミッション項目
         public const int MISSION_LEVEL = 0;
         public const int MISSION_STAGE = 1;
+        public const int MISSION_CONTINUE = 2;
     }
 
     //### 共通関数 ###

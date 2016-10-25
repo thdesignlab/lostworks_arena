@@ -84,6 +84,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
 
     private int winCount = 0;
     private int loseCount = 0;
+    private int continueCount = 0;
 
     //バトルログ
     [SerializeField]
@@ -101,11 +102,11 @@ public class GameController : SingletonMonoBehaviour<GameController>
 
         Init();
         CheckMode();
-        SpawnMyPlayerEverywhere();
     }
 
     void Start()
     {
+        SpawnMyPlayerEverywhere();
         StartCoroutine(ChceckGame());
     }
 
@@ -147,7 +148,6 @@ public class GameController : SingletonMonoBehaviour<GameController>
     }
     private void SetText(Text textObj, string text, Color color = default(Color), float fadeout = 0, bool isLineText = false)
     {
-        //Debug.Log(textObj.name+" >> "+text);
         if (textObj == null) return;
         Image textImage = textObj.transform.GetComponentInChildren<Image>();
         if (text == "")
@@ -319,7 +319,6 @@ public class GameController : SingletonMonoBehaviour<GameController>
             }
         }
 
-        //Debug.Log(PhotonNetwork.player +" >> "+ PhotonNetwork.masterClient);
         if (PhotonNetwork.player == PhotonNetwork.masterClient)
         {
             //ステージオブジェ生成
@@ -338,7 +337,6 @@ public class GameController : SingletonMonoBehaviour<GameController>
         {
             if (isGameEnd)
             {
-                //Debug.Log("GameEnd");
                 yield return new WaitForSeconds(3.0f);
                 if (isContinue) continue;
 
@@ -396,6 +394,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
                             if (loseCount >= 3)
                             {
                                 //ゲームオーバー
+                                continueCount++;
                                 SetTextCenter(spriteStudioCtrl.MESSAGE_GAME_OVER, colorWin);
                                 yield return new WaitForSeconds(1.0f);
 
@@ -403,11 +402,11 @@ public class GameController : SingletonMonoBehaviour<GameController>
                                 string text = "広告やで(｀・д・´)";
                                 List<string> buttons = new List<string>() { "Continue", "Title" };
                                 List<UnityAction> actions = new List<UnityAction>() {
-                                        () => ContinueMission(true), () => GoToTitle()
-                                    };
+                                    () => ContinueMission(true), () => GoToTitle()
+                                };
                                 DialogController.OpenDialog(text, buttons, actions);
                                 //自動でタイトルへ遷移
-                                float waitTime = 10;
+                                float waitTime = 60;
                                 for (;;)
                                 {
                                     if (isContinue) break;
@@ -497,7 +496,6 @@ public class GameController : SingletonMonoBehaviour<GameController>
 
             if (isGameStart)
             {
-                //Debug.Log("Playing");
                 //対戦中
                 foreach (PlayerStatus playerStatus in playerStatuses)
                 {
@@ -534,7 +532,6 @@ public class GameController : SingletonMonoBehaviour<GameController>
                                 break;
                             }
 
-                            //Debug.Log(player.name);
                             PlayerStatus ps = player.GetComponent<PlayerStatus>();
                             if (ps == null)
                             {
@@ -544,7 +541,6 @@ public class GameController : SingletonMonoBehaviour<GameController>
                             playerStatuses.Add(ps);
                         }
 
-                        //Debug.Log("playerStatuses: " + playerStatuses.Count.ToString());
                         if (playerStatuses.Count == needPlayerCount)
                         {
                             //バトル準備完了
@@ -732,20 +728,23 @@ public class GameController : SingletonMonoBehaviour<GameController>
         GameObject spawnObj = spawnPoints[0];
         if (player != null)
         {
-            spawnObj = spawnPoints[0];
-            //Transform playerTran = player.transform;
-            //float preDistance = -1;
-            //foreach (GameObject spawnPoint in spawnPoints)
-            //{
-            //    float distance = Vector3.Distance(playerTran.position, spawnPoint.transform.position);
-            //    if (preDistance < 0 || preDistance < distance)
-            //    {
-            //        spawnObj = spawnPoint;
-            //        preDistance = distance;
-            //    }
-            //}
+            Transform playerTran = player.transform;
+            float preDistance = -1;
+            foreach (GameObject spawnPoint in spawnPoints)
+            {
+                float distance = Vector3.Distance(playerTran.position, spawnPoint.transform.position);
+                if (preDistance < 0 || preDistance < distance)
+                {
+                    Debug.Log(spawnPoint.name);
+                    spawnObj = spawnPoint;
+                    preDistance = distance;
+                }
+            }
         }
-        //int index = PhotonNetwork.countOfPlayersInRooms;
+        else if (!PhotonNetwork.isMasterClient)
+        {
+            spawnObj = spawnPoints[1];
+        }
         return spawnObj.transform;
     }
 
@@ -924,15 +923,20 @@ public class GameController : SingletonMonoBehaviour<GameController>
     //次のステージNo設定
     private bool SetNextStage()
     {
+        //ステージ記録
+        Mission.Update missionUpdate = new Mission.Update();
+        missionUpdate.SetApiErrorIngnore();
+        missionUpdate.SetRetryCount(5);
+        missionUpdate.Exe(stageLevel, stageNo, continueCount);
+
         //次のステージOPEN
         UserManager.OpenNextMission(stageLevel, stageNo);
 
         //次のステージチェック
         if (!Common.Mission.stageNpcNoDic.ContainsKey(stageNo + 1)) return false;
         stageNo++;
-        winCount = 0;
-        loseCount = 0;
         ResetWinMark();
+        continueCount = 0;
 
         return true;
     }
@@ -1076,12 +1080,10 @@ public class GameController : SingletonMonoBehaviour<GameController>
         Dictionary<string, int> damageSource;
         if (logType == PlayerStatus.BATTLE_LOG_ATTACK)
         {
-            //Debug.Log(myTran.name+" : "+name+" >> atk");
             damageSource = damageSourceMine;
         }
         else
         {
-            //Debug.Log(myTran.name + " : " + name + " >> def");
             damageSource = damageSourceEnemy;
         }
         if (!damageSource.ContainsKey(name)) damageSource[name] = 0;
@@ -1126,7 +1128,6 @@ public class GameController : SingletonMonoBehaviour<GameController>
 
     void OnApplicationPause(bool pauseStatus)
     {
-        Debug.Log("OnApplicationPause" + pauseStatus);
         if (pauseStatus)
         {
             if (UnityAds.Instance.IsPlaying()) return;

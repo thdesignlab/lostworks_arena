@@ -26,7 +26,7 @@ public class UserManager
         userSetCharacter = 0;
         userOpenCharacters = new List<int>() { };
         userOpenWeapons = new List<int>() { };
-        userOpenMissions = new List<int>() { 2, 1 };
+        userOpenMissions = new List<int>() { 2, 1};
         isAdmin = false;
         //userResult = new Dictionary<int, int>();
         userPoint = 0;
@@ -339,8 +339,6 @@ public class UserManager
 
     public static int OpenNextMission(int nowLevel, int nowStage)
     {
-        //Debug.Log("CheckNext: "+ nowLevel + " - "+ nowStage);
-        //Debug.Log("open Missions: " + userOpenMissions[Common.PP.MISSION_LEVEL] + " - " + userOpenMissions[Common.PP.MISSION_STAGE]);
         int newLevel = -1;
         if (userOpenMissions[Common.PP.MISSION_LEVEL] != nowLevel) return newLevel;
         if (userOpenMissions[Common.PP.MISSION_STAGE] != nowStage) return newLevel;
@@ -359,6 +357,7 @@ public class UserManager
         }
         PlayerPrefsUtility.SaveList<int>(Common.PP.OPEN_MISSIONS, userOpenMissions);
         PlayerPrefs.Save();
+
         return newLevel;
     }
 

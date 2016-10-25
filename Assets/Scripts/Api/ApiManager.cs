@@ -24,9 +24,6 @@ public class ApiManager : SingletonMonoBehaviour<ApiManager>
         header.Add("Token", UserManager.apiToken);
         header.Add("UserAgent", SystemInfo.operatingSystem);
         header.Add("Lostworks", "api");
-        //Debug.Log(SystemInfo.deviceType);
-        //Debug.Log(SystemInfo.operatingSystem);
-        //Debug.Log(SystemInfo.);
 
         //パラメータ
         byte[] postBytes = null;
@@ -59,7 +56,7 @@ public class ApiManager : SingletonMonoBehaviour<ApiManager>
                 }
             }
             exeCount++;
-            yield return null;
+            yield return new WaitForSeconds(0.5f);
         }
     }
 }
