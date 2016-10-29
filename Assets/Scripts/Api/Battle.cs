@@ -66,6 +66,21 @@ namespace Battle
         }
     }
 
+    //### バトルRanking ###
+    public class Ranking : BaseApi
+    {
+        protected override string uri { get { return "battle/ranking"; } }
+
+        public void Exe()
+        {
+            //実行
+            Post<BattleRanking>();
+        }
+        protected override void FinishCallback(string json)
+        {
+            ModelManager.battleRanking = GetData<BattleRanking>(json);
+        }
+    }
 
     [Serializable]
     public class StartRequest

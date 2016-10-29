@@ -43,4 +43,19 @@ namespace Mission
         }
     }
 
+    //### ミッションランキング ###
+    public class Ranking : BaseApi
+    {
+        protected override string uri { get { return "mission/ranking"; } }
+
+        public void Exe()
+        {
+            //実行
+            Post<MissionRanking>();
+        }
+        protected override void FinishCallback(string json)
+        {
+            ModelManager.missionRanking = GetData<MissionRanking>(json);
+        }
+    }
 }

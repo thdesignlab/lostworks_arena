@@ -4,10 +4,19 @@ using System.Collections.Generic;
 
 public static class ModelManager
 {
+    //ミッション記録
     public static MissionRecord missionRecord = new MissionRecord();
-    public static BattleRecord battleRecord = new BattleRecord();
-    public static BattleInfo battleInfo = new BattleInfo();
+    //ミッションランキング
+    public static MissionRanking missionRanking = new MissionRanking();
 
+    //バトル戦績
+    public static BattleRecord battleRecord = new BattleRecord();
+    //バトル中ID
+    public static BattleInfo battleInfo = new BattleInfo();
+    //バトルランキング
+    public static BattleRanking battleRanking = new BattleRanking();
+
+    //ポイント取得テーブル
     public static List<MasterPoint> mstPointList = new List<MasterPoint>();
 }
 
