@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Events;
+using System;
 
 public class RankingManager : SingletonMonoBehaviour<RankingManager>
 {
@@ -115,15 +116,17 @@ public class RankingManager : SingletonMonoBehaviour<RankingManager>
 
     private void SetArenaRank(Transform rankTran, BattleRankingRecord battleRanking = null)
     {
+        if (battleRanking == null) return;
         rankTran.FindChild("Rank").GetComponent<Text>().text = battleRanking.rank.ToString() + "位";
         rankTran.FindChild("Name").GetComponent<Text>().text = battleRanking.user_name;
         rankTran.FindChild("Character").GetComponent<Image>().sprite = GetCharaIcon(battleRanking.character_id);
         rankTran.FindChild("ResultArea/Result1").GetComponent<Text>().text = "Rate：" + battleRanking.battle_rate.ToString();
-        rankTran.FindChild("ResultArea/Result2").GetComponent<Text>().text = "勝率：" + battleRanking.win_rate.ToString()+"%";
+        rankTran.FindChild("ResultArea/Result2").GetComponent<Text>().text = "勝率：" + battleRanking.win_rate.ToString() + "%";
     }
 
     private void SetMissionRank(Transform rankTran, MissionRankingRecord missionRanking = null)
     {
+        if (missionRanking == null) return;
         rankTran.FindChild("Rank").GetComponent<Text>().text = missionRanking.rank.ToString() + "位";
         rankTran.FindChild("Name").GetComponent<Text>().text = missionRanking.user_name;
         rankTran.FindChild("Character").GetComponent<Image>().sprite = GetCharaIcon(missionRanking.character_id);
@@ -143,6 +146,11 @@ public class RankingManager : SingletonMonoBehaviour<RankingManager>
 
     private void ClearRanking()
     {
+        myRankingTran.FindChild("Rank").GetComponent<Text>().text = "NoData";
+        myRankingTran.FindChild("Name").GetComponent<Text>().text = UserManager.userInfo[Common.PP.INFO_USER_NAME];
+        myRankingTran.FindChild("Character").GetComponent<Image>().sprite = GetCharaIcon(UserManager.userSetCharacter);
+        myRankingTran.FindChild("ResultArea/Result1").GetComponent<Text>().text = "";
+        myRankingTran.FindChild("ResultArea/Result2").GetComponent<Text>().text = "";
         foreach (Transform child in rankingArea)
         {
             Destroy(child.gameObject);
