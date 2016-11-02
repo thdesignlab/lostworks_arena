@@ -41,7 +41,7 @@ namespace User
             //パラメータ設定
             CreateRequest data = new CreateRequest();
             data.user_name = UserManager.userInfo[Common.PP.INFO_USER_NAME];
-            data.terminal_id = SystemInfo.deviceUniqueIdentifier;
+            //data.terminal_id = SystemInfo.deviceUniqueIdentifier;
             string paramJson = JsonUtility.ToJson(data);
 
             //実行

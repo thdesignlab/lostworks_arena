@@ -473,16 +473,16 @@ namespace Common
         public static Dictionary<int, int[]> StatusDic = new Dictionary<int, int[]>()
         {
                             //hp, sp, run, boost, turn, atk%, atkI, boostI, tagI
-            { 100, new int[]{ 1000, 45, 35, 75, 20, 100, 2, 2, 3, 1 , 20} },
-            { 101, new int[]{ 1000, 45, 35, 75, 20, 100, 2, 2, 3, 1 , 20} },
-            { 200, new int[]{ 1000, 45, 30, 70, 20, 110, 2, 2, 3, 1 , 250} },
-            { 201, new int[]{ 1000, 45, 30, 70, 20, 110, 2, 2, 3, 1 , 250} },
-            { 300, new int[]{ 1000, 55, 30, 70, 20, 100, 2, 2, 3, 1 , 150} },
-            { 301, new int[]{ 1000, 55, 30, 70, 20, 100, 2, 2, 3, 1 , 150} },
-            { 400, new int[]{ 1200, 50, 30, 70, 20, 100, 2, 2, 3, 1 , 50} },
-            { 401, new int[]{ 1200, 50, 30, 70, 20, 100, 2, 2, 3, 1 , 50} },
-            { 500, new int[]{ 1200, 35, 35, 75, 25, 110, 2, 2, 3, 1 , 150} },
-            { 501, new int[]{ 1200, 35, 35, 75, 25, 110, 2, 2, 3, 1 , 150} },
+            { 100, new int[]{ 1000, 45, 35, 75, 20, 100, 3, 2, 3, 1 , 20} },
+            { 101, new int[]{ 1000, 45, 35, 75, 20, 100, 3, 2, 3, 1 , 20} },
+            { 200, new int[]{ 1000, 45, 30, 70, 20, 110, 3, 2, 3, 1 , 250} },
+            { 201, new int[]{ 1000, 45, 30, 70, 20, 110, 3, 2, 3, 1 , 250} },
+            { 300, new int[]{ 1000, 55, 30, 70, 20, 100, 3, 2, 3, 1 , 150} },
+            { 301, new int[]{ 1000, 55, 30, 70, 20, 100, 3, 2, 3, 1 , 150} },
+            { 400, new int[]{ 1200, 50, 30, 70, 20, 100, 3, 2, 3, 1 , 50} },
+            { 401, new int[]{ 1200, 50, 30, 70, 20, 100, 3, 2, 3, 1 , 50} },
+            { 500, new int[]{ 1200, 35, 35, 75, 25, 110, 3, 2, 3, 1 , 150} },
+            { 501, new int[]{ 1200, 35, 35, 75, 25, 110, 3, 2, 3, 1 , 150} },
             { 10000, new int[]{ 800, 35, 25, 50, 20, 80, 3, 3, 4, 0 , 100} },
         };
 
@@ -521,6 +521,7 @@ namespace Common
             { 1005, new string[]{ "CERifle", "", "", OBTAIN_TYPE_INIT}},
             { 1006, new string[]{ "Stinger", "", "", OBTAIN_TYPE_INIT}},
             { 1007, new string[]{ "TridentPillar", "", "", OBTAIN_TYPE_INIT}},
+            { 1008, new string[]{ "FlameRadiation", "", "", OBTAIN_TYPE_INIT}},
         };
         //ハンド武器(ダッシュ)リスト
         public static Dictionary<int, string[]> handDashWeaponLineUp = new Dictionary<int, string[]>()
@@ -532,6 +533,7 @@ namespace Common
             { 2004, new string[]{ "PenetrateDagger", "", "", OBTAIN_TYPE_INIT}},
             { 2005, new string[]{ "LaserBlade", "", "", OBTAIN_TYPE_INIT}},
             { 2006, new string[]{ "BulletBomb", "", "", OBTAIN_TYPE_INIT}},
+            { 2007, new string[]{ "Grudge", "", "", OBTAIN_TYPE_INIT}},
         };
         //背中武器リスト
         public static Dictionary<int, string[]> shoulderWeaponLineUp = new Dictionary<int, string[]>()
@@ -781,15 +783,17 @@ namespace Common
         //レベルによるステータス変化
         public static Dictionary<int, float[]> npcLevelStatusDic = new Dictionary<int, float[]>()
         {
-                            //hp, sp, run, boost, turn, atk%, atkI, boostI, tagI
-            { 1, new float[] { 0.7f, 1.0f, 0.8f, 0.7f, 0.7f, 0.6f, 1.5f, 1.5f, 1.5f } },
-            { 2, new float[] { 0.8f, 1.0f, 0.9f, 0.8f, 1.0f, 0.8f, 1.2f, 1.2f, 1.0f } },
-            { 3, new float[] { 1.0f, 1.2f, 1.0f, 1.0f, 1.2f, 1.0f, 1.0f, 1.0f, 0.7f } },
-            { 4, new float[] { 1.1f, 1.3f, 1.1f, 1.1f, 1.5f, 1.0f, 0.8f, 0.7f, 0.5f } },
-            { 5, new float[] { 1.2f, 1.5f, 1.2f, 1.2f, 2.0f, 1.0f, 0.7f, 0.5f, 0.3f } },
+                             //hp,   sp,   run,  boost,turn, atk%, atkI, boostI, tagI
+            { 1, new float[] { 0.5f, 0.6f, 0.7f, 0.7f, 0.7f, 0.5f, 2.0f, 2.0f, 2.0f } },
+            { 2, new float[] { 0.7f, 0.7f, 0.8f, 0.8f, 0.8f, 0.6f, 1.6f, 1.6f, 1.6f } },
+            { 3, new float[] { 0.8f, 0.8f, 0.9f, 1.0f, 0.9f, 0.7f, 1.3f, 1.3f, 1.3f } },
+            { 4, new float[] { 0.9f, 1.0f, 1.0f, 1.1f, 1.0f, 0.8f, 1.2f, 1.2f, 1.0f } },
+            { 5, new float[] { 1.0f, 1.1f, 1.1f, 1.2f, 1.5f, 1.0f, 1.0f, 1.0f, 0.8f } },
+            { 6, new float[] { 1.1f, 1.1f, 1.1f, 1.2f, 1.5f, 1.0f, 0.8f, 0.8f, 0.7f } },
+            { 7, new float[] { 1.2f, 1.2f, 1.1f, 1.3f, 1.5f, 1.1f, 0.6f, 0.5f, 0.5f } },
         };
         //設定レベル以上の場合の追加Rate
-        public static float[] overLevelState = new float[] { 0.05f, 0.1f, 0.01f, 0.02f, 0.02f, 0.03f, 0, 0, 0 };
+        public static float[] overLevelState = new float[] { 0.05f, 0.1f, 0.02f, 0.02f, 0.02f, 0.03f, 0, 0, 0 };
 
         //NPC武器
         public static Dictionary<int, int[]> npcWeaponDic = new Dictionary<int, int[]>()

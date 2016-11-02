@@ -735,7 +735,6 @@ public class GameController : SingletonMonoBehaviour<GameController>
                 float distance = Vector3.Distance(playerTran.position, spawnPoint.transform.position);
                 if (preDistance < 0 || preDistance < distance)
                 {
-                    Debug.Log(spawnPoint.name);
                     spawnObj = spawnPoint;
                     preDistance = distance;
                 }

@@ -34,7 +34,6 @@ public class CrossRangeWeaponController : WeaponController
         base.Awake();
         //bitPos = myBitTran.localPosition;
         weaponAnimator = myTran.GetComponent<Animator>();
-        if (blade != null) blade.SetActive(false);
     }
 
     protected override void Start()
@@ -107,7 +106,7 @@ public class CrossRangeWeaponController : WeaponController
                 if (attackProcTime >= attackWaitTime)
                 {
                     //ブレードON
-                    blade.SetActive(true);
+                    SetBlade(true);
                     PlayAudio();
                     isBladeOn = true;
 
@@ -126,7 +125,7 @@ public class CrossRangeWeaponController : WeaponController
                 if (attackProcTime >= attackTime + attackWaitTime)
                 {
                     //ブレードOFF
-                    blade.SetActive(false);
+                    SetBlade(false);
                     isBladeOff = true;
                 }
             }
@@ -139,6 +138,16 @@ public class CrossRangeWeaponController : WeaponController
         if (weaponAnimator != null) weaponAnimator.SetBool(animationName, false);
 
         base.EndAction();
+    }
+
+    private void SetBlade(bool flg)
+    {
+        photonView.RPC("SetBladeRPC", PhotonTargets.All, flg);
+    }
+    [PunRPC]
+    private void SetBladeRPC(bool flg)
+    {
+        blade.SetActive(flg);
     }
 
     public override bool IsEnableFire()

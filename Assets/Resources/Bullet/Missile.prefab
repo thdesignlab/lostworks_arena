@@ -421,7 +421,7 @@ MonoBehaviour:
   isLockOn: 1
   UseGravity: 0
   hitEffect: {fileID: 0}
-  speed: 120
+  speed: 135
   damage: 15
   damagePerSecond: 0
   stuckTime: 0
@@ -432,8 +432,8 @@ MonoBehaviour:
   safetyTime: 0.2
   turnSpeed: 120
   lockStartTime: 0
-  lockedSpeedRate: 1.25
-  lockedTurnSpeedRate: 0.75
+  lockedSpeedRate: 1
+  lockedTurnSpeedRate: 0.85
   isNeedLock: 1
   isLockFlat: 0
 --- !u!114 &11478710
