@@ -616,7 +616,7 @@ public class CustomManager : Photon.MonoBehaviour
 
         //エリアサイズ変更
         float dispWeaponCount = weaponNoList.Count;
-        if (dispWeaponCount > maxWeaponButtonCount) dispWeaponCount = maxWeaponButtonCount + 0.5f;
+        if (dispWeaponCount > maxWeaponButtonCount) dispWeaponCount = maxWeaponButtonCount - 0.5f;
         weaponScrollViewLayout.preferredHeight = dispWeaponCount * buttonHeight;
         weaponButtonAreaRectTran.sizeDelta = new Vector2(weaponButtonAreaRectTran.rect.width, weaponNoList.Count * buttonHeight);
 
