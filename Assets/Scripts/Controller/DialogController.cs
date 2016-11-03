@@ -80,6 +80,7 @@ public class DialogController : MonoBehaviour
     }
     public static GameObject OpenDialog(string text, List<string> buttons, List<UnityAction> actions, bool isCancel = false)
     {
+        DialogController.CloseMessage();
         if (dialog != null) CloseDialog();
         if (buttons.Count <= 0 || actions.Count <= 0) return null;
 
@@ -117,6 +118,7 @@ public class DialogController : MonoBehaviour
 
     public static void CloseDialog()
     {
+        Debug.Log("Close >> "+dialog);
         ScreenManager.Instance.FadeDialog(dialog, false);
         //Destroy(dialog);
     }
@@ -130,6 +132,7 @@ public class DialogController : MonoBehaviour
 
     public static void OnClickButton(UnityAction unityAction = null)
     {
+        Debug.Log("OnClickButton");
         if (unityAction != null)
         {
             unityAction.Invoke();

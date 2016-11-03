@@ -16,6 +16,9 @@ public static class ModelManager
     //バトルランキング
     public static BattleRanking battleRanking = new BattleRanking();
 
+    //Tips
+    public static TipsInfo tipsInfo = new TipsInfo();
+
     //ポイント取得テーブル
     public static List<MasterPoint> mstPointList = new List<MasterPoint>();
 }

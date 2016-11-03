@@ -15,6 +15,8 @@ public class UnityAds : SingletonMonoBehaviour<UnityAds>
     private string _unityAdsiosID;
     [SerializeField]
     private string _unityAdsAndroidID;
+    [SerializeField]
+    private bool isDebugMode;
 
     private bool isAdPlaying = false;
 
@@ -32,9 +34,9 @@ public class UnityAds : SingletonMonoBehaviour<UnityAds>
             //Advertisement.allowPrecache = true;
 
 #if UNITY_IOS
-      Advertisement.Initialize (_unityAdsiosID, MyDebug.Instance.isDebugMode);
+      Advertisement.Initialize (_unityAdsiosID, isDebugMode);
 #elif UNITY_ANDROID
-            Advertisement.Initialize(_unityAdsAndroidID, MyDebug.Instance.isDebugMode);
+            Advertisement.Initialize(_unityAdsAndroidID, isDebugMode);
 #endif
         }
         else

@@ -40,7 +40,7 @@ public class ApiManager : SingletonMonoBehaviour<ApiManager>
             {
                 //JSON取得
                 string json = Encoding.UTF8.GetString(www.bytes);
-                Debug.Log(uri + " >> " + json);
+                if (UserManager.isAdmin || MyDebug.Instance.isDebugMode) Debug.Log(uri + " >> " + json);
 
                 //コールバック
                 apiCallback.Invoke(json);

@@ -57,6 +57,7 @@ public class StoreManager : SingletonMonoBehaviour<StoreManager>
 
     public void PlayGacha()
     {
+        DialogController.OpenMessage(DialogController.MESSAGE_LOADING, DialogController.MESSAGE_POSITION_RIGHT);
         System.Action onFinish = () => AddPoint();
         System.Action onSkipped = () => AddPoint(0.5f);
         System.Action onFailed = () => GachaErrorAction();
@@ -70,6 +71,7 @@ public class StoreManager : SingletonMonoBehaviour<StoreManager>
         }
         else
         {
+            DialogController.CloseMessage();
             DialogController.OpenDialog("接続Error");
         }
     }
@@ -80,8 +82,12 @@ public class StoreManager : SingletonMonoBehaviour<StoreManager>
         int pt = Draw<int>(pointTable);
         pt = (int)(pt * ptRate);
 
-        //pt追加API
-        Point.Add pointAdd = new Point.Add();
+        ////pt追加API
+        //Point.Add pointAdd = new Point.Add();
+        //pointAdd.SetApiFinishCallback(() => PointGetDialog(pt));
+        //pointAdd.Exe(pt);
+        //ガチャAPI
+        Gacha.Play pointAdd = new Gacha.Play();
         pointAdd.SetApiFinishCallback(() => PointGetDialog(pt));
         pointAdd.Exe(pt);
     }
@@ -89,9 +95,32 @@ public class StoreManager : SingletonMonoBehaviour<StoreManager>
     //獲得ポイントダイアログ
     private void PointGetDialog(int pt)
     {
+        DialogController.CloseMessage();
+
+        //所持pt更新
         textPoint.text = UserManager.userPoint.ToString();
+
+        string text = pt + "pt獲得";
+        string nextBtn = "OK";
+        UnityAction nextAction = null;
+        bool cancelBtn = false;
+        if (!string.IsNullOrEmpty(ModelManager.tipsInfo.text))
+        {
+            text += "\n\n<tips>\n";
+            text += ModelManager.tipsInfo.text;
+
+            nextBtn = "もう一度";
+            nextAction = PlayGacha;
+            cancelBtn = true;
+            if (ModelManager.tipsInfo.last_flg == 1)
+            {
+                //続きあり
+                nextBtn += "\n続きを見る";
+            }
+        }
+
         //DialogController.OpenDialog(pt + "pt獲得!!", "もう一度", () => PlayGacha(), true);
-        DialogController.OpenDialog(pt + "pt獲得!!");
+        DialogController.OpenDialog(text, nextBtn, nextAction, cancelBtn);
     }
 
     //購入
