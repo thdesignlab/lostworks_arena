@@ -455,7 +455,11 @@ namespace Common
             {401, new string[]{ "Hero4", "Meisai", "1", OBTAIN_TYPE_INIT, "10006"}},
             {500, new string[]{ "Hero5", "Unknown", "0", OBTAIN_TYPE_INIT, "10007"}},
             {501, new string[]{ "Hero5", "Unknown", "1", OBTAIN_TYPE_INIT, "10007"}},
-            {10000, new string[]{ "Npc1", "Capsule1", "0", OBTAIN_TYPE_NONE, "10002,10003,10004"}},
+            {10000, new string[]{ "Npc1", "Bit", "0", OBTAIN_TYPE_NONE, "10002"}},
+            {10001, new string[]{ "Npc2", "BitBrack", "0", OBTAIN_TYPE_NONE, "10003"}},
+            {10002, new string[]{ "Npc3", "BitYellow", "0", OBTAIN_TYPE_NONE, "10004"}},
+            {10003, new string[]{ "Npc4", "BitRed", "0", OBTAIN_TYPE_NONE, "10002,10003,10004"}},
+            {10004, new string[]{ "Npc5", "BitBlue", "0", OBTAIN_TYPE_NONE, "10002,10003,10004"}},
         };
 
         //ステータス
@@ -483,7 +487,11 @@ namespace Common
             { 401, new int[]{ 1200, 50, 30, 70, 20, 100, 3, 2, 3, 1 , 50} },
             { 500, new int[]{ 1200, 35, 35, 75, 25, 110, 3, 2, 3, 1 , 150} },
             { 501, new int[]{ 1200, 35, 35, 75, 25, 110, 3, 2, 3, 1 , 150} },
-            { 10000, new int[]{ 800, 35, 25, 50, 20, 80, 3, 3, 4, 0 , 100} },
+            { 10000, new int[]{ 800, 35, 25, 50, 20, 80, 3, 3, 5, 0 , 150} },
+            { 10001, new int[]{ 850, 35, 25, 55, 20, 85, 3, 3, 5, 0 , 150} },
+            { 10002, new int[]{ 900, 35, 40, 80, 20, 90, 3, 3, 4, 1 , 150} },
+            { 10003, new int[]{ 950, 40, 30, 65, 20, 110, 3, 2, 3, 1 , 150} },
+            { 10004, new int[]{ 900, 50, 20, 60, 20, 150, 3, 2, 3, 1 , 150} },
         };
 
         public static string[] GetCharacterInfo(int characterNo)
@@ -743,11 +751,15 @@ namespace Common
         public static Dictionary<int, int[]> stageNpcNoDic = new Dictionary<int, int[]>()
         {
             { 1, new int[] { 10000, 0 } },
-            { 2, new int[] { 100, 1 } },
-            { 3, new int[] { 200, 1 } },
-            { 4, new int[] { 300, 2 } },
-            { 5, new int[] { 400, 3 } },
-            { 6, new int[] { 500, 4 } },
+            { 2, new int[] { 100, 5 } },
+            { 3, new int[] { 10001, 5 } },
+            { 4, new int[] { 200, 1 } },
+            { 5, new int[] { 10002, 1 } },
+            { 6, new int[] { 300, 2 } },
+            { 7, new int[] { 10003, 2 } },
+            { 8, new int[] { 400, 3 } },
+            { 9, new int[] { 10004, 3 } },
+            { 10, new int[] { 500, 4 } },
         };
 
         //レベル
@@ -787,23 +799,27 @@ namespace Common
         public static Dictionary<int, float[]> npcLevelStatusDic = new Dictionary<int, float[]>()
         {
                              //hp,   sp,   run,  boost,turn, atk%, atkI, boostI, tagI
+            { 0, new float[] { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f } },
             { 1, new float[] { 0.5f, 0.6f, 0.7f, 0.7f, 0.7f, 0.5f, 2.0f, 2.0f, 2.0f } },
             { 2, new float[] { 0.7f, 0.7f, 0.8f, 0.8f, 0.8f, 0.6f, 1.6f, 1.6f, 1.6f } },
             { 3, new float[] { 0.8f, 0.8f, 0.9f, 1.0f, 0.9f, 0.7f, 1.3f, 1.3f, 1.3f } },
             { 4, new float[] { 0.9f, 1.0f, 1.0f, 1.1f, 1.0f, 0.8f, 1.2f, 1.2f, 1.0f } },
             { 5, new float[] { 1.0f, 1.1f, 1.1f, 1.2f, 1.5f, 1.0f, 1.0f, 1.0f, 0.8f } },
-            { 6, new float[] { 1.1f, 1.1f, 1.1f, 1.2f, 1.5f, 1.0f, 0.8f, 0.8f, 0.7f } },
+            { 6, new float[] { 1.1f, 1.1f, 1.1f, 1.2f, 1.5f, 1.1f, 0.8f, 0.8f, 0.7f } },
             { 7, new float[] { 1.2f, 1.2f, 1.1f, 1.3f, 1.5f, 1.1f, 0.6f, 0.5f, 0.5f } },
         };
         //設定レベル以上の場合の追加Rate
-        public static float[] overLevelState = new float[] { 0.05f, 0.1f, 0.02f, 0.02f, 0.02f, 0.03f, 0, 0, 0 };
+        public static float[] overLevelState = new float[] { 0.05f, 0.1f, 0.02f, 0.02f, 0.02f, 0.05f, 0, 0, 0 };
+
+        //コンティニュー時のステUP
+        public static float[] continueBonus = new float[] { 0.1f, 0.05f, 0, 0, 0, 0.05f, 0, 0, 0 };
 
         //NPC武器
         public static Dictionary<int, int[]> npcWeaponDic = new Dictionary<int, int[]>()
         {
             { -1, new int[]{ 0, 0, 0, 0, 0, 0, 0} },
-            { 100, new int[]{ 2005, 1004, 2005, 2002, 3004, 4003, 5003} },
-            { 101, new int[]{ 2005, 1004, 2005, 2002, 3004, 4003, 5003} },
+            { 100, new int[]{ 1007, 1004, 2005, 2002, 3004, 4005, 5003} },
+            { 101, new int[]{ 1007, 1004, 2005, 2002, 3004, 4005, 5003} },
             { 200, new int[]{ 1002, 4002, 2004, 1001, 3002, 4000, 5001} },
             { 201, new int[]{ 1002, 4002, 2004, 1001, 3002, 4000, 5001} },
             { 300, new int[]{ 0, 0, 0, 0, 0, 0, 0} },
@@ -812,6 +828,8 @@ namespace Common
             { 10000, new int[]{ 0, 0, 2000, 2001, 0, 0, 5002} },
             { 10001, new int[]{ 1000, 1002, 0, 0, 0, 0, 5002} },
             { 10002, new int[]{ 2002, 2002, 2003, 2003, 3001, 4001, 5003} },
+            { 10003, new int[]{ 0, 0, 0, 0, 0, 0, 0} },
+            { 10004, new int[]{ 0, 0, 0, 0, 0, 0, 0} },
         };
     }
 

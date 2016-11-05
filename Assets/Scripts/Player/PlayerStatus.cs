@@ -121,6 +121,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
     //ユーザー情報
     [HideInInspector]
     public int userId = -1;
+    [HideInInspector]
     public string userName = "";
 
     void Awake()

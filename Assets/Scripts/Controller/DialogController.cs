@@ -118,7 +118,6 @@ public class DialogController : MonoBehaviour
 
     public static void CloseDialog()
     {
-        Debug.Log("Close >> "+dialog);
         ScreenManager.Instance.FadeDialog(dialog, false);
         //Destroy(dialog);
     }

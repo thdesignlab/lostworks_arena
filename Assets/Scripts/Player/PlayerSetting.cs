@@ -154,8 +154,9 @@ public class PlayerSetting : Photon.MonoBehaviour
             //charaInfo = CharacterManager.GetCharacterInfo();
             foreach (int index in Common.Character.characterLineUp.Keys)
             {
+                charaNo = index;
                 charaInfo = Common.Character.characterLineUp[index];
-                UserManager.userSetCharacter = index;
+                UserManager.userSetCharacter = charaNo;
                 break;
             }
         }
@@ -181,6 +182,13 @@ public class PlayerSetting : Photon.MonoBehaviour
 
         //parent紐付け用
         bodyViewId = PhotonView.Get(charaMainObj).viewID;
+
+        //キャラステータス取得
+        int[] npcStatusArray = Common.Character.StatusDic[charaNo];
+        float[] statusLevelRate = Common.Mission.npcLevelStatusDic[0];
+
+        //ステータス設定
+        playerStatus.SetStatus(npcStatusArray, statusLevelRate);
     }
 
     private void SetMainBodyParent()

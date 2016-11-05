@@ -400,8 +400,8 @@ public class GameController : SingletonMonoBehaviour<GameController>
                                 yield return new WaitForSeconds(1.0f);
 
                                 //ダイアログ
-                                string text = "広告やで(｀・д・´)";
-                                List<string> buttons = new List<string>() { "Continue", "Title" };
+                                string text = "コンティニューしますか？\n※動画が再生されます\n※復活時に能力が少しUPします";
+                                List<string> buttons = new List<string>() { "Continue", "Titleへ" };
                                 List<UnityAction> actions = new List<UnityAction>() {
                                     () => ContinueMission(true), () => GoToTitle()
                                 };
@@ -937,6 +937,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
         stageNo++;
         ResetWinMark();
         continueCount = 0;
+        SetStatus();
 
         return true;
     }
@@ -963,6 +964,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
         if (isAdPlay)
         {
             UnityAds.Instance.Play(() => ContinueMission());
+            return;
         }
         else
         {
@@ -1045,6 +1047,18 @@ public class GameController : SingletonMonoBehaviour<GameController>
         SetCanvasInfo();
         ResetGame();
         myStatus.SetWinMark(winCount, loseCount);
+        SetStatus();
+    }
+
+    private void SetStatus()
+    {
+        int[] statusArray = Common.Character.StatusDic[UserManager.userSetCharacter];
+        float[] statusLevelRate = (float[])Common.Mission.npcLevelStatusDic[0].Clone();
+        for (int i = 0; i < statusLevelRate.Length; i++)
+        {
+            statusLevelRate[i] += Common.Mission.continueBonus[i] * continueCount;
+        }
+        myStatus.SetStatus(statusArray, statusLevelRate);
     }
 
     //NPC生成

@@ -109,7 +109,14 @@ public class BulletController : MoveOfCharacter
             //対象を破壊
             TargetDestory(otherObj);
 
-            if (isHit && isHitBreak) base.DestoryObject();
+            if (isHit && isHitBreak)
+            {
+                base.DestoryObject();
+            }
+            else
+            {
+                isHit = false;
+            }
         }
     }
 
