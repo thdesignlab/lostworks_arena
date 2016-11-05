@@ -534,6 +534,8 @@ namespace Common
             { 2005, new string[]{ "LaserBlade", "", "", OBTAIN_TYPE_INIT}},
             { 2006, new string[]{ "BulletBomb", "", "", OBTAIN_TYPE_INIT}},
             { 2007, new string[]{ "Grudge", "", "", OBTAIN_TYPE_INIT}},
+            { 2008, new string[]{ "MachingunBit", "", "", OBTAIN_TYPE_INIT}},
+            { 2009, new string[]{ "GatlingClaw", "", "", OBTAIN_TYPE_INIT}},
         };
         //背中武器リスト
         public static Dictionary<int, string[]> shoulderWeaponLineUp = new Dictionary<int, string[]>()
@@ -555,6 +557,7 @@ namespace Common
             { 4003, new string[]{ "Shotgun", "", "", OBTAIN_TYPE_INIT}},
             { 4004, new string[]{ "RoundMissile", "", "", OBTAIN_TYPE_INIT}},
             { 4005, new string[]{ "AssaultCharge", "", "", OBTAIN_TYPE_INIT}},
+            { 4006, new string[]{ "ClusterMissile", "", "", OBTAIN_TYPE_INIT}},
         };
         //サブ武器リスト
         public static Dictionary<int, string[]> subWeaponLineUp = new Dictionary<int, string[]>()

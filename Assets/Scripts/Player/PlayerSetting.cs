@@ -151,7 +151,13 @@ public class PlayerSetting : Photon.MonoBehaviour
         string[] charaInfo = CharacterManager.GetCharacterInfo(charaNo);
         if (charaInfo == null)
         {
-            charaInfo = CharacterManager.GetCharacterInfo();
+            //charaInfo = CharacterManager.GetCharacterInfo();
+            foreach (int index in Common.Character.characterLineUp.Keys)
+            {
+                charaInfo = Common.Character.characterLineUp[index];
+                UserManager.userSetCharacter = index;
+                break;
+            }
         }
 
         //メインボディ生成
@@ -224,11 +230,15 @@ public class PlayerSetting : Photon.MonoBehaviour
                 //装備中武器取得
                 if (!UserManager.userEquipment.ContainsKey(parts.name)) continue;
                 wepNo = UserManager.userEquipment[parts.name];
-                
+                if (wepNo <= 0 && parts.name == Common.CO.PARTS_EXTRA)
+                {
+                    int[] weapons = Common.Weapon.GetExtraWeaponNoArray(UserManager.userSetCharacter);
+                    wepNo = weapons[0];
+                }
+
                 //武器取得
                 string weaponName = Common.Weapon.GetWeaponName(wepNo, true);
                 GameObject weapon = (GameObject)Resources.Load(Common.Func.GetResourceWeapon(weaponName));
-
                 //装備
                 EquipWeapon(parts, weapon);
             }

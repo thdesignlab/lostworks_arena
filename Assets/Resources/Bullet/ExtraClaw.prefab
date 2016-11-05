@@ -47,8 +47,8 @@ GameObject:
   - 114: {fileID: 11474946}
   - 114: {fileID: 11434942}
   - 114: {fileID: 11467052}
-  - 135: {fileID: 13554978}
   - 114: {fileID: 11471620}
+  - 136: {fileID: 13691800}
   m_Layer: 0
   m_Name: ExtraClaw
   m_TagString: ExtraBullet
@@ -791,18 +791,19 @@ MonoBehaviour:
   viewIdField: 0
   instantiationId: -1
   isRuntimeInstantiated: 0
---- !u!135 &13554978
-SphereCollider:
+--- !u!136 &13691800
+CapsuleCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 113640}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
   m_Radius: 0.65
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Height: 3
+  m_Direction: 2
+  m_Center: {x: 0, y: 0, z: -0.5}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

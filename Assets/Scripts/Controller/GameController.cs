@@ -82,6 +82,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
     [SerializeField]
     private GameObject levelSelectButton;
 
+    const int WIN_COUNT_MAX = 2;
     private int winCount = 0;
     private int loseCount = 0;
     private int continueCount = 0;
@@ -352,7 +353,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
                         if (isWin)
                         {
                             //勝利
-                            if (winCount >= 3)
+                            if (winCount >= WIN_COUNT_MAX)
                             {
                                 //ステージクリア
                                 //NextStage
@@ -391,7 +392,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
                         else
                         {
                             //敗北
-                            if (loseCount >= 3)
+                            if (loseCount >= WIN_COUNT_MAX)
                             {
                                 //ゲームオーバー
                                 continueCount++;
@@ -951,8 +952,8 @@ public class GameController : SingletonMonoBehaviour<GameController>
     //デバッグ用
     public void SetFinalRound()
     {
-        winCount = 2;
-        loseCount = 2;
+        winCount = WIN_COUNT_MAX - 1;
+        loseCount = WIN_COUNT_MAX - 1;
         myStatus.ResetWinMark();
     }
 
