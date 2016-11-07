@@ -131,7 +131,6 @@ public class DialogController : MonoBehaviour
 
     public static void OnClickButton(UnityAction unityAction = null)
     {
-        Debug.Log("OnClickButton");
         if (unityAction != null)
         {
             unityAction.Invoke();

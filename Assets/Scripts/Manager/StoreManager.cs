@@ -8,15 +8,18 @@ public class StoreManager : SingletonMonoBehaviour<StoreManager>
 {
     [SerializeField]
     private Text textPoint;
+    [SerializeField]
+    private Transform storeWeaponContent;
+    [SerializeField]
+    private Object storeWeaponObj;
+
 
     //point >> rate
     private Dictionary<int, int> pointTable = new Dictionary<int, int>()
     {
-        { 20, 200 },
-        { 30, 200 },
-        { 40, 50 },
-        { 50, 50 },
-        { 100, 10 },
+        { 100, 200 },
+        { 200, 20 },
+        { 300, 10 },
         { 500, 1 },
     };
 
@@ -36,6 +39,9 @@ public class StoreManager : SingletonMonoBehaviour<StoreManager>
         pointTable.SetApiFinishCallback(() => SetPointTable());
         pointTable.SetApiErrorIngnore();
         pointTable.Exe();
+
+        //武器リスト
+        DispStoreWeaponList();
     }
 
     public void SetPointTable()
@@ -124,23 +130,27 @@ public class StoreManager : SingletonMonoBehaviour<StoreManager>
     }
 
     //購入
-    public void Buy()
+    public void Buy(int weaponNo)
     {
-        int pt = 100;
+        int pt = Common.Weapon.GetStoreNeedPoint(weaponNo);
 
         //point消費
-        Point.Use pointUse = new Point.Use();
-        pointUse.SetApiFinishCallback(BuyProc);
-        pointUse.SetApiFinishErrorCallback(BuyErrorProc);
-        pointUse.SetApiErrorIngnore();
-        pointUse.Exe(pt);
+        Weapon.Buy WeaponBuy = new Weapon.Buy();
+        WeaponBuy.SetApiFinishCallback(() => BuyProc(weaponNo));
+        WeaponBuy.SetApiFinishErrorCallback(BuyErrorProc);
+        WeaponBuy.SetApiErrorIngnore();
+        WeaponBuy.Exe(pt, weaponNo);
     }
 
     //購入成功処理
-    public void BuyProc()
+    public void BuyProc(int weaponNo)
     {
         //所持ポイント表示
         textPoint.text = UserManager.userPoint.ToString();
+
+        //武器リスト更新
+        UserManager.AddOpenWeapon(weaponNo);
+        DispStoreWeaponList();
 
         DialogController.OpenDialog("武器GET！");
     }
@@ -185,5 +195,34 @@ public class StoreManager : SingletonMonoBehaviour<StoreManager>
             targetValues.RemoveAt(key);
         }
         return drawObj;
+    }
+
+    //購入可能武器リスト取得
+    private void DispStoreWeaponList()
+    {
+        //リストクリア
+        foreach (Transform child in storeWeaponContent)
+        {
+            Destroy(child.gameObject);
+        }
+
+        //武器リスト
+        Dictionary<int, string[]> weaponList = Common.Weapon.GetStoreWeaponList();
+        foreach (int weaponNo in weaponList.Keys)
+        {
+            //OPENチェック
+            if (UserManager.userOpenWeapons.IndexOf(weaponNo) >= 0) continue;
+            string[] weaponInfo = weaponList[weaponNo];
+
+            GameObject row = (GameObject)Instantiate(storeWeaponObj);
+            Transform rowTran = row.transform;
+            rowTran.FindChild("WeaponName").GetComponent<Text>().text = Common.Weapon.GetWeaponName(weaponNo);
+            rowTran.FindChild("TypeName").GetComponent<Text>().text = Common.Weapon.GetWeaponTypeName(weaponNo);
+            rowTran.FindChild("Description").GetComponent<Text>().text = weaponInfo[Common.Weapon.DETAIL_DESCRIPTION_NO];
+            rowTran.FindChild("NeedPoint").GetComponent<Text>().text = Common.Weapon.GetStoreNeedPoint(weaponNo).ToString();
+            int param = weaponNo;
+            rowTran.GetComponent<Button>().onClick.AddListener(() => Buy(param));
+            rowTran.SetParent(storeWeaponContent, false);
+        }
     }
 }

@@ -511,6 +511,7 @@ namespace Common
         //獲得タイプ
         public const string OBTAIN_TYPE_NONE = "NONE";
         public const string OBTAIN_TYPE_INIT = "INIT";
+        public const string OBTAIN_TYPE_STORE = "STORE";
 
         //武器リストNo
         public const int DETAIL_PREFAB_NAME_NO = 0;     //プレハブ名
@@ -529,7 +530,7 @@ namespace Common
             { 1005, new string[]{ "CERifle", "", "", OBTAIN_TYPE_INIT}},
             { 1006, new string[]{ "Stinger", "", "", OBTAIN_TYPE_INIT}},
             { 1007, new string[]{ "TridentPillar", "", "", OBTAIN_TYPE_INIT}},
-            { 1008, new string[]{ "FlameRadiation", "", "", OBTAIN_TYPE_INIT}},
+            { 1008, new string[]{ "FlameRadiation", "", "火炎放射\n燃やすよ？", OBTAIN_TYPE_STORE}},
         };
         //ハンド武器(ダッシュ)リスト
         public static Dictionary<int, string[]> handDashWeaponLineUp = new Dictionary<int, string[]>()
@@ -543,7 +544,7 @@ namespace Common
             { 2006, new string[]{ "BulletBomb", "", "", OBTAIN_TYPE_INIT}},
             { 2007, new string[]{ "Grudge", "", "", OBTAIN_TYPE_INIT}},
             { 2008, new string[]{ "MachingunBit", "", "", OBTAIN_TYPE_INIT}},
-            { 2009, new string[]{ "GatlingClaw", "", "", OBTAIN_TYPE_INIT}},
+            { 2009, new string[]{ "GatlingClaw", "", "連続ひっかき的な", OBTAIN_TYPE_STORE}},
         };
         //背中武器リスト
         public static Dictionary<int, string[]> shoulderWeaponLineUp = new Dictionary<int, string[]>()
@@ -554,7 +555,7 @@ namespace Common
             { 3003, new string[]{ "Cyclone", "", "", OBTAIN_TYPE_INIT}},
             { 3004, new string[]{ "EnergyShield", "", "", OBTAIN_TYPE_INIT}},
             { 3005, new string[]{ "ChargeArrow", "", "", OBTAIN_TYPE_INIT}},
-            { 3006, new string[]{ "SearchRay", "", "", OBTAIN_TYPE_INIT}},
+            { 3006, new string[]{ "SearchRay", "", "", OBTAIN_TYPE_STORE}},
         };
         //背中武器(ダッシュ)リスト
         public static Dictionary<int, string[]> shoulderDashWeaponLineUp = new Dictionary<int, string[]>()
@@ -565,7 +566,7 @@ namespace Common
             { 4003, new string[]{ "Shotgun", "", "", OBTAIN_TYPE_INIT}},
             { 4004, new string[]{ "RoundMissile", "", "", OBTAIN_TYPE_INIT}},
             { 4005, new string[]{ "AssaultCharge", "", "", OBTAIN_TYPE_INIT}},
-            { 4006, new string[]{ "ClusterMissile", "", "", OBTAIN_TYPE_INIT}},
+            { 4006, new string[]{ "ClusterMissile", "", "", OBTAIN_TYPE_STORE}},
         };
         //サブ武器リスト
         public static Dictionary<int, string[]> subWeaponLineUp = new Dictionary<int, string[]>()
@@ -588,6 +589,24 @@ namespace Common
             { 10006, new string[]{ "ExtraHolyRay", "ExHolyRay", "光の裁きを！", OBTAIN_TYPE_INIT}},
             { 10007, new string[]{ "ExtraScythe", "ExScythe", "斬るよー！", OBTAIN_TYPE_INIT}},
         };
+
+        //ストアで購入する際のpt
+        public static Dictionary<int, int> storeNeedPoint = new Dictionary<int, int>()
+        {
+            { 0, 1000 },
+            { 1008, 1500 },
+        };
+        public static int GetStoreNeedPoint(int weaponNo)
+        {
+            int point = storeNeedPoint[0];
+            foreach (int no in storeNeedPoint.Keys)
+            {
+                if (weaponNo != no) continue;
+                point = storeNeedPoint[no];
+                break;
+            }
+            return point;
+        }
 
         //部位ごとの武器リスト取得
         public static Dictionary<int, string[]> GetWeaponList(int partsNo)
@@ -739,6 +758,68 @@ namespace Common
                 weaponName = weaponInfo[DETAIL_PREFAB_NAME_NO];
             }
             return weaponName;
+        }
+
+        //武器装備箇所タイプを取得する
+        public static string GetWeaponTypeName(int weaponNo)
+        {
+            string typeName = "";
+            if (1000 <= weaponNo && weaponNo < 2000)
+            {
+                typeName = "R/L";
+            }
+            else if (2000 <= weaponNo && weaponNo < 3000)
+            {
+                typeName = "RD/LD";
+            }
+            else if (3000 <= weaponNo && weaponNo < 4000)
+            {
+                typeName = "S";
+            }
+            else if (4000 <= weaponNo && weaponNo < 5000)
+            {
+                typeName = "SD";
+            }
+            else if (5000 <= weaponNo && weaponNo < 6000)
+            {
+                typeName = "Sub";
+            }
+            else if (10000 <= weaponNo && weaponNo < 11000)
+            {
+                typeName = "Ex";
+            }
+            return typeName;
+        }
+
+        //ストアで取得する武器一覧取得
+        public static Dictionary<int, string[]> GetStoreWeaponList()
+        {
+            Dictionary<int, string[]> weaponList = new Dictionary<int, string[]>();
+            foreach (int weaponNo in handWeaponLineUp.Keys)
+            {
+                if (handWeaponLineUp[weaponNo][DETAIL_OBTAIN_TYPE_NO] == OBTAIN_TYPE_STORE) weaponList.Add(weaponNo, handWeaponLineUp[weaponNo]);
+            }
+            foreach (int weaponNo in handDashWeaponLineUp.Keys)
+            {
+                if (handDashWeaponLineUp[weaponNo][DETAIL_OBTAIN_TYPE_NO] == OBTAIN_TYPE_STORE) weaponList.Add(weaponNo, handDashWeaponLineUp[weaponNo]);
+            }
+            foreach (int weaponNo in shoulderWeaponLineUp.Keys)
+            {
+                if (shoulderWeaponLineUp[weaponNo][DETAIL_OBTAIN_TYPE_NO] == OBTAIN_TYPE_STORE) weaponList.Add(weaponNo, shoulderWeaponLineUp[weaponNo]);
+            }
+            foreach (int weaponNo in shoulderDashWeaponLineUp.Keys)
+            {
+                if (shoulderDashWeaponLineUp[weaponNo][DETAIL_OBTAIN_TYPE_NO] == OBTAIN_TYPE_STORE) weaponList.Add(weaponNo, shoulderDashWeaponLineUp[weaponNo]);
+            }
+            foreach (int weaponNo in subWeaponLineUp.Keys)
+            {
+                if (subWeaponLineUp[weaponNo][DETAIL_OBTAIN_TYPE_NO] == OBTAIN_TYPE_STORE) weaponList.Add(weaponNo, subWeaponLineUp[weaponNo]);
+            }
+            foreach (int weaponNo in extraWeaponLineUp.Keys)
+            {
+                if (extraWeaponLineUp[weaponNo][DETAIL_OBTAIN_TYPE_NO] == OBTAIN_TYPE_STORE) weaponList.Add(weaponNo, extraWeaponLineUp[weaponNo]);
+            }
+            return weaponList;
         }
     }
 

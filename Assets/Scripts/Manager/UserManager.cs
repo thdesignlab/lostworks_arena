@@ -276,7 +276,7 @@ public class UserManager
         if (PlayerPrefs.HasKey(key))
         {
             //データ取得
-            userOpenCharacters = PlayerPrefsUtility.LoadList<int>(key);
+            userOpenWeapons = PlayerPrefsUtility.LoadList<int>(key);
         }
         else
         {
@@ -359,6 +359,16 @@ public class UserManager
         PlayerPrefs.Save();
 
         return newLevel;
+    }
+
+
+    //##### 解放武器 #####
+
+    public static void AddOpenWeapon(int weaponNo)
+    {
+        userOpenWeapons.Add(weaponNo);
+        PlayerPrefsUtility.SaveList<int>(Common.PP.OPEN_WEAPONS, userOpenWeapons);
+        PlayerPrefs.Save();
     }
 
     //##### デバッグ #####
