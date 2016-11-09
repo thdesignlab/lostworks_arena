@@ -17,6 +17,8 @@ public class MenuController : Photon.MonoBehaviour
     private Transform myTran;
     private GameObject pauseButton;
     private GameObject npcButton;
+    //private Camera mainCam;
+    //private GameObject camObj;
 
     private bool isMenuOpen = false;
     private bool enableMenuAction = true;
@@ -248,4 +250,23 @@ public class MenuController : Photon.MonoBehaviour
             if (extraCtrl != null) extraCtrl.ExtraFree();
         }
     }
+
+    ////UI隠し
+    //public void OnHideUI()
+    //{
+    //    if (!CommonDebug()) return;
+    //    mainCam = Camera.main;
+    //    Transform mainCamTran = Camera.main.transform;
+    //    GameObject cam = new GameObject("Camera");
+    //    cam.AddComponent<Camera>();
+    //    cam.AddComponent<FlareLayer>();
+    //    cam.AddComponent<GUILayer>();
+    //    cam.GetComponent<Camera>().depth = 100;
+
+    //    Debug.Log(cam);
+    //    camObj = (GameObject)Instantiate(cam, mainCamTran.position, mainCamTran.rotation);
+    //    Debug.Log(camObj);
+    //    camObj.transform.SetParent(mainCamTran.parent, false);
+    //}
+
 }

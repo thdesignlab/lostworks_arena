@@ -754,6 +754,8 @@ public class GameController : SingletonMonoBehaviour<GameController>
         foreach (PlayerStatus playerStatus in playerStatuses)
         {
             playerStatus.Init();
+            //名前セット
+            if (gameMode == GAME_MODE_VS) playerStatus.SetNmaeText();
         }
         foreach (GameObject weapon in GameObject.FindGameObjectsWithTag(Common.CO.TAG_WEAPON))
         {

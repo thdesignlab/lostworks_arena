@@ -61,6 +61,8 @@ public class PlayerStatus : Photon.MonoBehaviour {
     private Slider spBarMine;
     private Slider hpBarEnemy;
     private Slider spBarEnemy;
+    private Text nameTextMine;
+    private Text nameTextEnemy;
 
     private Image hpBarMineImage;
     private Image hpBarEnemyImage;
@@ -70,7 +72,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
     [SerializeField]
     private Image hitEffect;
     private float leftHitEffectTime = 0;
-    private const float HIT_EFFECT_TIME = 0.5f;
+    private const float HIT_EFFECT_TIME = 0.7f;
     private Color hitNoiseStart = new Color(1, 1, 1, 1);
     private Color hitNoiseEnd = new Color(1, 1, 1, 0);
 
@@ -121,8 +123,10 @@ public class PlayerStatus : Photon.MonoBehaviour {
     //ユーザー情報
     [HideInInspector]
     public int userId = -1;
-    [HideInInspector]
+    //[HideInInspector]
     public string userName = "";
+    [HideInInspector]
+    public int battleRate = 0;
 
     void Awake()
     {
@@ -175,14 +179,10 @@ public class PlayerStatus : Photon.MonoBehaviour {
         //SPバー
         spBarMine = screenStatusTran.FindChild("SpLine/SpBar").GetComponent<Slider>();
         spBarMine.value = 0;
-        //spBarEnemy = screenStatusTran.FindChild("SpBarEnemy/SP").GetComponent<Slider>();
 
-        //キャラ付きキャンバス
-        //statusCanvas = transform.FindChild("StatusCanvas");
-        //hpText = statusCanvas.FindChild("HP").GetComponent<Text>();
-
-        //キャラカメラ
-        //camCtrl = Camera.main.gameObject.GetComponent<CameraController>();
+        //名前エリア
+        nameTextMine = screenStatusTran.FindChild("NameLine/Mine").GetComponent<Text>();
+        nameTextEnemy = screenStatusTran.FindChild("NameLine/Enemy").GetComponent<Text>();
 
         //勝マーク
         foreach (Transform winMark in screenStatusTran.FindChild("HpLine/Mine/WinMark"))
@@ -213,24 +213,8 @@ public class PlayerStatus : Photon.MonoBehaviour {
 
         if (!isActiveSceane) return;
 
-        //ユーザーIDセット
-        if (!isNpc)
-        {
-            userId = int.Parse(UserManager.userInfo[Common.PP.INFO_USER_ID]);
-            userName = UserManager.userInfo[Common.PP.INFO_USER_NAME];
-            object[] args = new object[] { userId, userName };
-            photonView.RPC("SetUserInfoRPC", PhotonTargets.Others, args);
-        }
-
         StartCoroutine(DamageSync());
         StartCoroutine(RecoverSp());
-    }
-
-    [PunRPC]
-    private void SetUserInfoRPC(int id, string name)
-    {
-        userId = id;
-        userName = name;
     }
 
     public void Init()
@@ -257,6 +241,12 @@ public class PlayerStatus : Photon.MonoBehaviour {
             else
             {
                 StartCoroutine(SetHpSlider(hpBarMine, hpBarMineImage));
+
+                userId = int.Parse(UserManager.userInfo[Common.PP.INFO_USER_ID]);
+                userName = UserManager.userInfo[Common.PP.INFO_USER_NAME];
+                battleRate = ModelManager.battleRecord.battle_rate;
+                object[] args = new object[] { userId, userName, battleRate };
+                photonView.RPC("SetUserInfoRPC", PhotonTargets.Others, args);
             }
         }
         else
@@ -270,6 +260,33 @@ public class PlayerStatus : Photon.MonoBehaviour {
         preSlipDmgName[BATTLE_LOG_DAMAGE] = "";
         slipTotalDmg[BATTLE_LOG_ATTACK] = 0;
         slipTotalDmg[BATTLE_LOG_DAMAGE] = 0;
+    }
+
+    [PunRPC]
+    private void SetUserInfoRPC(int id, string name, int rate)
+    {
+        userId = id;
+        userName = name;
+        battleRate = rate;
+    }
+
+    public void SetNmaeText()
+    {
+        if (!photonView.isMine) return;
+        if (string.IsNullOrEmpty(userName)) return;
+
+        //自分の名前セット
+        string name = "";
+        if (battleRate > 0) name += "[" + battleRate.ToString() + "]";
+        name += userName;
+        nameTextMine.text = name;
+        photonView.RPC("SetNmaeTextRPC", PhotonTargets.Others, name);
+    }
+    [PunRPC]
+    private void SetNmaeTextRPC(string name)
+    {
+        //敵の名前セット
+        nameTextEnemy.text = name;
     }
 
     //一定間隔ごとにダメージを同期する
@@ -293,7 +310,6 @@ public class PlayerStatus : Photon.MonoBehaviour {
     private void SetHpRPC(int hp)
     {
         nowHp = hp;
-        //SetHpCanvas();
         if (hp <= 0)
         {
             isDead = true;
@@ -314,6 +330,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
     private void SetSp(int sp)
     {
         nowSp = sp;
+        SetSpSlider();
     }
 
     public bool AddDamage(int damage, string name = "Unknown", bool isSlipDamage = false)
@@ -344,12 +361,6 @@ public class PlayerStatus : Photon.MonoBehaviour {
 
         //被ダメージログ
         SetBattleLog(BATTLE_LOG_DAMAGE, damage, name, isSlipDamage);
-        
-        ////カメラ振動
-        //if (photonView.isMine && camCtrl != null)
-        //{
-        //    //camCtrl.Shake();
-        //}
 
         return true;
     }
@@ -386,13 +397,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
             yield return null;
         }
         shield.SetActive(false);
-        //Debug.Log("OpenShield: false");
     }
-
-    //private void SetHpCanvas()
-    //{
-    //    hpText.text = nowHp.ToString();
-    //}
 
     IEnumerator SetHpSlider(Slider slider, Image image)
     {
