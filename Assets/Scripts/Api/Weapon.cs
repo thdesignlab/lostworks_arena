@@ -2,6 +2,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using LitJson;
+using System.Text;
 
 namespace Weapon
 {
@@ -34,5 +36,28 @@ namespace Weapon
     public class PointRequest
     {
         public int point;
+    }
+
+    //### 武器情報取得   ###
+    public class Get : BaseApi
+    {
+        protected override string uri { get { return "weapon/get"; } }
+        protected override bool isNeedToken { get { return false; } }
+
+        public void Exe()
+        {
+            //実行
+            Post<List<MasterWeapon>>();
+        }
+        protected override void FinishCallback(string json)
+        {
+            ModelManager.mstWeaponList = GetData<List<MasterWeapon>>(json);
+            if (ModelManager.mstWeaponList.Count == 0) return;
+
+            foreach (MasterWeapon mstWeapon in ModelManager.mstWeaponList)
+            {
+                Common.Weapon.SetWeaponInfo(mstWeapon.weapon_no, mstWeapon.name, mstWeapon.description);
+            }
+        }
     }
 }

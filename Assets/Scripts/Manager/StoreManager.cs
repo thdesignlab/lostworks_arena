@@ -118,10 +118,10 @@ public class StoreManager : SingletonMonoBehaviour<StoreManager>
             nextBtn = "もう一度";
             nextAction = PlayGacha;
             cancelBtn = true;
-            if (ModelManager.tipsInfo.last_flg == 1)
+            if (ModelManager.tipsInfo.last_flg == 0)
             {
                 //続きあり
-                nextBtn += "\n続きを見る";
+                nextBtn += "\nnext tips";
             }
         }
 

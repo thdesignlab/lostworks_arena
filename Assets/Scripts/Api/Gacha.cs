@@ -14,6 +14,11 @@ namespace Gacha
         {
             PlayRequest data = new PlayRequest();
             data.point = addPoint;
+            if (ModelManager.tipsInfo != null)
+            {
+                data.tips_id = ModelManager.tipsInfo.tips_id;
+                data.no = ModelManager.tipsInfo.no;
+            }
             string paramJson = JsonUtility.ToJson(data);
 
             //実行

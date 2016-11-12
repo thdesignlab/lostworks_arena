@@ -656,12 +656,12 @@ public class CustomManager : Photon.MonoBehaviour
             weaponObj = (GameObject)Resources.Load(Common.Func.GetResourceWeapon(weaponInfo[Common.Weapon.DETAIL_PREFAB_NAME_NO]));
         }
         
-        string detailDescription = weaponObj.GetComponent<WeaponController>().GetDescriptionText();
-        if (detailDescription != "")
-        {
-            if (weaponDescriptionText.text != "") weaponDescriptionText.text += "\n";
-            weaponDescriptionText.text += detailDescription;
-        }
+        //string detailDescription = weaponObj.GetComponent<WeaponController>().GetDescriptionText();
+        //if (detailDescription != "")
+        //{
+        //    if (weaponDescriptionText.text != "") weaponDescriptionText.text += "\n";
+        //    weaponDescriptionText.text += detailDescription;
+        //}
     }
 
     //武器選択リストクローズ

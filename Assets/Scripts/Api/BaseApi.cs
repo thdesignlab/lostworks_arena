@@ -14,7 +14,9 @@ public abstract class BaseApi
     protected Action apiFinishCallback = null;              //API完了後処理
     protected Action<string> apiFinishErrorCallback = null; //API結果エラー後処理(errorCode)
     protected Action apiConnectErrorCallback = null;        //API接続エラー時処理
-    protected int retry = 1;
+    protected int retry = 1;                        //リトライ回数
+    protected bool isCheckVersion = false;          //Version差異チェックFLG
+    protected bool isIgnoreVersionDiff = false;     //Version差異無視FLG
 
     //API完了時コールバック
     public void SetApiFinishCallback(Action action)
@@ -46,11 +48,14 @@ public abstract class BaseApi
         retry = count;
     }
 
+    //バージョンチェック
+    public void CheckVersion(bool isIgnore = false)
+    {
+        isCheckVersion = true;
+        isIgnoreVersionDiff = isIgnore;
+    }
+
     //POST
-    //protected void Post<T>(Action callback = null)
-    //{
-    //    Post<T>("", callback);
-    //}
     protected void Post<T>(string paramJson = "")
     {
         Action action = () =>
@@ -94,6 +99,23 @@ public abstract class BaseApi
             errorCode = responseData.error_code;
             if (string.IsNullOrEmpty(errorCode))
             {
+                //versionチェック
+                if (isCheckVersion && VersionManager.Instance.IsVersionError(responseData.version))
+                {
+                    //versionに差異
+                    if (isIgnoreVersionDiff || MyDebug.Instance.isDebugMode)
+                    {
+                        //警告のみ
+                        VersionManager.Instance.WarningVersionDiff();
+                    }
+                    else
+                    {
+                        //メッセージ後ストアへ
+                        VersionManager.Instance.ForceUpdate();
+                        return;
+                    }
+                }
+
                 //正常
                 FinishCallback(json);
                 if (apiFinishCallback != null) apiFinishCallback.Invoke();

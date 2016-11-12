@@ -6,6 +6,10 @@ namespace Common
     //### 定数 ###
     public static class CO
     {
+        //アプリID
+        public const string APP_NAME_IOS = "";
+        public const string APP_NAME_ANDROID = "com.ThDesignLab";
+        
         //シーン名
         public const string SCENE_TITLE = "Title";
         public const string SCENE_BATTLE = "Battle";
@@ -256,6 +260,31 @@ namespace Common
             return true;
         }
 
+        //storeUrl取得
+        public static string GetStoreUrl()
+        {
+            string url = "";
+#if UNITY_IOS
+            if (!string.IsNullOrEmpty(CO.STORE_URL_IOS))
+            {
+                url= string.Format("itms-apps://itunes.apple.com/app/id{0}?mt=8", CO.STORE_URL_IOS);
+            }
+#elif UNITY_ANDROID
+            if (!string.IsNullOrEmpty(CO.APP_NAME_ANDROID))
+            {
+                if (IsPc())
+                {
+                    url = "https://play.google.com/store/apps/details?id=" + CO.APP_NAME_ANDROID;
+                }
+                else
+                {
+                    url = "market://details?id=" + CO.APP_NAME_ANDROID;
+                }
+            }
+#endif
+            return url;
+        }
+
         //リソース取得
         public static string GetResourceBullet(string name)
         {
@@ -420,9 +449,8 @@ namespace Common
         public static string CreateRoomName()
         {
             string roomName = "[" + ModelManager.battleRecord.battle_rate.ToString() + "]";
-            roomName += UserManager.userInfo[Common.PP.INFO_USER_NAME];
-            roomName += "_" + UserManager.userInfo[Common.PP.INFO_USER_ID];
-
+            roomName += UserManager.userInfo[PP.INFO_USER_NAME];
+            roomName += "_" + UserManager.userInfo[PP.INFO_USER_ID];
             return roomName;
         }
     }
@@ -522,7 +550,7 @@ namespace Common
         //ハンド武器リスト
         public static Dictionary<int, string[]> handWeaponLineUp = new Dictionary<int, string[]>()
         {
-            { 1000, new string[]{ "Rifle", "", "", OBTAIN_TYPE_INIT}},
+            { 1000, new string[]{ "Rifle", "", "[ライフル]", OBTAIN_TYPE_INIT}},
             { 1001, new string[]{ "BrasterLauncher", "", "", OBTAIN_TYPE_INIT}},
             { 1002, new string[]{ "BeamCannon", "", "", OBTAIN_TYPE_INIT}},
             { 1003, new string[]{ "PlasmaGun", "", "", OBTAIN_TYPE_INIT}},
@@ -530,7 +558,7 @@ namespace Common
             { 1005, new string[]{ "CERifle", "", "", OBTAIN_TYPE_INIT}},
             { 1006, new string[]{ "Stinger", "", "", OBTAIN_TYPE_INIT}},
             { 1007, new string[]{ "TridentPillar", "", "", OBTAIN_TYPE_INIT}},
-            { 1008, new string[]{ "FlameRadiation", "", "火炎放射\n燃やすよ？", OBTAIN_TYPE_STORE}},
+            { 1008, new string[]{ "FlameRadiation", "", "", OBTAIN_TYPE_STORE}},
         };
         //ハンド武器(ダッシュ)リスト
         public static Dictionary<int, string[]> handDashWeaponLineUp = new Dictionary<int, string[]>()
@@ -544,7 +572,7 @@ namespace Common
             { 2006, new string[]{ "BulletBomb", "", "", OBTAIN_TYPE_INIT}},
             { 2007, new string[]{ "Grudge", "", "", OBTAIN_TYPE_INIT}},
             { 2008, new string[]{ "MachingunBit", "", "", OBTAIN_TYPE_INIT}},
-            { 2009, new string[]{ "GatlingClaw", "", "連続ひっかき的な", OBTAIN_TYPE_STORE}},
+            { 2009, new string[]{ "GatlingClaw", "", "", OBTAIN_TYPE_STORE}},
         };
         //背中武器リスト
         public static Dictionary<int, string[]> shoulderWeaponLineUp = new Dictionary<int, string[]>()
@@ -580,21 +608,23 @@ namespace Common
         //スペシャル武器リスト
         public static Dictionary<int, string[]> extraWeaponLineUp = new Dictionary<int, string[]>()
         {
-            { 10000, new string[]{ "ExtraArmor", "ExArmor", "爆発するよ！", OBTAIN_TYPE_INIT}},
-            { 10001, new string[]{ "ExtraBeam", "ExBeam", "撃つよ！", OBTAIN_TYPE_INIT}},
-            { 10002, new string[]{ "ExtraBurning", "ExBurning", "突撃するよ！", OBTAIN_TYPE_INIT}},
-            { 10003, new string[]{ "ExtraRifle", "ExRifle", "ふっとばすよ！", OBTAIN_TYPE_INIT}},
-            { 10004, new string[]{ "ExtraShadowSewing", "ExShadowDagger", "拘束するよ！", OBTAIN_TYPE_INIT}},
-            { 10005, new string[]{ "ExtraClaw", "ExClaw", "にゃー！", OBTAIN_TYPE_INIT}},
-            { 10006, new string[]{ "ExtraHolyRay", "ExHolyRay", "光の裁きを！", OBTAIN_TYPE_INIT}},
-            { 10007, new string[]{ "ExtraScythe", "ExScythe", "斬るよー！", OBTAIN_TYPE_INIT}},
+            { 10000, new string[]{ "ExtraArmor", "ExArmor", "", OBTAIN_TYPE_INIT}},
+            { 10001, new string[]{ "ExtraBeam", "ExBeam", "", OBTAIN_TYPE_INIT}},
+            { 10002, new string[]{ "ExtraBurning", "ExBurning", "", OBTAIN_TYPE_INIT}},
+            { 10003, new string[]{ "ExtraRifle", "ExRifle", "", OBTAIN_TYPE_INIT}},
+            { 10004, new string[]{ "ExtraShadowSewing", "ExShadowDagger", "", OBTAIN_TYPE_INIT}},
+            { 10005, new string[]{ "ExtraClaw", "ExClaw", "", OBTAIN_TYPE_INIT}},
+            { 10006, new string[]{ "ExtraHolyRay", "ExHolyRay", "", OBTAIN_TYPE_INIT}},
+            { 10007, new string[]{ "ExtraScythe", "ExScythe", "", OBTAIN_TYPE_INIT}},
         };
+
+        //武器情報取得FLG
+        public static bool isGetWeaponDescription = false;
 
         //ストアで購入する際のpt
         public static Dictionary<int, int> storeNeedPoint = new Dictionary<int, int>()
         {
             { 0, 1000 },
-            { 1008, 1500 },
         };
         public static int GetStoreNeedPoint(int weaponNo)
         {
@@ -645,6 +675,36 @@ namespace Common
             return weaponList;
         }
 
+        //武器Noを取得する
+        public static int GetWeaponNoFromName(string prefabName)
+        {
+            foreach (int no in handWeaponLineUp.Keys)
+            {
+                if (handWeaponLineUp[no][DETAIL_PREFAB_NAME_NO] == prefabName) return no;
+            }
+            foreach (int no in handDashWeaponLineUp.Keys)
+            {
+                if (handDashWeaponLineUp[no][DETAIL_PREFAB_NAME_NO] == prefabName) return no;
+            }
+            foreach (int no in shoulderWeaponLineUp.Keys)
+            {
+                if (shoulderWeaponLineUp[no][DETAIL_PREFAB_NAME_NO] == prefabName) return no;
+            }
+            foreach (int no in shoulderDashWeaponLineUp.Keys)
+            {
+                if (shoulderDashWeaponLineUp[no][DETAIL_PREFAB_NAME_NO] == prefabName) return no;
+            }
+            foreach (int no in subWeaponLineUp.Keys)
+            {
+                if (subWeaponLineUp[no][DETAIL_PREFAB_NAME_NO] == prefabName) return no;
+            }
+            foreach (int no in extraWeaponLineUp.Keys)
+            {
+                if (extraWeaponLineUp[no][DETAIL_PREFAB_NAME_NO] == prefabName) return no;
+            }
+            return 0;
+        }
+
         //武器情報を取得する
         public static string[] GetWeaponInfo(int weaponNo)
         {
@@ -674,6 +734,20 @@ namespace Common
                 weaponInfo = extraWeaponLineUp[weaponNo];
             }
             return weaponInfo;
+        }
+
+        //武器情報セット
+        public static void SetWeaponInfo(int weaponNo, string name = "", string description = "")
+        {
+            string[] weaponInfo = GetWeaponInfo(weaponNo);
+            if (!string.IsNullOrEmpty(name))
+            {
+                weaponInfo[DETAIL_NAME_NO] = name;
+            }
+            if (!string.IsNullOrEmpty(description))
+            {
+                weaponInfo[DETAIL_DESCRIPTION_NO] = description;
+            }
         }
 
         //特殊武器装備可能チェック

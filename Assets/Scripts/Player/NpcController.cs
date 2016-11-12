@@ -10,7 +10,7 @@ public class NpcController : MoveOfCharacter
 
     private int targetType = 0;
     private float walkRadius = 150.0f;  //移動半径
-    private float stockSpPer = 50;
+    private float stockSpPer = 75;
     private float quickTargetTime = 3;  //対象へクイックターンする時間
     private float atackIntervalTime;
     private float boostIntervalTime;
@@ -301,6 +301,7 @@ public class NpcController : MoveOfCharacter
                 if (weapons[weaponNo].IsEnableFire())
                 {
                     QuickTarget(targetTran);
+                    yield return new WaitForSeconds(0.1f);
                     quickTurnTime = 0;
                     weapons[weaponNo].Fire(targetTran);
                     break;

@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effectSpawn: {fileID: 0}
-  activeLimitTime: 2
+  activeLimitTime: 3
   activeLimitDistance: 0
 --- !u!114 &11439600
 MonoBehaviour:
@@ -100,7 +100,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 4
+  m_Radius: 8
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!198 &19895486
 ParticleSystem:
@@ -300,7 +300,7 @@ ParticleSystem:
         rgba: 4294967295
       minMaxState: 0
     startSize:
-      scalar: 2
+      scalar: 4
       maxCurve:
         serializedVersion: 2
         m_Curve:

@@ -236,7 +236,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 24301600, guid: 4817c32da9beaeb43b7c44b180d41730,
     type: 2}
-  m_audioClip: {fileID: 8300000, guid: 9159e5f07bbf5aa43bc2a29981528f06, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 0256e2930b02564468ba196e85012858, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -469,6 +469,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fab0cff8dbc4ad428570c6eeed5935d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  extraMotion: {fileID: 7400000, guid: f1ff8a9c39e7dff418f36396d69ab15b, type: 3}
   extraCam: {fileID: 142258}
   extraEffect: {fileID: 0}
   fireTimeInAnim: 0

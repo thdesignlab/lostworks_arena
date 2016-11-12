@@ -11,6 +11,7 @@ public class PhotonManager : MonoBehaviour
 {
     public static bool isFirstScean = true;
     public static bool isPlayAd = false;
+    public static bool isReadyGame = false;
 
     [SerializeField]
     private GameObject titleLogo;
@@ -83,7 +84,6 @@ public class PhotonManager : MonoBehaviour
 
             //ユーザー情報取得
             UserManager.SetPlayerPrefs();
-            GetUserData();
         }
         else
         {
@@ -92,14 +92,32 @@ public class PhotonManager : MonoBehaviour
         }
     }
 
+    IEnumerator Start()
+    {
+        DialogController.OpenMessage(DialogController.MESSAGE_LOADING, DialogController.MESSAGE_POSITION_RIGHT);
+        GetWeaponData();
+        for (;;)
+        {
+            if (!Application.isShowingSplashScreen)
+            {
+                isReadyGame = true;
+                GetUserData();
+                yield break;
+            }
+            yield return null;
+        }
+    }
+
     void Update()
     {
+        if (Application.isShowingSplashScreen) return;
+
         if (isTapToStart)
         {
             GameObject message = DialogController.OpenMessage(DialogController.MESSAGE_TOP, DialogController.MESSAGE_POSITION_CENTER);
             Image messageImage = DialogController.GetMessageImageObj();
             Text messageText = DialogController.GetMessageTextObj();
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0) && isReadyGame)
             {
                 isTapToStart = false;
                 ScreenManager.Instance.Load(Common.CO.SCENE_TITLE, DialogController.MESSAGE_LOADING);
@@ -158,9 +176,6 @@ public class PhotonManager : MonoBehaviour
 
                     //初期値設定
                     PlayerPrefs.SetString("playerName", PhotonNetwork.playerName);
-                    //roomNameIF.text = ROOM_NAME_PREFIX;
-                    //roomStatusText.text = "Room :" + PhotonNetwork.countOfRooms + " / Player :" + PhotonNetwork.countOfPlayers;
-                    //isConnected = true;
                 }
             }
             else
@@ -212,7 +227,7 @@ public class PhotonManager : MonoBehaviour
         if (isPlayAd)
         {
             //広告表示
-            //UnityAds.Instance.Play();
+            UnityAds.Instance.Play();
             isPlayAd = false;
         }
 
@@ -293,7 +308,7 @@ public class PhotonManager : MonoBehaviour
         cancelBtn.transform.SetParent(roomListContent, false);
         cancelBtn.GetComponent<Button>().onClick.AddListener(() => SwitchRoomListArea(false, true));
         roomCnt++;
-
+        
         //Room一覧取得
         RoomInfo[] roomList = PhotonNetwork.GetRoomList();
         if (roomList.Length > 0)
@@ -435,16 +450,17 @@ public class PhotonManager : MonoBehaviour
     //ランキング
     public void OnRankingButton()
     {
-        DialogController.OpenMessage(DialogController.MESSAGE_CONNECT, DialogController.MESSAGE_POSITION_RIGHT);
+        ScreenManager.Instance.Load(Common.CO.SCENE_RANKING, DialogController.MESSAGE_LOADING);
+        //DialogController.OpenMessage(DialogController.MESSAGE_CONNECT, DialogController.MESSAGE_POSITION_RIGHT);
 
-        Action callback = () =>
-        {
-            ScreenManager.Instance.Load(Common.CO.SCENE_RANKING, DialogController.MESSAGE_LOADING);
-            DialogController.CloseMessage();
-        };
+        //Action callback = () =>
+        //{
+        //    ScreenManager.Instance.Load(Common.CO.SCENE_RANKING, DialogController.MESSAGE_LOADING);
+        //    DialogController.CloseMessage();
+        //};
 
-        //ランキング情報取得
-        GetRankingData(callback);
+        ////ランキング情報取得
+        //GetRankingData(callback);
     }
 
 
@@ -538,10 +554,9 @@ public class PhotonManager : MonoBehaviour
         switch (moveScene)
         {
             case Common.CO.SCENE_BATTLE:
-                isPlayAd = true;
+                if (isNetworkMode) isPlayAd = true;
                 break;
         }
-
         //Debug.Log("OnJoinedRoom");
     }
 
@@ -572,7 +587,6 @@ public class PhotonManager : MonoBehaviour
     public void OnCreatedRoom()
     {
         //Debug.Log("OnCreatedRoom");
-        //PhotonNetwork.LoadLevel(moveScene);
         ScreenManager.Instance.Load(moveScene);
     }
 
@@ -613,6 +627,7 @@ public class PhotonManager : MonoBehaviour
     {
         Battle.Record battleRecord = new Battle.Record();
         battleRecord.SetApiFinishCallback(callback);
+        battleRecord.CheckVersion(false);
         battleRecord.Exe();
     }
 
@@ -624,10 +639,15 @@ public class PhotonManager : MonoBehaviour
         pointGet.SetApiFinishCallback(callback);
         pointGet.Exe();
     }
-    
-    //ランキング情報取得
-    private void GetRankingData(Action callback = null)
+
+    //武器情報取得
+    private void GetWeaponData()
     {
-        callback.Invoke();
+        Weapon.Get weaponGet = new Weapon.Get();
+        if (ModelManager.mstWeaponList != null) return;
+
+        weaponGet.SetApiErrorIngnore();
+        weaponGet.CheckVersion(true);
+        weaponGet.Exe();
     }
 }

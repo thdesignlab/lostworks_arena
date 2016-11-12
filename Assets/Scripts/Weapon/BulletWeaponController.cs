@@ -257,17 +257,17 @@ public class BulletWeaponController : WeaponController
         }
     }
 
-    public override string GetDescriptionText()
-    {
-        string description = "";
-        description += "武器のステータス出す?\n";
-        description += "Reload: " + base.reloadTime.ToString() + "s\n";
-        if (bullet != null)
-        {
-            BulletController bulletCtrl = bullet.GetComponent<BulletController>();
-            description += bulletCtrl.GetBulletDescription();
-            if (rapidCount > 0) description += "ShootCount: " + rapidCount.ToString() + "s";
-        }
-        return description;
-    }
+    //public override string GetDescriptionText()
+    //{
+    //    string description = "";
+    //    description += "武器のステータス出す?\n";
+    //    description += "Reload: " + base.reloadTime.ToString() + "s\n";
+    //    if (bullet != null)
+    //    {
+    //        BulletController bulletCtrl = bullet.GetComponent<BulletController>();
+    //        description += bulletCtrl.GetBulletDescription();
+    //        if (rapidCount > 0) description += "ShootCount: " + rapidCount.ToString() + "s";
+    //    }
+    //    return description;
+    //}
 }

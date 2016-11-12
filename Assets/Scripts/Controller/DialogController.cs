@@ -155,13 +155,13 @@ public class DialogController : MonoBehaviour
         if (messageObj == null)
         {
             messageObj = Instantiate((GameObject)Resources.Load(RESOURCE_MESSAGE));
-            RectTransform messageImageTran = messageObj.transform.FindChild("Image").GetComponent<RectTransform>();
-            messageImageTran.pivot = messageImagePositionPivots[msgPos];
-            messageImage = messageImageTran.GetComponent<Image>();
-            RectTransform messageTextTran = messageObj.transform.FindChild("Text").GetComponent<RectTransform>();
-            messageText = messageTextTran.GetComponent<Text>();
-            messageText.alignment = messageTextPositionPivots[msgPos]; ;
         }
+        RectTransform messageImageTran = messageObj.transform.FindChild("Image").GetComponent<RectTransform>();
+        messageImageTran.pivot = messageImagePositionPivots[msgPos];
+        messageImage = messageImageTran.GetComponent<Image>();
+        RectTransform messageTextTran = messageObj.transform.FindChild("Text").GetComponent<RectTransform>();
+        messageText = messageTextTran.GetComponent<Text>();
+        messageText.alignment = messageTextPositionPivots[msgPos]; ;
 
         if (messageText.text == text) return messageObj;
 

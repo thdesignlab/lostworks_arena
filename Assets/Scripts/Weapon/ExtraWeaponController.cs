@@ -72,10 +72,13 @@ public class ExtraWeaponController : Photon.MonoBehaviour
         {
             extraCam.SetActive(true);
         }
+        //攻撃モーション開始
+        if (charaAnimator != null)
+        {
+            charaAnimator.SetBool(Common.CO.MOTION_EXTRA_ATTACK, true);
+        }
         //追加エフェクト
         SwitchExtraEffect(true);
-        //攻撃モーション開始
-        if (charaAnimator != null) charaAnimator.SetBool(Common.CO.MOTION_EXTRA_ATTACK, true);
 
         bool isReady = false;
         bool isFire = false;

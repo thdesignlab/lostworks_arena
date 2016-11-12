@@ -1076,6 +1076,18 @@ Prefab:
       propertyPath: m_SizeDelta.y
       value: 120
       objectReference: {fileID: 0}
+    - target: {fileID: 11403372, guid: 515a47bd31bc2ad41a4b64c9ac66f74b, type: 2}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11403372, guid: 515a47bd31bc2ad41a4b64c9ac66f74b, type: 2}
+      propertyPath: m_PreserveAspect
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11418764, guid: 515a47bd31bc2ad41a4b64c9ac66f74b, type: 2}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 515a47bd31bc2ad41a4b64c9ac66f74b, type: 2}
   m_IsPrefabParent: 0

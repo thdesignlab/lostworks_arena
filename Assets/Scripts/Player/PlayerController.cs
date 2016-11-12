@@ -502,6 +502,7 @@ public class PlayerController : MoveOfCharacter
     {
         if (!photonView.isMine) return;
         if (extraCtrl == null) return;
+        Run();
         extraCtrl.Fire(targetTran);
     }
 

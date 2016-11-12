@@ -39,6 +39,7 @@ public class WeaponController : Photon.MonoBehaviour
     protected Transform playerTran;
     protected PlayerStatus playerStatus;
     protected bool isNpc = false;
+    protected int weaponNo;
 
     protected Button myBtn;
     protected Image imgGage;
@@ -68,6 +69,7 @@ public class WeaponController : Photon.MonoBehaviour
 
         myTran = transform;
         audioCtrl = myTran.GetComponent<AudioController>();
+        string weaponName = myTran.name;
 
         //Bit用
         foreach (Transform child in myTran)
@@ -495,7 +497,7 @@ public class WeaponController : Photon.MonoBehaviour
     {
         return "";
     }
-
+ 
     public float GetActionTime()
     {
         float time = 1;

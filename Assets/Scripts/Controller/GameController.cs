@@ -1158,7 +1158,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
     }
     public void Pause()
     {
-        if (gameMode == GAME_MODE_VS)
+        if (gameMode == GAME_MODE_VS || isGameStart == false)
         {
             //一時停止禁止
             return;

@@ -17,10 +17,12 @@ public static class ModelManager
     public static BattleRanking battleRanking = new BattleRanking();
 
     //Tips
-    public static TipsInfo tipsInfo = new TipsInfo();
+    public static TipsInfo tipsInfo = null;
 
     //ポイント取得テーブル
     public static List<MasterPoint> mstPointList = new List<MasterPoint>();
+    //武器データ
+    public static List<MasterWeapon> mstWeaponList = null;
 }
 
 
