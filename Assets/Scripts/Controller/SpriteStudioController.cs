@@ -154,6 +154,13 @@ public class SpriteStudioController : MonoBehaviour
 
     public void ResetSprite()
     {
+        if (view3D != null)
+        {
+            foreach (Transform child in view3D.transform)
+            {
+                Destroy(child.gameObject);
+            }
+        }
         view3D = null;
         scriptRoots = new Dictionary<string, Script_SpriteStudio_Root>();
     }

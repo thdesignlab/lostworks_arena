@@ -362,23 +362,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &167288
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 400926}
-  - 114: {fileID: 11438890}
-  - 114: {fileID: 11419250}
-  m_Layer: 0
-  m_Name: Muzzle (1)
-  m_TagString: Muzzle
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
 --- !u!1 &170120
 GameObject:
   m_ObjectHideFlags: 1
@@ -535,19 +518,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 406636}
   m_RootOrder: 0
---- !u!4 &400926
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 167288}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3, y: 2, z: 2}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_Children: []
-  m_Father: {fileID: 495336}
-  m_RootOrder: 2
 --- !u!4 &401700
 Transform:
   m_ObjectHideFlags: 1
@@ -818,7 +788,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 495336}
-  m_RootOrder: 3
+  m_RootOrder: 2
 --- !u!4 &482708
 Transform:
   m_ObjectHideFlags: 1
@@ -926,7 +896,6 @@ Transform:
   m_Children:
   - {fileID: 469992}
   - {fileID: 469414}
-  - {fileID: 400926}
   - {fileID: 479582}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -1508,7 +1477,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 24301600, guid: 4817c32da9beaeb43b7c44b180d41730,
     type: 2}
-  m_audioClip: {fileID: 8300000, guid: 6a3edb4904759a941bed918b9b00566a, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 80c6e35a1c9bab9459b2409e9f869453, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -1601,45 +1570,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9afa1e6dd7dae2b4b86c732a5f351dee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &11419250
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 167288}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2bf824a3d499c32439fa2f967ffd296c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isCheckGrounded: 0
-  glideGravityRate: 1
-  isLockOn: 1
-  aimSpeed: 60
---- !u!114 &11438890
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 167288}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ownerId: 0
-  group: 0
-  prefixBackup: -1
-  observed: {fileID: 0}
-  synchronization: 0
-  onSerializeTransformOption: 3
-  onSerializeRigidBodyOption: 2
-  ownershipTransfer: 0
-  ObservedComponents: []
-  ObservedComponentsFoldoutOpen: 1
-  viewIdField: 0
-  instantiationId: -1
-  isRuntimeInstantiated: 0
 --- !u!114 &11442254
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1679,16 +1609,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bitMotionType: 2
-  bitMoveTime: 0
+  bitMoveTime: 0.5
   isBitFixed: 0
   reloadTime: 5
   fireEffect: {fileID: 0}
   bullet: {fileID: 187882, guid: 768b218b7ce12874c8f364a6ef986420, type: 2}
   rapidCount: 4
-  rapidInterval: 1
+  rapidInterval: 0.8
   spreadCount: 5
   spreadDiffAngle: 0
   focusDiff: 5
+  recoil: 0
 --- !u!114 &11481464
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -41,7 +41,7 @@ public class PlayerSetting : Photon.MonoBehaviour
             playerStatus.enabled = true;
             playerCtrl.enabled = true;
             motionCtrl.enabled = true;
-            playerCam.SetActive(false);
+            //playerCam.SetActive(false);
 
             //メインボディ生成
             CreateMainBody();
@@ -87,7 +87,13 @@ public class PlayerSetting : Photon.MonoBehaviour
                 playerStatus.enabled = true;
                 playerCtrl.enabled = true;
                 motionCtrl.enabled = true;
-                playerCam.SetActive(true);
+                //playerCam.SetActive(true);
+
+                //カメラ紐づけ
+                Transform camTran = playerCam.transform;
+                Camera.main.transform.SetParent(myTran);
+                Camera.main.transform.localPosition = camTran.localPosition;
+                Camera.main.transform.localRotation = camTran.localRotation;
 
                 //自分の情報を保存
                 GameController.Instance.SetMyTran(myTran);
@@ -109,7 +115,7 @@ public class PlayerSetting : Photon.MonoBehaviour
             playerStatus.enabled = true;
             playerCtrl.enabled = false;
             motionCtrl.enabled = false;
-            playerCam.SetActive(false);
+            //playerCam.SetActive(false);
 
             //ターゲットを登録
             GameController.Instance.SetTarget(myTran);

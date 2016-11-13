@@ -573,6 +573,7 @@ namespace Common
             { 2007, new string[]{ "Grudge", "", "", OBTAIN_TYPE_INIT}},
             { 2008, new string[]{ "MachingunBit", "", "", OBTAIN_TYPE_INIT}},
             { 2009, new string[]{ "GatlingClaw", "", "", OBTAIN_TYPE_STORE}},
+            { 2010, new string[]{ "PlasmaBlade", "", "", OBTAIN_TYPE_INIT}},
         };
         //背中武器リスト
         public static Dictionary<int, string[]> shoulderWeaponLineUp = new Dictionary<int, string[]>()

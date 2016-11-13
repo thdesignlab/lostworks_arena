@@ -69,7 +69,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
     //private Color defaultHpColor;
     //private Color hitHpColor = Color.red;
     private int totalDamage = 0;
-    [SerializeField]
+    //[SerializeField]
     private Image hitEffect;
     private float leftHitEffectTime = 0;
     private const float HIT_EFFECT_TIME = 0.7f;
@@ -123,12 +123,12 @@ public class PlayerStatus : Photon.MonoBehaviour {
     //ユーザー情報
     [HideInInspector]
     public int userId = -1;
-    //[HideInInspector]
+    [HideInInspector]
     public string userName = "";
     [HideInInspector]
     public int battleRate = 0;
 
-    void Awake()
+    void Start()
     {
         if (shield != null)
         {
@@ -159,9 +159,17 @@ public class PlayerStatus : Photon.MonoBehaviour {
 
         isNpc = GetComponent<PlayerSetting>().isNpc;
         moveCtrl = GetComponent<BaseMoveController>();
-        
+
         //ステータス構造
-        Transform screenStatusTran = Camera.main.transform.FindChild(Common.CO.SCREEN_CANVAS + Common.CO.SCREEN_STATUS);
+        Transform screenCanvasTran = Camera.main.transform.FindChild(Common.CO.SCREEN_CANVAS);
+        Transform screenStatusTran = screenCanvasTran.FindChild(Common.CO.SCREEN_STATUS);
+
+        //ダメージノイズ
+        if (photonView.isMine && !isNpc)
+        {
+            Transform damageEffect = screenCanvasTran.FindChild("DamageEffect");
+            if (damageEffect != null) hitEffect = damageEffect.GetComponent<Image>();
+        }
 
         //HPバー
         Transform hpBarMineTran = screenStatusTran.FindChild("HpLine/Mine/HpBar");
@@ -203,10 +211,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
         }
 
         Init();
-    }
 
-    void Start()
-    {
         //ボイス管理
         Transform charaTran = transform.Find(Common.Func.GetBodyStructure());
         if (charaTran) voiceManager = charaTran.GetComponent<VoiceManager>();
@@ -559,7 +564,6 @@ public class PlayerStatus : Photon.MonoBehaviour {
                 if (hitEffect != null)
                 {
                     hitEffect.color = hitNoiseEnd;
-                    Destroy(hitEffect.gameObject);
                 }
                 GetComponent<ObjectController>().DestoryObject();
                 return;

@@ -26,7 +26,7 @@ Transform:
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 75.73507, y: -395.76004, z: -113.28417}
   m_LocalScale: {x: 1.515217, y: 1.3739074, z: 1}
-  m_LocalEulerAnglesHint: {x: -89.980194, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -1529,7 +1529,7 @@ ParticleSystemRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_Materials:
-  - {fileID: 2100000, guid: 6eee9c7e17f7b844d8e90528179469c7, type: 2}
+  - {fileID: 2100000, guid: 45fce42302f78df4a93fe12bb2d5239f, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 1

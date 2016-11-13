@@ -113,16 +113,19 @@ public class GameController : SingletonMonoBehaviour<GameController>
 
     private void Init()
     {
-        spriteStudioCtrl = GameObject.Find("SpriteStudioController").GetComponent<SpriteStudioController>();
+        if (spriteStudioCtrl == null) spriteStudioCtrl = GameObject.Find("SpriteStudioController").GetComponent<SpriteStudioController>();
+        //スプライトスタジオキャッシュリセット
+        spriteStudioCtrl.ResetSprite();
+
     }
 
     private void SetCanvasInfo()
     {
         //キャンバス情報
         Transform screenTran = Camera.main.transform.FindChild(Common.CO.SCREEN_CANVAS);
-        textUp = screenTran.FindChild(Common.CO.TEXT_UP).GetComponent<Text>();
-        textCenter = screenTran.FindChild(Common.CO.TEXT_CENTER).GetComponent<Text>();
-        textLine = screenTran.FindChild(Common.CO.TEXT_LINE).GetComponent<Text>();
+        if (textUp == null) textUp = screenTran.FindChild(Common.CO.TEXT_UP).GetComponent<Text>();
+        if (textCenter == null) textCenter = screenTran.FindChild(Common.CO.TEXT_CENTER).GetComponent<Text>();
+        if (textLine == null) textLine = screenTran.FindChild(Common.CO.TEXT_LINE).GetComponent<Text>();
         SetTextUp();
         SetTextCenter();
     }
@@ -456,6 +459,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
                             //タイトルへ戻るだけ
                             actions = new List<UnityAction>() { () => GoToTitle() };
                             buttons = new List<string>() { "Titleへ" };
+                            PhotonManager.isPlayAd = true;
                         }
                         Action apiCallback = () =>
                         {
@@ -695,7 +699,6 @@ public class GameController : SingletonMonoBehaviour<GameController>
     public void ReStart()
     {
         PhotonManager.isFirstScean = true;
-        PhotonManager.isPlayAd = false;
         PhotonNetwork.LeaveRoom();
         ScreenManager.Instance.Load(Common.CO.SCENE_TITLE, DialogController.MESSAGE_LOADING);
     }
@@ -966,15 +969,14 @@ public class GameController : SingletonMonoBehaviour<GameController>
         if (isAdPlay)
         {
             UnityAds.Instance.Play(() => ContinueMission());
-            return;
         }
         else
         {
-            isContinue = true;
             winCount = 0;
             loseCount = 0;
             ResetWinMark();
             StageSetting();
+            isContinue = true;
         }
     }
 
@@ -1016,9 +1018,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
     {
         if (myTran == null)
         {
-            Destroy(Camera.main.gameObject);
             Destroy(targetTran.gameObject);
-            Init();
             PlayerSpawn();
             if (targetTran != null)
             {
@@ -1038,9 +1038,6 @@ public class GameController : SingletonMonoBehaviour<GameController>
 
     private void PlayerSpawn()
     {
-        //スプライトスタジオキャッシュリセット
-        spriteStudioCtrl.ResetSprite();
-
         //ベースボディ生成
         string charaName = Common.CO.CHARACTER_BASE;
         GameObject player = SpawnProcess(charaName);

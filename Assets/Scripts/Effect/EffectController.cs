@@ -15,6 +15,8 @@ public class EffectController : Photon.MonoBehaviour
     protected bool isEnergyBulletBreak;
     [SerializeField]
     protected float ownDamageRate = 1.0f;
+    [SerializeField]
+    protected bool isFloorEffect = false;
 
     protected Transform myTran;
     protected Transform ownerTran;
@@ -24,6 +26,7 @@ public class EffectController : Photon.MonoBehaviour
     protected virtual void Awake()
     {
         myTran = transform;
+        if (isFloorEffect) myTran.position = new Vector3(myTran.position.x, 0, myTran.position.z);
     }
 
     void OnTriggerEnter(Collider other)

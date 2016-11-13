@@ -1843,12 +1843,12 @@ MonoBehaviour:
   isBitFixed: 0
   reloadTime: 1.5
   blade: {fileID: 106938}
-  attackTime: 1.5
+  attackTime: 1
   attackWaitTime: 0.2
-  boostSpeed: 80
-  boostTime: 1
-  boostWaitTime: 0
-  boostCost: 20
+  boostSpeed: 150
+  boostTime: 0.5
+  boostWaitTime: 0.2
+  boostCost: 30
   isStopInAttack: 1
 --- !u!114 &11444040
 MonoBehaviour:
@@ -2027,6 +2027,7 @@ MonoBehaviour:
   isPhysicsBulletBreak: 1
   isEnergyBulletBreak: 1
   ownDamageRate: 0
+  isFloorEffect: 0
   startScale: {x: 0.5, y: 0.5, z: 0.5}
   endScale: {x: 3.5, y: 3.5, z: 2.5}
   scaleTime: 0.1
