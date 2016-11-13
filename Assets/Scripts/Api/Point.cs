@@ -27,10 +27,15 @@ namespace Point
     {
         protected override string uri { get { return "point/add"; } }
 
-        public void Exe(int addPoint)
+        public void Exe(int addPoint, int kind = 0, int no = 0)
         {
-            GetResponse data = new GetResponse();
+            GetRequest data = new GetRequest();
             data.point = addPoint;
+            if (kind > 0 && no > 0)
+            {
+                data.kind = kind;
+                data.no = no;
+            }
             string paramJson = JsonUtility.ToJson(data);
 
             //実行
@@ -85,6 +90,12 @@ namespace Point
         }
     }
 
+    public class GetRequest
+    {
+        public int point;
+        public int kind;
+        public int no;
+    }
     public class GetResponse
     {
         public int point;

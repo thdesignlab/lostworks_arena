@@ -66,7 +66,7 @@ Transform:
   m_GameObject: {fileID: 121784}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 428880}
@@ -179,6 +179,7 @@ MonoBehaviour:
   isPhysicsBulletBreak: 0
   isEnergyBulletBreak: 0
   ownDamageRate: 0
+  isFloorEffect: 0
 --- !u!114 &11472352
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -221,10 +222,11 @@ MonoBehaviour:
   isPhysicsBulletBreak: 1
   isEnergyBulletBreak: 1
   ownDamageRate: 1
+  isFloorEffect: 0
   startScale: {x: 0, y: 0, z: 0}
-  endScale: {x: 7, y: 7, z: 7}
+  endScale: {x: 8, y: 8, z: 8}
   scaleTime: 1
-  scaleLateTime: 1.45
+  scaleLateTime: 1.4
   isParticle: 1
 --- !u!135 &13509098
 SphereCollider:

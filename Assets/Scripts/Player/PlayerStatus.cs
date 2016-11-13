@@ -291,7 +291,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
     private void SetNmaeTextRPC(string name)
     {
         //敵の名前セット
-        nameTextEnemy.text = name;
+        if (nameTextEnemy != null) nameTextEnemy.text = name;
     }
 
     //一定間隔ごとにダメージを同期する

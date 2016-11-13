@@ -200,6 +200,18 @@ namespace Common
         public static string LAYER_STRUCTURE = "Structure";
     }
 
+    //### API用定数 ###
+    public static class API
+    {
+        //ポイントKIND
+        public const int POINT_LOG_KIND_GACHA = 1;
+        public const int POINT_LOG_KIND_MISSION = 2;
+        public const int POINT_LOG_KIND_BATTLE = 3;
+        public const int POINT_LOG_KIND_WEAPON = 101;
+        public const int POINT_LOG_KIND_CUSTOM = 102;
+        public const int POINT_LOG_KIND_CHARACTER = 103;
+    }
+
     //### 端末保持情報 ###
     public static class PP
     {
@@ -237,7 +249,7 @@ namespace Common
         //ミッション項目
         public const int MISSION_LEVEL = 0;
         public const int MISSION_STAGE = 1;
-        public const int MISSION_CONTINUE = 2;
+        //public const int MISSION_CONTINUE = 2;
     }
 
     //### 共通関数 ###
@@ -486,8 +498,8 @@ namespace Common
             {10000, new string[]{ "Npc1", "Bit", "0", OBTAIN_TYPE_NONE, "10002"}},
             {10001, new string[]{ "Npc2", "BitBrack", "0", OBTAIN_TYPE_NONE, "10003"}},
             {10002, new string[]{ "Npc3", "BitYellow", "0", OBTAIN_TYPE_NONE, "10004"}},
-            {10003, new string[]{ "Npc4", "BitRed", "0", OBTAIN_TYPE_NONE, "10002,10003,10004"}},
-            {10004, new string[]{ "Npc5", "BitBlue", "0", OBTAIN_TYPE_NONE, "10002,10003,10004"}},
+            {10003, new string[]{ "Npc4", "BitRed", "0", OBTAIN_TYPE_NONE, "10009"}},
+            {10004, new string[]{ "Npc5", "BitBlue", "0", OBTAIN_TYPE_NONE, "10008"}},
         };
 
         //ステータス
@@ -617,6 +629,8 @@ namespace Common
             { 10005, new string[]{ "ExtraClaw", "ExClaw", "", OBTAIN_TYPE_INIT}},
             { 10006, new string[]{ "ExtraHolyRay", "ExHolyRay", "", OBTAIN_TYPE_INIT}},
             { 10007, new string[]{ "ExtraScythe", "ExScythe", "", OBTAIN_TYPE_INIT}},
+            { 10008, new string[]{ "ExtraMissileLauncher", "ExMissileLauncher", "", OBTAIN_TYPE_INIT}},
+            { 10009, new string[]{ "ExtraGatling", "ExGatling", "", OBTAIN_TYPE_INIT}},
         };
 
         //武器情報取得FLG
@@ -913,9 +927,9 @@ namespace Common
             { 5, new int[] { 10002, 1 } },
             { 6, new int[] { 300, 2 } },
             { 7, new int[] { 10003, 2 } },
-            { 8, new int[] { 400, 3 } },
-            { 9, new int[] { 10004, 3 } },
-            { 10, new int[] { 500, 4 } },
+            { 8, new int[] { 400, 4 } },
+            { 9, new int[] { 10004, 4 } },
+            { 10, new int[] { 500, 3 } },
         };
 
         //レベル

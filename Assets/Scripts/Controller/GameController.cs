@@ -32,6 +32,8 @@ public class GameController : SingletonMonoBehaviour<GameController>
     [HideInInspector]
     public bool isPause = false;
 
+    const float LIMIT_BATTLE_TIME = 600;
+    private float battleTime = 0;
     private bool isContinue = false;
     private bool isWin = false;
     [HideInInspector]
@@ -95,7 +97,13 @@ public class GameController : SingletonMonoBehaviour<GameController>
     private Dictionary<string, int> damageSourceMine = new Dictionary<string, int>();
     private Dictionary<string, int> damageSourceEnemy = new Dictionary<string, int>();
     private bool isResultCheck = false;
-    
+
+    //バトル終了時獲得pt
+    const int LOSE_POINT = 5;
+
+    //ミッションレベル更新pt係数
+    const int MISSION_POINT_PER = 100;
+
     protected override void Awake()
     {
         isDontDestroyOnLoad = false;
@@ -109,6 +117,19 @@ public class GameController : SingletonMonoBehaviour<GameController>
     {
         SpawnMyPlayerEverywhere();
         StartCoroutine(ChceckGame());
+    }
+
+    void Update()
+    {
+        if (isGameStart)
+        {
+            battleTime += Time.deltaTime;
+            if (gameMode == GAME_MODE_VS && battleTime > LIMIT_BATTLE_TIME)
+            {
+                Debug.Log(battleTime);
+                if (myStatus != null) myStatus.AddDamage(5);
+            }
+        }
     }
 
     private void Init()
@@ -360,6 +381,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
                             {
                                 //ステージクリア
                                 //NextStage
+                                int preMissionLevel = UserManager.userOpenMissions[Common.PP.MISSION_LEVEL];
                                 if (SetNextStage())
                                 {
                                     isStageSetting = true;
@@ -371,8 +393,20 @@ public class GameController : SingletonMonoBehaviour<GameController>
                                     SetTextCenter(spriteStudioCtrl.MESSAGE_MISSION_CLEAR, colorWait);
                                     yield return new WaitForSeconds(1.0f);
 
+                                    //ステージレベル更新時ポイント付与
+                                    int missionPoint = 0; 
+                                    if (UserManager.userOpenMissions[Common.PP.MISSION_LEVEL] > preMissionLevel)
+                                    {
+                                        //point付与
+                                        missionPoint = preMissionLevel * MISSION_POINT_PER;
+                                        Point.Add pointAdd = new Point.Add();
+                                        pointAdd.SetApiErrorIngnore();
+                                        pointAdd.Exe(missionPoint, Common.API.POINT_LOG_KIND_MISSION, stageLevel);
+                                    } 
+
                                     //ダイアログ
                                     string text = "Next level\n「"+Common.Mission.GetLevelName(stageLevel+1) +"」";
+                                    if (missionPoint > 0) text += "\n"+ missionPoint.ToString()+"pt獲得!!";
                                     List<string> buttons = new List<string>() { "Next", "Title" };
                                     List<UnityAction> actions = new List<UnityAction>() {
                                         () => OnNextLevel(), () => GoToTitle()
@@ -446,6 +480,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
                         //レート変化ダイアログ表示
                         int preRate = ModelManager.battleRecord.battle_rate;
                         int waitTime = 10;
+                        int battlePoint = 5;
                         List<UnityAction> actions = new List<UnityAction>();
                         List<string> buttons = new List<string>();
                         if (isWin)
@@ -464,10 +499,17 @@ public class GameController : SingletonMonoBehaviour<GameController>
                         Action apiCallback = () =>
                         {
                             int diffRate = ModelManager.battleRecord.battle_rate - preRate;
+                            if (diffRate > battlePoint) battlePoint = diffRate;
                             string diffRateSign = diffRate >= 0 ? "+" : "";
-                            string rateText = "Rate : " + ModelManager.battleRecord.battle_rate + "(" + diffRateSign + diffRate.ToString() + ")";
-                            DialogController.OpenDialog(rateText, buttons, actions);
+                            string dialogText = "Rate : " + ModelManager.battleRecord.battle_rate + "(" + diffRateSign + diffRate.ToString() + ")";
+                            if (battlePoint > 0) dialogText += "\n"+ battlePoint.ToString()+"pt獲得";
+                            DialogController.OpenDialog(dialogText, buttons, actions);
                             if (isWin) ContinueVs();
+
+                            //point付与
+                            Point.Add pointAdd = new Point.Add();
+                            pointAdd.SetApiErrorIngnore();
+                            pointAdd.Exe(battlePoint, Common.API.POINT_LOG_KIND_BATTLE, ModelManager.battleInfo.battle_id);
                         };
                         Battle.Finish battleFinish = new Battle.Finish();
                         battleFinish.SetApiFinishCallback(apiCallback);
@@ -559,7 +601,9 @@ public class GameController : SingletonMonoBehaviour<GameController>
                                 if (round == 1)
                                 {
                                     //ステージ文字
-                                    SetTextLine(MESSAGE_STAGE_READY + stageNo.ToString(), colorLine);
+                                    string stageText = MESSAGE_STAGE_READY + stageNo.ToString();
+                                    if (Common.Mission.stageNpcNoDic.Count == stageNo) stageText = "Final "+MESSAGE_STAGE_READY;
+                                    SetTextLine(stageText, colorLine);
                                     yield return new WaitForSeconds(2);
                                 }
                                 //ラウンド文字
@@ -792,6 +836,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
         isContinue = false;
         isGameReady = false;
         isGameStart = true;
+        battleTime = 0;
     }
     private void BattleStartCallback()
     {
@@ -1047,6 +1092,12 @@ public class GameController : SingletonMonoBehaviour<GameController>
         ResetGame();
         myStatus.SetWinMark(winCount, loseCount);
         SetStatus();
+
+        if (gameMode == GAME_MODE_VS)
+        {
+            //BGMランダム
+            PlayStageBgm();
+        }
     }
 
     private void SetStatus()

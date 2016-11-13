@@ -17,10 +17,9 @@ public class StoreManager : SingletonMonoBehaviour<StoreManager>
     //point >> rate
     private Dictionary<int, int> pointTable = new Dictionary<int, int>()
     {
-        { 100, 200 },
-        { 200, 20 },
-        { 300, 10 },
-        { 500, 1 },
+        { 200, 200 },
+        { 500, 10 },
+        { 1000, 1 },
     };
 
     protected override void Awake()
