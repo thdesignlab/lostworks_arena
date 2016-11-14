@@ -67,8 +67,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bitMotionType: 0
-  reloadTime: 30
-  effectTime: 5
+  bitMoveTime: 0
+  isBitFixed: 0
+  reloadTime: 45
+  effectTime: 10
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

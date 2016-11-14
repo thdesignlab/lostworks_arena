@@ -717,8 +717,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effectSpawn: {fileID: 0}
-  activeLimitTime: 0.5
-  activeLimitDistance: 0
+  activeLimitTime: 0
+  activeLimitDistance: 150
 --- !u!114 &11467052
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -761,6 +761,7 @@ MonoBehaviour:
   isPhysicsBulletBreak: 0
   isEnergyBulletBreak: 0
   ownDamageRate: 1
+  isFloorEffect: 0
   startScale: {x: 10, y: 10, z: 10}
   endScale: {x: 50, y: 50, z: 50}
   scaleTime: 0.5

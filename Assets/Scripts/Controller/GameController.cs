@@ -11,7 +11,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
     [SerializeField]
     private GameObject stageStructure;
     private Text messageText;
-    private int readyTime = 3;
+    private int readyTime = 2;
     private int needPlayerCount = 2;
 
     private Text textUp;
@@ -34,6 +34,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
 
     const float LIMIT_BATTLE_TIME = 600;
     private float battleTime = 0;
+    private bool isFirstBattle = true;
     private bool isContinue = false;
     private bool isWin = false;
     [HideInInspector]
@@ -126,8 +127,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
             battleTime += Time.deltaTime;
             if (gameMode == GAME_MODE_VS && battleTime > LIMIT_BATTLE_TIME)
             {
-                Debug.Log(battleTime);
-                if (myStatus != null) myStatus.AddDamage(5);
+                if (myStatus != null) myStatus.ForceDamage(5);
             }
         }
     }
@@ -812,6 +812,13 @@ public class GameController : SingletonMonoBehaviour<GameController>
         }
 
         if (myStatus.voiceManager != null) myStatus.voiceManager.BattleStart();
+
+        if (gameMode == GAME_MODE_VS && !isFirstBattle)
+        {
+            //BGMランダム
+            PlayStageBgm();
+        }
+        isFirstBattle = false;
     }
 
     private void GameStart()
@@ -995,6 +1002,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
     //勝敗リセット
     private void ResetWinMark()
     {
+        Debug.Log("ResetWinMark");
         winCount = 0;
         loseCount = 0;
         myStatus.ResetWinMark();
@@ -1092,12 +1100,6 @@ public class GameController : SingletonMonoBehaviour<GameController>
         ResetGame();
         myStatus.SetWinMark(winCount, loseCount);
         SetStatus();
-
-        if (gameMode == GAME_MODE_VS)
-        {
-            //BGMランダム
-            PlayStageBgm();
-        }
     }
 
     private void SetStatus()
@@ -1129,7 +1131,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
         PlayStageBgm();
 
         //NpcNo
-        npcNo = Common.Mission.stageNpcNoDic[stageNo][Common.Mission.STAGE_NPC_NAME];
+        npcNo = Common.Mission.GetStageNpcNo(stageLevel, stageNo);
 
         //ステージのNPC取得
         string npcName = "BaseNpc";

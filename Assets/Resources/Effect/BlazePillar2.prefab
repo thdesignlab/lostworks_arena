@@ -231,11 +231,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageEffect: {fileID: 0}
-  damage: 10
-  damagePerSecond: 10
+  damage: 15
+  damagePerSecond: 30
   isPhysicsBulletBreak: 1
   isEnergyBulletBreak: 1
   ownDamageRate: 0
+  isFloorEffect: 0
 --- !u!114 &11478250
 MonoBehaviour:
   m_ObjectHideFlags: 1

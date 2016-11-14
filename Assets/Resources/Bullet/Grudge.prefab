@@ -31,7 +31,7 @@ GameObject:
   - 114: {fileID: 11426338}
   m_Layer: 0
   m_Name: Grudge
-  m_TagString: Effect
+  m_TagString: EnergyBullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -103,7 +103,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f086994b8c47ea443baf4face217f973, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effectSpawn: {fileID: 0}
+  effectSpawn: {fileID: 126864, guid: 8a2c73b0491c2704fbf21f7cd74a052e, type: 2}
   activeLimitTime: 5
   activeLimitDistance: 0
 --- !u!114 &11426338
@@ -121,7 +121,7 @@ MonoBehaviour:
   glideGravityRate: 1
   isLockOn: 0
   UseGravity: 0
-  hitEffect: {fileID: 126864, guid: 8a2c73b0491c2704fbf21f7cd74a052e, type: 2}
+  hitEffect: {fileID: 0}
   speed: 30
   damage: 5
   damagePerSecond: 0

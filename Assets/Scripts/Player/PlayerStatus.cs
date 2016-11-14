@@ -338,6 +338,18 @@ public class PlayerStatus : Photon.MonoBehaviour {
         SetSpSlider();
     }
 
+    public void ForceDamage(int damage)
+    {
+        if (!isActiveSceane) return;
+        if (!GameController.Instance.isGameStart || GameController.Instance.isGameEnd) return;
+
+        //ダメージ
+        totalDamage += damage;
+        if (nowHp - totalDamage <= 0)
+        {
+            SetHp(0);
+        }
+    }
     public bool AddDamage(int damage, string name = "Unknown", bool isSlipDamage = false)
     {
         if (!isActiveSceane) return false;
@@ -571,7 +583,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
             if (transform.position.y < -10)
             {
                 //エリアアウト
-                AddDamage(11);
+                ForceDamage(11);
             }
 
             //ヒット時ノイズ

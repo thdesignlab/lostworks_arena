@@ -123,7 +123,7 @@ TrailRenderer:
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_Materials:
-  - {fileID: 2100000, guid: aa3424b66c6d8854cbf9680d8d2020d2, type: 2}
+  - {fileID: 2100000, guid: 85cf25a7d76f89b40aa41db07517d921, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 1
@@ -216,7 +216,7 @@ MonoBehaviour:
   UseGravity: 0
   hitEffect: {fileID: 135988, guid: d7cd433d10510fe46a35c39bac480fe1, type: 2}
   speed: 300
-  damage: 20
+  damage: 15
   damagePerSecond: 0
   stuckTime: 0
   knockBackRate: 0

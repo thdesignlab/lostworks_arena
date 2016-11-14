@@ -46,11 +46,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageEffect: {fileID: 0}
-  damage: 15
+  damage: 20
   damagePerSecond: 0
   isPhysicsBulletBreak: 0
   isEnergyBulletBreak: 0
   ownDamageRate: 0.1
+  isFloorEffect: 0
 --- !u!114 &11482974
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -73,8 +74,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 0}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 0
-  instantiationId: -1
+  viewIdField: 2
+  instantiationId: 2
   isRuntimeInstantiated: 0
 --- !u!114 &11497956
 MonoBehaviour:
@@ -317,10 +318,10 @@ ParticleSystem:
         rgba: 4294967295
       maxColor:
         serializedVersion: 2
-        rgba: 4288651263
+        rgba: 4285864381
       minMaxState: 0
     startSize:
-      scalar: 10
+      scalar: 7
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -478,7 +479,7 @@ ParticleSystem:
     serializedVersion: 2
     m_Type: 0
     rate:
-      scalar: 500
+      scalar: 400
       maxCurve:
         serializedVersion: 2
         m_Curve:
