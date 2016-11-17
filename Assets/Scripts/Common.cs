@@ -610,6 +610,7 @@ namespace Common
             { 4004, new string[]{ "RoundMissile", "", "", OBTAIN_TYPE_INIT}},
             { 4005, new string[]{ "AssaultCharge", "", "", OBTAIN_TYPE_INIT}},
             { 4006, new string[]{ "ClusterMissile", "", "", OBTAIN_TYPE_STORE}},
+            { 4007, new string[]{ "BrasterBomer", "", "", OBTAIN_TYPE_INIT}},
         };
         //サブ武器リスト
         public static Dictionary<int, string[]> subWeaponLineUp = new Dictionary<int, string[]>()
