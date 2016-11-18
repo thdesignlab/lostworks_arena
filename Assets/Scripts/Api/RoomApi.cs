@@ -22,12 +22,16 @@ namespace RoomApi
     }
 
     //### ルーム名変更 ###
-    public class Change : BaseApi
+    public class ChangeMaster : BaseApi
     {
         protected override string uri { get { return "room/change_master"; } }
 
-        public void Exe(int enemyUserId)
+        public void Exe()
         {
+            string paramJson = JsonUtility.ToJson(ModelManager.roomData);
+
+            //実行
+            Post<object[]>(paramJson);
         }
     }
 
@@ -36,12 +40,14 @@ namespace RoomApi
     {
         protected override string uri { get { return "room/clear"; } }
 
-        public void Exe(bool isWin)
+        public void Exe()
         {
-            //FinishRequest data = new FinishRequest();
-            //data.battle_id = ModelManager.battleInfo.battle_id;
-            //data.result = isWin ? BATTLE_RESULT_WIN : BATTLE_RESULT_LOSE;
-            //string paramJson = JsonUtility.ToJson(data);
+            //実行
+            Post<object[]>();
+        }
+        protected override void FinishCallback(string json)
+        {
+            ModelManager.roomData = new RoomData();
         }
     }
 
@@ -52,6 +58,12 @@ namespace RoomApi
 
         public void Exe()
         {
+            //実行
+            Post<List<RoomData>>();
+        }
+        protected override void FinishCallback(string json)
+        {
+            ModelManager.roomDataList = GetData<List<RoomData>>(json);
         }
     }
 }

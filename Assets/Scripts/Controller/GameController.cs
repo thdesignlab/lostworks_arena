@@ -113,6 +113,11 @@ public class GameController : SingletonMonoBehaviour<GameController>
         isDontDestroyOnLoad = false;
         base.Awake();
 
+        //RoomKey取得
+        ModelManager.roomData = new RoomData();
+        ModelManager.roomData.room_key = PhotonNetwork.room.name;
+        Debug.Log(PhotonNetwork.room.name);
+
         Init();
         CheckMode();
     }
@@ -529,6 +534,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
                             if (isWin)
                             {
                                 //勝ちプレイヤー処理
+                                PhotonManager.isPlayAd = false;
                                 for (;;)
                                 {
                                     //負けプレイヤーが退出するのを待つ
@@ -835,7 +841,14 @@ public class GameController : SingletonMonoBehaviour<GameController>
     {
         isGameReady = true;
         myStatus.Init();
-        if (gameMode == GAME_MODE_MISSION) npcTran.GetComponent<PlayerStatus>().Init();
+        if (gameMode == GAME_MODE_MISSION)
+        {
+            npcTran.GetComponent<PlayerStatus>().Init();
+        }
+        else
+        {
+            PhotonManager.isPlayAd = true;
+        }
 
         foreach (GameObject weapon in GameObject.FindGameObjectsWithTag(Common.CO.TAG_WEAPON))
         {
@@ -865,7 +878,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
             playerStatus.Init();
             if (playerStatus.userId.ToString() != UserManager.userInfo[Common.PP.INFO_USER_ID]) enemyUserid = playerStatus.userId;
         }
-        if (PhotonNetwork.isMasterClient && gameMode == GAME_MODE_VS)
+        if (PhotonNetwork.isMasterClient && gameMode == GAME_MODE_VS && !isVsStart)
         {
             //バトル開始ログ作成
             Battle.Start battleStart = new Battle.Start();
@@ -1287,5 +1300,17 @@ public class GameController : SingletonMonoBehaviour<GameController>
             bgmNo = Common.Mission.stageNpcNoDic[index][Common.Mission.STAGE_NPC_BGM];
         }
         SoundManager.Instance.PlayBattleBgm(bgmNo);
+    }
+
+
+    //##### Photon Callback #####
+
+    void OnMasterClientSwitched()
+    {
+        //ルーム名変更
+        RoomApi.ChangeMaster roomApiChangeMaster = new RoomApi.ChangeMaster();
+        roomApiChangeMaster.SetApiErrorIngnore();
+        roomApiChangeMaster.SetRetryCount(5);
+        roomApiChangeMaster.Exe();
     }
 }

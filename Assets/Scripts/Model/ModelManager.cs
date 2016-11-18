@@ -11,6 +11,7 @@ public static class ModelManager
 
     //ルーム情報
     public static RoomData roomData = new RoomData();
+    public static List<RoomData> roomDataList = new List<RoomData>();
 
     //バトル戦績
     public static BattleRecord battleRecord = new BattleRecord();

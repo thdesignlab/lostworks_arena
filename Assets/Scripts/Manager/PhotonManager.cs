@@ -153,22 +153,6 @@ public class PhotonManager : MonoBehaviour
                 {
                     //接続状況更新
                     roomStatusText.text = "Room :" + PhotonNetwork.countOfRooms + " / Player :" + PhotonNetwork.countOfPlayers;
-                    //if (roomNameIF.text == ROOM_NAME_PREFIX)
-                    //{
-                    //    roomNameIF.text = ROOM_NAME_PREFIX + (PhotonNetwork.countOfRooms + 1).ToString();
-                    //}
-
-                    //ルームリスト更新
-
-                    if (roomListArea.GetActive())
-                    {
-                        roomListReloadTime += Time.deltaTime;
-                        if (roomListReloadTime >= ROOM_LIST_RELOAD_TIME)
-                        {
-                            roomListReloadTime = 0;
-                            SearchRoomList();
-                        }
-                    }
                 }
                 else
                 {
@@ -297,43 +281,61 @@ public class PhotonManager : MonoBehaviour
     //Room一覧更新
     private void SearchRoomList()
     {
-        int roomCnt = 0;
-        RectTransform roomListContent = roomListArea.transform.FindChild("Viewport/Content").GetComponent<RectTransform>();
-
-        //中身をリセットする
-        foreach (Transform child in roomListContent)
+        Action searchRoomListCallback = () =>
         {
-            Destroy(child.gameObject);
-        }
+            int roomCnt = 0;
+            RectTransform roomListContent = roomListArea.transform.FindChild("Viewport/Content").GetComponent<RectTransform>();
 
-        //キャンセルボタン
-        GameObject cancelBtn = (GameObject)Instantiate(roomCancelBtn);
-        cancelBtn.transform.SetParent(roomListContent, false);
-        cancelBtn.GetComponent<Button>().onClick.AddListener(() => SwitchRoomListArea(false, true));
-        roomCnt++;
-        
-        //Room一覧取得
-        RoomInfo[] roomList = PhotonNetwork.GetRoomList();
-        if (roomList.Length > 0)
-        {
-            foreach (RoomInfo room in roomList)
+            //中身をリセットする
+            foreach (Transform child in roomListContent)
             {
-                //string roomName = Regex.Replace(room.name, "_[0-9]*$", "");
-                string roomName = room.name;
-                GameObject roomBtn = roomSelectBtn;
-                if (room.playerCount >= MAX_ROOM_PLAYER_COUNT)
-                {
-                    roomBtn = roomFullBtn;
-                }
-                GameObject joinBtn = (GameObject)Instantiate(roomBtn);
-                joinBtn.transform.SetParent(roomListContent, false);
-                joinBtn.GetComponent<Button>().onClick.AddListener(() => JoinRoom(room));
-                joinBtn.transform.FindChild("Text").GetComponent<Text>().text = roomName;
-                roomCnt++;
+                Destroy(child.gameObject);
             }
-        }
 
-        roomListContent.sizeDelta = new Vector2(0, 200 * roomCnt + 50);
+            //キャンセルボタン
+            GameObject cancelBtn = (GameObject)Instantiate(roomCancelBtn);
+            cancelBtn.transform.SetParent(roomListContent, false);
+            cancelBtn.GetComponent<Button>().onClick.AddListener(() => SwitchRoomListArea(false, true));
+            roomCnt++;
+
+            //Room一覧取得
+            RoomInfo[] roomList = PhotonNetwork.GetRoomList();
+            if (roomList.Length > 0)
+            {
+                foreach (RoomInfo room in roomList)
+                {
+                    //string roomName = Regex.Replace(room.name, "_[0-9]*$", "");
+                    string roomName = GetRoomName(room.name);
+                    GameObject roomBtn = roomSelectBtn;
+                    if (room.playerCount >= MAX_ROOM_PLAYER_COUNT)
+                    {
+                        roomBtn = roomFullBtn;
+                    }
+                    GameObject joinBtn = (GameObject)Instantiate(roomBtn);
+                    joinBtn.transform.SetParent(roomListContent, false);
+                    joinBtn.GetComponent<Button>().onClick.AddListener(() => JoinRoom(room));
+                    joinBtn.transform.FindChild("Text").GetComponent<Text>().text = roomName;
+                    roomCnt++;
+                }
+            }
+            roomListContent.sizeDelta = new Vector2(0, 200 * roomCnt + 50);
+        };
+
+        //Roomデータ取得
+        RoomApi.Get roomApiGet = new RoomApi.Get();
+        roomApiGet.SetApiFinishCallback(searchRoomListCallback);
+        roomApiGet.Exe();
+    }
+    private string GetRoomName(string roomKey)
+    {
+        string roomName = ROOM_NAME_PREFIX;
+        foreach (RoomData roomData in ModelManager.roomDataList)
+        {
+            if (roomData.room_key != roomKey) continue;
+            roomName = roomData.room_name;
+            break;
+        }
+        return roomName;
     }
 
     //タイトル画面から進む
@@ -553,13 +555,12 @@ public class PhotonManager : MonoBehaviour
     // We have two options here: we either joined(by title, list or random) or created a room.
     public void OnJoinedRoom()
     {
-        switch (moveScene)
-        {
-            case Common.CO.SCENE_BATTLE:
-                if (isNetworkMode) isPlayAd = true;
-                break;
-        }
-        //Debug.Log("OnJoinedRoom");
+        //switch (moveScene)
+        //{
+        //    case Common.CO.SCENE_BATTLE:
+        //        if (isNetworkMode) isPlayAd = true;
+        //        break;
+        //}
     }
 
     public void OnPhotonCreateRoomFailed()
@@ -588,7 +589,7 @@ public class PhotonManager : MonoBehaviour
 
     public void OnCreatedRoom()
     {
-        //Debug.Log("OnCreatedRoom");
+        Debug.Log("OnCreatedRoom");
         ScreenManager.Instance.Load(moveScene);
     }
 
@@ -605,6 +606,11 @@ public class PhotonManager : MonoBehaviour
         Debug.Log("OnFailedToConnectToPhoton. StatusCode: " + parameters + " ServerAddress: " + PhotonNetwork.ServerAddress);
     }
 
+    public void OnReceivedRoomListUpdate()
+    {
+        //ルームリスト更新
+        if (roomListArea.GetActive()) SearchRoomList();
+    }
 
     //##### 登録情報取得 #####
 

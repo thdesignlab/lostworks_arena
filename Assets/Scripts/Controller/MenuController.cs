@@ -131,6 +131,10 @@ public class MenuController : Photon.MonoBehaviour
     //タイトルへ戻る
     public void OnTitleButton()
     {
+        RoomApi.Clear roomClear = new RoomApi.Clear();
+        roomClear.SetApiErrorIngnore();
+        roomClear.Exe();
+
         DialogController.OpenDialog("タイトルに戻ります", () => GameController.Instance.GoToTitle(), true);
     }
 
