@@ -9,7 +9,7 @@ namespace Common
         //アプリID
         public const string APP_NAME_IOS = "";
         public const string APP_NAME_ANDROID = "com.ThDesignLab";
-        
+
         //シーン名
         public const string SCENE_TITLE = "Title";
         public const string SCENE_BATTLE = "Battle";
@@ -277,9 +277,9 @@ namespace Common
         {
             string url = "";
 #if UNITY_IOS
-            if (!string.IsNullOrEmpty(CO.STORE_URL_IOS))
+            if (!string.IsNullOrEmpty(CO.APP_NAME_IOS))
             {
-                url= string.Format("itms-apps://itunes.apple.com/app/id{0}?mt=8", CO.STORE_URL_IOS);
+                url= string.Format("itms-apps://itunes.apple.com/app/id{0}?mt=8", CO.APP_NAME_IOS);
             }
 #elif UNITY_ANDROID
             if (!string.IsNullOrEmpty(CO.APP_NAME_ANDROID))
@@ -457,14 +457,6 @@ namespace Common
             //Debug.Log(bulletName+" >> " +no);
             return no;
         }
-
-        public static string CreateRoomName()
-        {
-            string roomName = "[" + ModelManager.battleRecord.battle_rate.ToString() + "]";
-            roomName += UserManager.userInfo[PP.INFO_USER_NAME];
-            roomName += "_" + UserManager.userInfo[PP.INFO_USER_ID];
-            return roomName;
-        }
     }
 
     //### キャラクター詳細 ###
@@ -518,15 +510,15 @@ namespace Common
         {
                             //hp, sp, run, boost, turn, atk%, atkI, boostI, tagI
             { 100, new int[]{ 1000, 45, 35, 75, 20, 100, 3, 2, 2, 1 , 20} },
-            { 101, new int[]{ 1000, 35, 35, 70, 25, 110, 2, 2, 2, 1 , 20} },
+            { 101, new int[]{ 1000, 35, 35, 70, 30, 110, 2, 2, 2, 1 , 20} },
             { 200, new int[]{ 1000, 45, 30, 70, 20, 110, 3, 2, 3, 1 , 250} },
-            { 201, new int[]{ 1000, 35, 30, 65, 25, 120, 2, 2, 3, 1 , 250} },
-            { 300, new int[]{ 1000, 55, 30, 70, 20, 100, 3, 2, 2, 1 , 100} },
-            { 301, new int[]{ 1000, 45, 30, 65, 25, 110, 2, 2, 2, 1 , 100} },
+            { 201, new int[]{ 1000, 35, 30, 65, 30, 120, 2, 2, 3, 1 , 250} },
+            { 300, new int[]{ 1000, 55, 30, 80, 20, 100, 3, 2, 2, 1 , 100} },
+            { 301, new int[]{ 1000, 45, 30, 75, 30, 110, 2, 2, 2, 1 , 100} },
             { 400, new int[]{ 1200, 50, 30, 70, 20, 100, 3, 2, 3, 1 , 200} },
-            { 401, new int[]{ 1200, 40, 30, 65, 25, 110, 2, 2, 3, 1 , 200} },
+            { 401, new int[]{ 1200, 40, 30, 65, 30, 110, 2, 2, 3, 1 , 200} },
             { 500, new int[]{ 1200, 35, 35, 75, 25, 110, 3, 2, 3, 1 , 150} },
-            { 501, new int[]{ 1200, 25, 35, 70, 30, 120, 2, 2, 3, 1 , 150} },
+            { 501, new int[]{ 1200, 25, 35, 70, 35, 120, 2, 2, 3, 1 , 150} },
             { 10000, new int[]{ 800, 35, 25, 50, 20, 80, 3, 3, 5, 0 , 150} },
             { 10001, new int[]{ 850, 35, 25, 55, 20, 85, 3, 3, 5, 0 , 150} },
             { 10002, new int[]{ 900, 35, 40, 80, 20, 90, 3, 3, 4, 1 , 150} },
@@ -998,12 +990,12 @@ namespace Common
             { 2, new float[] { 0.7f, 0.7f, 0.8f, 0.8f, 0.8f, 0.6f, 1.6f, 1.6f, 1.6f } },
             { 3, new float[] { 0.8f, 0.8f, 0.9f, 1.0f, 0.9f, 0.7f, 1.3f, 1.3f, 1.3f } },
             { 4, new float[] { 0.9f, 1.0f, 1.0f, 1.1f, 1.0f, 0.8f, 1.2f, 1.2f, 1.0f } },
-            { 5, new float[] { 1.0f, 1.1f, 1.1f, 1.2f, 1.5f, 1.0f, 1.0f, 1.0f, 0.8f } },
-            { 6, new float[] { 1.1f, 1.1f, 1.1f, 1.2f, 1.5f, 1.1f, 0.8f, 0.8f, 0.7f } },
-            { 7, new float[] { 1.2f, 1.2f, 1.1f, 1.3f, 1.5f, 1.1f, 0.6f, 0.5f, 0.5f } },
+            { 5, new float[] { 1.0f, 1.1f, 1.1f, 1.1f, 1.2f, 0.9f, 1.0f, 1.0f, 0.8f } },
+            { 6, new float[] { 1.1f, 1.1f, 1.1f, 1.2f, 1.4f, 1.0f, 0.8f, 0.8f, 0.7f } },
+            { 7, new float[] { 1.2f, 1.2f, 1.2f, 1.2f, 1.5f, 1.1f, 0.5f, 0.5f, 0.5f } },
         };
         //設定レベル以上の場合の追加Rate
-        public static float[] overLevelState = new float[] { 0.05f, 0.1f, 0.02f, 0.02f, 0.02f, 0.05f, 0, 0, 0 };
+        public static float[] overLevelState = new float[] { 0.05f, 0.1f, 0, 0, 0.05f, 0.05f, 0, 0, 0 };
 
         //コンティニュー時のステUP
         public static float[] continueBonus = new float[] { 0.1f, 0.05f, 0, 0, 0, 0.05f, 0, 0, 0 };

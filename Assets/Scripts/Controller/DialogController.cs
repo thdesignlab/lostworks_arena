@@ -80,7 +80,7 @@ public class DialogController : MonoBehaviour
     }
     public static GameObject OpenDialog(string text, List<string> buttons, List<UnityAction> actions, bool isCancel = false)
     {
-        DialogController.CloseMessage();
+        CloseMessage();
         if (dialog != null) CloseDialog();
         if (buttons.Count <= 0 || actions.Count <= 0) return null;
 

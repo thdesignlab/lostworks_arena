@@ -128,6 +128,10 @@ public class PlayerStatus : Photon.MonoBehaviour {
     [HideInInspector]
     public int battleRate = 0;
 
+    [HideInInspector]
+    public bool isReadyBattle = false;
+
+
     void Start()
     {
         if (shield != null)
@@ -220,25 +224,27 @@ public class PlayerStatus : Photon.MonoBehaviour {
 
         StartCoroutine(DamageSync());
         StartCoroutine(RecoverSp());
+
+        isReadyBattle = true;
     }
 
     public void Init()
     {
-        SetHp(maxHp);
-        SetSp(maxSp);
-
-        nowSpeedRate = 1;
-        interfareMoveTime = 0;
-        runSpeed = defaultRunSpeed;
-        jumpSpeed = defaultJumpSpeed;
-        boostSpeed = defaultBoostSpeed;
-        turnSpeed = defaultTurnSpeed;
-        boostTurnSpeed = defaultBoostTurnSpeed;
-        //invincibleTime = defaultInvincibleTime;
-        //recoverSp = defaultRecoverSp;
-
         if (photonView.isMine)
         {
+            SetHp(maxHp);
+            SetSp(maxSp);
+
+            if (GameController.Instance.gameMode == GameController.GAME_MODE_VS) SetNmaeText();
+
+            nowSpeedRate = 1;
+            interfareMoveTime = 0;
+            runSpeed = defaultRunSpeed;
+            jumpSpeed = defaultJumpSpeed;
+            boostSpeed = defaultBoostSpeed;
+            turnSpeed = defaultTurnSpeed;
+            boostTurnSpeed = defaultBoostTurnSpeed;
+
             if (isNpc)
             {
                 StartCoroutine(SetHpSlider(hpBarEnemy, hpBarEnemyImage));
@@ -301,6 +307,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
         {
             yield return new WaitForSeconds(0.2f);
             if (totalDamage == 0) continue;
+
             SetHp(nowHp - totalDamage);
             totalDamage = 0;
         }
@@ -308,13 +315,13 @@ public class PlayerStatus : Photon.MonoBehaviour {
 
     private void SetHp(int hp)
     {
-        //Debug.Log(transform.name+" : "+hp.ToString());
         photonView.RPC("SetHpRPC", PhotonTargets.All, hp);
     }
     [PunRPC]
     private void SetHpRPC(int hp)
     {
         nowHp = hp;
+        if (nowHp > maxHp) maxHp = nowHp;
         if (hp <= 0)
         {
             isDead = true;
@@ -399,7 +406,6 @@ public class PlayerStatus : Photon.MonoBehaviour {
     }
     IEnumerator OpenShield(float time)
     {
-        //Debug.Log("OpenShield: "+ time.ToString());
         leftShieldTime = time;
         shield.SetActive(true);
         for (;;)
@@ -470,14 +476,13 @@ public class PlayerStatus : Photon.MonoBehaviour {
     }
     public bool CheckSp(int sp)
     {
-        //Debug.Log(nowSp);
         if (nowSp < sp) return false;
         return true;
     }
     private void SetSpSlider()
     {
         if (!photonView.isMine || isNpc) return;
-        spBarMine.value = (float)nowSp / (float)maxSp;
+        if (spBarMine != null) spBarMine.value = (float)nowSp / (float)maxSp;
     }
 
     IEnumerator RecoverSp()
@@ -604,8 +609,6 @@ public class PlayerStatus : Photon.MonoBehaviour {
 
     public void SetInvincible(bool flg = true, float time = 0, bool isShieldBisible = false)
     {
-        //Debug.Log("SetInvincible :" + flg.ToString()+" / time: "+ time.ToString());
-
         float setTime = time;
         if (flg)
         {
@@ -665,9 +668,11 @@ public class PlayerStatus : Photon.MonoBehaviour {
     private float nowSpeedRate = 1;
     private float interfareMoveTime = 0;
 
-    //初期ステータス設定(NPC用)
+    //初期ステータス設定
     public void SetStatus(int[] defaultStatus, float[] levelRate)
     {
+        if (!photonView.isMine) return;
+
         //MaxHp
         int index = Common.Character.STATUS_MAX_HP;
         maxHp = (int)(defaultStatus[index] * levelRate[index]);
@@ -952,7 +957,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
     public void ResetWinMark()
     {
         bool markFlg = false;
-        if (GameController.Instance.gameMode == GameController.GAME_MODE_VS) markFlg = true;
+        //if (GameController.Instance.gameMode == GameController.GAME_MODE_VS) markFlg = true;
         foreach (GameObject obj in winCountMineList)
         {
             obj.SetActive(markFlg);
@@ -966,11 +971,11 @@ public class PlayerStatus : Photon.MonoBehaviour {
 
     public void SetWinMark(int winCount, int loseCount)
     {
-        if (GameController.Instance.gameMode == GameController.GAME_MODE_VS)
-        {
-            ResetWinMark();
-            return;
-        }
+        //if (GameController.Instance.gameMode == GameController.GAME_MODE_VS)
+        //{
+        //    ResetWinMark();
+        //    return;
+        //}
 
         //自分の勝マーク
         bool markFlg = true;

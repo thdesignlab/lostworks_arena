@@ -74,6 +74,7 @@ public class PhotonManager : MonoBehaviour
         //初期化
         if (isFirstScean)
         {
+            isReadyGame = false;
             titleLogo.SetActive(true);
             Init();
             isFirstScean = false;
@@ -94,8 +95,10 @@ public class PhotonManager : MonoBehaviour
 
     IEnumerator Start()
     {
+        if (isReadyGame) yield break;
         DialogController.OpenMessage(DialogController.MESSAGE_LOADING, DialogController.MESSAGE_POSITION_RIGHT);
         GetWeaponData();
+        yield return new WaitForSeconds(3.0f);
         for (;;)
         {
             if (!Application.isShowingSplashScreen)
@@ -110,7 +113,7 @@ public class PhotonManager : MonoBehaviour
 
     void Update()
     {
-        if (Application.isShowingSplashScreen) return;
+        if (!isReadyGame) return;
 
         if (isTapToStart)
         {
@@ -315,7 +318,8 @@ public class PhotonManager : MonoBehaviour
         {
             foreach (RoomInfo room in roomList)
             {
-                string roomName = Regex.Replace(room.name, "_[0-9]*$", "");
+                //string roomName = Regex.Replace(room.name, "_[0-9]*$", "");
+                string roomName = room.name;
                 GameObject roomBtn = roomSelectBtn;
                 if (room.playerCount >= MAX_ROOM_PLAYER_COUNT)
                 {
@@ -358,6 +362,7 @@ public class PhotonManager : MonoBehaviour
                 break;
         }
     }
+    
 
     // ##### モードセレクト #####
 
@@ -451,16 +456,6 @@ public class PhotonManager : MonoBehaviour
     public void OnRankingButton()
     {
         ScreenManager.Instance.Load(Common.CO.SCENE_RANKING, DialogController.MESSAGE_LOADING);
-        //DialogController.OpenMessage(DialogController.MESSAGE_CONNECT, DialogController.MESSAGE_POSITION_RIGHT);
-
-        //Action callback = () =>
-        //{
-        //    ScreenManager.Instance.Load(Common.CO.SCENE_RANKING, DialogController.MESSAGE_LOADING);
-        //    DialogController.CloseMessage();
-        //};
-
-        ////ランキング情報取得
-        //GetRankingData(callback);
     }
 
 
@@ -484,16 +479,23 @@ public class PhotonManager : MonoBehaviour
     //Room作成
     public void CreateRoom()
     {
-        DialogController.OpenMessage(DialogController.MESSAGE_CREATE_ROOM, DialogController.MESSAGE_POSITION_RIGHT);
-        if (PhotonNetwork.countOfRooms >= MAX_ROOM_COUNT)
+        Action createRoomCallback = () =>
         {
-            DialogController.CloseMessage();
-            DialogController.OpenDialog(MESSAGE_ROOM_LIMIT_FAILED);
-            return;
-        }
+            DialogController.OpenMessage(DialogController.MESSAGE_CREATE_ROOM, DialogController.MESSAGE_POSITION_RIGHT);
+            if (PhotonNetwork.countOfRooms >= MAX_ROOM_COUNT)
+            {
+                DialogController.CloseMessage();
+                DialogController.OpenDialog(MESSAGE_ROOM_LIMIT_FAILED);
+                return;
+            }
 
-        string roomName = Common.Func.CreateRoomName();
-        PhotonNetwork.CreateRoom(roomName, new RoomOptions() { maxPlayers = 2 }, null);
+            string roomKey = ModelManager.roomData.room_key;
+            PhotonNetwork.CreateRoom(roomKey, new RoomOptions() { maxPlayers = 2 }, null);
+        };
+
+        RoomApi.Create roomApiCreate = new RoomApi.Create();
+        roomApiCreate.SetApiFinishCallback(createRoomCallback);
+        roomApiCreate.Exe();
     }
 
     //入室

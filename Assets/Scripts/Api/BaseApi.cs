@@ -128,7 +128,7 @@ public abstract class BaseApi
         }
 
         //エラー処理
-        Debug.Log("[ERR]" + errorCode + " >> " + errorMessage);
+        MyDebug.Instance.AdminLog("[Exception]" + errorCode, errorMessage);
         if (apiFinishErrorCallback != null)
         {
             apiFinishErrorCallback.Invoke(errorCode);

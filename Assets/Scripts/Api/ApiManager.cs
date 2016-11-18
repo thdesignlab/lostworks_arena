@@ -18,6 +18,8 @@ public class ApiManager : SingletonMonoBehaviour<ApiManager>
 
     IEnumerator PostRoutine(string uri, string paramJson = "", Action<string> apiCallback = null, Action errorCallback = null, int retry = 1)
     {
+        if (!string.IsNullOrEmpty(paramJson)) MyDebug.Instance.AdminLog("[Post]"+uri, paramJson);
+
         //ヘッダー
         Dictionary<string, string> header = new Dictionary<string, string>();
         header.Add("Content-Type", "application/json; charset=UTF-8");
@@ -27,7 +29,7 @@ public class ApiManager : SingletonMonoBehaviour<ApiManager>
 
         //パラメータ
         byte[] postBytes = null;
-        if (paramJson != "") postBytes = Encoding.Default.GetBytes(paramJson);
+        if (paramJson != "") postBytes = Encoding.UTF8.GetBytes(paramJson);
 
         int exeCount = 1;
         for (;;)
@@ -40,15 +42,15 @@ public class ApiManager : SingletonMonoBehaviour<ApiManager>
             {
                 //JSON取得
                 string json = Encoding.UTF8.GetString(www.bytes);
-                if (UserManager.isAdmin || MyDebug.Instance.isDebugMode) Debug.Log(uri + " >> " + json);
-
+                MyDebug.Instance.AdminLog("[Success]" + uri, json);
+ 
                 //コールバック
                 apiCallback.Invoke(json);
                 yield break;
             }
             else
             {
-                Debug.Log(uri+" >> "+www.error);
+                MyDebug.Instance.AdminLog("[ConnectError]" + uri, www.error);
                 if (exeCount >= retry)
                 {
                     if (errorCallback != null) errorCallback.Invoke();
@@ -56,7 +58,7 @@ public class ApiManager : SingletonMonoBehaviour<ApiManager>
                 }
             }
             exeCount++;
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.2f);
         }
     }
 }

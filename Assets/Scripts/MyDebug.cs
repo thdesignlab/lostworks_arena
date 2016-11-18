@@ -14,7 +14,15 @@ public class MyDebug : SingletonMonoBehaviour<MyDebug>
     private int btnDownTime = 3;
     private float btnDown = 0;
     private bool dispLog = false;
-    
+
+    public void AdminLog(object key, object value)
+    {
+        AdminLog(key + " >> " + value);
+    }
+    public void AdminLog(object log)
+    {
+        if (UserManager.isAdmin || Instance.isDebugMode) Debug.Log(log);
+    }
 
     void OnEnable()
     {

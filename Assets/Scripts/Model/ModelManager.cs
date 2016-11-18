@@ -9,6 +9,9 @@ public static class ModelManager
     //ミッションランキング
     public static MissionRanking missionRanking = new MissionRanking();
 
+    //ルーム情報
+    public static RoomData roomData = new RoomData();
+
     //バトル戦績
     public static BattleRecord battleRecord = new BattleRecord();
     //バトル中ID

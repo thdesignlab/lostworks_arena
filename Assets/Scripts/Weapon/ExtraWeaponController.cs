@@ -18,6 +18,7 @@ public class ExtraWeaponController : Photon.MonoBehaviour
     private PlayerStatus playerStatus;
     private Transform myParentTran;
     private GameObject extraBtn;
+    private GameObject menuCanvas;
 
     private const string TAG_ANIMATION_WAIT = "Wait";
     private const string TAG_ANIMATION_RUN = "Run";
@@ -50,6 +51,7 @@ public class ExtraWeaponController : Photon.MonoBehaviour
         charaAnimator = anim;
         playerStatus = status;
         myParentTran = playerStatus.transform;
+        menuCanvas = GameObject.Find("MenuCanvas");
     }
 
     public void Fire(Transform targetTran = null)
@@ -68,16 +70,9 @@ public class ExtraWeaponController : Photon.MonoBehaviour
         playerStatus.SetForceInvincible(true);
 
         //カメラ切り替え
-        if (extraCam != null && !playerStatus.IsNpc())
-        {
-            extraCam.SetActive(true);
-        }
+        SwitchExtraCamera(true);
+
         //攻撃モーション開始
-        if (charaAnimator != null)
-        {
-            charaAnimator.SetBool(Common.CO.MOTION_EXTRA_ATTACK, true);
-        }
-        //追加エフェクト
         SwitchExtraEffect(true);
 
         bool isReady = false;
@@ -111,10 +106,7 @@ public class ExtraWeaponController : Photon.MonoBehaviour
         }
 
         //カメラ戻し
-        if (extraCam != null && !playerStatus.IsNpc())
-        {
-            extraCam.SetActive(false);
-        }
+        SwitchExtraCamera(false);
 
         for (;;)
         {
@@ -123,7 +115,6 @@ public class ExtraWeaponController : Photon.MonoBehaviour
             yield return null;
         }
         //攻撃モーション終了
-        if (charaAnimator != null) charaAnimator.SetBool(Common.CO.MOTION_EXTRA_ATTACK, false);
         SwitchExtraEffect(false);
 
         //無敵解除
@@ -132,17 +123,27 @@ public class ExtraWeaponController : Photon.MonoBehaviour
         isShooting = false;
     }
 
-    private void SwitchExtraEffect(bool flg)
+    private void SwitchExtraCamera(bool flg)
     {
-        if (extraEffect == null) return;
-        extraEffect.SetActive(flg);
-        photonView.RPC("SwitchExtraEffectRPC", PhotonTargets.Others, flg);
+        if (extraCam != null && !playerStatus.IsNpc())
+        {
+            extraCam.SetActive(flg);
+            if (menuCanvas != null) menuCanvas.SetActive(!flg);
+        }
     }
 
+    private void SwitchExtraEffect(bool flg)
+    {
+        if (extraEffect == null && charaAnimator == null) return;
+        photonView.RPC("SwitchExtraEffectRPC", PhotonTargets.All, flg);
+    }
     [PunRPC]
     private void SwitchExtraEffectRPC(bool flg)
     {
-        extraEffect.SetActive(flg);
+        //攻撃モーション
+        if (charaAnimator != null) charaAnimator.SetBool(Common.CO.MOTION_EXTRA_ATTACK, flg);
+        //追加エフェクト
+        if (extraEffect != null) extraEffect.SetActive(flg);
     }
 
     private float GetActionTime()

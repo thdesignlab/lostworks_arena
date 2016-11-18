@@ -99,11 +99,8 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager>
 
             case Common.CO.SCENE_CUSTOM:
             case Common.CO.SCENE_STORE:
-                sceneBgm = customBgmList[index];
-                break;
-
             case Common.CO.SCENE_RANKING:
-                PlayBattleBgm();
+                sceneBgm = customBgmList[index];
                 break;
 
             case Common.CO.SCENE_BATTLE:

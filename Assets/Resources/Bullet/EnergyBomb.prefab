@@ -94,9 +94,9 @@ MonoBehaviour:
   damagePerSecond: 0
   stuckTime: 0
   knockBackRate: 0
-  isPhysicsBulletBreak: 0
-  isEnergyBulletBreak: 0
-  isHitBreak: 0
+  isPhysicsBulletBreak: 1
+  isEnergyBulletBreak: 1
+  isHitBreak: 1
   safetyTime: 0
   angleSpeed: 180
 --- !u!135 &13577188

@@ -445,6 +445,7 @@ MonoBehaviour:
   isPhysicsBulletBreak: 0
   isEnergyBulletBreak: 0
   ownDamageRate: 1
+  isFloorEffect: 0
   startScale: {x: 1, y: 1, z: 1}
   endScale: {x: 20, y: 12, z: 20}
   scaleTime: 5
@@ -467,7 +468,7 @@ MonoBehaviour:
   UseGravity: 0
   hitEffect: {fileID: 0}
   speed: 15
-  damage: 20
+  damage: 5
   damagePerSecond: 80
   stuckTime: 0
   knockBackRate: 0

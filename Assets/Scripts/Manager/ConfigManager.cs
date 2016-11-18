@@ -64,11 +64,12 @@ public class ConfigManager : SingletonMonoBehaviour<ConfigManager>
 
     void Start()
     {
+        playerNameText.text = UserManager.userInfo[Common.PP.INFO_USER_NAME];
+
         Dictionary<int, int> configDic = new Dictionary<int, int>(UserManager.userConfig);
         foreach (int kind in configDic.Keys)
         {
             //Debug.Log(kind+" >> "+configDic[kind]);
-            playerNameText.text = UserManager.userInfo[Common.PP.INFO_USER_NAME];
             if (volumeNameDic.ContainsKey(kind))
             {
                 //UI設定

@@ -43,6 +43,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
     public bool isGameStart = false;
     [HideInInspector]
     public bool isGameEnd = false;
+    private bool isVsStart = false;
     private List<PlayerStatus> playerStatuses = new List<PlayerStatus>();
     private PlayerSetting playerSetting;
     private SpriteStudioController spriteStudioCtrl;
@@ -88,6 +89,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
     const int WIN_COUNT_MAX = 2;
     private int winCount = 0;
     private int loseCount = 0;
+    private int totalContinueCount = 0;
     private int continueCount = 0;
 
     //バトルログ
@@ -100,6 +102,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
     private bool isResultCheck = false;
 
     //バトル終了時獲得pt
+    const float WIN_POINT_RATE = 1.0f;
     const int LOSE_POINT = 5;
 
     //ミッションレベル更新pt係数
@@ -137,7 +140,6 @@ public class GameController : SingletonMonoBehaviour<GameController>
         if (spriteStudioCtrl == null) spriteStudioCtrl = GameObject.Find("SpriteStudioController").GetComponent<SpriteStudioController>();
         //スプライトスタジオキャッシュリセット
         spriteStudioCtrl.ResetSprite();
-
     }
 
     private void SetCanvasInfo()
@@ -433,6 +435,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
                             {
                                 //ゲームオーバー
                                 continueCount++;
+                                totalContinueCount++;
                                 SetTextCenter(spriteStudioCtrl.MESSAGE_GAME_OVER, colorWin);
                                 yield return new WaitForSeconds(1.0f);
 
@@ -477,63 +480,97 @@ public class GameController : SingletonMonoBehaviour<GameController>
                     //対戦モード
                     if (isResultCheck || isPassResult)
                     {
-                        //レート変化ダイアログ表示
-                        int preRate = ModelManager.battleRecord.battle_rate;
-                        int waitTime = 10;
-                        int battlePoint = 5;
-                        List<UnityAction> actions = new List<UnityAction>();
-                        List<string> buttons = new List<string>();
-                        if (isWin)
+                        if (winCount >= WIN_COUNT_MAX || loseCount >= WIN_COUNT_MAX)
                         {
-                            //続ける
-                            actions = new List<UnityAction>() { null };
-                            buttons = new List<string>() { "OK" };
+                            //VS終了
+                            //レート変化ダイアログ表示
+                            int preRate = ModelManager.battleRecord.battle_rate;
+                            int waitTime = 10;
+                            int battlePoint = LOSE_POINT;
+                            List<UnityAction> actions = new List<UnityAction>();
+                            List<string> buttons = new List<string>();
+                            if (isWin)
+                            {
+                                //続ける
+                                actions = new List<UnityAction>() { null };
+                                buttons = new List<string>() { "OK" };
+                            }
+                            else
+                            {
+                                //タイトルへ戻るだけ
+                                actions = new List<UnityAction>() { () => GoToTitle() };
+                                buttons = new List<string>() { "Titleへ" };
+                                PhotonManager.isPlayAd = true;
+                            }
+                            Action apiCallback = () =>
+                            {
+                                int diffRate = ModelManager.battleRecord.battle_rate - preRate;
+                                if (diffRate > battlePoint) battlePoint = (int)(diffRate * WIN_POINT_RATE);
+                                string diffRateSign = diffRate >= 0 ? "+" : "";
+                                string dialogText = "Rate : " + ModelManager.battleRecord.battle_rate + "(" + diffRateSign + diffRate.ToString() + ")";
+                                if (battlePoint > 0) dialogText += "\n" + battlePoint.ToString() + "pt獲得";
+                                DialogController.OpenDialog(dialogText, buttons, actions);
+                                if (isWin) ContinueVs();
+
+                                if (battlePoint > 0)
+                                {
+                                    //point付与
+                                    Point.Add pointAdd = new Point.Add();
+                                    pointAdd.SetApiErrorIngnore();
+                                    pointAdd.Exe(battlePoint, Common.API.POINT_LOG_KIND_BATTLE, ModelManager.battleInfo.battle_id);
+                                }
+                            };
+                            Battle.Finish battleFinish = new Battle.Finish();
+                            battleFinish.SetApiFinishCallback(apiCallback);
+                            battleFinish.SetRetryCount(3);
+                            battleFinish.SetApiErrorIngnore();
+                            battleFinish.Exe(isWin);
+
+                            if (isWin)
+                            {
+                                //勝ちプレイヤー処理
+                                for (;;)
+                                {
+                                    //負けプレイヤーが退出するのを待つ
+                                    if (CheckPlayer()) yield return new WaitForSeconds(0.5f);
+                                    break;
+                                }
+                                ResetVs();
+                            }
+                            else
+                            {
+                                //負けPlayer処理
+                                //自動でタイトルへ遷移
+                                string defaultText = "";
+                                for (int i = waitTime; i > 0; i--)
+                                {
+                                    if (isContinue) break;
+                                    Text dialogText = DialogController.GetDialogText();
+                                    if (dialogText != null)
+                                    {
+                                        if (string.IsNullOrEmpty(defaultText)) defaultText = dialogText.text;
+                                        dialogText.text = defaultText + "\n" + i + "秒後にTitleへ戻ります";
+                                    }
+                                    yield return new WaitForSeconds(1.0f);
+                                }
+                                GoToTitle();
+                                yield break;
+                            }
                         }
                         else
                         {
-                            //タイトルへ戻るだけ
-                            actions = new List<UnityAction>() { () => GoToTitle() };
-                            buttons = new List<string>() { "Titleへ" };
-                            PhotonManager.isPlayAd = true;
-                        }
-                        Action apiCallback = () =>
-                        {
-                            int diffRate = ModelManager.battleRecord.battle_rate - preRate;
-                            if (diffRate > battlePoint) battlePoint = diffRate;
-                            string diffRateSign = diffRate >= 0 ? "+" : "";
-                            string dialogText = "Rate : " + ModelManager.battleRecord.battle_rate + "(" + diffRateSign + diffRate.ToString() + ")";
-                            if (battlePoint > 0) dialogText += "\n"+ battlePoint.ToString()+"pt獲得";
-                            DialogController.OpenDialog(dialogText, buttons, actions);
-                            if (isWin) ContinueVs();
-
-                            //point付与
-                            Point.Add pointAdd = new Point.Add();
-                            pointAdd.SetApiErrorIngnore();
-                            pointAdd.Exe(battlePoint, Common.API.POINT_LOG_KIND_BATTLE, ModelManager.battleInfo.battle_id);
-                        };
-                        Battle.Finish battleFinish = new Battle.Finish();
-                        battleFinish.SetApiFinishCallback(apiCallback);
-                        battleFinish.SetRetryCount(3);
-                        battleFinish.SetApiErrorIngnore();
-                        battleFinish.Exe(isWin);
-
-                        //自動でタイトルへ遷移
-                        string defaultText = "";
-                        for (int i = waitTime; i > 0; i--)
-                        {
-                            if (isContinue) break;
-                            Text dialogText = DialogController.GetDialogText();
-                            if (dialogText != null)
+                            if (!CheckPlayer())
                             {
-                                if (string.IsNullOrEmpty(defaultText)) defaultText = dialogText.text;
-                                dialogText.text = defaultText + "\n" + i + "秒後にTitleへ戻ります";
+                                //相手が離脱した場合
+                                winCount = WIN_COUNT_MAX;
+                                myStatus.SetWinMark(winCount, loseCount);
                             }
-                            yield return new WaitForSeconds(1.0f);
-                        }
-                        if (!isContinue)
-                        {
-                            GoToTitle();
-                            yield break;
+                            else
+                            {
+                                //Nextバトル
+                                yield return new WaitForSeconds(3.0f);
+                                VsSetting();
+                            }
                         }
                     }
                 }
@@ -574,17 +611,17 @@ public class GameController : SingletonMonoBehaviour<GameController>
                             }
                             if (!setting.IsCustomEnd())
                             {
-                                //SetWaitMessage(MESSAGE_CUSTOMIZE + setting.GetLeftCustomTime().ToString());
                                 SetTextUp(MESSAGE_CUSTOMIZE + setting.GetLeftCustomTime().ToString(), colorWait);
                                 break;
                             }
-
                             PlayerStatus ps = player.GetComponent<PlayerStatus>();
                             if (ps == null)
                             {
                                 DestroyPlayer(player);
                                 continue;
                             }
+                            if (!ps.isReadyBattle) continue;
+
                             playerStatuses.Add(ps);
                         }
 
@@ -595,7 +632,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
 
                             SetTextUp();
                             SetTextCenter();
-                            if (gameMode == GAME_MODE_MISSION)
+                            if (gameMode == GAME_MODE_MISSION || gameMode == GAME_MODE_VS)
                             {
                                 int round = winCount + loseCount + 1;
                                 if (round == 1)
@@ -666,8 +703,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
 
     private bool CheckPlayer()
     {
-        if (playerStatuses.Count == needPlayerCount) return false;
-        return true;
+        return (PhotonNetwork.room.playerCount == needPlayerCount);
     }
 
     //プレイヤー作成
@@ -798,12 +834,9 @@ public class GameController : SingletonMonoBehaviour<GameController>
     private void GameReady()
     {
         isGameReady = true;
-        foreach (PlayerStatus playerStatus in playerStatuses)
-        {
-            playerStatus.Init();
-            //名前セット
-            if (gameMode == GAME_MODE_VS) playerStatus.SetNmaeText();
-        }
+        myStatus.Init();
+        if (gameMode == GAME_MODE_MISSION) npcTran.GetComponent<PlayerStatus>().Init();
+
         foreach (GameObject weapon in GameObject.FindGameObjectsWithTag(Common.CO.TAG_WEAPON))
         {
             WeaponController weponCtrl = weapon.GetComponent<WeaponController>();
@@ -813,12 +846,13 @@ public class GameController : SingletonMonoBehaviour<GameController>
 
         if (myStatus.voiceManager != null) myStatus.voiceManager.BattleStart();
 
-        if (gameMode == GAME_MODE_VS && !isFirstBattle)
-        {
-            //BGMランダム
-            PlayStageBgm();
-        }
+        //BGMランダム
+        if (gameMode == GAME_MODE_VS && !isFirstBattle) PlayStageBgm();
+
         isFirstBattle = false;
+
+        //VS開始,WinMarkリセット
+        if (!isVsStart) ResetWinMark();
     }
 
     private void GameStart()
@@ -844,6 +878,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
         isGameReady = false;
         isGameStart = true;
         battleTime = 0;
+        isVsStart = true;
     }
     private void BattleStartCallback()
     {
@@ -858,7 +893,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
     private void GameEnd()
     {
         Debug.Log("*** GameEnd ***");
-        if (targetTran == null)
+        if (myTran != null && targetTran == null)
         {
             //勝利
             winCount++;
@@ -949,7 +984,6 @@ public class GameController : SingletonMonoBehaviour<GameController>
             //対戦モード
             gameMode = GAME_MODE_VS;
         }
-
         //BGM再生
         PlayStageBgm();
     }
@@ -968,6 +1002,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
     {
         stageLevel++;
         stageNo = 1;
+        totalContinueCount = 0;
         ContinueMission();
     }
 
@@ -984,7 +1019,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
         Mission.Update missionUpdate = new Mission.Update();
         missionUpdate.SetApiErrorIngnore();
         missionUpdate.SetRetryCount(5);
-        missionUpdate.Exe(stageLevel, stageNo, continueCount);
+        missionUpdate.Exe(stageLevel, stageNo, totalContinueCount);
 
         //次のステージOPEN
         UserManager.OpenNextMission(stageLevel, stageNo);
@@ -992,17 +1027,23 @@ public class GameController : SingletonMonoBehaviour<GameController>
         //次のステージチェック
         if (!Common.Mission.stageNpcNoDic.ContainsKey(stageNo + 1)) return false;
         stageNo++;
-        ResetWinMark();
+        //ResetWinMark();
+        ResetVs();
         continueCount = 0;
         SetStatus();
 
         return true;
     }
 
+    //VSリセット
+    private void ResetVs()
+    {
+        isVsStart = false;
+    }
+
     //勝敗リセット
     private void ResetWinMark()
     {
-        Debug.Log("ResetWinMark");
         winCount = 0;
         loseCount = 0;
         myStatus.ResetWinMark();
@@ -1025,8 +1066,6 @@ public class GameController : SingletonMonoBehaviour<GameController>
         }
         else
         {
-            winCount = 0;
-            loseCount = 0;
             ResetWinMark();
             StageSetting();
             isContinue = true;
@@ -1037,6 +1076,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
     public void ContinueVs()
     {
         isContinue = true;
+        ResetDamageSource();
     }
 
     //結果ダイアログ表示
@@ -1082,7 +1122,20 @@ public class GameController : SingletonMonoBehaviour<GameController>
         {
             NpcSpawn(stageNo);
         }
+        ResetDamageSource();
+    }
 
+    //VS準備
+    private void VsSetting()
+    {
+        if (myTran == null) PlayerSpawn();
+        ResetDamageSource();
+    }
+
+
+    //ダメージソースリセット
+    private void ResetDamageSource()
+    {
         isResultCheck = false;
         resultCanvas.SetActive(false);
         damageSourceMine = new Dictionary<string, int>();
@@ -1208,7 +1261,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
     }
     public void Pause()
     {
-        if (gameMode == GAME_MODE_VS || isGameStart == false)
+        if (gameMode == GAME_MODE_VS || !isGameStart || isGameEnd)
         {
             //一時停止禁止
             return;

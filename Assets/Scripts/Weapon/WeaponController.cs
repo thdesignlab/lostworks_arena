@@ -69,7 +69,7 @@ public class WeaponController : Photon.MonoBehaviour
 
         myTran = transform;
         audioCtrl = myTran.GetComponent<AudioController>();
-        string weaponName = myTran.name;
+        //string weaponName = myTran.name;
 
         //Bit用
         foreach (Transform child in myTran)

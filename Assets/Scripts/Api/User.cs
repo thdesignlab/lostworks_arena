@@ -23,9 +23,9 @@ namespace User
             if (UserManager.userInfo[Common.PP.INFO_USER_NAME] != data.user_name
                 || UserManager.userSetCharacter != data.character_id)
             {
-                Update update = new Update();
-                update.SetApiErrorIngnore();
-                update.Exe();
+                Update userUpdate = new Update();
+                userUpdate.SetApiErrorIngnore();
+                userUpdate.Exe();
             }
         }
     }
@@ -75,7 +75,17 @@ namespace User
             //実行
             Post<GetResponse>(paramJson);
         }
+        protected override void FinishCallback(string json)
+        {
+            GetResponse data = GetData<GetResponse>(json);
+
+            //名前とかチェック
+            UserManager.userInfo[Common.PP.INFO_USER_ID] = data.user_id.ToString();
+            UserManager.userInfo[Common.PP.INFO_USER_NAME] = data.user_name;
+            UserManager.userSetCharacter = data.character_id;
+        }
     }
+
 
     [Serializable]
     public class GetResponse
