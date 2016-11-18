@@ -571,7 +571,8 @@ namespace Common
             { 1006, new string[]{ "Stinger", "", "", OBTAIN_TYPE_INIT}},
             { 1007, new string[]{ "TridentPillar", "", "", OBTAIN_TYPE_INIT}},
             { 1008, new string[]{ "FlameRadiation", "", "", OBTAIN_TYPE_STORE}},
-            { 1009, new string[]{ "heartGun", "", "[ライフル]", OBTAIN_TYPE_INIT}},
+            { 1009, new string[]{ "heartGun", "", "", OBTAIN_TYPE_INIT}},
+            { 1010, new string[]{ "Human", "", "", OBTAIN_TYPE_INIT}},
         };
         //ハンド武器(ダッシュ)リスト
         public static Dictionary<int, string[]> handDashWeaponLineUp = new Dictionary<int, string[]>()
