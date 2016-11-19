@@ -10,6 +10,11 @@ namespace Common
         public const string APP_NAME_IOS = "";
         public const string APP_NAME_ANDROID = "com.ThDesignLab";
 
+        //HP
+        public const string HP_URL = "http://lostworks.th-designlab.com/";
+
+        public const string HP_TUTORIAL_URL = HP_URL + "arena/howtoplay";
+
         //シーン名
         public const string SCENE_TITLE = "Title";
         public const string SCENE_BATTLE = "Battle";
