@@ -589,7 +589,7 @@ public class PhotonManager : MonoBehaviour
 
     public void OnCreatedRoom()
     {
-        Debug.Log("OnCreatedRoom");
+        //Debug.Log("OnCreatedRoom");
         ScreenManager.Instance.Load(moveScene);
     }
 

@@ -72,12 +72,13 @@ public class CustomManager : Photon.MonoBehaviour
     //private bool isSelectedParts = false;
     private int selectedPartsNo = -1;
     private float selectModeTime = 0.2f;
-    private Vector3 startWeaponListPos;
-    private Vector3 lastWeaponListPos;
-    private Vector3 startWeaponDetailPos;
-    private Vector3 lastWeaponDetailPos;
+    //private Vector3 startWeaponListPos;
+    //private Vector3 lastWeaponListPos;
+    //private Vector3 startWeaponDetailPos;
+    //private Vector3 lastWeaponDetailPos;
 
     //武器セレクトエリア
+    private bool isOpenWeaponCanvas = false;
     private ScrollRect weaponScrollView;
     private LayoutElement weaponScrollViewLayout;
     private RectTransform weaponButtonAreaRectTran;
@@ -122,10 +123,10 @@ public class CustomManager : Photon.MonoBehaviour
     void Awake()
     {
         //UI初期設定
-        startWeaponListPos = weaponSelectArea.localPosition;
-        lastWeaponListPos = startWeaponListPos + Vector3.right * weaponSelectArea.rect.width;
-        startWeaponDetailPos = weaponDetailArea.localPosition;
-        lastWeaponDetailPos = startWeaponDetailPos + Vector3.left * weaponDetailArea.rect.width;
+        //startWeaponListPos = weaponSelectArea.localPosition;
+        //lastWeaponListPos = startWeaponListPos + Vector3.right * weaponSelectArea.rect.width;
+        //startWeaponDetailPos = weaponDetailArea.localPosition;
+        //lastWeaponDetailPos = startWeaponDetailPos + Vector3.left * weaponDetailArea.rect.width;
 
         //武器リストエリア取得
         Transform weaponScrollViewTran = weaponSelectArea.FindChild("ScrollView");
@@ -587,6 +588,12 @@ public class CustomManager : Photon.MonoBehaviour
     private void OpenWeaponList()
     {
         //Debug.Log("OpenWeaponList");
+        if (isOpenWeaponCanvas)
+        {
+            weaponSelectArea.localPosition += weaponSelectArea.rect.width * Vector3.left;
+            weaponDetailArea.localPosition += weaponDetailArea.rect.width * Vector3.right;
+            isOpenWeaponCanvas = false;
+        }
 
         //武器リスト初期化
         initWeaponList();
@@ -618,11 +625,10 @@ public class CustomManager : Photon.MonoBehaviour
         float dispWeaponCount = weaponNoList.Count;
         if (dispWeaponCount > maxWeaponButtonCount) dispWeaponCount = maxWeaponButtonCount - 0.5f;
         weaponScrollViewLayout.preferredHeight = dispWeaponCount * buttonHeight;
-        weaponButtonAreaRectTran.sizeDelta = new Vector2(weaponButtonAreaRectTran.rect.width, weaponNoList.Count * buttonHeight);
+        //weaponButtonAreaRectTran.sizeDelta = new Vector2(weaponButtonAreaRectTran.rect.width, weaponNoList.Count * buttonHeight);
 
         //エリア移動
-        StartCoroutine(MoveObject(weaponSelectArea, startWeaponListPos, lastWeaponListPos, selectModeTime));
-        StartCoroutine(MoveObject(weaponDetailArea, startWeaponDetailPos, lastWeaponDetailPos, selectModeTime));
+        StartCoroutine(MoveWeaponArea(true));
     }
 
     //武器選択エリア初期
@@ -655,21 +661,12 @@ public class CustomManager : Photon.MonoBehaviour
         {
             weaponObj = (GameObject)Resources.Load(Common.Func.GetResourceWeapon(weaponInfo[Common.Weapon.DETAIL_PREFAB_NAME_NO]));
         }
-        
-        //string detailDescription = weaponObj.GetComponent<WeaponController>().GetDescriptionText();
-        //if (detailDescription != "")
-        //{
-        //    if (weaponDescriptionText.text != "") weaponDescriptionText.text += "\n";
-        //    weaponDescriptionText.text += detailDescription;
-        //}
     }
 
     //武器選択リストクローズ
     private void CloseWeaponList()
     {
-        //Debug.Log("CloseWeaponList");
-        StartCoroutine(MoveObject(weaponSelectArea, lastWeaponListPos, startWeaponListPos, selectModeTime));
-        StartCoroutine(MoveObject(weaponDetailArea, lastWeaponDetailPos, startWeaponDetailPos, selectModeTime));
+        StartCoroutine(MoveWeaponArea(false));
     }
 
     //キャラ切り替え
@@ -720,10 +717,36 @@ public class CustomManager : Photon.MonoBehaviour
         SpawnCharacter();
     }
 
-    //UI移動制御
-    IEnumerator MoveObject(RectTransform rectTran, Vector3 startVector, Vector3 lastVector, float time)
+    private bool isMoveWeaponArea = false;
+    IEnumerator MoveWeaponArea(bool isOpen)
     {
-        isTurnTable = true;
+        if (isMoveWeaponArea) yield break;
+        isMoveWeaponArea = true;
+
+        Vector3 weaponMoveDirection = isOpen ? Vector3.right : Vector3.left;
+        Vector3 descriptionMoveDirection = isOpen ? Vector3.left : Vector3.right;
+        Coroutine weapon = StartCoroutine(MoveObject(weaponSelectArea, weaponSelectArea.rect.width * weaponMoveDirection, selectModeTime));
+        Coroutine description = StartCoroutine(MoveObject(weaponDetailArea, weaponDetailArea.rect.width * descriptionMoveDirection, selectModeTime));
+
+        yield return weapon;
+        yield return description;
+
+        isOpenWeaponCanvas = isOpen;
+        isMoveWeaponArea = false;
+    }
+
+    //UI移動制御
+    IEnumerator MoveObject(RectTransform rectTran, Vector3 diffVector, float time)
+    {
+        for (;;)
+        {
+            if (!isTurnTable) break;
+            yield return null;
+        }
+
+        Vector3 startVector = rectTran.localPosition;
+        Vector3 lastVector = rectTran.localPosition + diffVector;
+
         float totalTime = 0;
         for (;;)
         {
@@ -734,14 +757,18 @@ public class CustomManager : Photon.MonoBehaviour
             yield return null;
         }
         rectTran.localPosition = lastVector;
-        isTurnTable = false;
     }
 
     //キャラテーブル移動制御
     IEnumerator TurnCharaTable(float angle, float time, bool isArrowActive)
     {
-        Quaternion startQuat = charaTable.localRotation;
+        for (;;)
+        {
+            if (!isTurnTable) break;
+            yield return null;
+        }
         isTurnTable = true;
+        Quaternion startQuat = charaTable.localRotation;
         charaLeftArrow.SetActive(false);
         charaRightArrow.SetActive(false);
         float totalTime = 0;
