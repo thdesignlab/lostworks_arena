@@ -953,6 +953,7 @@ MonoBehaviour:
   effectSpawn: {fileID: 184720, guid: 82b912ace74f847418e0246912ccc7e9, type: 2}
   activeLimitTime: 0
   activeLimitDistance: 0
+  isNotAutoBreak: 1
 --- !u!114 &11451846
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1106,12 +1107,12 @@ MonoBehaviour:
   boostCost: 100
   invincibleTime: 0.3
   shield: {fileID: 111904}
-  hitEffect: {fileID: 0}
   stuckEffect: {fileID: 183306}
   voiceManager: {fileID: 0}
   userId: -1
   userName: 
   battleRate: 0
+  isReadyBattle: 0
 --- !u!114 &11460654
 MonoBehaviour:
   m_ObjectHideFlags: 1

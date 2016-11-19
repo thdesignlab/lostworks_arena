@@ -17,7 +17,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
     public float turnSpeed;         //通常時旋回スピード
     public float boostTurnSpeed;    //ターゲット時旋回スピード
     public float attackRate = 100;    //攻撃力
-    //public float defenceRate = 100;    //防御力
+    public float defenceRate = 100;    //防御力
 
     //HP
     [SerializeField]
@@ -364,6 +364,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
 
         if (isForceInvincible) return false;
 
+        //無敵時間判定
         if (leftInvincibleTime > 0)
         {
             if (shield != null)
@@ -371,6 +372,12 @@ public class PlayerStatus : Photon.MonoBehaviour {
                 photonView.RPC("OpenShieldRPC", PhotonTargets.All, shieldTime);
             }
             return false;
+        }
+
+        //防御力考慮
+        if (defenceRate > 0 && defenceRate != 100)
+        {
+            damage = (int)Mathf.Ceil(damage * defenceRate / 100);
         }
 
         //ダメージ
@@ -730,7 +737,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
             if (isSendRpc)
             {
                 object[] args = new object[] { rate, limit, effect };
-                photonView.RPC("AccelerateRunSpeedRPC", PhotonTargets.Others, args);
+                photonView.RPC("ChangeAttackRateRPC", PhotonTargets.Others, args);
             }
         }
         return true;
@@ -750,6 +757,42 @@ public class PlayerStatus : Photon.MonoBehaviour {
         yield return new WaitForSeconds(limit);
         SwitchEffect(effect, false);
         attackRate -= changeValue;
+    }
+
+    //防御力
+    public bool ChangeDefRate(float rate, float limit, GameObject effect = null, bool isSendRpc = true)
+    {
+        if (photonView.isMine)
+        {
+            StartCoroutine(ChangeDefRateProc(rate, limit, effect));
+        }
+        else
+        {
+            if (isSendRpc)
+            {
+                object[] args = new object[] { rate, limit, effect };
+                photonView.RPC("ChangeDefRateRPC", PhotonTargets.Others, args);
+            }
+        }
+        return true;
+    }
+
+    [PunRPC]
+    public void ChangeDefRateRPC(float rate, float limit, GameObject effect = null)
+    {
+        ChangeDefRate(rate, limit, effect, false);
+    }
+
+    IEnumerator ChangeDefRateProc(float rate, float limit, GameObject effect = null)
+    {
+        if (rate <= 0) yield break;
+        rate = 1 / rate;
+        int changeValue = (int)(defenceRate * rate - defenceRate);
+        defenceRate += changeValue;
+        SwitchEffect(effect, true);
+        yield return new WaitForSeconds(limit);
+        SwitchEffect(effect, false);
+        defenceRate -= changeValue;
     }
 
     //移動速度アップ・ダウン(負の効果優先)

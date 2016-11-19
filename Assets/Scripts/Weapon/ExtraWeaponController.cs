@@ -9,6 +9,8 @@ public class ExtraWeaponController : Photon.MonoBehaviour
     [SerializeField]
     private GameObject extraEffect;
     [SerializeField]
+    private GameObject extraAddWeapon;
+    [SerializeField]
     private float fireTimeInAnim = 1;   //攻撃開始するタイミング(アニメーション経過時間0-1内で指定)
     [SerializeField]
     private int useHpPerCondition = 25;   //Ex武器の場合に指定
@@ -19,6 +21,7 @@ public class ExtraWeaponController : Photon.MonoBehaviour
     private Transform myParentTran;
     private GameObject extraBtn;
     private GameObject menuCanvas;
+    private WeaponController addWeaponCtrl;
 
     private const string TAG_ANIMATION_WAIT = "Wait";
     private const string TAG_ANIMATION_RUN = "Run";
@@ -38,6 +41,7 @@ public class ExtraWeaponController : Photon.MonoBehaviour
         }
         if (extraCam != null) extraCam.SetActive(false);
         if (extraEffect != null) extraEffect.SetActive(false);
+        if (extraAddWeapon != null) addWeaponCtrl = extraAddWeapon.GetComponent<WeaponController>();
     }
 
     void Start()
@@ -91,6 +95,7 @@ public class ExtraWeaponController : Photon.MonoBehaviour
                 {
                     isFire = true;
                     wepCtrl.Fire(targetTran);
+                    AddWeaponFire();
                 }
 
                 //カメラアニメーション終了チェック
@@ -121,6 +126,13 @@ public class ExtraWeaponController : Photon.MonoBehaviour
         playerStatus.SetForceInvincible(false);
 
         isShooting = false;
+    }
+
+    private void AddWeaponFire()
+    {
+        if (addWeaponCtrl == null) return;
+        addWeaponCtrl.SetEnable(true);
+        addWeaponCtrl.Fire();
     }
 
     private void SwitchExtraCamera(bool flg)

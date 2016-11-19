@@ -1,14 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class StatusChangeWeaponController : WeaponController
 {
     [SerializeField]
-    private int effectType;
-    [SerializeField]
     private float effectTime;
+    [SerializeField, TooltipAttribute("1:Atk,2:SP,3:Avd,4:Speed,5:Def")]
+    private List<int> effectTypeList;
     [SerializeField]
-    private float effectRate;
+    private List<float> effectRateList;
     [SerializeField]
     private GameObject effect;
 
@@ -16,6 +17,7 @@ public class StatusChangeWeaponController : WeaponController
     const int EFFECT_RECOVER_SP = 2;
     const int EFFECT_AVOID = 3;
     const int EFFECT_SPEED = 4;
+    const int EFFECT_DEFENCE = 5;
 
     protected override void Awake()
     {
@@ -28,27 +30,39 @@ public class StatusChangeWeaponController : WeaponController
     {
         if (playerStatus == null) return;
 
-        switch (effectType)
+        for (int i = 0; i < effectTypeList.Count; i++)
         {
-            case EFFECT_ATTACK:
-                //攻撃力
-                playerStatus.ChangeAttackRate(effectRate, effectTime, effect);
-                break;
+            int effectType = effectTypeList[i];
+            float effectRate = effectRateList[i];
+            GameObject setEffect = (i == 0) ? effect : null;
 
-            case EFFECT_RECOVER_SP:
-                //SP回復量
-                playerStatus.AccelerateRecoverSp(effectRate, effectTime, effect);
-                break;
+            switch (effectType)
+            {
+                case EFFECT_ATTACK:
+                    //攻撃力
+                    playerStatus.ChangeAttackRate(effectRate, effectTime, setEffect);
+                    break;
 
-            case EFFECT_AVOID:
-                //回避時間
-                playerStatus.AvoidBurst(effectRate, effectTime, effect);
-                break;
+                case EFFECT_RECOVER_SP:
+                    //SP回復量
+                    playerStatus.AccelerateRecoverSp(effectRate, effectTime, setEffect);
+                    break;
 
-            case EFFECT_SPEED:
-                //移動速度
-                playerStatus.AccelerateRunSpeed(effectRate, effectTime, effect);
-                break;
+                case EFFECT_AVOID:
+                    //回避時間
+                    playerStatus.AvoidBurst(effectRate, effectTime, setEffect);
+                    break;
+
+                case EFFECT_SPEED:
+                    //移動速度
+                    playerStatus.AccelerateRunSpeed(effectRate, effectTime, setEffect);
+                    break;
+
+                case EFFECT_DEFENCE:
+                    //防御力
+                    playerStatus.ChangeDefRate(effectRate, effectTime, setEffect);
+                    break;
+            }
         }
 
         base.StartReload(effectTime);

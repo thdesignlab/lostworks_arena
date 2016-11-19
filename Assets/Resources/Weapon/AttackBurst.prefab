@@ -101,9 +101,10 @@ MonoBehaviour:
   bitMoveTime: 0
   isBitFixed: 0
   reloadTime: 30
-  effectType: 1
   effectTime: 15
-  effectRate: 1.1
+  effectTypeList: 01000000
+  effectRateList:
+  - 1.1
   effect: {fileID: 147488}
 --- !u!198 &19840180
 ParticleSystem:
@@ -1594,7 +1595,7 @@ ParticleSystemRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_Materials:
-  - {fileID: 2100000, guid: db20822e62dc0f045a44122dd569d73e, type: 2}
+  - {fileID: 2100000, guid: 56b030be8ad54014484d5520f38d8b9d, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 1

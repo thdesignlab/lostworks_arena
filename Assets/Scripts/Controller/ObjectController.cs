@@ -10,6 +10,8 @@ public class ObjectController : Photon.MonoBehaviour {
     private float activeLimitTime = 0;
     [SerializeField]
     private float activeLimitDistance = 0;
+    [SerializeField]
+    private bool isNotAutoBreak = false;
 
     private Transform myTran;
     private Transform ownerTran;
@@ -21,14 +23,9 @@ public class ObjectController : Photon.MonoBehaviour {
 
         if (photonView.isMine)
         {
-            if (activeLimitTime > 0)
-            {
-                StartCoroutine(CountDown());
-            }
-            if (activeLimitDistance > 0)
-            {
-                StartCoroutine(CheckDistance());
-            }
+            if (activeLimitTime == 0 && !isNotAutoBreak) activeLimitTime = 15;
+            if (activeLimitTime > 0) StartCoroutine(CountDown());
+            if (activeLimitDistance > 0) StartCoroutine(CheckDistance());
         }
     }
 

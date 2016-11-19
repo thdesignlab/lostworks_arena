@@ -131,9 +131,10 @@ MonoBehaviour:
   bitMoveTime: 0
   isBitFixed: 0
   reloadTime: 30
-  effectType: 3
   effectTime: 15
-  effectRate: 2
+  effectTypeList: 03000000
+  effectRateList:
+  - 1.3
   effect: {fileID: 192866}
 --- !u!114 &11487280
 MonoBehaviour:

@@ -116,7 +116,6 @@ public class GameController : SingletonMonoBehaviour<GameController>
         //RoomKey取得
         ModelManager.roomData = new RoomData();
         ModelManager.roomData.room_key = PhotonNetwork.room.name;
-        Debug.Log(PhotonNetwork.room.name);
 
         Init();
         CheckMode();

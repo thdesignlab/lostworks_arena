@@ -615,6 +615,7 @@ namespace Common
             { 5002, new string[]{ "BoostRecoverSp", "", "", OBTAIN_TYPE_INIT}},
             { 5003, new string[]{ "SpeedBurst", "", "", OBTAIN_TYPE_INIT}},
             { 5004, new string[]{ "AttackBurst", "", "", OBTAIN_TYPE_INIT}},
+            { 5005, new string[]{ "DefenceBurst", "", "", OBTAIN_TYPE_INIT}},
         };
         //スペシャル武器リスト
         public static Dictionary<int, string[]> extraWeaponLineUp = new Dictionary<int, string[]>()
