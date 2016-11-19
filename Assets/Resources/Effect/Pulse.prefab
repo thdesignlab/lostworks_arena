@@ -20,7 +20,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &452590
 Transform:
   m_ObjectHideFlags: 1
@@ -76,6 +76,7 @@ MonoBehaviour:
   isPhysicsBulletBreak: 1
   isEnergyBulletBreak: 1
   ownDamageRate: 0
+  isFloorEffect: 0
 --- !u!114 &11492074
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -90,6 +91,7 @@ MonoBehaviour:
   effectSpawn: {fileID: 0}
   activeLimitTime: 1
   activeLimitDistance: 0
+  isNotAutoBreak: 0
 --- !u!135 &13549208
 SphereCollider:
   m_ObjectHideFlags: 1

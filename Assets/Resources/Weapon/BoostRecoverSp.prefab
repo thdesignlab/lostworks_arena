@@ -25,6 +25,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 441012}
+  - 114: {fileID: 11440940}
   m_Layer: 0
   m_Name: Effect
   m_TagString: Untagged
@@ -42,6 +43,7 @@ GameObject:
   - 4: {fileID: 454792}
   - 114: {fileID: 11485404}
   - 114: {fileID: 11449352}
+  - 114: {fileID: 11488284}
   m_Layer: 0
   m_Name: BoostRecoverSp
   m_TagString: Weapon
@@ -90,6 +92,31 @@ Transform:
   - {fileID: 441012}
   m_Father: {fileID: 0}
   m_RootOrder: 0
+--- !u!114 &11440940
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 131184}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ownerId: 0
+  group: 0
+  prefixBackup: -1
+  observed: {fileID: 0}
+  synchronization: 0
+  onSerializeTransformOption: 3
+  onSerializeRigidBodyOption: 2
+  ownershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 0}
+  ObservedComponentsFoldoutOpen: 1
+  viewIdField: 3
+  instantiationId: 3
+  isRuntimeInstantiated: 0
 --- !u!114 &11449352
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -101,10 +128,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 125673325fb8d414bbba101f7366ea31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bitMotionType: 0
-  bitMoveTime: 0
-  isBitFixed: 0
-  reloadTime: 30
   effectTime: 15
   effectTypeList: 02000000
   effectRateList:
@@ -132,9 +155,24 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 0}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 0
-  instantiationId: -1
+  viewIdField: 2
+  instantiationId: 2
   isRuntimeInstantiated: 0
+--- !u!114 &11488284
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 137690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 024b35b71e42c264ba019ee789d44298, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bitMotionType: 0
+  bitMoveTime: 0
+  isBitFixed: 0
+  reloadTime: 30
 --- !u!198 &19839236
 ParticleSystem:
   m_ObjectHideFlags: 1
@@ -353,7 +391,7 @@ ParticleSystem:
         rgba: 4294967295
       minMaxState: 0
     startSize:
-      scalar: 0.7
+      scalar: 0.8
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -369,7 +407,7 @@ ParticleSystem:
         serializedVersion: 2
         m_Curve:
         - time: 0
-          value: 0.2857143
+          value: 0.375
           inSlope: 0
           outSlope: 0
           tangentMode: 0

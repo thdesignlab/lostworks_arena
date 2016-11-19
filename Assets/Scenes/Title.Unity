@@ -4044,7 +4044,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   configCanvas: {fileID: 1529502954}
-  helpCanvas: {fileID: 0}
   mixer: {fileID: 24100000, guid: 4817c32da9beaeb43b7c44b180d41730, type: 2}
   seAudio: {fileID: 1950078154}
   voiceAudio: {fileID: 257386237}
@@ -4813,38 +4812,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 9
       objectReference: {fileID: 0}
-    - target: {fileID: 11404498, guid: b7480a9deaf5b414480b560e083388d8, type: 2}
-      propertyPath: audioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: 6e9be84590ed2f547bf16efcdc27275f, type: 3}
-    - target: {fileID: 11427632, guid: b7480a9deaf5b414480b560e083388d8, type: 2}
-      propertyPath: audioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: ec4ac23ceb2551846b50fd9404d54658, type: 3}
-    - target: {fileID: 11422088, guid: b7480a9deaf5b414480b560e083388d8, type: 2}
-      propertyPath: audioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: 2272515ef9be1b24ba079db21244b5d2, type: 3}
-    - target: {fileID: 11436192, guid: b7480a9deaf5b414480b560e083388d8, type: 2}
-      propertyPath: audioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: d8bc1485967dc234594894d1a5ca909d, type: 3}
-    - target: {fileID: 11440988, guid: b7480a9deaf5b414480b560e083388d8, type: 2}
-      propertyPath: audioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: 34ab08e42d37e7f4baafc531d406bb10, type: 3}
-    - target: {fileID: 11468016, guid: b7480a9deaf5b414480b560e083388d8, type: 2}
-      propertyPath: audioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: 9e0b148e44b850d46a2c45cf3ecaeef7, type: 3}
-    - target: {fileID: 11400296, guid: b7480a9deaf5b414480b560e083388d8, type: 2}
-      propertyPath: audioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: 442dbdfad72477040a1a1232c300c2ff, type: 3}
-    - target: {fileID: 11447158, guid: b7480a9deaf5b414480b560e083388d8, type: 2}
-      propertyPath: audioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: 7f6f46d1f75397f4594e6ac19ce284a9, type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b7480a9deaf5b414480b560e083388d8, type: 2}
   m_IsPrefabParent: 0

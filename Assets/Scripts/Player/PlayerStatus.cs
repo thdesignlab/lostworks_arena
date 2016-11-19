@@ -99,6 +99,9 @@ public class PlayerStatus : Photon.MonoBehaviour {
     //スタックエフェクト
     [SerializeField]
     private GameObject stuckEffect;
+    //デバフエフェクト
+    [SerializeField]
+    private GameObject debuffEffect;
 
     //勝数マーク
     private const string TAG_WIN_MARK_MINE = "WinMarkMine";
@@ -995,6 +998,10 @@ public class PlayerStatus : Photon.MonoBehaviour {
         Transform effect = pv.transform.FindChild(effectName);
         if (effect == null) return;
         effect.gameObject.SetActive(flg);
+    }
+    public GameObject GetDebuffEffect()
+    {
+        return debuffEffect;
     }
 
     public void ResetWinMark()

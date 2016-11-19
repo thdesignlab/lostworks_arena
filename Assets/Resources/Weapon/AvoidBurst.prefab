@@ -10,6 +10,7 @@ GameObject:
   - 4: {fileID: 441408}
   - 114: {fileID: 11487280}
   - 114: {fileID: 11469510}
+  - 114: {fileID: 11412370}
   m_Layer: 0
   m_Name: AvoidBurst
   m_TagString: Weapon
@@ -91,6 +92,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 467946}
   m_RootOrder: 0
+--- !u!114 &11412370
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 112988}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 024b35b71e42c264ba019ee789d44298, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bitMotionType: 0
+  bitMoveTime: 0
+  isBitFixed: 0
+  reloadTime: 30
 --- !u!114 &11465658
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -113,8 +129,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 0}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 0
-  instantiationId: -1
+  viewIdField: 2
+  instantiationId: 2
   isRuntimeInstantiated: 0
 --- !u!114 &11469510
 MonoBehaviour:
@@ -127,10 +143,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 125673325fb8d414bbba101f7366ea31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bitMotionType: 0
-  bitMoveTime: 0
-  isBitFixed: 0
-  reloadTime: 30
   effectTime: 15
   effectTypeList: 03000000
   effectRateList:
@@ -158,8 +170,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 0}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 0
-  instantiationId: -1
+  viewIdField: 3
+  instantiationId: 3
   isRuntimeInstantiated: 0
 --- !u!198 &19802724
 ParticleSystem:
@@ -369,7 +381,7 @@ ParticleSystem:
         rgba: 4294967295
       minMaxState: 0
     startSize:
-      scalar: 0.3
+      scalar: 0.4
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -385,7 +397,7 @@ ParticleSystem:
         serializedVersion: 2
         m_Curve:
         - time: 0
-          value: 0.6666666
+          value: 0.75
           inSlope: 0
           outSlope: 0
           tangentMode: 0

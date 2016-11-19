@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class StatusChangeWeaponController : WeaponController
+public class StatusChangeController : Photon.MonoBehaviour
 {
     [SerializeField]
     private float effectTime;
@@ -19,22 +19,40 @@ public class StatusChangeWeaponController : WeaponController
     const int EFFECT_SPEED = 4;
     const int EFFECT_DEFENCE = 5;
 
-    protected override void Awake()
-    {
-        base.Awake();
+    //次の効果適用までの必要時間
+    private float leftTime = 0;
 
+    void Awake()
+    {
         if (effect != null) effect.SetActive(false);
     }
 
-    protected override void Action()
+    void Update()
+    {
+        if (leftTime >= 0) return;
+        leftTime -= Time.deltaTime;
+    }
+
+    public void Action(PlayerStatus playerStatus)
     {
         if (playerStatus == null) return;
+        if (leftTime > 0) return;
+
+        leftTime = effectTime;
 
         for (int i = 0; i < effectTypeList.Count; i++)
         {
             int effectType = effectTypeList[i];
             float effectRate = effectRateList[i];
-            GameObject setEffect = (i == 0) ? effect : null;
+            GameObject setEffect = effect;
+            if (i > 0)
+            {
+                setEffect = null;
+            }
+            else if (effectRate < 1)
+            {
+                setEffect = playerStatus.GetDebuffEffect();
+            }
 
             switch (effectType)
             {
@@ -64,7 +82,10 @@ public class StatusChangeWeaponController : WeaponController
                     break;
             }
         }
+    }
 
-        base.StartReload(effectTime);
+    public float GetEffectTime()
+    {
+        return effectTime;
     }
 }
