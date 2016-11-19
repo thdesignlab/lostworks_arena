@@ -43,16 +43,20 @@ public class DialogController : MonoBehaviour
     public const string MESSAGE_JOIN_ROOM = "Join Room";
     public const string MESSAGE_SEARCH_ROOM = "Search Room";
 
-    private static string MESSAGE_IMAGE_PARENT = "LoadMessage";
+    private static string MESSAGE_IMAGE_PARENT = "Image/Message/";
+    private static string MESSAGE_IMAGE_TOP = "taptostart";
+    private static string MESSAGE_IMAGE_LOADING = "nowloading";
+    private static string MESSAGE_IMAGE_CONNECTING = "connecting";
     private static Dictionary<string, string> messageImgNameDic = new Dictionary<string, string>()
     {
-        { MESSAGE_TOP, "_1" },
-        { MESSAGE_CONNECT, "_0" },
-        { MESSAGE_LOADING, "_2" },
-        { MESSAGE_CREATE_ROOM, "_2" },
-        { MESSAGE_JOIN_ROOM, "_2" },
-        { MESSAGE_SEARCH_ROOM, "_2" },
+        { MESSAGE_TOP, MESSAGE_IMAGE_TOP },
+        { MESSAGE_CONNECT, MESSAGE_IMAGE_CONNECTING },
+        { MESSAGE_LOADING, MESSAGE_IMAGE_LOADING },
+        { MESSAGE_CREATE_ROOM, MESSAGE_IMAGE_LOADING },
+        { MESSAGE_JOIN_ROOM, MESSAGE_IMAGE_LOADING },
+        { MESSAGE_SEARCH_ROOM, MESSAGE_IMAGE_LOADING },
     };
+    private static Dictionary<string, Sprite> messageImgDic = null;
 
     //ボタン
     const string BUTTON_OK_TEXT = "OK";
@@ -190,15 +194,27 @@ public class DialogController : MonoBehaviour
         if (messageObj == null) return;
         Destroy(messageObj);
     }
-    
+
     private static Sprite GetMessageImage(string text)
     {
+        if (messageImgDic == null)
+        {
+            Sprite[] messageImgs = Resources.LoadAll<Sprite>(MESSAGE_IMAGE_PARENT);
+            messageImgDic = new Dictionary<string, Sprite>();
+            foreach (Sprite img in messageImgs)
+            {
+                messageImgDic.Add(img.name, img);
+            }
+        }
+
         Sprite image = null;
         if (messageImgNameDic.ContainsKey(text))
-        {
-            string imageName = MESSAGE_IMAGE_PARENT + messageImgNameDic[text];
-            Sprite[] sprites = Resources.LoadAll<Sprite>(Common.Func.GetResourceSprite(MESSAGE_IMAGE_PARENT));
-            image = System.Array.Find<Sprite>(sprites, (sprite) => sprite.name.Equals(imageName));
+        { 
+            string imageName = messageImgNameDic[text];
+            if (messageImgDic.ContainsKey(imageName))
+            {
+                image = messageImgDic[imageName];
+            }
         }
         return image;
     }
