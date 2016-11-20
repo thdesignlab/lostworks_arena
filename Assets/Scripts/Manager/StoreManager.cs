@@ -21,10 +21,10 @@ public class StoreManager : SingletonMonoBehaviour<StoreManager>
     [SerializeField]
     private Object storeWeaponObj;
     [SerializeField]
-    private Sprite weaponBuyImage;
-    [SerializeField]
-    private Sprite weaponCustomImage;
+    private Object storeCustomObj;
 
+    [SerializeField]
+    private Color closeFontColor = new Color(0, 255, 223);
     [SerializeField]
     private Color normalFontColor = new Color(0, 255, 223);
     [SerializeField]
@@ -38,6 +38,9 @@ public class StoreManager : SingletonMonoBehaviour<StoreManager>
     const int MODE_WEAPON_BUY = 1;
     const int MODE_WEAPON_CUSTOM = 2;
     const int MODE_MUSIC = 3;
+
+    private int PlayingMusicIndex = -1;
+    const int NEED_MUSIC_POINT = 100;
 
     //point >> rate
     private Dictionary<int, int> pointTable = new Dictionary<int, int>()
@@ -210,7 +213,6 @@ public class StoreManager : SingletonMonoBehaviour<StoreManager>
             rowTran.FindChild("TypeName").GetComponent<Text>().text = Common.Weapon.GetWeaponTypeName(weaponNo);
             rowTran.FindChild("Description").GetComponent<Text>().text = weaponInfo[Common.Weapon.DETAIL_DESCRIPTION_NO];
             rowTran.FindChild("NeedPoint").GetComponent<Text>().text = Common.Weapon.GetStoreNeedPoint(weaponNo).ToString();
-            rowTran.FindChild("Button").GetComponent<Image>().sprite = weaponBuyImage;
             int param = weaponNo;
             rowTran.GetComponent<Button>().onClick.AddListener(() => WeaponBuy(param));
             rowTran.SetParent(storeWeaponContent, false);
@@ -313,13 +315,12 @@ public class StoreManager : SingletonMonoBehaviour<StoreManager>
                 //OPENチェック
                 if (!WeaponStore.Instance.IsEnabledEquip(weaponNo, true, weaponInfo)) continue;
 
-                GameObject row = (GameObject)Instantiate(storeWeaponObj);
+                GameObject row = (GameObject)Instantiate(storeCustomObj);
                 Transform rowTran = row.transform;
                 rowTran.FindChild("WeaponName").GetComponent<Text>().text = Common.Weapon.GetWeaponName(weaponNo);
                 rowTran.FindChild("TypeName").GetComponent<Text>().text = Common.Weapon.GetWeaponTypeName(weaponNo);
                 rowTran.FindChild("Description").GetComponent<Text>().text = weaponInfo[Common.Weapon.DETAIL_DESCRIPTION_NO];
                 rowTran.FindChild("NeedPoint").GetComponent<Text>().text = Common.Weapon.GetStoreNeedPoint(weaponNo).ToString();
-                rowTran.FindChild("Button").GetComponent<Image>().sprite = weaponCustomImage;
                 int param = weaponNo;
                 rowTran.GetComponent<Button>().onClick.AddListener(() => WeaponCustom(param));
                 rowTran.SetParent(weaponCustomContent, false);
@@ -388,10 +389,10 @@ public class StoreManager : SingletonMonoBehaviour<StoreManager>
     }
 
 
-    //##### 音楽購入 #####
+    //##### BGM #####
 
 
-    //購入可能音楽リスト表示
+    //購入可能BGMリスト表示
     public void DispStoreMusicList()
     {
         DialogController.OpenMessage(DialogController.MESSAGE_LOADING, DialogController.MESSAGE_POSITION_RIGHT);
@@ -400,9 +401,9 @@ public class StoreManager : SingletonMonoBehaviour<StoreManager>
 
         Transform storeMusicContent = MusicGetList.FindChild("View/Content");
 
-        //再生中BGM名
-        string playingBgmName = "";
-        if (PlayingText != null) playingBgmName = PlayingText.text;
+        ////再生中BGM名
+        //string playingBgmName = "";
+        //if (PlayingText != null) playingBgmName = PlayingText.text;
 
         //リストクリア
         foreach (Transform child in storeMusicContent)
@@ -412,33 +413,59 @@ public class StoreManager : SingletonMonoBehaviour<StoreManager>
 
         //音楽リスト
         List<BgmManager> battleBgmList = SoundManager.Instance.GetBattleBgmList();
-        foreach (BgmManager battleBgm in battleBgmList)
+        for (int i = 0; i < battleBgmList.Count; i++)
         {
-            ////OPENチェック
-            //if (UserManager.userOpenWeapons.IndexOf(weaponNo) >= 0) continue;
-            //string[] weaponInfo = weaponList[weaponNo];
+            int musicIndex = i;
+            BgmManager battleBgm = battleBgmList[musicIndex];
 
+            //OPENチェック
+            bool isOpen = false;
+            if (UserManager.userOpenMusics.IndexOf(musicIndex) >= 0) isOpen = true;
+ 
             GameObject row = (GameObject)Instantiate(storeMusicObj);
             Transform rowTran = row.transform;
             string musicName = battleBgm.GetAudioClipName();
             Text musicText = rowTran.FindChild("Name").GetComponent<Text>();
             musicText.text = musicName;
-            musicText.color = (playingBgmName == musicName) ? playFontColor : normalFontColor;
             BgmManager bgmMgr = battleBgm;
-            rowTran.GetComponent<Button>().onClick.AddListener(() => PlayMusic(rowTran, bgmMgr));
+            if (isOpen)
+            {
+                //再生
+                musicText.color = (PlayingMusicIndex == musicIndex) ? playFontColor : normalFontColor;
+                rowTran.GetComponent<Button>().onClick.AddListener(() => PlayMusic(musicIndex, bgmMgr));
+            }
+            else
+            {
+                //購入
+                musicText.color = closeFontColor;
+                rowTran.GetComponent<Button>().onClick.AddListener(() => BuyMusic(musicIndex, battleBgm));
+            }
             rowTran.SetParent(storeMusicContent, false);
         }
         DialogController.CloseMessage();
     }
 
-    //音楽再生
-    private Text PlayingText;
-    private void PlayMusic(Transform rowTran, BgmManager bgmMgr)
+    //BGM再生
+    private void PlayMusic(int musicIndex, BgmManager bgmMgr)
     {
         UnityAction play = () => {
-            if (PlayingText != null) PlayingText.color = normalFontColor;
-            PlayingText = rowTran.FindChild("Name").GetComponent<Text>();
-            PlayingText.color = playFontColor;
+            Transform storeMusicContent = MusicGetList.FindChild("View/Content");
+            int i = 0;
+            foreach (Transform child in storeMusicContent)
+            {
+                if (PlayingMusicIndex == i)
+                {
+                    //色を通常に戻す
+                    child.GetComponentInChildren<Text>().color = normalFontColor;
+                }
+                if (musicIndex == i)
+                {
+                    //色をプレイ中に変更
+                    child.GetComponentInChildren<Text>().color = playFontColor;
+                }
+                i++;
+            }
+            PlayingMusicIndex = musicIndex;
             bgmMgr.Play();
         };
         if (UserManager.userConfig[Common.PP.CONFIG_BGM_MUTE] == 1)
@@ -456,53 +483,51 @@ public class StoreManager : SingletonMonoBehaviour<StoreManager>
         }
     }
 
-    ////武器購入
-    //public void WeaponBuy(int weaponNo)
-    //{
-    //    int pt = Common.Weapon.GetStoreNeedPoint(weaponNo);
-    //    string weaponName = Common.Weapon.GetWeaponName(weaponNo);
+    //BGM購入
+    public void BuyMusic(int musicIndex, BgmManager battleBgm)
+    {
+        string musicName = battleBgm.GetAudioClipName();
 
-    //    UnityAction buy = () =>
-    //    {
-    //        //point消費
-    //        Weapon.Buy WeaponBuy = new Weapon.Buy();
-    //        WeaponBuy.SetApiFinishCallback(() => WeaponBuyResult(weaponNo));
-    //        WeaponBuy.SetApiFinishErrorCallback(BuyErrorProc);
-    //        WeaponBuy.SetApiErrorIngnore();
-    //        WeaponBuy.Exe(pt, weaponNo);
-    //    };
+        UnityAction buy = () =>
+        {
+            //point消費
+            Point.Use PointUse = new Point.Use();
+            PointUse.SetApiFinishCallback(() => MusicBuyResult(musicIndex));
+            PointUse.SetApiFinishErrorCallback(BuyMusicErrorProc);
+            PointUse.Exe(NEED_MUSIC_POINT, Common.API.POINT_LOG_KIND_MUSIC, musicIndex);
+        };
 
-    //    //確認ダイアログ
-    //    string text = "購入しますか？";
-    //    text += "「" + weaponName + "」";
-    //    text += pt + "pt消費";
-    //    DialogController.OpenDialog(text, buy, true);
-    //}
+        //確認ダイアログ
+        string text = "未開放のBGMです\n解放しますか？\n";
+        text += "「" + musicName + "」\n";
+        text += NEED_MUSIC_POINT + "pt消費";
+        DialogController.OpenDialog(text, buy, true);
+    }
 
-    ////武器購入成功処理
-    //public void WeaponBuyResult(int weaponNo)
-    //{
-    //    //所持ポイント表示
-    //    textPoint.text = UserManager.userPoint.ToString();
+    //BGM購入成功処理
+    public void MusicBuyResult(int musicIndex)
+    {
+        //所持ポイント表示
+        textPoint.text = UserManager.userPoint.ToString();
 
-    //    //武器リスト更新
-    //    UserManager.AddOpenWeapon(weaponNo);
-    //    DispStoreWeaponBuyList();
+        //BGMリスト更新
+        UserManager.AddOpenMusic(musicIndex);
+        DispStoreMusicList();
 
-    //    DialogController.OpenDialog("購入成功!!");
-    //}
+        DialogController.OpenDialog("BGM解放!!");
+    }
 
-    ////武器購入失敗処理
-    //public void BuyErrorProc(string errorCode)
-    //{
-    //    string errorMessage = "購入失敗";
-    //    switch (errorCode)
-    //    {
-    //        case "300000":
-    //            errorMessage += "\nポイントが足りません";
-    //            break;
-    //    }
-    //    DialogController.OpenDialog(errorMessage);
-    //}
+    //BGM購入失敗処理
+    public void BuyMusicErrorProc(string errorCode)
+    {
+        string errorMessage = "BGM解放失敗";
+        switch (errorCode)
+        {
+            case "300000":
+                errorMessage += "\nポイントが足りません";
+                break;
+        }
+        DialogController.OpenDialog(errorMessage);
+    }
 
 }

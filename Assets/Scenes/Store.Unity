@@ -119,8 +119,8 @@ MonoBehaviour:
   WeaponCustomList: {fileID: 2044302890}
   MusicGetList: {fileID: 520813739}
   storeWeaponObj: {fileID: 189172, guid: e066d12eac57a2d48b1f23b9b8f58c66, type: 2}
-  weaponBuyImage: {fileID: 21300000, guid: a2b6853af2af9f342a41d6f6e0862eec, type: 3}
-  weaponCustomImage: {fileID: 21300000, guid: a2b6853af2af9f342a41d6f6e0862eec, type: 3}
+  storeCustomObj: {fileID: 151984, guid: 4c9f95ee2c7f0eb4d95a55d44f2e2927, type: 2}
+  closeFontColor: {r: 0.60294116, g: 0.60294116, b: 0.60294116, a: 1}
   normalFontColor: {r: 0, g: 255, b: 223, a: 1}
   playFontColor: {r: 255, g: 0, b: 152, a: 1}
   storeMusicObj: {fileID: 183480, guid: c82211b6c3495e945ae27539eef851b0, type: 2}
@@ -449,8 +449,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1973764963}
   m_HandleRect: {fileID: 1973764962}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 0
+  m_Value: 0
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

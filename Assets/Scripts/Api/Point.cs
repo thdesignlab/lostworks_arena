@@ -53,10 +53,12 @@ namespace Point
     {
         protected override string uri { get { return "point/used"; } }
 
-        public void Exe(int usePoint)
+        public void Exe(int usePoint, int kind = 0, int no = 0)
         {
-            GetResponse data = new GetResponse();
+            GetRequest data = new GetRequest();
             data.point = usePoint;
+            data.kind = kind;
+            data.no = no;
             string paramJson = JsonUtility.ToJson(data);
 
             //実行

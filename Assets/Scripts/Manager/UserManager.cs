@@ -11,6 +11,7 @@ public class UserManager
     public static List<int> userOpenCharacters;             //開放キャラクター
     public static List<int> userOpenWeapons;                //開放武器
     public static List<int> userOpenMissions;               //開放Mission(level, stage)
+    public static List<int> userOpenMusics;                 //解放BGM
 
     public static bool isAdmin;                     //管理者FLG
     //public static Dictionary<int, int> userResult;  //ユーザー戦歴
@@ -27,6 +28,7 @@ public class UserManager
         userOpenCharacters = new List<int>() { };
         userOpenWeapons = new List<int>() { };
         userOpenMissions = new List<int>() { 2, 1};
+        userOpenMusics = new List<int>() { };
         isAdmin = false;
         //userResult = new Dictionary<int, int>();
         userPoint = 0;
@@ -47,6 +49,7 @@ public class UserManager
         SetUserOpenCharacters();
         SetUserOpenWeapons();
         SetUserOpenMissions();
+        SetUserOpenMusics();
         PlayerPrefs.Save();
     }
 
@@ -302,6 +305,24 @@ public class UserManager
         }
     }
 
+    //◆UserOpenMusics
+    private static void SetUserOpenMusics()
+    {
+        string key = Common.PP.OPEN_MUSICS;
+
+        if (PlayerPrefs.HasKey(key))
+        {
+            //データ取得
+            userOpenMusics = PlayerPrefsUtility.LoadList<int>(key);
+        }
+        else
+        {
+            //保存
+            PlayerPrefsUtility.SaveList<int>(key, userOpenMusics);
+        }
+    }
+
+
     //##### ユーザー情報 #####
 
     //API用情報
@@ -368,6 +389,16 @@ public class UserManager
     {
         userOpenWeapons.Add(weaponNo);
         PlayerPrefsUtility.SaveList<int>(Common.PP.OPEN_WEAPONS, userOpenWeapons);
+        PlayerPrefs.Save();
+    }
+
+
+    //##### 解放BGM #####
+
+    public static void AddOpenMusic(int bgmIndex)
+    {
+        userOpenMusics.Add(bgmIndex);
+        PlayerPrefsUtility.SaveList<int>(Common.PP.OPEN_MUSICS, userOpenMusics);
         PlayerPrefs.Save();
     }
 
