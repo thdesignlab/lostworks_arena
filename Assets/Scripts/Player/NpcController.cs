@@ -8,12 +8,12 @@ public class NpcController : MoveOfCharacter
     private Transform targetTran;
     private Vector3 randomDirection;
 
-    private int targetType = 0;
-    private float walkRadius = 150.0f;  //移動半径
+    private int targetType = 1;
+    private float walkRadius = 200.0f;  //移動半径
     private float stockSpPer = 75;
     private float quickTargetTime = 3;  //対象へクイックターンする時間
-    private float atackIntervalTime;
-    private float boostIntervalTime;
+    private float atackIntervalTime = 0;
+    private float boostIntervalTime = 3;
 
     //private WeaponController[] weapons;
     private List<WeaponController> weapons = new List<WeaponController>();
@@ -22,9 +22,9 @@ public class NpcController : MoveOfCharacter
     private float leftTargetSearch = 0;
     private float quickTurnTime = 0;
     private int preHp = 0;
+    private float preHpPer = 0;
 
     private Vector3 randomMoveTarget = Vector3.zero;
-
 
     //private PlayerMotionController motionCtrl;
     private Animator animator;
@@ -36,6 +36,7 @@ public class NpcController : MoveOfCharacter
         base.Awake();
         status = GetComponent<PlayerStatus>();
         preHp = status.GetNowHp();
+        preHpPer = 100;
         //motionCtrl = GetComponent<PlayerMotionController>();
     }
 
@@ -55,6 +56,32 @@ public class NpcController : MoveOfCharacter
 
         preBoostTime += Time.deltaTime;
         quickTurnTime += Time.deltaTime;
+
+        if (GameController.Instance.isPractice)
+        {
+            float hpPer = status.GetNowHpPer();
+            if (hpPer <= 25 && preHpPer > 25)
+            {
+                boostIntervalTime = 0.5f;
+                status.runSpeed = 40;
+                status.defenceRate = 0.5f;
+                Transform super = myTran.FindChild("Effect/Super");
+                if (super != null) super.gameObject.SetActive(true);
+            }
+            else if (hpPer <= 50 && preHpPer > 50)
+            {
+                boostIntervalTime = 1.0f;
+                status.runSpeed = 35;
+                status.defenceRate = 0.75f;
+            }
+            else if (hpPer <= 75 && preHpPer > 75)
+            {
+                boostIntervalTime = 2.0f;
+                status.runSpeed = 30;
+                status.defenceRate = 1.0f;
+            }
+            preHpPer = hpPer;
+        }
 
         //ランダム移動
         RandomMove();
