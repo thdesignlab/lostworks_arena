@@ -426,8 +426,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effectSpawn: {fileID: 0}
-  activeLimitTime: 8
+  activeLimitTime: 7
   activeLimitDistance: 0
+  isNotAutoBreak: 0
 --- !u!114 &11435420
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -467,7 +468,7 @@ MonoBehaviour:
   isLockOn: 0
   UseGravity: 0
   hitEffect: {fileID: 0}
-  speed: 15
+  speed: 30
   damage: 5
   damagePerSecond: 80
   stuckTime: 0
@@ -478,9 +479,9 @@ MonoBehaviour:
   safetyTime: 0.05
   turnSpeed: 120
   lockStartTime: 0
-  lockedSpeedRate: 2.5
+  lockedSpeedRate: 1
   lockedTurnSpeedRate: 1
-  isNeedLock: 1
+  isNeedLock: 0
   isLockFlat: 1
 --- !u!114 &11443202
 MonoBehaviour:

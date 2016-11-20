@@ -177,7 +177,7 @@ MonoBehaviour:
   UseGravity: 0
   hitEffect: {fileID: 135988, guid: d7cd433d10510fe46a35c39bac480fe1, type: 2}
   speed: 650
-  damage: 30
+  damage: 40
   damagePerSecond: 0
   stuckTime: 0.5
   knockBackRate: 0
@@ -224,6 +224,7 @@ MonoBehaviour:
   effectSpawn: {fileID: 0}
   activeLimitTime: 3
   activeLimitDistance: 0
+  isNotAutoBreak: 0
 --- !u!136 &13665918
 CapsuleCollider:
   m_ObjectHideFlags: 1

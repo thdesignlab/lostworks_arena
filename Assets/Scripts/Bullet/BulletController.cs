@@ -146,7 +146,7 @@ public class BulletController : MoveOfCharacter
         //ダメージ系処理は所有者のみ行う
         if (photonView.isMine)
         {
-            if (hitObj.CompareTag("Player"))
+            if (hitObj.CompareTag("Player") || hitObj.tag == "Target")
             {
                 //プレイヤーステータス
                 PlayerStatus status = targetStatus;
@@ -211,7 +211,7 @@ public class BulletController : MoveOfCharacter
 
             if (addDmg > 0)
             {
-                if (hitObj.CompareTag("Player"))
+                if (hitObj.CompareTag("Player") || hitObj.tag == "Target")
                 {
                     //プレイヤーステータス
                     PlayerStatus status = targetStatus;

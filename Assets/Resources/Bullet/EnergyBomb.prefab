@@ -46,8 +46,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effectSpawn: {fileID: 0}
-  activeLimitTime: 6
+  activeLimitTime: 8
   activeLimitDistance: 0
+  isNotAutoBreak: 0
 --- !u!114 &11453172
 MonoBehaviour:
   m_ObjectHideFlags: 1

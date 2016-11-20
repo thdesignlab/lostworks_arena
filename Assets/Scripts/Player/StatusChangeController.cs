@@ -38,7 +38,7 @@ public class StatusChangeController : Photon.MonoBehaviour
         if (playerStatus == null) return;
         if (leftTime > 0) return;
 
-        leftTime = effectTime;
+        leftTime = effectTime / 2;
 
         for (int i = 0; i < effectTypeList.Count; i++)
         {

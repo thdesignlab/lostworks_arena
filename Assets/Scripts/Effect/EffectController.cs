@@ -42,7 +42,7 @@ public class EffectController : Photon.MonoBehaviour
     {
         if (photonView.isMine)
         {
-            if (otherObj.tag == "Player")
+            if (otherObj.tag == "Player" || otherObj.tag == "Target")
             {
                 int dmg = damage;
                 if (ownerTran == otherObj.transform)
@@ -89,7 +89,7 @@ public class EffectController : Photon.MonoBehaviour
     {
         if (photonView.isMine)
         {
-            if (otherObj.tag == "Player")
+            if (otherObj.tag == "Player" || otherObj.tag == "Target")
             {
                 int dmgPS = damagePerSecond;
                 if (ownerTran == otherObj.transform) dmgPS = (int)(dmgPS * ownDamageRate);

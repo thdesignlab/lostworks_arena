@@ -44,6 +44,9 @@ public class GameController : SingletonMonoBehaviour<GameController>
     [HideInInspector]
     public bool isGameEnd = false;
     private bool isVsStart = false;
+    [HideInInspector]
+    public bool isPractice = false;
+
     private List<PlayerStatus> playerStatuses = new List<PlayerStatus>();
     private PlayerSetting playerSetting;
     private SpriteStudioController spriteStudioCtrl;
@@ -135,7 +138,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
         if (isGameStart)
         {
             battleTime += Time.deltaTime;
-            if (gameMode == GAME_MODE_VS && battleTime > LIMIT_BATTLE_TIME)
+            if (gameMode == GAME_MODE_VS && !isPractice && battleTime > LIMIT_BATTLE_TIME)
             {
                 if (myStatus != null) myStatus.ForceDamage(5);
             }
@@ -737,6 +740,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
     [PunRPC]
     private void CleanNpcRPC()
     {
+        isPractice = false;
         Transform npc = GetNpcTran();
         if (npc != null) StartCoroutine(CleanNpcProc(npc));
     }
@@ -745,7 +749,8 @@ public class GameController : SingletonMonoBehaviour<GameController>
         for (;;)
         {
             if (npc == null) break;
-            npc.GetComponent<PlayerStatus>().AddDamage(99999);
+            Destroy(npc.gameObject);
+            //npc.GetComponent<PlayerStatus>().ForceDamage(99999);
             yield return null;
         }
     }
@@ -1207,6 +1212,31 @@ public class GameController : SingletonMonoBehaviour<GameController>
         GameObject npc = SpawnProcess(npcName);
         NpcController npcCtrl = npc.GetComponent<NpcController>();
         npcCtrl.SetLevel(stageLevel);
+    }
+
+    public void SpawnTargetNpc()
+    {
+        if (gameMode == GAME_MODE_MISSION) return;
+        if (CheckPlayer()) return;
+        CleanNpc();
+
+        GameObject npc = SpawnProcess("TargetNpc");
+        targetTran = npc.transform;
+        SetNpcTran(targetTran);
+        StartCoroutine(StartPractice());
+    }
+    IEnumerator StartPractice()
+    {
+        PlayerStatus npcStatus = targetTran.GetComponent<PlayerStatus>();
+        for (; ;)
+        {
+            if (myStatus == null || npcStatus == null) yield break;
+            if (myStatus.isReadyBattle && npcStatus.isReadyBattle) break;
+            yield return null;
+        }
+        isPractice = true;
+        myStatus.Init();
+        npcStatus.Init();
     }
 
     public void SetDamageSource(int logType, string name, int damage)

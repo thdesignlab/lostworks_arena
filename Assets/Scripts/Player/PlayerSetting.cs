@@ -61,7 +61,7 @@ public class PlayerSetting : Photon.MonoBehaviour
 
                 //NPC名変更
                 charaInfo = Common.Character.GetCharacterInfo(GameController.Instance.npcNo);
-                myTran.name = charaInfo[Common.Character.DETAIL_NAME_NO];
+                myTran.name = charaInfo.Length > 0 ? charaInfo[Common.Character.DETAIL_NAME_NO] : "NPC";
 
                 //メインボディ生成
                 CreateNpcBody();

@@ -51,7 +51,7 @@ public class MenuController : Photon.MonoBehaviour
 
             case GameController.GAME_MODE_VS:
                 isEnabledPause = false;
-                isEnabledCpu = false;
+                isEnabledCpu = true;
                 break;
         }
 
@@ -144,24 +144,10 @@ public class MenuController : Photon.MonoBehaviour
         GameController.Instance.Pause();
     }
 
-    //NPC選択表示切替
-    public void OnNpcSelectButton(bool flg)
-    {
-        npcMenu.SetActive(flg);
-    }
-
     //NPC生成
-    public void OnNpcCreateButton(int charaNo = 0)
+    public void OnCreateNpcButton()
     {
-        if (GameController.Instance.gameMode == GameController.GAME_MODE_MISSION) return;
-
-        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-        if (PhotonNetwork.countOfPlayersInRooms > 1 || players.Length > 1)
-        {
-            return;
-        }
-        GameController.Instance.NpcSpawn(charaNo);
-        OnNpcSelectButton(false);
+        GameController.Instance.SpawnTargetNpc();
     }
 
 

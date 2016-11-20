@@ -341,7 +341,8 @@ MonoBehaviour:
   damagePerSecond: 100
   isPhysicsBulletBreak: 1
   isEnergyBulletBreak: 1
-  ownDamageRate: 0.2
+  ownDamageRate: 0
+  isFloorEffect: 0
   startScale: {x: 5, y: 5, z: 5}
   endScale: {x: 30, y: 30, z: 30}
   scaleTime: 2.5
@@ -387,6 +388,7 @@ MonoBehaviour:
   effectSpawn: {fileID: 163966, guid: 65351d6cc2acb2741b5115144056024d, type: 2}
   activeLimitTime: 3
   activeLimitDistance: 0
+  isNotAutoBreak: 0
 --- !u!135 &13540924
 SphereCollider:
   m_ObjectHideFlags: 1

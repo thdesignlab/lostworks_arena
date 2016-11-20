@@ -48,6 +48,7 @@ MonoBehaviour:
   effectSpawn: {fileID: 0}
   activeLimitTime: 0.7
   activeLimitDistance: 0
+  isNotAutoBreak: 0
 --- !u!114 &11449892
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -84,10 +85,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e612a74990ec7f4da8d009e952dbcdb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damageEffect: {fileID: 0}
   damage: 100
   damagePerSecond: 0
   isPhysicsBulletBreak: 0
   isEnergyBulletBreak: 0
+  ownDamageRate: 1
+  isFloorEffect: 0
 --- !u!135 &13580712
 SphereCollider:
   m_ObjectHideFlags: 1

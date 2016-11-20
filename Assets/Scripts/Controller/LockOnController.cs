@@ -81,7 +81,7 @@ public class LockOnController : Photon.MonoBehaviour
 
         if (status == null || targetMarkRectTran == null)
         {
-            if (!GameController.Instance.isGameStart) return;
+            if (!GameController.Instance.isGameStart && !GameController.Instance.isPractice) return;
 
             CanvasRect = GameObject.FindGameObjectWithTag("PlayerCanvas").GetComponent<RectTransform>();
             GameObject targetObj = Camera.main.transform.FindChild(Common.CO.SCREEN_CANVAS + Common.CO.TARGET_MARK).gameObject;

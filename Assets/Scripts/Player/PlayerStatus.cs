@@ -163,8 +163,8 @@ public class PlayerStatus : Photon.MonoBehaviour {
             isActiveSceane = false;
             return;
         }
-
-        isNpc = GetComponent<PlayerSetting>().isNpc;
+        PlayerSetting playerSetting = GetComponent<PlayerSetting> ();
+        isNpc = (playerSetting != null) ? playerSetting.isNpc : true;
         moveCtrl = GetComponent<BaseMoveController>();
 
         //ステータス構造
@@ -310,7 +310,6 @@ public class PlayerStatus : Photon.MonoBehaviour {
         {
             yield return new WaitForSeconds(0.2f);
             if (totalDamage == 0) continue;
-
             SetHp(nowHp - totalDamage);
             totalDamage = 0;
         }
@@ -363,7 +362,10 @@ public class PlayerStatus : Photon.MonoBehaviour {
     public bool AddDamage(int damage, string name = "Unknown", bool isSlipDamage = false)
     {
         if (!isActiveSceane) return false;
-        if (!GameController.Instance.isGameStart || GameController.Instance.isGameEnd) return false;
+        if (!GameController.Instance.isPractice)
+        {
+            if (!GameController.Instance.isGameStart || GameController.Instance.isGameEnd) return false;
+        }
 
         if (isForceInvincible) return false;
 
@@ -587,6 +589,10 @@ public class PlayerStatus : Photon.MonoBehaviour {
                 if (!isNpc)
                 {
                     Camera.main.transform.parent = null;
+                }
+                else
+                {
+                    GameController.Instance.isPractice = false;
                 }
                 if (hitEffect != null)
                 {

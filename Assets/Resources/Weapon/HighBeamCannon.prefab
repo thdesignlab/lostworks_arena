@@ -345,7 +345,6 @@ GameObject:
   - 114: {fileID: 11495196}
   - 114: {fileID: 11405916}
   - 114: {fileID: 11466866}
-  - 114: {fileID: 11471256}
   m_Layer: 0
   m_Name: HighBeamCannon
   m_TagString: Weapon
@@ -1576,8 +1575,8 @@ MonoBehaviour:
   laserPrefab: {fileID: 158906, guid: d881aff9fa00887498abc33fb013a3d2, type: 2}
   effectiveLength: 400
   effectiveWidth: 2.5
-  effectiveTime: 0.8
-  effectiveLengthTime: 0.8
+  effectiveTime: 1
+  effectiveLengthTime: 1
   effectiveWidthTime: 0.2
   runSpeedRate: 0
   turnSpeedRate: 0
@@ -1593,21 +1592,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9afa1e6dd7dae2b4b86c732a5f351dee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &11471256
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 165828}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2bf824a3d499c32439fa2f967ffd296c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isCheckGrounded: 0
-  glideGravityRate: 1
-  isLockOn: 0
-  aimSpeed: 15
 --- !u!114 &11484836
 MonoBehaviour:
   m_ObjectHideFlags: 1

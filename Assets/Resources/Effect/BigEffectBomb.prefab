@@ -49,7 +49,8 @@ MonoBehaviour:
   damagePerSecond: 0
   isPhysicsBulletBreak: 0
   isEnergyBulletBreak: 0
-  ownDamageRate: 0.1
+  ownDamageRate: 0
+  isFloorEffect: 0
 --- !u!114 &11478712
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -64,6 +65,7 @@ MonoBehaviour:
   effectSpawn: {fileID: 0}
   activeLimitTime: 0.7
   activeLimitDistance: 0
+  isNotAutoBreak: 0
 --- !u!114 &11483674
 MonoBehaviour:
   m_ObjectHideFlags: 1
