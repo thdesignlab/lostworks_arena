@@ -91,6 +91,9 @@ public class PhotonManager : MonoBehaviour
             titleLogo.SetActive(false);
             ReturnModeSelect();
         }
+
+        ////フレームレート
+        //Application.targetFrameRate = 30;
     }
 
     IEnumerator Start()

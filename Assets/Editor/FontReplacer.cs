@@ -15,7 +15,7 @@ public class FontReplacer : EditorWindow
     [MenuItem("Tools/Replace All Fonts")]
     public static void ShowWindow()
     {
-        //EditorWindow a = EditorWindow.GetWindow(typeof(FontReplacer), true, "Font Replacer");
+        EditorWindow a = EditorWindow.GetWindow(typeof(FontReplacer), true, "Font Replacer");
         var obj = ScriptableObject.CreateInstance<MyFont>();
         var serializedObject = new UnityEditor.SerializedObject(obj);
 

@@ -64,6 +64,11 @@ public class ConfigManager : SingletonMonoBehaviour<ConfigManager>
 
     void Start()
     {
+        Setting();
+    }
+
+    private void Setting()
+    {
         playerNameText.text = UserManager.userInfo[Common.PP.INFO_USER_NAME];
 
         Dictionary<int, int> configDic = new Dictionary<int, int>(UserManager.userConfig);
@@ -98,7 +103,7 @@ public class ConfigManager : SingletonMonoBehaviour<ConfigManager>
                 }
                 int tmpMute = UserManager.userConfig[muteKey];
                 tmpSlider.value = UserManager.userConfig[kind];
-                if (tmpMute == 1) tmpToggle.isOn = true;
+                tmpToggle.isOn = (tmpMute == 1) ? true : false;
             }
         }
     }
@@ -107,6 +112,7 @@ public class ConfigManager : SingletonMonoBehaviour<ConfigManager>
     {
         //ダイアログ表示
         ScreenManager.Instance.FadeUI(configCanvas.gameObject, true);
+        Setting();
 
         DialogController.CloseMessage();
     }
