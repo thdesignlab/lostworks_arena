@@ -8,11 +8,36 @@ public class StoreManager : SingletonMonoBehaviour<StoreManager>
 {
     [SerializeField]
     private Text textPoint;
+
     [SerializeField]
-    private Transform storeWeaponContent;
+    private Transform SelectMenuList;
+    [SerializeField]
+    private Transform WeaponGetList;
+    [SerializeField]
+    private Transform WeaponCustomList;
+    [SerializeField]
+    private Transform MusicGetList;
+
     [SerializeField]
     private Object storeWeaponObj;
+    [SerializeField]
+    private Sprite weaponBuyImage;
+    [SerializeField]
+    private Sprite weaponCustomImage;
 
+    [SerializeField]
+    private Color normalFontColor = new Color(0, 255, 223);
+    [SerializeField]
+    private Color playFontColor = new Color(255, 0, 152);
+
+    [SerializeField]
+    private Object storeMusicObj;
+
+    private int mode = 0;
+    const int MODE_MENU = 0;
+    const int MODE_WEAPON_BUY = 1;
+    const int MODE_WEAPON_CUSTOM = 2;
+    const int MODE_MUSIC = 3;
 
     //point >> rate
     private Dictionary<int, int> pointTable = new Dictionary<int, int>()
@@ -39,11 +64,46 @@ public class StoreManager : SingletonMonoBehaviour<StoreManager>
         pointTable.SetApiErrorIngnore();
         pointTable.Exe();
 
-        //武器リスト
-        DispStoreWeaponList();
+        //初期表示
+        DispMenu();
     }
 
-    public void SetPointTable()
+    public void CloseStore()
+    {
+        if (SelectMenuList.gameObject.GetActive())
+        {
+            //タイトルシーンへ移動
+            ScreenManager.Instance.Load(Common.CO.SCENE_TITLE, DialogController.MESSAGE_LOADING);
+        }
+        else
+        {
+            //メニュー表示
+            DispMenu();
+        }
+    }
+
+    //メニュー表示
+    public void DispMenu()
+    {
+        DialogController.OpenMessage(DialogController.MESSAGE_LOADING, DialogController.MESSAGE_POSITION_RIGHT);
+        DispListClear();
+        SelectMenuList.gameObject.SetActive(true);
+        DialogController.CloseMessage();
+    }
+
+    //リスト表示初期化
+    private void DispListClear()
+    {
+        SelectMenuList.gameObject.SetActive(false);
+        WeaponGetList.gameObject.SetActive(false);
+        WeaponCustomList.gameObject.SetActive(false);
+        MusicGetList.gameObject.SetActive(false);
+    }
+
+    //##### Point処理 #####
+
+    //pt抽選テーブル設定
+    private void SetPointTable()
     {
         if (ModelManager.mstPointList.Count != 0)
         {
@@ -55,12 +115,8 @@ public class StoreManager : SingletonMonoBehaviour<StoreManager>
         }
     }
 
-    public void CloseStore()
-    {
-        ScreenManager.Instance.Load(Common.CO.SCENE_TITLE, DialogController.MESSAGE_LOADING);
-    }
-
-    public void PlayGacha()
+    //ガチャ実行
+    private void PlayGacha()
     {
         DialogController.OpenMessage(DialogController.MESSAGE_LOADING, DialogController.MESSAGE_POSITION_RIGHT);
         System.Action onFinish = () => AddPoint();
@@ -84,13 +140,9 @@ public class StoreManager : SingletonMonoBehaviour<StoreManager>
     //ポイント付与
     private void AddPoint(float ptRate = 1)
     {
-        int pt = Draw<int>(pointTable);
+        int pt = Common.Func.Draw<int>(pointTable);
         pt = (int)(pt * ptRate);
 
-        ////pt追加API
-        //Point.Add pointAdd = new Point.Add();
-        //pointAdd.SetApiFinishCallback(() => PointGetDialog(pt));
-        //pointAdd.Exe(pt);
         //ガチャAPI
         Gacha.Play pointAdd = new Gacha.Play();
         pointAdd.SetApiFinishCallback(() => PointGetDialog(pt));
@@ -124,81 +176,21 @@ public class StoreManager : SingletonMonoBehaviour<StoreManager>
             }
         }
 
-        //DialogController.OpenDialog(pt + "pt獲得!!", "もう一度", () => PlayGacha(), true);
         DialogController.OpenDialog(text, nextBtn, nextAction, cancelBtn);
     }
 
-    //購入
-    public void Buy(int weaponNo)
+
+    //##### 武器購入 #####
+
+    //購入可能武器リスト表示
+    public void DispStoreWeaponBuyList()
     {
-        int pt = Common.Weapon.GetStoreNeedPoint(weaponNo);
+        DialogController.OpenMessage(DialogController.MESSAGE_LOADING, DialogController.MESSAGE_POSITION_RIGHT);
+        DispListClear();
+        WeaponGetList.gameObject.SetActive(true);
 
-        //point消費
-        Weapon.Buy WeaponBuy = new Weapon.Buy();
-        WeaponBuy.SetApiFinishCallback(() => BuyProc(weaponNo));
-        WeaponBuy.SetApiFinishErrorCallback(BuyErrorProc);
-        WeaponBuy.SetApiErrorIngnore();
-        WeaponBuy.Exe(pt, weaponNo);
-    }
+        Transform storeWeaponContent = WeaponGetList.FindChild("View/Content");
 
-    //購入成功処理
-    public void BuyProc(int weaponNo)
-    {
-        //所持ポイント表示
-        textPoint.text = UserManager.userPoint.ToString();
-
-        //武器リスト更新
-        UserManager.AddOpenWeapon(weaponNo);
-        DispStoreWeaponList();
-
-        DialogController.OpenDialog("武器GET！");
-    }
-
-    //購入失敗処理
-    public void BuyErrorProc(string errorCode)
-    {
-        string errorMessage = "購入失敗";
-        switch (errorCode)
-        {
-            case "300000":
-                errorMessage += "\nポイントが足りません";
-                break;
-        }
-        DialogController.OpenDialog(errorMessage);
-    }
-
-    //抽選
-    private T Draw<T>(Dictionary<T, int> targets)
-    {
-        T drawObj = default(T);
-        int sumRate = 0;
-        List<T> targetValues = new List<T>();
-        foreach (T obj in targets.Keys)
-        {
-            sumRate += targets[obj];
-            targetValues.Add(obj);
-        }
-        if (sumRate == 0) return drawObj;
-
-        int drawNum = Random.Range(1, sumRate + 1);
-        sumRate = 0;
-        for (int i = 0; i < targets.Count; i++)
-        {
-            int key = Random.Range(0, targetValues.Count);
-            sumRate += targets[targetValues[key]];
-            if (sumRate >= drawNum)
-            {
-                drawObj = targetValues[key];
-                break;
-            }
-            targetValues.RemoveAt(key);
-        }
-        return drawObj;
-    }
-
-    //購入可能武器リスト取得
-    private void DispStoreWeaponList()
-    {
         //リストクリア
         foreach (Transform child in storeWeaponContent)
         {
@@ -212,16 +204,290 @@ public class StoreManager : SingletonMonoBehaviour<StoreManager>
             //OPENチェック
             if (UserManager.userOpenWeapons.IndexOf(weaponNo) >= 0) continue;
             string[] weaponInfo = weaponList[weaponNo];
-
             GameObject row = (GameObject)Instantiate(storeWeaponObj);
             Transform rowTran = row.transform;
             rowTran.FindChild("WeaponName").GetComponent<Text>().text = Common.Weapon.GetWeaponName(weaponNo);
             rowTran.FindChild("TypeName").GetComponent<Text>().text = Common.Weapon.GetWeaponTypeName(weaponNo);
             rowTran.FindChild("Description").GetComponent<Text>().text = weaponInfo[Common.Weapon.DETAIL_DESCRIPTION_NO];
             rowTran.FindChild("NeedPoint").GetComponent<Text>().text = Common.Weapon.GetStoreNeedPoint(weaponNo).ToString();
+            rowTran.FindChild("Button").GetComponent<Image>().sprite = weaponBuyImage;
             int param = weaponNo;
-            rowTran.GetComponent<Button>().onClick.AddListener(() => Buy(param));
+            rowTran.GetComponent<Button>().onClick.AddListener(() => WeaponBuy(param));
             rowTran.SetParent(storeWeaponContent, false);
         }
+        DialogController.CloseMessage();
     }
+
+    //武器購入
+    private void WeaponBuy(int weaponNo)
+    {
+        int pt = Common.Weapon.GetStoreNeedPoint(weaponNo);
+        string weaponName = Common.Weapon.GetWeaponName(weaponNo);
+
+        UnityAction buy = () =>
+        {
+            DialogController.OpenMessage(DialogController.MESSAGE_LOADING, DialogController.MESSAGE_POSITION_RIGHT);
+
+            //point消費
+            Weapon.Buy WeaponBuy = new Weapon.Buy();
+            WeaponBuy.SetApiFinishCallback(() => WeaponBuyResult(weaponNo));
+            WeaponBuy.SetApiFinishErrorCallback(BuyErrorProc);
+            WeaponBuy.SetApiErrorIngnore();
+            WeaponBuy.Exe(pt, weaponNo);
+        };
+
+        //確認ダイアログ
+        string text = "購入しますか？";
+        text += "「"+weaponName+"」";
+        text += pt+"pt消費";
+        DialogController.OpenDialog(text, buy, true);
+    }
+
+    //武器購入成功処理
+    private void WeaponBuyResult(int weaponNo)
+    {
+        DialogController.CloseMessage();
+
+        //所持ポイント表示
+        textPoint.text = UserManager.userPoint.ToString();
+
+        //武器リスト更新
+        UserManager.AddOpenWeapon(weaponNo);
+        DispStoreWeaponBuyList();
+
+        DialogController.OpenDialog("購入成功!!");
+    }
+
+    //武器購入失敗処理
+    private void BuyErrorProc(string errorCode)
+    {
+        DialogController.CloseMessage();
+
+        string errorMessage = "購入失敗";
+        switch (errorCode)
+        {
+            case "300000":
+                errorMessage += "\nポイントが足りません";
+                break;
+        }
+        DialogController.OpenDialog(errorMessage);
+    }
+
+
+    //##### 武器カスタム #####
+
+    //改造武器リスト表示
+    public void DispWeaponCustomList()
+    {
+        DialogController.OpenMessage(DialogController.MESSAGE_LOADING, DialogController.MESSAGE_POSITION_RIGHT);
+        DispListClear();
+        WeaponCustomList.gameObject.SetActive(true);
+
+        DialogController.OpenDialog("武器改造は準備中です");
+
+        Transform weaponCustomContent = WeaponCustomList.FindChild("View/Content");
+
+        //リストクリア
+        foreach (Transform child in weaponCustomContent)
+        {
+            Destroy(child.gameObject);
+        }
+
+        //武器リスト
+        Dictionary<int, string[]> weaponList;
+        int[] partsNoArray = new int[] 
+        {
+            Common.CO.PARTS_LEFT_HAND_NO,
+            Common.CO.PARTS_LEFT_HAND_DASH_NO,
+            Common.CO.PARTS_SHOULDER_NO,
+            Common.CO.PARTS_SHOULDER_DASH_NO,
+            Common.CO.PARTS_SUB_NO,
+        };
+
+        foreach (int partsNo in partsNoArray)
+        {
+            weaponList = Common.Weapon.GetWeaponList(partsNo);
+            foreach (int weaponNo in weaponList.Keys)
+            {
+                string[] weaponInfo = weaponList[weaponNo];
+                //OPENチェック
+                if (!WeaponStore.Instance.IsEnabledEquip(weaponNo, true, weaponInfo)) continue;
+
+                GameObject row = (GameObject)Instantiate(storeWeaponObj);
+                Transform rowTran = row.transform;
+                rowTran.FindChild("WeaponName").GetComponent<Text>().text = Common.Weapon.GetWeaponName(weaponNo);
+                rowTran.FindChild("TypeName").GetComponent<Text>().text = Common.Weapon.GetWeaponTypeName(weaponNo);
+                rowTran.FindChild("Description").GetComponent<Text>().text = weaponInfo[Common.Weapon.DETAIL_DESCRIPTION_NO];
+                rowTran.FindChild("NeedPoint").GetComponent<Text>().text = Common.Weapon.GetStoreNeedPoint(weaponNo).ToString();
+                rowTran.FindChild("Button").GetComponent<Image>().sprite = weaponCustomImage;
+                int param = weaponNo;
+                rowTran.GetComponent<Button>().onClick.AddListener(() => WeaponCustom(param));
+                rowTran.SetParent(weaponCustomContent, false);
+            }
+        }
+        DialogController.CloseMessage();
+    }
+
+    //武器改造
+    private void WeaponCustom(int weaponNo)
+    {
+        DialogController.OpenDialog("準備中です");
+        return;
+
+        int pt = Common.Weapon.GetStoreNeedPoint(weaponNo);
+        string weaponName = Common.Weapon.GetWeaponName(weaponNo);
+
+        UnityAction custom = () =>
+        {
+            DialogController.OpenMessage(DialogController.MESSAGE_LOADING, DialogController.MESSAGE_POSITION_RIGHT);
+
+            //point消費
+            //Weapon.Buy WeaponBuy = new Weapon.Buy();
+            //WeaponBuy.SetApiFinishCallback(() => WeaponCustomResult(weaponNo));
+            //WeaponBuy.SetApiFinishErrorCallback(CustomErrorProc);
+            //WeaponBuy.SetApiErrorIngnore();
+            //WeaponBuy.Exe(pt, weaponNo);
+            WeaponCustomResult(weaponNo);
+        };
+
+        //確認ダイアログ
+        string text = "改造します";
+        text += "「" + weaponName + "」";
+        text += pt + "pt消費";
+        DialogController.OpenDialog(text, custom, true);
+    }
+
+    //武器カスタム成功処理
+    private void WeaponCustomResult(int weaponNo)
+    {
+        DialogController.CloseMessage();
+
+        //所持ポイント表示
+        textPoint.text = UserManager.userPoint.ToString();
+
+        //武器カスタム状態更新
+        //UserManager.AddOpenWeapon(weaponNo);
+        DispWeaponCustomList();
+
+        DialogController.OpenDialog("カスタム成功!!");
+    }
+
+    //武器カスタム失敗処理
+    private void CustomErrorProc(string errorCode)
+    {
+        DialogController.CloseMessage();
+
+        string errorMessage = "エラー";
+        switch (errorCode)
+        {
+            case "300000":
+                errorMessage += "\nポイントが足りません";
+                break;
+        }
+        DialogController.OpenDialog(errorMessage);
+    }
+
+
+    //##### 音楽購入 #####
+
+
+    //購入可能音楽リスト表示
+    public void DispStoreMusicList()
+    {
+        DialogController.OpenMessage(DialogController.MESSAGE_LOADING, DialogController.MESSAGE_POSITION_RIGHT);
+        DispListClear();
+        MusicGetList.gameObject.SetActive(true);
+
+        Transform storeMusicContent = MusicGetList.FindChild("View/Content");
+
+        //再生中BGM名
+        string playingBgmName = "";
+        if (PlayingText != null) playingBgmName = PlayingText.text;
+
+        //リストクリア
+        foreach (Transform child in storeMusicContent)
+        {
+            Destroy(child.gameObject);
+        }
+
+        //音楽リスト
+        List<BgmManager> battleBgmList = SoundManager.Instance.GetBattleBgmList();
+        foreach (BgmManager battleBgm in battleBgmList)
+        {
+            ////OPENチェック
+            //if (UserManager.userOpenWeapons.IndexOf(weaponNo) >= 0) continue;
+            //string[] weaponInfo = weaponList[weaponNo];
+
+            GameObject row = (GameObject)Instantiate(storeMusicObj);
+            Transform rowTran = row.transform;
+            string musicName = battleBgm.GetAudioClipName();
+            Text musicText = rowTran.FindChild("Name").GetComponent<Text>();
+            musicText.text = musicName;
+            musicText.color = (playingBgmName == musicName) ? playFontColor : normalFontColor;
+            BgmManager bgmMgr = battleBgm;
+            rowTran.GetComponent<Button>().onClick.AddListener(() => PlayMusic(rowTran, bgmMgr));
+            rowTran.SetParent(storeMusicContent, false);
+        }
+        DialogController.CloseMessage();
+    }
+
+    //音楽再生
+    private Text PlayingText;
+    private void PlayMusic(Transform rowTran, BgmManager bgmMgr)
+    {
+        if (PlayingText != null) PlayingText.color = normalFontColor;
+        PlayingText = rowTran.FindChild("Name").GetComponent<Text>();
+        PlayingText.color = playFontColor;
+        bgmMgr.Play();
+    }
+
+    ////武器購入
+    //public void WeaponBuy(int weaponNo)
+    //{
+    //    int pt = Common.Weapon.GetStoreNeedPoint(weaponNo);
+    //    string weaponName = Common.Weapon.GetWeaponName(weaponNo);
+
+    //    UnityAction buy = () =>
+    //    {
+    //        //point消費
+    //        Weapon.Buy WeaponBuy = new Weapon.Buy();
+    //        WeaponBuy.SetApiFinishCallback(() => WeaponBuyResult(weaponNo));
+    //        WeaponBuy.SetApiFinishErrorCallback(BuyErrorProc);
+    //        WeaponBuy.SetApiErrorIngnore();
+    //        WeaponBuy.Exe(pt, weaponNo);
+    //    };
+
+    //    //確認ダイアログ
+    //    string text = "購入しますか？";
+    //    text += "「" + weaponName + "」";
+    //    text += pt + "pt消費";
+    //    DialogController.OpenDialog(text, buy, true);
+    //}
+
+    ////武器購入成功処理
+    //public void WeaponBuyResult(int weaponNo)
+    //{
+    //    //所持ポイント表示
+    //    textPoint.text = UserManager.userPoint.ToString();
+
+    //    //武器リスト更新
+    //    UserManager.AddOpenWeapon(weaponNo);
+    //    DispStoreWeaponBuyList();
+
+    //    DialogController.OpenDialog("購入成功!!");
+    //}
+
+    ////武器購入失敗処理
+    //public void BuyErrorProc(string errorCode)
+    //{
+    //    string errorMessage = "購入失敗";
+    //    switch (errorCode)
+    //    {
+    //        case "300000":
+    //            errorMessage += "\nポイントが足りません";
+    //            break;
+    //    }
+    //    DialogController.OpenDialog(errorMessage);
+    //}
+
 }

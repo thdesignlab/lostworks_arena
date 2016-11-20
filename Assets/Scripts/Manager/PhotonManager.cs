@@ -221,6 +221,7 @@ public class PhotonManager : MonoBehaviour
         UnityAction collback = () => { 
             Init(true);
             TapToStart();
+            DialogController.CloseMessage();
         };
         CameraRotate(true, collback);
     }
@@ -449,6 +450,8 @@ public class PhotonManager : MonoBehaviour
     //コンフィグ
     public void OnConfigButton()
     {
+        DialogController.OpenMessage(DialogController.MESSAGE_LOADING, DialogController.MESSAGE_POSITION_RIGHT);
+
         SwitchModeSelectArea(false, true);
         UnityAction callback = () => ConfigManager.Instance.OpenConfig();
         CameraRotate(false, callback);

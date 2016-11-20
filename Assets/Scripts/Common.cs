@@ -461,6 +461,35 @@ namespace Common
             //Debug.Log(bulletName+" >> " +no);
             return no;
         }
+
+        //抽選
+        public static T Draw<T>(Dictionary<T, int> targets)
+        {
+            T drawObj = default(T);
+            int sumRate = 0;
+            List<T> targetValues = new List<T>();
+            foreach (T obj in targets.Keys)
+            {
+                sumRate += targets[obj];
+                targetValues.Add(obj);
+            }
+            if (sumRate == 0) return drawObj;
+
+            int drawNum = Random.Range(1, sumRate + 1);
+            sumRate = 0;
+            for (int i = 0; i < targets.Count; i++)
+            {
+                int key = Random.Range(0, targetValues.Count);
+                sumRate += targets[targetValues[key]];
+                if (sumRate >= drawNum)
+                {
+                    drawObj = targetValues[key];
+                    break;
+                }
+                targetValues.RemoveAt(key);
+            }
+            return drawObj;
+        }
     }
 
     //### キャラクター詳細 ###

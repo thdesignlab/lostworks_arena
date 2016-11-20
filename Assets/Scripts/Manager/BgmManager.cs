@@ -56,4 +56,9 @@ public class BgmManager : MonoBehaviour
         if (audioSource == null) return;
         audioSource.Stop();
     }
+
+    public string GetAudioClipName()
+    {
+        return audioClip.name;
+    }
 }

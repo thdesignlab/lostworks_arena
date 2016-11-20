@@ -107,10 +107,14 @@ public class ConfigManager : SingletonMonoBehaviour<ConfigManager>
     {
         //ダイアログ表示
         ScreenManager.Instance.FadeUI(configCanvas.gameObject, true);
+
+        DialogController.CloseMessage();
     }
 
     public void CloseConfig()
     {
+        DialogController.OpenMessage(DialogController.MESSAGE_LOADING, DialogController.MESSAGE_POSITION_RIGHT);
+
         //設定保存
         UserManager.SaveConfig();
 

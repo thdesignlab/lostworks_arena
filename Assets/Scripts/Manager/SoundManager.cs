@@ -109,4 +109,22 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager>
         }
         return sceneBgm;
     }
+
+    //TitleBgmリスト取得
+    public List<BgmManager> GetTitleBgmList()
+    {
+        return titleBgmList;
+    }
+
+    //CustomBgmリスト取得
+    public List<BgmManager> GetCustomBgmList()
+    {
+        return customBgmList;
+    }
+
+    //BattleBgmリスト取得
+    public List<BgmManager> GetBattleBgmList()
+    {
+        return battleBgmList;
+    }
 }
