@@ -14,11 +14,13 @@ public class ClusterBulletController : TrackingBulletController
     [SerializeField]
     private bool isPurgeDestroy = true;
     private bool isPurge = false;
+    protected float prePurgeTime = 0;
 
     protected override void Update()
     {
         base.Update();
 
+        prePurgeTime += Time.deltaTime;
         if (photonView.isMine)
         {
             if (CheckPurge()) Purge();
@@ -28,7 +30,8 @@ public class ClusterBulletController : TrackingBulletController
     protected bool CheckPurge()
     {
         bool purge = false;
-        if (!isPurge && childBullet != null && activeTime >= safetyTime)
+        //if (!isPurge && childBullet != null && activeTime >= safetyTime)
+        if (childBullet != null && prePurgeTime >= safetyTime)
         {
             if (purgeDistance > 0 && targetTran != null)
             {
@@ -42,7 +45,7 @@ public class ClusterBulletController : TrackingBulletController
             if (purgeTime > 0)
             {
                 //経過時間チェック
-                if (activeTime >= purgeTime) purge = true;
+                if (prePurgeTime >= purgeTime) purge = true;
             }
         }
         return purge;
@@ -79,6 +82,7 @@ public class ClusterBulletController : TrackingBulletController
                 bulletCtrl.SetTarget(targetTran);
                 bulletCtrl.SetOwner(ownerTran, ownerWeapon);
             }
+            prePurgeTime = 0;
         }
 
         if (isPurgeDestroy)

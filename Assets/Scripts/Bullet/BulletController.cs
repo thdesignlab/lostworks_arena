@@ -23,7 +23,7 @@ public class BulletController : MoveOfCharacter
     protected bool isHitBreak;   //衝突時消滅FLG
 
     [SerializeField]
-    protected float safetyTime = 0.05f;
+    protected float safetyTime = 0.0f;
     protected bool isHit = false;
     protected float activeTime = 0;
     protected float totalDamage = 0;
@@ -39,6 +39,7 @@ public class BulletController : MoveOfCharacter
     protected const int MIN_SEND_DAMAGE = 5;
 
     protected AudioController audioCtrl;
+    protected StatusChangeController statusChangeCtrl;
 
     protected override void Awake()
     {
@@ -46,9 +47,13 @@ public class BulletController : MoveOfCharacter
 
         //判定一時削除
         myCollider = myTran.GetComponentInChildren<Collider>();
-        if (myCollider != null) myCollider.enabled = false;
+        if (myCollider != null)
+        {
+            myCollider.enabled = (safetyTime > 0) ? true : false;
+        }
 
         audioCtrl = myTran.GetComponent<AudioController>();
+        statusChangeCtrl = myTran.GetComponent<StatusChangeController>();
     }
 
     protected override void Start()
@@ -64,12 +69,13 @@ public class BulletController : MoveOfCharacter
         activeTime += Time.deltaTime;
         if (photonView.isMine)
         {
-            if (activeTime >= 10) base.DestoryObject();
-
-            if (activeTime >= safetyTime)
+            if (myCollider != null)
             {
-                //判定復活
-                if (myCollider != null) myCollider.enabled = true;
+                if (activeTime >= safetyTime && !myCollider.enabled)
+                {
+                    //判定復活
+                    myCollider.enabled = true;
+                }
             }
         }
 
@@ -230,12 +236,21 @@ public class BulletController : MoveOfCharacter
         //対象へダメージを与える
         bool isDamage = status.AddDamage(dmg, ownerWeapon, isSlip);
 
+        //デバフ
+        AddDebuff(status);
+
         //与えたダメージのログを保管
         if (isDamage && ownerStatus != null)
         {
             //Debug.Log(myTran.name + " >> " + ownerStatus.name);
             ownerStatus.SetBattleLog(PlayerStatus.BATTLE_LOG_ATTACK, dmg, ownerWeapon, isSlip);
         }
+    }
+
+    protected void AddDebuff(PlayerStatus status)
+    {
+        if (statusChangeCtrl == null) return;
+        statusChangeCtrl.Action(status);
     }
 
     //ターゲットを破壊する

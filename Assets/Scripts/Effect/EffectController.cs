@@ -14,7 +14,7 @@ public class EffectController : Photon.MonoBehaviour
     [SerializeField]
     protected bool isEnergyBulletBreak;
     [SerializeField]
-    protected float ownDamageRate = 1.0f;
+    protected float ownDamageRate = 0.0f;
     [SerializeField]
     protected bool isFloorEffect = false;
 
@@ -29,7 +29,7 @@ public class EffectController : Photon.MonoBehaviour
     {
         myTran = transform;
         if (isFloorEffect) myTran.position = new Vector3(myTran.position.x, 0, myTran.position.z);
-        statusChangeCtrl = GetComponent<StatusChangeController>();
+        statusChangeCtrl = myTran.GetComponent<StatusChangeController>();
     }
 
     void OnTriggerEnter(Collider other)
@@ -62,9 +62,6 @@ public class EffectController : Photon.MonoBehaviour
                         GameObject effectObj = PhotonNetwork.Instantiate(Common.Func.GetResourceEffect(damageEffect.name), otherObj.transform.position, damageEffect.transform.rotation, 0);
                         effectObj.GetComponent<EffectController>().SetOwner(ownerTran, ownerWeapon);
                     }
-
-                    //デバフ
-                    AddDebuff(status);
                 }
             }
             else if (otherObj.CompareTag(Common.CO.TAG_STRUCTURE))
@@ -112,9 +109,6 @@ public class EffectController : Photon.MonoBehaviour
                     {
                         PlayerStatus status = otherObj.GetComponent<PlayerStatus>();
                         AddDamageProccess(status, addDmg, true);
-
-                        //デバフ
-                        AddDebuff(status);
                     }
                 }
             }
@@ -126,10 +120,12 @@ public class EffectController : Photon.MonoBehaviour
         //対象へダメージを与える
         bool isDamage = status.AddDamage(dmg, ownerWeapon, isSlip);
 
+        //デバフ
+        AddDebuff(status);
+
         //与えたダメージのログを保管
         if (isDamage && ownerStatus != null)
         {
-            //Debug.Log(myTran.name + " >> " + ownerStatus.name);
             ownerStatus.SetBattleLog(PlayerStatus.BATTLE_LOG_ATTACK, dmg, ownerWeapon, isSlip);
         }
     }

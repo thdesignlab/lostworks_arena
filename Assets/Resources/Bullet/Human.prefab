@@ -1,5 +1,22 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &158716
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 409486}
+  - 114: {fileID: 11412052}
+  - 114: {fileID: 11473366}
+  m_Layer: 0
+  m_Name: Gun
+  m_TagString: Muzzle
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &178894
 GameObject:
   m_ObjectHideFlags: 0
@@ -36,6 +53,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!4 &409486
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 158716}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 2, z: 2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 496172}
+  m_RootOrder: 0
 --- !u!4 &424780
 Transform:
   m_ObjectHideFlags: 1
@@ -43,12 +73,12 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 184332}
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0.226, z: 0}
-  m_LocalScale: {x: 5, y: 5, z: 5}
+  m_LocalPosition: {x: 0, y: 2, z: 0}
+  m_LocalScale: {x: 10, y: 10, z: 10}
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 496172}
-  m_RootOrder: 0
+  m_RootOrder: 1
 --- !u!4 &496172
 Transform:
   m_ObjectHideFlags: 1
@@ -57,9 +87,10 @@ Transform:
   m_GameObject: {fileID: 178894}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 10, y: 10, z: 10}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
+  - {fileID: 409486}
   - {fileID: 424780}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -78,28 +109,89 @@ MonoBehaviour:
   glideGravityRate: 1
   isLockOn: 0
   UseGravity: 0
-  hitEffect: {fileID: 0}
-  speed: 30
+  hitEffect: {fileID: 135988, guid: d7cd433d10510fe46a35c39bac480fe1, type: 2}
+  speed: 15
   damage: 5
   damagePerSecond: 0
   stuckTime: 0
   knockBackRate: 0
   isPhysicsBulletBreak: 0
   isEnergyBulletBreak: 0
-  isHitBreak: 1
-  safetyTime: 0.1
-  turnSpeed: 60
+  isHitBreak: 0
+  safetyTime: 1
+  turnSpeed: 120
   lockStartTime: 0.5
   lockedSpeedRate: 1
   lockedTurnSpeedRate: 1
   isNeedLock: 0
+  isLockFlat: 1
+--- !u!114 &11412052
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 158716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eabda22b4bf9cc24290c3aec28f8470e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isCheckGrounded: 0
+  glideGravityRate: 1
+  isLockOn: 0
+  UseGravity: 0
+  hitEffect: {fileID: 0}
+  speed: 0
+  damage: 0
+  damagePerSecond: 0
+  stuckTime: 0
+  knockBackRate: 0
+  isPhysicsBulletBreak: 0
+  isEnergyBulletBreak: 0
+  isHitBreak: 0
+  safetyTime: 0
+  turnSpeed: 0
+  lockStartTime: 0
+  lockedSpeedRate: 1
+  lockedTurnSpeedRate: 1
+  isNeedLock: 0
   isLockFlat: 0
+  childBullet: {fileID: 144128, guid: 65a333fcbde94ac488e45bf719024692, type: 2}
+  childeBulletCount: 1
+  purgeDistance: 0
+  purgeTime: 0.5
+  isPurgeDestroy: 0
 --- !u!114 &11465248
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 178894}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ownerId: 0
+  group: 0
+  prefixBackup: -1
+  observed: {fileID: 0}
+  synchronization: 0
+  onSerializeTransformOption: 3
+  onSerializeRigidBodyOption: 2
+  ownershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 0}
+  ObservedComponentsFoldoutOpen: 1
+  viewIdField: 0
+  instantiationId: -1
+  isRuntimeInstantiated: 0
+--- !u!114 &11473366
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 158716}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
@@ -130,9 +222,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f086994b8c47ea443baf4face217f973, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effectSpawn: {fileID: 126864, guid: 8a2c73b0491c2704fbf21f7cd74a052e, type: 2}
+  effectSpawn: {fileID: 184720, guid: 82b912ace74f847418e0246912ccc7e9, type: 2}
   activeLimitTime: 8
   activeLimitDistance: 0
+  isNotAutoBreak: 0
 --- !u!135 &13570988
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -143,7 +236,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.2
+  m_Radius: 0.15
   m_Center: {x: 0, y: 0.2, z: 0}
 --- !u!198 &19817506
 ParticleSystem:
