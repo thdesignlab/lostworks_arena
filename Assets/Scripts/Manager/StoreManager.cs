@@ -279,11 +279,11 @@ public class StoreManager : SingletonMonoBehaviour<StoreManager>
     //改造武器リスト表示
     public void DispWeaponCustomList()
     {
+        DialogController.OpenDialog("武器改造は準備中です");
+
         DialogController.OpenMessage(DialogController.MESSAGE_LOADING, DialogController.MESSAGE_POSITION_RIGHT);
         DispListClear();
         WeaponCustomList.gameObject.SetActive(true);
-
-        DialogController.OpenDialog("武器改造は準備中です");
 
         Transform weaponCustomContent = WeaponCustomList.FindChild("View/Content");
 
@@ -435,10 +435,25 @@ public class StoreManager : SingletonMonoBehaviour<StoreManager>
     private Text PlayingText;
     private void PlayMusic(Transform rowTran, BgmManager bgmMgr)
     {
-        if (PlayingText != null) PlayingText.color = normalFontColor;
-        PlayingText = rowTran.FindChild("Name").GetComponent<Text>();
-        PlayingText.color = playFontColor;
-        bgmMgr.Play();
+        UnityAction play = () => {
+            if (PlayingText != null) PlayingText.color = normalFontColor;
+            PlayingText = rowTran.FindChild("Name").GetComponent<Text>();
+            PlayingText.color = playFontColor;
+            bgmMgr.Play();
+        };
+        if (UserManager.userConfig[Common.PP.CONFIG_BGM_MUTE] == 1)
+        {
+            UnityAction muteReset = () => {
+                ConfigManager.Instance.OnChangeMuteBgm(false);
+                UserManager.SaveConfig(true);
+                play();
+            };
+            DialogController.OpenDialog("BGMがMuteに設定されています\n解除しますか？", "解除", muteReset, true );
+        }
+        else
+        {
+            play();
+        }
     }
 
     ////武器購入
