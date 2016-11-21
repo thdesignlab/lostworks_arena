@@ -100,6 +100,7 @@ public class WeaponController : Photon.MonoBehaviour
     IEnumerator CheckPlayerStatus()
     {
         isEnabledFire = false;
+ 
         for (;;)
         {
             Transform child = myTran;
@@ -107,7 +108,7 @@ public class WeaponController : Photon.MonoBehaviour
             {
                 Transform parent = child.parent;
                 if (parent == null) break;
-                if (parent.tag == "Player")
+                if (parent.tag == "Player" || parent.tag == "Target")
                 {
                     playerTran = parent;
                     playerStatus = parent.GetComponent<PlayerStatus>();
@@ -252,7 +253,6 @@ public class WeaponController : Photon.MonoBehaviour
         Transform imgGageTran = myBtn.transform.FindChild("ImgGage");
         if (imgGageTran != null)
         {
-            //Debug.Log("first:" + imgGage.color);
             imgGage = imgGageTran.GetComponent<Image>();
             imgGage.fillAmount = 1;
             imgGage.color = normalColor;
@@ -308,7 +308,6 @@ public class WeaponController : Photon.MonoBehaviour
 
     protected void StartMotion()
     {
-        //Debug.Log("StartMotion >>");
         if (charaAnimator != null && motionParam != "")
         {
             charaAnimator.SetBool(motionParam, true);
@@ -321,7 +320,6 @@ public class WeaponController : Photon.MonoBehaviour
 
     protected void StopMotion()
     {
-        //Debug.Log(">> StopMotion");
         if (charaAnimator != null && motionParam != "")
         {
             StartCoroutine(WaitAnimatorEnd(charaAnimator, motionParam));
@@ -387,7 +385,6 @@ public class WeaponController : Photon.MonoBehaviour
 
     protected bool StartBitMove(Vector3 fromPos, Vector3 toPos)
     {
-        //Debug.Log(bitFromPos + " >> " + bitToPos + " : " + bitMoveTime);
         if (myBitTran == null) return false;
         if (fromPos == toPos) return false;
 

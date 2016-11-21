@@ -271,7 +271,7 @@ public class PlayerSetting : Photon.MonoBehaviour
         foreach (int partsNo in Common.CO.partsNameArray.Keys)
         {
             //武器No取得
-            int weaponNo = -1;
+            int weaponNo = 0;
             if (partsNo == Common.CO.PARTS_EXTRA_NO)
             {
                 weaponNo = Common.Weapon.GetExtraWeaponNo(GameController.Instance.npcNo);
@@ -279,6 +279,11 @@ public class PlayerSetting : Photon.MonoBehaviour
             else if (0 < weaponArray.Length && partsNo < weaponArray.Length)
             {
                 weaponNo = weaponArray[partsNo];
+            }
+            if (weaponNo == -1)
+            {
+                //ユーザーの武器をコピー
+                weaponNo = UserManager.userEquipment[Common.CO.partsNameArray[partsNo]];
             }
 
             //武器取得

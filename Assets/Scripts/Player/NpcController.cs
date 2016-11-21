@@ -12,8 +12,9 @@ public class NpcController : MoveOfCharacter
     private float walkRadius = 200.0f;  //移動半径
     private float stockSpPer = 75;
     private float quickTargetTime = 3;  //対象へクイックターンする時間
-    private float atackIntervalTime = 0;
+    private float atackIntervalTime = 3;
     private float boostIntervalTime = 3;
+    private float searchIntervalTime = 3;
 
     //private WeaponController[] weapons;
     private List<WeaponController> weapons = new List<WeaponController>();
@@ -44,10 +45,19 @@ public class NpcController : MoveOfCharacter
     {
         base.Start();
 
-        SetWeapons();
-        SearchTarget();
+        if (GameController.Instance.isPractice)
+        {
+            targetTran = GameController.Instance.GetMyTran();
+            EquipWeaponPracticeNpc();
+        }
+        else
+        {
+            SetWeapons();
+            SearchTarget();
+        }
         StartCoroutine(RandomMoveTarget());
         StartCoroutine(Attack());
+
     }
 
     protected override void Update()
@@ -59,26 +69,36 @@ public class NpcController : MoveOfCharacter
 
         if (GameController.Instance.isPractice)
         {
+            //練習モード
             float hpPer = status.GetNowHpPer();
             if (hpPer <= 25 && preHpPer > 25)
             {
+                atackIntervalTime = 0.5f;
                 boostIntervalTime = 0.5f;
+                searchIntervalTime = 2.0f;
                 status.runSpeed = 40;
                 status.defenceRate = 0.5f;
                 Transform super = myTran.FindChild("Effect/Super");
                 if (super != null) super.gameObject.SetActive(true);
+                SoundManager.Instance.PlayBattleBgm();
             }
             else if (hpPer <= 50 && preHpPer > 50)
             {
+                atackIntervalTime = 1.0f;
                 boostIntervalTime = 1.0f;
+                searchIntervalTime = 2.0f;
                 status.runSpeed = 35;
                 status.defenceRate = 0.75f;
+                SoundManager.Instance.PlayBattleBgm();
             }
             else if (hpPer <= 75 && preHpPer > 75)
             {
+                atackIntervalTime = 2.0f;
                 boostIntervalTime = 2.0f;
                 status.runSpeed = 30;
                 status.defenceRate = 1.0f;
+                searchIntervalTime = 3.0f;
+                SoundManager.Instance.PlayBattleBgm();
             }
             preHpPer = hpPer;
         }
@@ -173,11 +193,6 @@ public class NpcController : MoveOfCharacter
         //ターゲットタイプ
         targetType = npcStatusArray[Common.Character.STATUS_TARGET_TYPE];
         walkRadius = npcStatusArray[Common.Character.STATUS_TARGET_DISTANCE];
-
-        //Debug.Log("level:" + level + "(" + overLevel + ")");
-        //Debug.Log("atackIntervalTime:" + atackIntervalTime);
-        //Debug.Log("boostIntervalTime:" + boostIntervalTime);
-        //Debug.Log("quickTargetTime:" + quickTargetTime);
     }
 
     public void SetWeapons()
@@ -241,11 +256,6 @@ public class NpcController : MoveOfCharacter
                 weapons.Add(wepCtrl);
             }
         }
-        //weapons = parts.GetComponentsInChildren<WeaponController>();
-        //foreach (WeaponController weapon in weapons)
-        //{
-        //    weapon.SetTarget(targetTran);
-        //}
     }
 
     IEnumerator RandomMoveTarget()
@@ -259,7 +269,6 @@ public class NpcController : MoveOfCharacter
             leftTargetSearch -= Time.deltaTime;
             if (leftTargetSearch > 0)
             {
-                //Debug.Log("moving: "+leftTargetSearch.ToString());
                 yield return null;
                 continue;
             }
@@ -280,25 +289,23 @@ public class NpcController : MoveOfCharacter
             {
                 if (targetTran != null) randomMoveTarget = targetTran.position;
             }
-            leftTargetSearch = 5.0f;
+            leftTargetSearch = searchIntervalTime;
         }
     }
 
     IEnumerator Attack()
     {
-        if (atackIntervalTime == 0) yield break;
-
         int weaponNo = 0;
         for (;;)
         {
-            if (!GameController.Instance.isGameStart)
+            if (atackIntervalTime == 0) yield return new WaitForSeconds(1.0f);
+            if (!GameController.Instance.isGameStart && !GameController.Instance.isPractice)
             {
                 yield return null;
                 continue;
             }
 
             float interval = atackIntervalTime;
-
             if (targetTran == null)
             {
                 yield return null;
@@ -328,7 +335,7 @@ public class NpcController : MoveOfCharacter
                 if (weapons[weaponNo].IsEnableFire())
                 {
                     QuickTarget(targetTran);
-                    yield return new WaitForSeconds(0.1f);
+                    yield return new WaitForSeconds(0.15f);
                     quickTurnTime = 0;
                     weapons[weaponNo].Fire(targetTran);
                     break;
@@ -366,12 +373,10 @@ public class NpcController : MoveOfCharacter
 
     private void Jump(int x, int y)
     {
-        //Debug.Log("sp:" + status.GetNowSpPer());
         if (!status.CheckSp(status.boostCost))
         {
             return;
         }
-        //Debug.Log("Jump: " + x.ToString() + " / " + y.ToString());
         Vector3 move = Vector3.zero;
         float speed = 0;
         float limit = 0;
@@ -424,9 +429,6 @@ public class NpcController : MoveOfCharacter
 
     private void FallDown()
     {
-        //Debug.Log("FallDown");
-
-        //Debug.Log("FallDown");
         //無敵時間セット
         status.SetInvincible(true, status.invincibleTime);
 
@@ -479,7 +481,6 @@ public class NpcController : MoveOfCharacter
         //Vector3 bulletVector = myTran.position - other.transform.position;
         int x = Random.Range(-1, 2);
         int y = Random.Range(-1, 2);
-        //Debug.Log(x + " >> " + y);
         Jump(x, y);
     }
 
@@ -497,9 +498,51 @@ public class NpcController : MoveOfCharacter
         }
 
         Vector3 targetWorldVector = (targetPos - myTran.position).normalized;
-        //Vector3 targetVector = myTran.InverseTransformPoint(targetWorldVector);
-        //targetVector = new Vector3(targetVector.x, 0, targetVector.z).normalized;
-        //Debug.Log(targetWorldVector.ToString() + " >> " + targetVector.ToString());
         Run(targetWorldVector.x, targetWorldVector.z);
+    }
+
+
+    //#### PracticeNpc ####
+    private void EquipWeaponPracticeNpc()
+    {
+        foreach (int partsNo in Common.CO.partsNameArray.Keys)
+        {
+            if (partsNo == Common.CO.PARTS_EXTRA_NO) continue;
+
+            //ユーザーの武器をコピー
+            int weaponNo = UserManager.userEquipment[Common.CO.partsNameArray[partsNo]];
+
+            //武器取得
+            string weaponName = Common.Weapon.GetWeaponName(weaponNo, true);
+
+            //部位取得
+            string partsName = Common.Func.GetPartsStructure(Common.CO.partsNameArray[partsNo]);
+            Transform parts = myTran.FindChild(partsName);
+            if (parts != null)
+            {
+                //装備
+                EquipWeapon(parts, weaponName);
+            }
+        }
+        SetWeapons();
+
+        foreach (WeaponController w in weapons)
+        {
+            w.SetEnable(true);
+        }
+    }
+    private void EquipWeapon(Transform parts, string weaponName)
+    {
+        if (parts == null || string.IsNullOrEmpty(weaponName)) return;
+
+        //すでに装備している場合は破棄
+        foreach (Transform child in parts)
+        {
+            PhotonNetwork.Destroy(child.gameObject);
+        }
+
+        GameObject weaponObj = PhotonNetwork.Instantiate(Common.Func.GetResourceWeapon(weaponName), parts.position, parts.rotation, 0);
+        weaponObj.name = weaponObj.name.Replace("(Clone)", "");
+        weaponObj.transform.SetParent(parts.transform, true);
     }
 }

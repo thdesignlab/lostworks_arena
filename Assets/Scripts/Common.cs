@@ -11,6 +11,7 @@ namespace Common
         public const string APP_NAME_ANDROID = "com.ThDesignLab";
 
         //HomePage
+        public const string WEBVIEW_KEY = "?webview";
         public const string HP_URL = "http://lostworks.th-designlab.com/";
         public const string HP_TUTORIAL_URL = HP_URL + "arena/howtoplay";
 

@@ -498,13 +498,13 @@ GameObject:
   - 4: {fileID: 407270}
   - 114: {fileID: 11428338}
   - 114: {fileID: 11456126}
-  - 114: {fileID: 11458008}
   - 114: {fileID: 11473076}
   - 54: {fileID: 5438974}
   - 114: {fileID: 11473496}
   - 114: {fileID: 11426714}
   - 143: {fileID: 14371944}
   - 114: {fileID: 11472166}
+  - 114: {fileID: 11436634}
   m_Layer: 0
   m_Name: TargetNpc
   m_TagString: Target
@@ -2872,6 +2872,17 @@ MonoBehaviour:
   viewIdField: 0
   instantiationId: -1
   isRuntimeInstantiated: 0
+--- !u!114 &11436634
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 149894}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4d05e72b5afbcf489dc1e87a3fa38f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &11438016
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3019,17 +3030,6 @@ MonoBehaviour:
     InterpolateOption: 0
     InterpolateMoveTowardsSpeed: 1
     InterpolateLerpSpeed: 0
---- !u!114 &11458008
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 149894}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d4d05e72b5afbcf489dc1e87a3fa38f2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &11459656
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3130,7 +3130,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 589eae8145c3627499dc85eb11cefb9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  runSpeed: 25
+  runSpeed: 20
   jumpSpeed: 180
   jumpLimit: 0.3
   glideJump: 0

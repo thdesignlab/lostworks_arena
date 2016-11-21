@@ -14,7 +14,7 @@ GameObject:
   - 114: {fileID: 11448454}
   - 114: {fileID: 11424198}
   - 135: {fileID: 13534806}
-  - 114: {fileID: 11451166}
+  - 114: {fileID: 11449242}
   m_Layer: 0
   m_Name: PlasmaField
   m_TagString: Effect
@@ -93,7 +93,7 @@ MonoBehaviour:
   activeLimitTime: 4
   activeLimitDistance: 0
   isNotAutoBreak: 0
---- !u!114 &11451166
+--- !u!114 &11449242
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -107,8 +107,8 @@ MonoBehaviour:
   effectTime: 3
   effectTypeList: 0400000005000000
   effectRateList:
-  - 0.5
-  - 0.5
+  - 0.75
+  - 0.75
   effect: {fileID: 0}
 --- !u!135 &13534806
 SphereCollider:

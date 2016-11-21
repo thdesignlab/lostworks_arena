@@ -741,6 +741,8 @@ public class GameController : SingletonMonoBehaviour<GameController>
     private void CleanNpcRPC()
     {
         isPractice = false;
+        GameObject targetNpc = GameObject.FindGameObjectWithTag("Target");
+        if (targetNpc != null) targetNpc.GetComponent<ObjectController>().DestoryObject(targetNpc);
         Transform npc = GetNpcTran();
         if (npc != null) StartCoroutine(CleanNpcProc(npc));
     }
@@ -749,8 +751,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
         for (;;)
         {
             if (npc == null) break;
-            Destroy(npc.gameObject);
-            //npc.GetComponent<PlayerStatus>().ForceDamage(99999);
+            npc.GetComponent<PlayerStatus>().ForceDamage(99999);
             yield return null;
         }
     }
@@ -846,6 +847,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
 
     private void GameReady()
     {
+        isPractice = false;
         isGameReady = true;
         myStatus.Init();
         if (gameMode == GAME_MODE_MISSION)
@@ -1218,8 +1220,12 @@ public class GameController : SingletonMonoBehaviour<GameController>
     {
         if (gameMode == GAME_MODE_MISSION) return;
         if (CheckPlayer()) return;
-        CleanNpc();
-
+        if (npcTran != null)
+        {
+            CleanNpc();
+            return;
+        }
+        isPractice = true;
         GameObject npc = SpawnProcess("TargetNpc");
         targetTran = npc.transform;
         SetNpcTran(targetTran);
@@ -1234,7 +1240,6 @@ public class GameController : SingletonMonoBehaviour<GameController>
             if (myStatus.isReadyBattle && npcStatus.isReadyBattle) break;
             yield return null;
         }
-        isPractice = true;
         myStatus.Init();
         npcStatus.Init();
     }

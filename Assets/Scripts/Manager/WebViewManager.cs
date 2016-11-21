@@ -13,10 +13,8 @@ public class WebViewManager : SingletonMonoBehaviour<WebViewManager>
         if (webViewObject == null) return;
         try
         {
-            webViewObject.Init((string msg) => {
-                Debug.Log(msg);
-            });
-            webViewObject.LoadURL(url);
+            webViewObject.Init();
+            webViewObject.LoadURL(url + Common.CO.WEBVIEW_KEY);
             webViewObject.SetMargins(0, 0, 0, 110);
             webViewObject.SetVisibility(true);
             webViewCanvas.SetActive(true);

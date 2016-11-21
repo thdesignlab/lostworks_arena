@@ -23,7 +23,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
     [SerializeField]
     private int maxHp = 1000;   //最大HP
     private int nowHp;      //現在HP
-    private float diffValue = 0.05f;
+    private float diffValue = 0.001f;
     private bool isDead = false;
 
     //SP
@@ -350,7 +350,11 @@ public class PlayerStatus : Photon.MonoBehaviour {
     public void ForceDamage(int damage)
     {
         if (!isActiveSceane) return;
-        if (!GameController.Instance.isGameStart || GameController.Instance.isGameEnd) return;
+        if (!photonView.isMine) return;
+        if (!GameController.Instance.isPractice)
+        { 
+            if (!GameController.Instance.isGameStart || GameController.Instance.isGameEnd) return;
+        }
 
         //ダメージ
         totalDamage += damage;
@@ -567,22 +571,32 @@ public class PlayerStatus : Photon.MonoBehaviour {
                     }
                     logType = BATTLE_LOG_DAMAGE;
                 }
-            }
-            if (!isNpc && (isDead || GameController.Instance.isGameEnd))
-            {
-                int[] logTypes = new int[] { BATTLE_LOG_ATTACK, BATTLE_LOG_DAMAGE };
-                foreach (int logType in logTypes)
+                if (isDead || GameController.Instance.isGameEnd)
                 {
-                    PushBattleLog(logType, slipTotalDmg[logType], preSlipDmgName[logType]);
-                    preSlipDmgName[logType] = "";
-                    slipTotalDmg[logType] = 0;
+                    int[] logTypes = new int[] { BATTLE_LOG_ATTACK, BATTLE_LOG_DAMAGE };
+                    foreach (int Type in logTypes)
+                    {
+                        PushBattleLog(Type, slipTotalDmg[Type], preSlipDmgName[Type]);
+                        preSlipDmgName[Type] = "";
+                        slipTotalDmg[Type] = 0;
+                    }
                 }
             }
 
+            bool isPractice = GameController.Instance.isPractice;
             if (isDead)
             {
                 //被ダメボイス
                 if (voiceManager != null) voiceManager.Dead();
+
+                if (!isNpc && isPractice)
+                {
+                    //練習モード
+                    transform.position = new Vector3(0, 15, 0);
+                    SetHp(maxHp);
+                    SetSp(maxSp);
+                    return;
+                }
 
                 //戦闘不能
                 //transform.DetachChildren();
@@ -604,6 +618,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
             if (transform.position.y < -10)
             {
                 //エリアアウト
+                if (!isNpc && isPractice) transform.position = new Vector3(0, 15, 0);
                 ForceDamage(11);
             }
 

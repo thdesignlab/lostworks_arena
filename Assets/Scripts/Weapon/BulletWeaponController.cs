@@ -129,7 +129,7 @@ public class BulletWeaponController : WeaponController
     protected void ActionProccess()
     {
         base.Action();
-
+        
         if (rapidCount <= 1 && spreadCount <= 1)
         {
             SpawnBullet(muzzles[0].position, muzzles[0].rotation, 0);
