@@ -1621,6 +1621,7 @@ MonoBehaviour:
   effectSpawn: {fileID: 0}
   activeLimitTime: 0
   activeLimitDistance: 0
+  isNotAutoBreak: 0
 --- !u!114 &11474078
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1716,7 +1717,7 @@ MonoBehaviour:
   chargeEffect: {fileID: 175020}
   maxChargeTime: 3
   maxSpeedRate: 5
-  maxDamageRate: 150
+  maxDamageRate: 120
   maxSizeRate: 5
   limitTime: 2
 --- !u!114 &11488164
