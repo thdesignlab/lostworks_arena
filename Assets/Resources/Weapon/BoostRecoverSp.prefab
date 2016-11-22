@@ -43,7 +43,7 @@ GameObject:
   - 4: {fileID: 454792}
   - 114: {fileID: 11485404}
   - 114: {fileID: 11449352}
-  - 114: {fileID: 11488284}
+  - 114: {fileID: 11415126}
   m_Layer: 0
   m_Name: BoostRecoverSp
   m_TagString: Weapon
@@ -92,6 +92,21 @@ Transform:
   - {fileID: 441012}
   m_Father: {fileID: 0}
   m_RootOrder: 0
+--- !u!114 &11415126
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 137690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 425c062d8185cac43bce805e5293a1ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bitMotionType: 0
+  bitMoveTime: 0
+  isBitFixed: 0
+  reloadTime: 30
 --- !u!114 &11440940
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -158,21 +173,6 @@ MonoBehaviour:
   viewIdField: 0
   instantiationId: -1
   isRuntimeInstantiated: 0
---- !u!114 &11488284
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 137690}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a848a4612a36af4c803a77202686c71, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bitMotionType: 0
-  bitMoveTime: 0
-  isBitFixed: 0
-  reloadTime: 30
 --- !u!198 &19839236
 ParticleSystem:
   m_ObjectHideFlags: 1

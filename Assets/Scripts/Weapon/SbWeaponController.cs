@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SubWeaponController : WeaponController
+public class SbWeaponController : WeaponController
 {
     StatusChangeController statusChangeCtrl;
 

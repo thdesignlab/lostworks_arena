@@ -10,7 +10,7 @@ GameObject:
   - 4: {fileID: 441408}
   - 114: {fileID: 11487280}
   - 114: {fileID: 11469510}
-  - 114: {fileID: 11412370}
+  - 114: {fileID: 11440522}
   m_Layer: 0
   m_Name: AvoidBurst
   m_TagString: Weapon
@@ -92,7 +92,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 467946}
   m_RootOrder: 0
---- !u!114 &11412370
+--- !u!114 &11440522
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -100,7 +100,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 112988}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a848a4612a36af4c803a77202686c71, type: 3}
+  m_Script: {fileID: 11500000, guid: 425c062d8185cac43bce805e5293a1ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   bitMotionType: 0
