@@ -45,15 +45,14 @@ public class NpcController : MoveOfCharacter
     {
         base.Start();
 
+        SearchTarget();
         if (GameController.Instance.isPractice)
         {
-            targetTran = GameController.Instance.GetMyTran();
             EquipWeaponPracticeNpc();
         }
         else
         {
             SetWeapons();
-            SearchTarget();
         }
         StartCoroutine(RandomMoveTarget());
         StartCoroutine(Attack());

@@ -197,12 +197,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isCheckGrounded: 0
-  glideGravityRate: 1
+  glideGravityRate: 0.05
   isLockOn: 0
   UseGravity: 0
+  GRAVITY_LIMIT_RATE: 1.5
   hitEffect: {fileID: 0}
-  speed: 350
-  damage: 15
+  speed: 250
+  damage: 30
   damagePerSecond: 0
   stuckTime: 0
   knockBackRate: 0
@@ -224,6 +225,7 @@ MonoBehaviour:
   effectSpawn: {fileID: 109874, guid: 45752b7016b587141a9cc7a60c12fe4b, type: 2}
   activeLimitTime: 0
   activeLimitDistance: 250
+  isNotAutoBreak: 0
 --- !u!136 &13652060
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -233,7 +235,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 0.5
+  m_Radius: 0.7
   m_Height: 1.5
   m_Direction: 2
   m_Center: {x: 0, y: 0, z: -0.5}
