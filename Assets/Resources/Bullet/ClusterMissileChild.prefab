@@ -141,7 +141,7 @@ Transform:
   m_GameObject: {fileID: 188828}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -8.86, y: 10.08, z: 23}
-  m_LocalScale: {x: 1, y: 1, z: 2}
+  m_LocalScale: {x: 1, y: 1, z: 1.5}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 415016}
@@ -412,7 +412,7 @@ MonoBehaviour:
   isEnergyBulletBreak: 0
   isHitBreak: 1
   safetyTime: 0
-  turnSpeed: 65
+  turnSpeed: 60
   lockStartTime: 0
   lockedSpeedRate: 1
   lockedTurnSpeedRate: 1
@@ -445,6 +445,7 @@ MonoBehaviour:
   effectSpawn: {fileID: 109874, guid: 45752b7016b587141a9cc7a60c12fe4b, type: 2}
   activeLimitTime: 3
   activeLimitDistance: 0
+  isNotAutoBreak: 0
 --- !u!136 &13660252
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -457,7 +458,7 @@ CapsuleCollider:
   m_Radius: 1
   m_Height: 3
   m_Direction: 2
-  m_Center: {x: 0, y: 0, z: 1.5}
+  m_Center: {x: 0, y: 0, z: 1}
 --- !u!198 &19850134
 ParticleSystem:
   m_ObjectHideFlags: 1

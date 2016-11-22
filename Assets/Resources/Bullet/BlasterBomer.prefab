@@ -347,10 +347,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isCheckGrounded: 0
   glideGravityRate: 1
-  isLockOn: 1
+  isLockOn: 0
   UseGravity: 0
   hitEffect: {fileID: 0}
-  speed: 130
+  speed: 100
   damage: 50
   damagePerSecond: 0
   stuckTime: 0
@@ -359,9 +359,9 @@ MonoBehaviour:
   isEnergyBulletBreak: 0
   isHitBreak: 1
   safetyTime: 0.1
-  turnSpeed: 150
-  lockStartTime: 0
-  lockedSpeedRate: 2
+  turnSpeed: 300
+  lockStartTime: 0.5
+  lockedSpeedRate: 1.3
   lockedTurnSpeedRate: 0
   isNeedLock: 1
   isLockFlat: 0

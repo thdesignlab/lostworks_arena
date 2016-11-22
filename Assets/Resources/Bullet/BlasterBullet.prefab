@@ -113,7 +113,7 @@ GameObject:
   - 114: {fileID: 11484190}
   - 136: {fileID: 13675160}
   m_Layer: 0
-  m_Name: BrasterBullet
+  m_Name: BlasterBullet
   m_TagString: EnergyBullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1698,6 +1698,7 @@ MonoBehaviour:
   glideGravityRate: 1
   isLockOn: 0
   UseGravity: 0
+  GRAVITY_LIMIT_RATE: 1.5
   hitEffect: {fileID: 135988, guid: d7cd433d10510fe46a35c39bac480fe1, type: 2}
   speed: 100
   damage: 1

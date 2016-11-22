@@ -6,8 +6,11 @@ public class MoveOfCharacter : BaseMoveController
     protected CharacterController charaCtrl;
     [SerializeField]
     protected bool UseGravity = false;
-    
-    private float preGlideGRate = 0.85f;
+
+    [SerializeField]
+    private float GRAVITY_LIMIT_RATE = 1.5f;
+    //[SerializeField]
+    private float preGlideRate = 0.8f;
     private Vector3 preGlideG = Vector3.zero;
     private Vector3 moveVector = Vector3.zero;
 
@@ -72,7 +75,7 @@ public class MoveOfCharacter : BaseMoveController
     private Vector3 GetGravity()
     {
         Vector3 g = Physics.gravity;
-        Vector3 glideG = g * base.glideGravityRate;
+        Vector3 glideG = g * glideGravityRate;
 
         if (base.isGrounded)
         {
@@ -83,8 +86,15 @@ public class MoveOfCharacter : BaseMoveController
         else
         {
             //滞空時
-            g = glideG * Time.deltaTime + preGlideG * preGlideGRate;
-            if (g.y > preGlideG.y) g = glideG * Time.deltaTime + preGlideG;
+            g = glideG * Time.deltaTime + preGlideG * preGlideRate;
+            if (g.y > preGlideG.y)
+            {
+                g = glideG * Time.deltaTime + preGlideG;
+            }
+            else if (g.y < glideG.y * GRAVITY_LIMIT_RATE)
+            {
+                g.y = glideG.y * Time.deltaTime * GRAVITY_LIMIT_RATE;
+            }
             preGlideG = g;
         }
         return g;

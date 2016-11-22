@@ -3119,6 +3119,8 @@ MonoBehaviour:
   glideGravityRate: 1
   isLockOn: 0
   UseGravity: 1
+  GRAVITY_LIMIT_RATE: 1.5
+  preGlideRate: 0.1
 --- !u!114 &11473076
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3131,7 +3133,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   runSpeed: 20
-  jumpSpeed: 180
+  jumpSpeed: 150
   jumpLimit: 0.3
   glideJump: 0
   boostSpeed: 70

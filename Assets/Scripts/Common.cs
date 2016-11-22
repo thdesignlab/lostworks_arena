@@ -590,8 +590,8 @@ namespace Common
         //ハンド武器リスト
         public static Dictionary<int, string[]> handWeaponLineUp = new Dictionary<int, string[]>()
         {
-            { 1000, new string[]{ "Rifle", "", "[ライフル]", OBTAIN_TYPE_INIT}},
-            { 1001, new string[]{ "BrasterLauncher", "", "", OBTAIN_TYPE_INIT}},
+            { 1000, new string[]{ "Rifle", "", "", OBTAIN_TYPE_INIT}},
+            { 1001, new string[]{ "BlasterLauncher", "", "", OBTAIN_TYPE_INIT}},
             { 1002, new string[]{ "BeamCannon", "", "", OBTAIN_TYPE_INIT}},
             { 1003, new string[]{ "PlasmaGun", "", "", OBTAIN_TYPE_INIT}},
             { 1004, new string[]{ "BlazePillar", "", "", OBTAIN_TYPE_INIT}},
@@ -620,7 +620,7 @@ namespace Common
         //背中武器リスト
         public static Dictionary<int, string[]> shoulderWeaponLineUp = new Dictionary<int, string[]>()
         {
-            { 3000, new string[]{ "CECannon", "", "", OBTAIN_TYPE_INIT }},
+            { 3000, new string[]{ "Bioparachute", "", "", OBTAIN_TYPE_INIT }},
             { 3001, new string[]{ "HugeLaser", "", "", OBTAIN_TYPE_INIT}},
             { 3002, new string[]{ "SatelliteMissile", "", "", OBTAIN_TYPE_INIT}},
             { 3003, new string[]{ "Cyclone", "", "", OBTAIN_TYPE_INIT}},
@@ -629,7 +629,7 @@ namespace Common
             { 3006, new string[]{ "SearchRay", "", "", OBTAIN_TYPE_STORE}},
             { 3007, new string[]{ "LaserLauncher", "", "", OBTAIN_TYPE_INIT }},
             { 3008, new string[]{ "HighBeamCannon", "", "", OBTAIN_TYPE_INIT }},
-            { 3009, new string[]{ "ChemicalBullet", "", "", OBTAIN_TYPE_INIT }},
+            { 3009, new string[]{ "ChemicalCannon", "", "", OBTAIN_TYPE_INIT }},
         };
         //背中武器(ダッシュ)リスト
         public static Dictionary<int, string[]> shoulderDashWeaponLineUp = new Dictionary<int, string[]>()
@@ -641,7 +641,7 @@ namespace Common
             { 4004, new string[]{ "RoundMissile", "", "", OBTAIN_TYPE_INIT}},
             { 4005, new string[]{ "AssaultCharge", "", "", OBTAIN_TYPE_INIT}},
             { 4006, new string[]{ "ClusterMissile", "", "", OBTAIN_TYPE_STORE}},
-            { 4007, new string[]{ "BrasterBomer", "", "", OBTAIN_TYPE_INIT}},
+            { 4007, new string[]{ "BlasterBomer", "", "", OBTAIN_TYPE_INIT}},
         };
         //サブ武器リスト
         public static Dictionary<int, string[]> subWeaponLineUp = new Dictionary<int, string[]>()
