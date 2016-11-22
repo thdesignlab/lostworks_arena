@@ -155,31 +155,49 @@ public class StoreManager : SingletonMonoBehaviour<StoreManager>
     //獲得ポイントダイアログ
     private void PointGetDialog(int pt)
     {
+        Debug.Log("PointGetDialog1");
         DialogController.CloseMessage();
 
+        Debug.Log("PointGetDialog2");
         //所持pt更新
         textPoint.text = UserManager.userPoint.ToString();
 
-        string text = pt + "pt獲得";
-        string nextBtn = "OK";
-        UnityAction nextAction = null;
-        bool cancelBtn = false;
+        string title = pt + "pt獲得";
+        string text = "";
+        string imgName = "";
+        string nextBtn = "もう一度";
+        Dictionary<string, UnityAction> btnActionDic = new Dictionary<string, UnityAction>();
         if (!string.IsNullOrEmpty(ModelManager.tipsInfo.text))
         {
-            text += "\n\n<tips>\n";
+            //Tipsあり
+            text = "=== tips ===\n";
             text += ModelManager.tipsInfo.text;
+            imgName = ModelManager.tipsInfo.image;
 
-            nextBtn = "もう一度";
-            nextAction = PlayGacha;
-            cancelBtn = true;
             if (ModelManager.tipsInfo.last_flg == 0)
             {
-                //続きあり
-                nextBtn += "\nnext tips";
+                //Tips続きあり
+                string nextTipsBtn = nextBtn + "(next tips)";
+                btnActionDic.Add(nextTipsBtn, PlayGacha);
+                string newTipsBtn = nextBtn + "(new tips)";
+                UnityAction newTipsAction = () => {
+                    ModelManager.tipsInfo = new TipsInfo();
+                    PlayGacha();
+                };
+                btnActionDic.Add(newTipsBtn, newTipsAction);
+            }
+            else
+            {
+                //Tips続きなし
+                btnActionDic.Add(nextBtn, PlayGacha);
             }
         }
-
-        DialogController.OpenDialog(text, nextBtn, nextAction, cancelBtn);
+        else
+        {
+            //Tipsなし
+            btnActionDic.Add(nextBtn, PlayGacha);
+        }
+        DialogController.OpenSelectDialog(title, text, imgName, btnActionDic, true);
     }
 
 

@@ -15,8 +15,11 @@ public class DialogController : MonoBehaviour
     private static Image messageImage;
     private static Text messageText;
 
+    const string RESOURCE_SELECT_DIALOG = "UI/SelectDialog";
+    const string RESOURCE_SELECT_BUTTON = "UI/SelectDialogButton";
     const string RESOURCE_DIALOG = "UI/Dialog";
     const string RESOURCE_MESSAGE = "UI/Message";
+    const string RESOURCE_IMAGE_DIR = "Image/";
 
     //メッセージ配置
     public const int MESSAGE_POSITION_CENTER = 0;
@@ -43,7 +46,7 @@ public class DialogController : MonoBehaviour
     public const string MESSAGE_JOIN_ROOM = "Join Room";
     public const string MESSAGE_SEARCH_ROOM = "Search Room";
 
-    private static string MESSAGE_IMAGE_PARENT = "Image/Message/";
+    private static string MESSAGE_IMAGE_PARENT = RESOURCE_IMAGE_DIR + "Message/";
     private static string MESSAGE_IMAGE_TOP = "taptostart";
     private static string MESSAGE_IMAGE_LOADING = "nowloading";
     private static string MESSAGE_IMAGE_CONNECTING = "connecting";
@@ -62,14 +65,81 @@ public class DialogController : MonoBehaviour
     const string BUTTON_OK_TEXT = "OK";
     const string BUTTON_CANCEL_TEXT = "Cancel";
 
-    //##### 広告ダイアログ表示 #####
-    public static void OpenDialogAd()
+
+    //##### 選択ダイアログ表示 #####
+    public static GameObject OpenSelectDialog(string text, Dictionary<string, UnityAction> btnInfoDic, bool isCancel = false)
     {
-        //OpenDialog("");
-        //UnityAds.Instance.Play();
+        return OpenSelectDialog("", text, "", btnInfoDic, isCancel);
+    }
+    public static GameObject OpenSelectDialog(string text, string imageName, Dictionary<string, UnityAction> btnInfoDic, bool isCancel = false)
+    {
+        return OpenSelectDialog("", text, imageName, btnInfoDic, isCancel);
+
+    }
+    public static GameObject OpenSelectDialog(string title, string text, string imageName, Dictionary<string, UnityAction> btnInfoDic, bool isCancel)
+    {
+        CloseMessage();
+        if (dialog != null) CloseDialog();
+        if (btnInfoDic.Count <= 0) return null;
+
+        //ダイアログ生成
+        dialog = Instantiate((GameObject)Resources.Load(RESOURCE_SELECT_DIALOG));
+        Transform dialogTran = dialog.transform;
+
+        //タイトル
+        if (!string.IsNullOrEmpty(title))
+        {
+            Transform titleTran = dialogTran.FindChild("DialogArea/Title");
+            titleTran.gameObject.SetActive(true);
+            titleTran.GetComponent<Text>().text = title;
+        }
+
+        //画像
+        if (!string.IsNullOrEmpty(imageName))
+        {
+            Sprite imgSprite = Resources.Load<Sprite>(RESOURCE_IMAGE_DIR + imageName);
+            if (imgSprite != null)
+            {
+                Transform imageTran = dialogTran.FindChild("DialogArea/Image");
+                imageTran.gameObject.SetActive(true);
+                Image img = imageTran.GetComponent<Image>();
+                img.sprite = imgSprite;
+                Debug.Log("type >> "+img.type);
+                img.preserveAspect = true;
+            }
+        }
+
+        //メッセージ
+        textMessage = dialogTran.FindChild("DialogArea/Message").GetComponent<Text>();
+        textMessage.text = text;
+
+        //セレクトボタン
+        foreach (string btnText in btnInfoDic.Keys)
+        {
+            SetSelectBtn(btnText, btnInfoDic[btnText]);
+        }
+
+        //Cancelボタン
+        if (isCancel)
+        {
+            SetSelectBtn(BUTTON_CANCEL_TEXT, null, new Color(255, 255, 255));
+        }
+        return dialog;
     }
 
+    private static void SetSelectBtn(string btnText, UnityAction action = null, Color btnColor = default(Color))
+    {
+        GameObject btnObj = Instantiate((GameObject)Resources.Load(RESOURCE_SELECT_BUTTON));
+        btnObj.GetComponent<Button>().onClick.AddListener(() => OnClickButton(action));
+        Text buttonText = btnObj.transform.GetComponentInChildren<Text>();
+        if (buttonText != null) buttonText.text = btnText;
+        if (btnColor != default(Color)) buttonText.color = btnColor;
+        btnObj.transform.SetParent(dialog.transform.FindChild("DialogArea"), false);
+    }
+
+
     //##### ダイアログ表示 #####
+
     public static GameObject OpenDialog(string text, UnityAction okAction = null, bool isCancel = false)
     {
         return OpenDialog(text, BUTTON_OK_TEXT, okAction, isCancel);
@@ -120,10 +190,10 @@ public class DialogController : MonoBehaviour
         return dialog;
     }
 
-    public static void CloseDialog()
+    public static void CloseDialog(bool isFadeOut = true)
     {
-        ScreenManager.Instance.FadeDialog(dialog, false);
-        //Destroy(dialog);
+        if (dialog == null) return;
+        Destroy(dialog);
     }
 
     private static void SetBtn(GameObject btnObj, string btnText, UnityAction btnAction)
@@ -133,13 +203,14 @@ public class DialogController : MonoBehaviour
         if (buttonOkText != null) buttonOkText.text = btnText;
     }
 
-    public static void OnClickButton(UnityAction unityAction = null)
+    private static void OnClickButton(UnityAction unityAction = null)
     {
+        dialog.transform.FindChild("Filter").gameObject.SetActive(true);
+        CloseDialog();
         if (unityAction != null)
         {
             unityAction.Invoke();
         }
-        CloseDialog();
     }
 
     public static Text GetDialogText()

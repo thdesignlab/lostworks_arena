@@ -123,9 +123,8 @@ public class ScreenManager : SingletonMonoBehaviour<ScreenManager>
         StartCoroutine(LoadUIProccess(fadeOutObj, fadeInObj, isChild, callback));
     }
 
-    public void FadeDialog(GameObject dialog, bool isFadeIn)
+    public void FadeDialog(GameObject dialog, bool isFadeIn, UnityAction callback = null)
     {
-        UnityAction callback = null;
         if (!isFadeIn) callback = () => Destroy(dialog);
         FadeUI(dialog, isFadeIn, true, callback);
     }
