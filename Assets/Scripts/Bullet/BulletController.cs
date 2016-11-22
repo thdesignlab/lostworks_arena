@@ -186,7 +186,9 @@ public class BulletController : MoveOfCharacter
             else if (hitObj.CompareTag(Common.CO.TAG_STRUCTURE))
             {
                 if (myTran.tag == Common.CO.TAG_BULLET_EXTRA) damage *= Common.CO.EXTRA_BULLET_BREAK_RATE;
-                hitObj.GetComponent<StructureController>().AddDamage(damage);
+                StructureController structCtrl = hitObj.GetComponent<StructureController>();
+                structCtrl.AddDamage(damage);
+                if (structCtrl.Reflection(myTran)) isHit = false;
             }
         }
     }

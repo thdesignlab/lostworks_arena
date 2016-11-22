@@ -11,6 +11,9 @@ public class StructureController : Photon.MonoBehaviour
     private GameObject breakEffect;
     [SerializeField]
     private int maxHp;
+    [SerializeField]
+    private bool isReflect = false;
+
     private int nowHp;
 
     private int stockDamage = 0;
@@ -66,7 +69,11 @@ public class StructureController : Photon.MonoBehaviour
         if (photonView.isMine)
         {
             //子供がいる場合パージ
-            if (myTran.childCount > 0) myTran.DetachChildren();
+            foreach (Transform child in myTran)
+            {
+                if (child.GetComponent<StructureController>() != null) child.parent = null;
+            }
+            //if (myTran.childCount > 0) myTran.DetachChildren();
 
             if (breakEffect != null)
             {
@@ -77,5 +84,14 @@ public class StructureController : Photon.MonoBehaviour
             //破壊
             PhotonNetwork.Destroy(gameObject);
         }
+    }
+
+    public bool Reflection(Transform bulletTran)
+    {
+        if (!isReflect) return false;
+
+        //bulletTran.localRotation *= -1;
+
+        return true;
     }
 }
