@@ -1372,6 +1372,18 @@ Prefab:
       propertyPath: m_RootOrder
       value: 9
       objectReference: {fileID: 0}
+    - target: {fileID: 11419386, guid: 99c343064dbcc2b4eab31e3d8a6780b1, type: 2}
+      propertyPath: DetectAcceleration
+      value: 10000
+      objectReference: {fileID: 0}
+    - target: {fileID: 11419386, guid: 99c343064dbcc2b4eab31e3d8a6780b1, type: 2}
+      propertyPath: DefeatSpeed
+      value: 5000
+      objectReference: {fileID: 0}
+    - target: {fileID: 11419386, guid: 99c343064dbcc2b4eab31e3d8a6780b1, type: 2}
+      propertyPath: MinFlickDistance
+      value: 500
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 99c343064dbcc2b4eab31e3d8a6780b1, type: 2}
   m_IsPrefabParent: 0

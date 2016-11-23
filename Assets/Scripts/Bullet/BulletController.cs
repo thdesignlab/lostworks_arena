@@ -80,7 +80,7 @@ public class BulletController : MoveOfCharacter
         }
 
         //推進力
-        base.Move(Vector3.forward, speed);
+        Move(Vector3.forward, speed);
     }
 
     //衝突時処理(Trigger=true)
@@ -113,9 +113,16 @@ public class BulletController : MoveOfCharacter
             //対象を破壊
             TargetDestory(otherObj);
 
+            //反射チェック
+            if (IsReflection(otherObj))
+            {
+                Reflection();
+                isHit = false;
+            }
+
             if (isHit && isHitBreak)
             {
-                base.DestoryObject();
+                DestoryObject();
             }
             else
             {
@@ -184,6 +191,10 @@ public class BulletController : MoveOfCharacter
             }
             else if (hitObj.CompareTag(Common.CO.TAG_STRUCTURE))
             {
+                if (IsReflection(hitObj))
+                {
+
+                }
                 if (myTran.tag == Common.CO.TAG_BULLET_EXTRA) dmg *= Common.CO.EXTRA_BULLET_BREAK_RATE;
                 StructureController structCtrl = hitObj.GetComponent<StructureController>();
                 structCtrl.AddDamage((int)dmg);
@@ -313,8 +324,9 @@ public class BulletController : MoveOfCharacter
     //持ち主設定
     public void SetOwner(Transform owner, string weaponName)
     {
-        if (owner == null) return;
-        object[] args = new object[] { PhotonView.Get(owner.gameObject).viewID, weaponName };
+        int viewId = -1;
+        if (owner != null) viewId = PhotonView.Get(owner.gameObject).viewID;
+        object[] args = new object[] { viewId, weaponName };
         photonView.RPC("SetOwnerRPC", PhotonTargets.All, args);
     }
 
@@ -361,5 +373,41 @@ public class BulletController : MoveOfCharacter
     {
         tran = ownerTran;
         name = ownerWeapon;
+    }
+    public Transform GetOwner()
+    {
+        return ownerTran;
+    }
+
+    protected bool IsReflection(GameObject otherObj)
+    {
+        if (!otherObj.CompareTag(Common.CO.TAG_STRUCTURE)) return false;
+        if (!otherObj.GetComponent<StructureController>().IsReflaction()) return false;
+
+        BulletController bulletCtrl = otherObj.GetComponent<BulletController>();
+        if (bulletCtrl != null && bulletCtrl.GetOwner() == ownerTran) return false;
+        return true;
+    }
+
+    protected bool Reflection()
+    {
+        //owner,target
+        Transform preOwnerTran = ownerTran;
+        SetOwner(null, ownerWeapon);
+        SetTarget(preOwnerTran);
+
+        //object reset
+        ObjectController obCtrl = GetComponent<ObjectController>();
+        if (obCtrl != null) obCtrl.Reset();
+
+        //方向を変える
+        photonView.RPC("ReflectionRPC", PhotonTargets.All);
+
+        return true;
+    }
+    [PunRPC]
+    protected void ReflectionRPC()
+    {
+        myTran.LookAt(ownerTran);
     }
 }

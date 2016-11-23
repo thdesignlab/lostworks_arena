@@ -17,6 +17,9 @@ public class ObjectController : Photon.MonoBehaviour {
     private Transform ownerTran;
     private string ownerWeapon;
 
+    private float activeTime = 0;
+    private float activeDistance = 0;
+
     void Start()
     {
         myTran = transform;
@@ -31,18 +34,22 @@ public class ObjectController : Photon.MonoBehaviour {
 
     IEnumerator CountDown()
     {
-        yield return new WaitForSeconds(activeLimitTime);
+        for (;;)
+        {
+            activeTime += Time.deltaTime;
+            if (activeTime >= activeLimitTime) break;
+            yield return null;
+        }
         DestoryObject();
     }
 
     IEnumerator CheckDistance()
     {
-        float distance = 0;
         Vector3 prePos = myTran.position;
         for (;;)
         {
-            distance += Mathf.Abs(Vector3.Distance(myTran.position, prePos));
-            if (distance >= activeLimitDistance)
+            activeDistance += Mathf.Abs(Vector3.Distance(myTran.position, prePos));
+            if (activeDistance >= activeLimitDistance)
             {
                 DestoryObject();
                 break;
@@ -94,5 +101,11 @@ public class ObjectController : Photon.MonoBehaviour {
 
         BulletController bulletCtrl = myTran.GetComponent<BulletController>();
         if (bulletCtrl != null) bulletCtrl.GetOwner(out ownerTran, out ownerWeapon);
+    }
+
+    public void Reset()
+    {
+        activeTime = 0;
+        activeDistance = 0;
     }
 }
