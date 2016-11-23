@@ -267,6 +267,7 @@ MonoBehaviour:
   isPhysicsBulletBreak: 1
   isEnergyBulletBreak: 1
   ownDamageRate: 0
+  isFloorEffect: 0
 --- !u!114 &11442578
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -281,7 +282,7 @@ MonoBehaviour:
   bitMotionType: 1
   bitMoveTime: 0
   isBitFixed: 0
-  reloadTime: 6
+  reloadTime: 5
   blade: {fileID: 160860}
   attackTime: 4
   attackWaitTime: 0
@@ -446,10 +447,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 5
-  m_Height: 36
+  m_Radius: 8
+  m_Height: 45
   m_Direction: 2
-  m_Center: {x: 0, y: 0, z: 18}
+  m_Center: {x: 0, y: 0, z: 20}
 --- !u!198 &19853196
 ParticleSystem:
   m_ObjectHideFlags: 1

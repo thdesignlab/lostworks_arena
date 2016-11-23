@@ -31,6 +31,9 @@ public class NpcController : MoveOfCharacter
     private Animator animator;
     private ExtraWeaponController extraCtrl;
 
+    //回避
+    const int AVOID_JUMP_RATE = 10;
+
     // Use this for initialization
     protected override void Awake()
     {
@@ -76,7 +79,7 @@ public class NpcController : MoveOfCharacter
                 boostIntervalTime = 0.5f;
                 searchIntervalTime = 2.0f;
                 status.runSpeed = 40;
-                status.defenceRate = 0.5f;
+                status.defenceRate = 10;
                 Transform super = myTran.FindChild("Effect/Super");
                 if (super != null) super.gameObject.SetActive(true);
                 SoundManager.Instance.PlayBattleBgm();
@@ -87,16 +90,16 @@ public class NpcController : MoveOfCharacter
                 boostIntervalTime = 1.0f;
                 searchIntervalTime = 2.0f;
                 status.runSpeed = 35;
-                status.defenceRate = 0.75f;
+                status.defenceRate = 25;
                 SoundManager.Instance.PlayBattleBgm();
             }
             else if (hpPer <= 75 && preHpPer > 75)
             {
                 atackIntervalTime = 2.0f;
                 boostIntervalTime = 2.0f;
-                status.runSpeed = 30;
-                status.defenceRate = 1.0f;
                 searchIntervalTime = 3.0f;
+                status.runSpeed = 30;
+                status.defenceRate = 50;
                 SoundManager.Instance.PlayBattleBgm();
             }
             preHpPer = hpPer;
@@ -370,7 +373,7 @@ public class NpcController : MoveOfCharacter
         base.MoveWorld(moveDirection, status.runSpeed);
     }
 
-    private void Jump(int x, int y)
+    private void Jump(float x, float y)
     {
         if (!status.CheckSp(status.boostCost))
         {
@@ -478,8 +481,13 @@ public class NpcController : MoveOfCharacter
 
         //回避行動
         //Vector3 bulletVector = myTran.position - other.transform.position;
-        int x = Random.Range(-1, 2);
-        int y = Random.Range(-1, 2);
+        float x = 0;
+        float y = 0;
+        if (Random.Range(0, 100) > AVOID_JUMP_RATE)
+        {
+            x = Random.Range(-1.0f, 1.0f);
+            y = Random.Range(-1.0f, 1.0f);
+        }
         Jump(x, y);
     }
 

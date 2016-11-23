@@ -208,16 +208,7 @@ public abstract class BaseMoveController : Photon.MonoBehaviour
 
         //到達するまでにターゲットが移動するベクトル
         Vector3 targetMoveVector = targetVelocityVector * arriveTime;
-        //if (!isNpc) Debug.Log("moveVector=" + targetMoveVector.ToString());
-        //Debug.Log(myTran.name+" >> "+targetMoveVector);
         return targetMoveVector;
-    }
-    private void DebugLog(Vector3 vec)
-    {
-        if (myTran.tag == "Weapon")
-        {
-            Debug.Log(myTran.name+" : "+vec);
-        }
     }
 
     public virtual Vector3 GetVelocityVector()

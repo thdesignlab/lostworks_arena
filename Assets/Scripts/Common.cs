@@ -599,8 +599,9 @@ namespace Common
             { 1006, new string[]{ "Stinger", "", "", OBTAIN_TYPE_INIT}},
             { 1007, new string[]{ "TridentPillar", "", "", OBTAIN_TYPE_INIT}},
             { 1008, new string[]{ "FlameRadiation", "", "", OBTAIN_TYPE_STORE}},
-            { 1009, new string[]{ "heartGun", "", "", OBTAIN_TYPE_INIT}},
+            { 1009, new string[]{ "HeartGun", "", "", OBTAIN_TYPE_INIT}},
             { 1010, new string[]{ "Human", "", "", OBTAIN_TYPE_INIT}},
+            { 1011, new string[]{ "Whirlwind", "", "", OBTAIN_TYPE_INIT}},
         };
         //ハンド武器(ダッシュ)リスト
         public static Dictionary<int, string[]> handDashWeaponLineUp = new Dictionary<int, string[]>()
@@ -627,7 +628,7 @@ namespace Common
             { 3004, new string[]{ "EnergyShield", "", "", OBTAIN_TYPE_INIT}},
             { 3005, new string[]{ "ChargeArrow", "", "", OBTAIN_TYPE_INIT}},
             { 3006, new string[]{ "SearchRay", "", "", OBTAIN_TYPE_STORE}},
-            { 3007, new string[]{ "LaserLauncher", "", "", OBTAIN_TYPE_INIT }},
+            { 3007, new string[]{ "EnergyLauncher", "", "", OBTAIN_TYPE_INIT }},
             { 3008, new string[]{ "HighBeamCannon", "", "", OBTAIN_TYPE_INIT }},
             { 3009, new string[]{ "ChemicalCannon", "", "", OBTAIN_TYPE_INIT }},
         };
@@ -636,7 +637,7 @@ namespace Common
         {
             { 4000, new string[]{ "MissileLauncher", "", "", OBTAIN_TYPE_INIT}},
             { 4001, new string[]{ "ClusterLaser", "", "", OBTAIN_TYPE_INIT}},
-            { 4002, new string[]{ "GatlingCannon", "", "", OBTAIN_TYPE_INIT}},
+            { 4002, new string[]{ "GatlingBit", "", "", OBTAIN_TYPE_INIT}},
             { 4003, new string[]{ "Shotgun", "", "", OBTAIN_TYPE_INIT}},
             { 4004, new string[]{ "RoundMissile", "", "", OBTAIN_TYPE_INIT}},
             { 4005, new string[]{ "AssaultCharge", "", "", OBTAIN_TYPE_INIT}},

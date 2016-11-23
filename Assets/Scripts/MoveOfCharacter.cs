@@ -7,7 +7,7 @@ public class MoveOfCharacter : BaseMoveController
     [SerializeField]
     protected bool UseGravity = false;
 
-    [SerializeField]
+    //[SerializeField]
     private float GRAVITY_LIMIT_RATE = 1.5f;
     //[SerializeField]
     private float preGlideRate = 0.8f;

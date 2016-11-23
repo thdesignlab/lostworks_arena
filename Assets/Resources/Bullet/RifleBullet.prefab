@@ -176,15 +176,15 @@ MonoBehaviour:
   isLockOn: 0
   UseGravity: 0
   hitEffect: {fileID: 135988, guid: d7cd433d10510fe46a35c39bac480fe1, type: 2}
-  speed: 650
-  damage: 40
+  speed: 600
+  damage: 15
   damagePerSecond: 0
-  stuckTime: 0.5
+  stuckTime: 0.7
   knockBackRate: 0
   isPhysicsBulletBreak: 0
   isEnergyBulletBreak: 0
   isHitBreak: 1
-  safetyTime: 0.01
+  safetyTime: 0
 --- !u!114 &11461786
 MonoBehaviour:
   m_ObjectHideFlags: 1

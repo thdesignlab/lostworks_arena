@@ -11,8 +11,6 @@ public class StructureController : Photon.MonoBehaviour
     private GameObject breakEffect;
     [SerializeField]
     private int maxHp;
-    [SerializeField]
-    private bool isReflect = false;
 
     private int nowHp;
 
@@ -84,14 +82,5 @@ public class StructureController : Photon.MonoBehaviour
             //破壊
             PhotonNetwork.Destroy(gameObject);
         }
-    }
-
-    public bool Reflection(Transform bulletTran)
-    {
-        if (!isReflect) return false;
-
-        //bulletTran.localRotation *= -1;
-
-        return true;
     }
 }

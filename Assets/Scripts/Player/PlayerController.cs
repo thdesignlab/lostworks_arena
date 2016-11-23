@@ -34,11 +34,6 @@ public class PlayerController : MoveOfCharacter
     private Button subBtn;
     private Button extraBtn;
 
-    private bool isAutoLock = true; //切り替え可能にする場合はAutoLockボタンを表示する
-    //private Button autoLockButton;
-    private Text autoLockText;
-    //private string lockTextPrefix = "Lock\n";
-
     private bool isPC = false;
 
     private Vector3 setAngleVector = new Vector3(1, 0, 1);
@@ -98,13 +93,6 @@ public class PlayerController : MoveOfCharacter
             subBtn = screenInputBtnTran.FindChild(Common.CO.BUTTON_USE_SUB).GetComponent<Button>();
             extraBtn = screenInputBtnTran.FindChild(Common.CO.BUTTON_EXTRA_ATTACK).GetComponent<Button>();
 
-            //GameObject autoLockObj = GameObject.Find(screenBtn + Common.CO.BUTTON_AUTO_LOCK);
-            //if (autoLockObj != null)
-            //{
-            //    //autoLockButton = autoLockObj.GetComponent<Button>();
-            //    autoLockText = autoLockObj.transform.FindChild("Text").GetComponent<Text>();
-            //}
-
             SetWeapon();
         }
     }
@@ -130,14 +118,8 @@ public class PlayerController : MoveOfCharacter
 
                 if (targetStatus.IsLocked())
                 {
-                    if (isAutoLock)
-                    {
-                        base.SetAngle(targetTran, status.turnSpeed, setAngleVector);
-                    }
-                    if (circleArrow != null)
-                    {
-                        circleArrow.SetActive(false);
-                    }
+                    SetAngle(targetTran, status.turnSpeed, setAngleVector);
+                    if (circleArrow != null) circleArrow.SetActive(false);
                 }
                 else
                 {
@@ -149,7 +131,7 @@ public class PlayerController : MoveOfCharacter
                 }
             }
 
-            if (isPC)
+            if (isPC && (UserManager.isAdmin || MyDebug.Instance.isDebugMode))
             {
                 float x = Input.GetAxis("Horizontal");
                 float y = Input.GetAxis("Vertical");
@@ -524,13 +506,15 @@ public class PlayerController : MoveOfCharacter
     {
         if (!photonView.isMine) return;
         if (weaponCtrls.Count <= 0) return;
+        if (extraCtrl != null && extraCtrl.IsShooting()) return;
+
         foreach (int wepNo in weaponCtrls.Keys)
         {
             if (!weaponCtrls[wepNo].IsEnableFire()) return;
         }
 
         WeaponController weapon = null;
-        if (base.isBoost)
+        if (isBoost)
         {
             //ブースト中攻撃
             //QuickTarget(targetTran, true);
@@ -561,19 +545,6 @@ public class PlayerController : MoveOfCharacter
         subCtrl.Fire(targetTran);
     }
 
-    //public void AutoLock()
-    //{
-    //    if (isAutoLock)
-    //    {
-    //        isAutoLock = false;
-    //        autoLockText.text = lockTextPrefix + "off";
-    //    }
-    //    else
-    //    {
-    //        isAutoLock = true;
-    //        autoLockText.text = lockTextPrefix + "on";
-    //    }
-    //}
 
     //#########################
     //##### TourchManager #####

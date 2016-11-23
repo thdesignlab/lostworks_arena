@@ -229,6 +229,7 @@ MonoBehaviour:
   effectSpawn: {fileID: 0}
   activeLimitTime: 0
   activeLimitDistance: 0
+  isNotAutoBreak: 0
 --- !u!114 &11440762
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -246,6 +247,7 @@ MonoBehaviour:
   isPhysicsBulletBreak: 1
   isEnergyBulletBreak: 1
   ownDamageRate: 0
+  isFloorEffect: 0
 --- !u!114 &11457546
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -514,7 +516,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.05
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!136 &13613692
 CapsuleCollider:

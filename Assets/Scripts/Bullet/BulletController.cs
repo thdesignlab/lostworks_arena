@@ -104,10 +104,8 @@ public class BulletController : MoveOfCharacter
         {
             if (IsSafety(otherObj))
             {
-                //Debug.Log("■OnHit[Safety]:" + myTran.name + " >> " + otherObj.name + " / " + otherObj.tag);
                 return;
             }
-            //Debug.Log("OnHit:" + myTran.name + " >> " + otherObj.name + " / " + otherObj.tag);
 
             //ダメージを与える
             AddDamage(otherObj);
@@ -132,7 +130,6 @@ public class BulletController : MoveOfCharacter
         if (photonView.isMine)
         {
             if (damagePerSecond <= 0) return;
-            //Debug.Log("OnStay:"+otherObj.name);
             if (IsSafety(otherObj, false)) return;
 
             //ダメージを与える
@@ -146,6 +143,10 @@ public class BulletController : MoveOfCharacter
         //ダメージ系処理は所有者のみ行う
         if (photonView.isMine)
         {
+            //AttackRate計算
+            float dmg = damage;
+            if (ownerStatus != null) dmg *= (ownerStatus.attackRate / 100);
+
             if (hitObj.CompareTag("Player") || hitObj.tag == "Target")
             {
                 //プレイヤーステータス
@@ -155,12 +156,10 @@ public class BulletController : MoveOfCharacter
                     status = hitObj.GetComponent<PlayerStatus>();
                 }
 
-                if (damage > 0)
+                if (dmg > 0)
                 {
                     //ダメージ
-                    if (ownerStatus != null) damage = (int)(damage * ownerStatus.attackRate / 100);
-                    AddDamageProccess(status, damage);
-                    //Debug.Log(hitObj.name + " >> " + myTran.name + "(" + damage + ")");
+                    AddDamageProccess(status, dmg);
 
                     //ダメージエフェクト
                     if (hitEffect != null)
@@ -180,15 +179,14 @@ public class BulletController : MoveOfCharacter
                 //ノックバック
                 if (knockBackRate > 0)
                 {
-                    base.TargetKnockBack(hitObj.transform, knockBackRate);
+                    TargetKnockBack(hitObj.transform, knockBackRate);
                 }
             }
             else if (hitObj.CompareTag(Common.CO.TAG_STRUCTURE))
             {
-                if (myTran.tag == Common.CO.TAG_BULLET_EXTRA) damage *= Common.CO.EXTRA_BULLET_BREAK_RATE;
+                if (myTran.tag == Common.CO.TAG_BULLET_EXTRA) dmg *= Common.CO.EXTRA_BULLET_BREAK_RATE;
                 StructureController structCtrl = hitObj.GetComponent<StructureController>();
-                structCtrl.AddDamage(damage);
-                if (structCtrl.Reflection(myTran)) isHit = false;
+                structCtrl.AddDamage((int)dmg);
             }
         }
     }
@@ -201,17 +199,10 @@ public class BulletController : MoveOfCharacter
         {
             //ダメージ計算
             float dmg = damagePerSecond;
-            if (ownerStatus != null) dmg = (int)(dmg * ownerStatus.attackRate / 100);
-            float fltDmg = dmg * Time.deltaTime;
-            int addDmg = (int)Mathf.Floor(fltDmg);
-            dmg -= addDmg;
-            if (dmg > 0)
-            {
-                //小数部分は確率
-                if (dmg * 100 > Random.Range(0, 100)) addDmg += 1;
-            }
+            if (ownerStatus != null) dmg *= (ownerStatus.attackRate / 100);
+            dmg *= Time.deltaTime;
 
-            if (addDmg > 0)
+            if (dmg > 0)
             {
                 if (hitObj.CompareTag("Player") || hitObj.tag == "Target")
                 {
@@ -221,19 +212,18 @@ public class BulletController : MoveOfCharacter
                     {
                         status = hitObj.GetComponent<PlayerStatus>();
                     }
-                    AddDamageProccess(status, addDmg, true);
-                    //Debug.Log(hitObj.name + " >> " + myTran.name + "(slip:" + addDmg + ")");
+                    AddDamageProccess(status, dmg, true);
                 }
                 else if (hitObj.CompareTag(Common.CO.TAG_STRUCTURE))
                 {
-                    if (myTran.tag == Common.CO.TAG_BULLET_EXTRA) addDmg *= Common.CO.EXTRA_BULLET_BREAK_RATE;
-                    hitObj.GetComponent<StructureController>().AddDamage(addDmg);
+                    if (myTran.tag == Common.CO.TAG_BULLET_EXTRA) dmg *= Common.CO.EXTRA_BULLET_BREAK_RATE;
+                    hitObj.GetComponent<StructureController>().AddDamage((int)dmg);
                 }
             }
         }
     }
 
-    protected void AddDamageProccess(PlayerStatus status, int dmg, bool isSlip = false)
+    protected void AddDamageProccess(PlayerStatus status, float dmg, bool isSlip = false)
     {
         //対象へダメージを与える
         bool isDamage = status.AddDamage(dmg, ownerWeapon, isSlip);
@@ -245,7 +235,7 @@ public class BulletController : MoveOfCharacter
         if (isDamage && ownerStatus != null)
         {
             //Debug.Log(myTran.name + " >> " + ownerStatus.name);
-            ownerStatus.SetBattleLog(PlayerStatus.BATTLE_LOG_ATTACK, dmg, ownerWeapon, isSlip);
+            ownerStatus.SetBattleLog(PlayerStatus.BATTLE_LOG_ATTACK, (int)dmg, ownerWeapon, isSlip);
         }
     }
 

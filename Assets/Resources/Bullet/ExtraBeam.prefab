@@ -580,6 +580,7 @@ MonoBehaviour:
   glideGravityRate: 1
   isLockOn: 0
   UseGravity: 0
+  GRAVITY_LIMIT_RATE: 1.5
   hitEffect: {fileID: 0}
   speed: 0
   damage: 0
@@ -600,7 +601,7 @@ MonoBehaviour:
   childeBulletCount: 1
   purgeDistance: 100
   purgeTime: 1
-  isPurgeDestroy: 0
+  isPurgeDestroy: 1
 --- !u!114 &11403494
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -653,6 +654,7 @@ MonoBehaviour:
   effectSpawn: {fileID: 0}
   activeLimitTime: 0
   activeLimitDistance: 0
+  isNotAutoBreak: 0
 --- !u!114 &11417510
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -692,6 +694,7 @@ MonoBehaviour:
   effectSpawn: {fileID: 0}
   activeLimitTime: 0
   activeLimitDistance: 0
+  isNotAutoBreak: 0
 --- !u!114 &11432702
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -706,6 +709,7 @@ MonoBehaviour:
   effectSpawn: {fileID: 0}
   activeLimitTime: 0
   activeLimitDistance: 0
+  isNotAutoBreak: 0
 --- !u!114 &11437192
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -721,6 +725,7 @@ MonoBehaviour:
   glideGravityRate: 1
   isLockOn: 0
   UseGravity: 0
+  GRAVITY_LIMIT_RATE: 1.5
   hitEffect: {fileID: 0}
   speed: 0
   damage: 0
@@ -741,7 +746,7 @@ MonoBehaviour:
   childeBulletCount: 1
   purgeDistance: 100
   purgeTime: 1
-  isPurgeDestroy: 0
+  isPurgeDestroy: 1
 --- !u!114 &11445674
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -757,6 +762,7 @@ MonoBehaviour:
   glideGravityRate: 1
   isLockOn: 0
   UseGravity: 0
+  GRAVITY_LIMIT_RATE: 1.5
   hitEffect: {fileID: 0}
   speed: 0
   damage: 0
@@ -777,7 +783,7 @@ MonoBehaviour:
   childeBulletCount: 1
   purgeDistance: 100
   purgeTime: 1
-  isPurgeDestroy: 0
+  isPurgeDestroy: 1
 --- !u!114 &11446526
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -792,6 +798,7 @@ MonoBehaviour:
   effectSpawn: {fileID: 0}
   activeLimitTime: 0
   activeLimitDistance: 0
+  isNotAutoBreak: 0
 --- !u!114 &11448716
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -880,6 +887,7 @@ MonoBehaviour:
   effectSpawn: {fileID: 0}
   activeLimitTime: 0
   activeLimitDistance: 0
+  isNotAutoBreak: 0
 --- !u!114 &11460844
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -956,6 +964,7 @@ MonoBehaviour:
   glideGravityRate: 1
   isLockOn: 0
   UseGravity: 0
+  GRAVITY_LIMIT_RATE: 1.5
   hitEffect: {fileID: 0}
   speed: 0
   damage: 0
@@ -976,7 +985,7 @@ MonoBehaviour:
   childeBulletCount: 1
   purgeDistance: 100
   purgeTime: 1
-  isPurgeDestroy: 0
+  isPurgeDestroy: 1
 --- !u!114 &11468442
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1067,6 +1076,7 @@ MonoBehaviour:
   effectSpawn: {fileID: 0}
   activeLimitTime: 0
   activeLimitDistance: 0
+  isNotAutoBreak: 0
 --- !u!114 &11481236
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1120,6 +1130,7 @@ MonoBehaviour:
   glideGravityRate: 1
   isLockOn: 0
   UseGravity: 0
+  GRAVITY_LIMIT_RATE: 1.5
   hitEffect: {fileID: 0}
   speed: 0
   damage: 250

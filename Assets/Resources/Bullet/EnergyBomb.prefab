@@ -45,8 +45,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f086994b8c47ea443baf4face217f973, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effectSpawn: {fileID: 0}
-  activeLimitTime: 8
+  effectSpawn: {fileID: 109874, guid: 45752b7016b587141a9cc7a60c12fe4b, type: 2}
+  activeLimitTime: 12
   activeLimitDistance: 0
   isNotAutoBreak: 0
 --- !u!114 &11453172
@@ -89,9 +89,9 @@ MonoBehaviour:
   glideGravityRate: 1
   isLockOn: 0
   UseGravity: 0
-  hitEffect: {fileID: 109874, guid: 45752b7016b587141a9cc7a60c12fe4b, type: 2}
-  speed: 3
-  damage: 30
+  hitEffect: {fileID: 0}
+  speed: 1
+  damage: 15
   damagePerSecond: 0
   stuckTime: 0
   knockBackRate: 0

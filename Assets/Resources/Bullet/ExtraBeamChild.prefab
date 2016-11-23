@@ -59,7 +59,7 @@ MonoBehaviour:
   isEnergyBulletBreak: 0
   isHitBreak: 0
   safetyTime: 0
-  turnSpeed: 360
+  turnSpeed: 500
   lockStartTime: 0
   lockedSpeedRate: 1
   lockedTurnSpeedRate: 1
@@ -79,6 +79,7 @@ MonoBehaviour:
   effectSpawn: {fileID: 0}
   activeLimitTime: 2
   activeLimitDistance: 0
+  isNotAutoBreak: 0
 --- !u!114 &11480000
 MonoBehaviour:
   m_ObjectHideFlags: 1

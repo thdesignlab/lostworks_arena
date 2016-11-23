@@ -375,22 +375,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &137064
-GameObject:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 407578}
-  - 114: {fileID: 11469448}
-  m_Layer: 0
-  m_Name: Sub2
-  m_TagString: Sub
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
 --- !u!1 &137698
 GameObject:
   m_ObjectHideFlags: 1
@@ -1118,19 +1102,6 @@ Transform:
   - {fileID: 461098}
   m_Father: {fileID: 406666}
   m_RootOrder: 4
---- !u!4 &407578
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 137064}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_Children: []
-  m_Father: {fileID: 498536}
-  m_RootOrder: 8
 --- !u!4 &409576
 Transform:
   m_ObjectHideFlags: 1
@@ -1791,7 +1762,6 @@ Transform:
   - {fileID: 411472}
   - {fileID: 461922}
   - {fileID: 474760}
-  - {fileID: 407578}
   m_Father: {fileID: 407270}
   m_RootOrder: 0
 --- !u!4 &498688
@@ -3080,30 +3050,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scrollSpeedX: 0.1
   scrollSpeedY: 0.1
---- !u!114 &11469448
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 137064}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ownerId: 0
-  group: 0
-  prefixBackup: -1
-  observed: {fileID: 0}
-  synchronization: 0
-  onSerializeTransformOption: 3
-  onSerializeRigidBodyOption: 2
-  ownershipTransfer: 0
-  ObservedComponents: []
-  ObservedComponentsFoldoutOpen: 1
-  viewIdField: 0
-  instantiationId: -1
-  isRuntimeInstantiated: 0
 --- !u!114 &11472166
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3119,8 +3065,6 @@ MonoBehaviour:
   glideGravityRate: 1
   isLockOn: 0
   UseGravity: 1
-  GRAVITY_LIMIT_RATE: 1.5
-  preGlideRate: 0.1
 --- !u!114 &11473076
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3138,8 +3082,8 @@ MonoBehaviour:
   glideJump: 0
   boostSpeed: 70
   boostLimit: 1
-  glideBoost: 1
-  turnSpeed: 0
+  glideBoost: 2
+  turnSpeed: 30
   boostTurnSpeed: 500
   attackRate: 100
   defenceRate: 100

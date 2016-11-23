@@ -1491,8 +1491,6 @@ MonoBehaviour:
   glideGravityRate: 1
   isLockOn: 0
   UseGravity: 1
-  GRAVITY_LIMIT_RATE: 1.5
-  preGlideRate: 0.1
   isAttackAndTurn: 0
   attackPreserveSpeedTime: 1
   movePreserveSpeedTime: 0
@@ -1613,7 +1611,7 @@ MonoBehaviour:
   glideJump: 0
   boostSpeed: 70
   boostLimit: 1
-  glideBoost: 1.5
+  glideBoost: 2
   turnSpeed: 15
   boostTurnSpeed: 500
   attackRate: 100

@@ -42,13 +42,12 @@ public class EffectController : Photon.MonoBehaviour
     {
         if (photonView.isMine)
         {
+            float dmg = damage;
+            if (ownerStatus != null) dmg *= (ownerStatus.attackRate / 100);
+
             if (otherObj.tag == "Player" || otherObj.tag == "Target")
             {
-                int dmg = damage;
-                if (ownerTran == otherObj.transform)
-                {
-                    dmg = (int)(dmg * ownDamageRate);
-                }
+                if (ownerTran == otherObj.transform) dmg *= ownDamageRate;
 
                 if (dmg > 0)
                 {
@@ -66,8 +65,8 @@ public class EffectController : Photon.MonoBehaviour
             }
             else if (otherObj.CompareTag(Common.CO.TAG_STRUCTURE))
             {
-                if (myTran.tag == Common.CO.TAG_BULLET_EXTRA) damage *= Common.CO.EXTRA_BULLET_BREAK_RATE;
-                otherObj.GetComponent<StructureController>().AddDamage(damage);
+                if (myTran.tag == Common.CO.TAG_BULLET_EXTRA) dmg *= Common.CO.EXTRA_BULLET_BREAK_RATE;
+                otherObj.GetComponent<StructureController>().AddDamage((int)dmg);
             }
 
             //対象を破壊
@@ -91,31 +90,22 @@ public class EffectController : Photon.MonoBehaviour
         {
             if (otherObj.tag == "Player" || otherObj.tag == "Target")
             {
-                int dmgPS = damagePerSecond;
-                if (ownerTran == otherObj.transform) dmgPS = (int)(dmgPS * ownDamageRate);
+                float dmgPS = damagePerSecond;
+                if (ownerTran == otherObj.transform) dmgPS *= ownDamageRate;
+                if (ownerStatus != null) dmgPS *= (ownerStatus.attackRate / 100);
 
                 if (dmgPS > 0)
                 {
                     //ダメージ
-                    float dmg = dmgPS * Time.deltaTime;
-                    int addDmg = (int)Mathf.Floor(dmg);
-                    dmg -= addDmg;
-                    if (dmg > 0)
-                    {
-                        //小数部分は確率
-                        if (dmg * 100 > Random.Range(0, 100)) addDmg += 1;
-                    }
-                    if (addDmg > 0)
-                    {
-                        PlayerStatus status = otherObj.GetComponent<PlayerStatus>();
-                        AddDamageProccess(status, addDmg, true);
-                    }
+                    dmgPS *= Time.deltaTime;
+                    PlayerStatus status = otherObj.GetComponent<PlayerStatus>();
+                    AddDamageProccess(status, dmgPS, true);
                 }
             }
         }
     }
 
-    protected void AddDamageProccess(PlayerStatus status, int dmg, bool isSlip = false)
+    protected void AddDamageProccess(PlayerStatus status, float dmg, bool isSlip = false)
     {
         //対象へダメージを与える
         bool isDamage = status.AddDamage(dmg, ownerWeapon, isSlip);
@@ -126,7 +116,7 @@ public class EffectController : Photon.MonoBehaviour
         //与えたダメージのログを保管
         if (isDamage && ownerStatus != null)
         {
-            ownerStatus.SetBattleLog(PlayerStatus.BATTLE_LOG_ATTACK, dmg, ownerWeapon, isSlip);
+            ownerStatus.SetBattleLog(PlayerStatus.BATTLE_LOG_ATTACK, (int)dmg, ownerWeapon, isSlip);
         }
     }
 

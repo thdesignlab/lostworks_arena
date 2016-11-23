@@ -156,7 +156,7 @@ MonoBehaviour:
   speed: 350
   damage: 5
   damagePerSecond: 0
-  stuckTime: 0.1
+  stuckTime: 0.05
   knockBackRate: 0
   isPhysicsBulletBreak: 1
   isEnergyBulletBreak: 0
@@ -176,6 +176,7 @@ MonoBehaviour:
   effectSpawn: {fileID: 0}
   activeLimitTime: 0
   activeLimitDistance: 150
+  isNotAutoBreak: 0
 --- !u!136 &13634990
 CapsuleCollider:
   m_ObjectHideFlags: 1

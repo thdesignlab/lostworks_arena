@@ -161,7 +161,7 @@ public class TouchManager :MonoBehaviour
 						Destroy (this);
 						return;
 				}
-				DontDestroyOnLoad (this.gameObject);
+				//DontDestroyOnLoad (this.gameObject);
 		}
 
 		private void Start ()

@@ -133,6 +133,10 @@ public class ConfigManager : SingletonMonoBehaviour<ConfigManager>
             case Common.CO.SCENE_TITLE:
                 GameObject.Find("PhotonManager").GetComponent<PhotonManager>().ReturnModeSelect();
                 break;
+
+            case Common.CO.SCENE_BATTLE:
+                DialogController.CloseMessage();
+                break;
         }
     }
 

@@ -742,7 +742,12 @@ public class GameController : SingletonMonoBehaviour<GameController>
     {
         isPractice = false;
         GameObject targetNpc = GameObject.FindGameObjectWithTag("Target");
-        if (targetNpc != null) targetNpc.GetComponent<ObjectController>().DestoryObject(targetNpc);
+        if (targetNpc != null)
+        {
+            ObjectController obCtrl = targetNpc.GetComponent<ObjectController>();
+            if (obCtrl != null) obCtrl.DestoryObject(targetNpc);
+        }
+
         Transform npc = GetNpcTran();
         if (npc != null) StartCoroutine(CleanNpcProc(npc));
     }

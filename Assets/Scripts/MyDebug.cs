@@ -21,7 +21,7 @@ public class MyDebug : SingletonMonoBehaviour<MyDebug>
     }
     public void AdminLog(object log)
     {
-        if (UserManager.isAdmin || Instance.isDebugMode) Debug.Log(log);
+        if (UserManager.isAdmin || isDebugMode) Debug.Log(log);
     }
 
     void OnEnable()

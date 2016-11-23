@@ -68,7 +68,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
     private Image hpBarEnemyImage;
     //private Color defaultHpColor;
     //private Color hitHpColor = Color.red;
-    private int totalDamage = 0;
+    private float totalDamage = 0;
     //[SerializeField]
     private Image hitEffect;
     private float leftHitEffectTime = 0;
@@ -309,9 +309,10 @@ public class PlayerStatus : Photon.MonoBehaviour {
         for (;;)
         {
             yield return new WaitForSeconds(0.2f);
-            if (totalDamage == 0) continue;
-            SetHp(nowHp - totalDamage);
-            totalDamage = 0;
+            if (totalDamage < 1) continue;
+            int d = (int)Mathf.Floor(totalDamage);
+            SetHp(nowHp - d);
+            totalDamage -= d;
         }
     }
 
@@ -347,7 +348,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
         SetSpSlider();
     }
 
-    public void ForceDamage(int damage)
+    public void ForceDamage(float damage)
     {
         if (!isActiveSceane) return;
         if (!photonView.isMine) return;
@@ -363,7 +364,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
             SetHp(0);
         }
     }
-    public bool AddDamage(int damage, string name = "Unknown", bool isSlipDamage = false)
+    public bool AddDamage(float damage, string name = "Unknown", bool isSlipDamage = false)
     {
         if (!isActiveSceane) return false;
         if (!GameController.Instance.isPractice)
@@ -386,7 +387,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
         //防御力考慮
         if (defenceRate > 0 && defenceRate != 100)
         {
-            damage = (int)Mathf.Ceil(damage * defenceRate / 100);
+            damage = damage * (defenceRate / 100);
         }
 
         //ダメージ
@@ -400,7 +401,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
         if (voiceManager != null) voiceManager.Damage();
 
         //被ダメージログ
-        SetBattleLog(BATTLE_LOG_DAMAGE, damage, name, isSlipDamage);
+        SetBattleLog(BATTLE_LOG_DAMAGE, (int)damage, name, isSlipDamage);
 
         return true;
     }

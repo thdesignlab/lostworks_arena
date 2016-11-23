@@ -561,6 +561,7 @@ public class CustomManager : Photon.MonoBehaviour
         }
 
         //試射
+        yield return null;
         if (isFire) Fire(selectedPartsNo);
         isWeaponSelecting = false;
     }
