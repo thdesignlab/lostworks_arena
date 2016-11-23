@@ -465,6 +465,7 @@ GameObject:
   - 114: {fileID: 11443462}
   - 114: {fileID: 11493258}
   - 114: {fileID: 11424064}
+  - 114: {fileID: 11416986}
   m_Layer: 0
   m_Name: MachineGun
   m_TagString: Weapon
@@ -1558,6 +1559,23 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &11416986
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 194726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5ae7eb6027f9cc41bd60d7a75a7c396, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  powerType: -1
+  powerEffectValueDiff: 50
+  technicType: -1
+  technicEffectValueDiff: 80
+  uniqueType: -1
+  uniqueEffectValueDiff: 50
 --- !u!114 &11424064
 MonoBehaviour:
   m_ObjectHideFlags: 1

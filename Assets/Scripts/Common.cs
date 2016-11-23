@@ -581,6 +581,18 @@ namespace Common
         public const string OBTAIN_TYPE_INIT = "INIT";
         public const string OBTAIN_TYPE_STORE = "STORE";
 
+        //強化タイプ
+        public const int CUSTOM_TYPE_POWER = 1;
+        public const int CUSTOM_TYPE_TECHNIC = 2;
+        public const int CUSTOM_TYPE_UNIQUE = 3;
+        public static Dictionary<int, string> customTypeNameDic = new Dictionary<int, string>()
+        {
+            { CUSTOM_TYPE_POWER, "Power" },
+            { CUSTOM_TYPE_TECHNIC, "Technic" },
+            { CUSTOM_TYPE_UNIQUE, "Unique" },
+        };
+        public const int MAX_CUSTOM_LEVEL = 1;
+
         //武器リストNo
         public const int DETAIL_PREFAB_NAME_NO = 0;     //プレハブ名
         public const int DETAIL_NAME_NO = 1;            //武器名
@@ -614,7 +626,7 @@ namespace Common
             { 2005, new string[]{ "LaserBlade", "", "", OBTAIN_TYPE_INIT}},
             { 2006, new string[]{ "BulletBomb", "", "", OBTAIN_TYPE_INIT}},
             { 2007, new string[]{ "Grudge", "", "", OBTAIN_TYPE_INIT}},
-            { 2008, new string[]{ "MachingunBit", "", "", OBTAIN_TYPE_INIT}},
+            { 2008, new string[]{ "MachinegunBit", "", "", OBTAIN_TYPE_INIT}},
             { 2009, new string[]{ "GatlingClaw", "", "", OBTAIN_TYPE_STORE}},
             { 2010, new string[]{ "PlasmaBlade", "", "", OBTAIN_TYPE_INIT}},
         };

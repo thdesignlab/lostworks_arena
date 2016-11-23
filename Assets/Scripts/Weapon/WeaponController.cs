@@ -6,8 +6,8 @@ using UnityEngine.SceneManagement;
 
 public class WeaponController : Photon.MonoBehaviour
 {
-    [SerializeField]
-    protected int bitMotionType;   //Bitのモーション(1:Gun, 2:Missile, 3:Laser)
+    [SerializeField, TooltipAttribute("1:Gun,2:Missile,3:Laser")]
+    protected int bitMotionType;   //Bitのモーション
     protected Animator bitAnimator;
     protected string bitMotionParam = "";
 
@@ -59,6 +59,8 @@ public class WeaponController : Photon.MonoBehaviour
     protected bool isActiveSceane = true;
     protected bool isExtra = false;
 
+    protected int noReloadRate = 0;
+
     protected virtual void Awake()
     {
         if (SceneManager.GetActiveScene().name == Common.CO.SCENE_CUSTOM)
@@ -83,6 +85,10 @@ public class WeaponController : Photon.MonoBehaviour
                 myBitTran.localScale = Vector3.zero;
             }
         }
+
+        //武器LV設定(仮)
+        WeaponLevelController wepLvCtrl = myTran.GetComponent<WeaponLevelController>();
+        if (wepLvCtrl != null) wepLvCtrl.Init(this, Common.Weapon.CUSTOM_TYPE_UNIQUE);
     }
 
     protected virtual void Start()
@@ -195,7 +201,15 @@ public class WeaponController : Photon.MonoBehaviour
 
     IEnumerator Reload(float addReloadTime = 0)
     {
-        leftReloadTime = reloadTime + addReloadTime;
+        if (noReloadRate > 0)
+        {
+            leftReloadTime = addReloadTime;
+            if (Random.Range(0, 100) >= noReloadRate) leftReloadTime += reloadTime;
+        }
+        else
+        {
+            leftReloadTime = reloadTime + addReloadTime;
+        }
         for (;;)
         {
             yield return null;
@@ -539,5 +553,19 @@ public class WeaponController : Photon.MonoBehaviour
     public void ReloadFree()
     {
         reloadTime = 1;
+    }
+
+    //##### CUSTOM #####
+
+    //リロード時間(rate=百分率)
+    public void CustomReloadTime(float rate)
+    {
+        reloadTime *= (rate / 100);
+    }
+
+    //リロード発生しない確率(rate=百分率)
+    public void CustomNoReload(int rate)
+    {
+        noReloadRate = rate;
     }
 }
