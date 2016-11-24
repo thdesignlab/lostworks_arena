@@ -13,6 +13,8 @@ public class StructureController : Photon.MonoBehaviour
     private int maxHp;
     [SerializeField]
     private bool isReflaction = false;
+    [SerializeField]
+    private Texture changeTexture;
 
     private int nowHp;
 
@@ -26,8 +28,12 @@ public class StructureController : Photon.MonoBehaviour
         {
             parentCtrl = parentTran.GetComponent<StructureController>();
         }
-
         nowHp = maxHp;
+
+        if (photonView.isMine && changeTexture != null)
+        {
+            myTran.GetComponent<Renderer>().material.mainTexture = changeTexture;
+        }
     }
     
     public void AddDamage(int damage, bool isSendRPC = true)

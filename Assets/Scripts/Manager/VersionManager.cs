@@ -6,7 +6,7 @@ public class VersionManager : Singleton<VersionManager>
 {
     //Version
     private const string IOS_VERSION = "0.1.3";
-    private const string ANDROID_VERSION = "0.1.3";
+    private const string ANDROID_VERSION = "0.1.9";
 
     //バージョン差異チェック
     public bool IsVersionError(string version)
@@ -18,8 +18,6 @@ public class VersionManager : Singleton<VersionManager>
         appVersion = ANDROID_VERSION;
 #endif
 
-        //if (string.IsNullOrEmpty(appVersion)) return true;
-        //Debug.Log(appVersion + " >> " + version);
         if (appVersion == version) return false;
 
         string[] appVersions = appVersion.Split('.');

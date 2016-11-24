@@ -47,9 +47,10 @@ public class BulletController : MoveOfCharacter
 
         //判定一時削除
         myCollider = myTran.GetComponentInChildren<Collider>();
+
         if (myCollider != null)
         {
-            myCollider.enabled = (safetyTime > 0) ? true : false;
+            myCollider.enabled = (safetyTime == 0) ? true : false;
         }
 
         audioCtrl = myTran.GetComponent<AudioController>();
@@ -67,15 +68,12 @@ public class BulletController : MoveOfCharacter
 
         //稼働時間
         activeTime += Time.deltaTime;
-        if (photonView.isMine)
+        if (myCollider != null)
         {
-            if (myCollider != null)
+            if (activeTime >= safetyTime && !myCollider.enabled)
             {
-                if (activeTime >= safetyTime && !myCollider.enabled)
-                {
-                    //判定復活
-                    myCollider.enabled = true;
-                }
+                //判定復活
+                myCollider.enabled = true;
             }
         }
 
@@ -245,7 +243,6 @@ public class BulletController : MoveOfCharacter
         //与えたダメージのログを保管
         if (isDamage && ownerStatus != null)
         {
-            //Debug.Log(myTran.name + " >> " + ownerStatus.name);
             ownerStatus.SetBattleLog(PlayerStatus.BATTLE_LOG_ATTACK, (int)dmg, ownerWeapon, isSlip);
         }
     }

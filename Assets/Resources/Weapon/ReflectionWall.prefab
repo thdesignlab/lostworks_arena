@@ -931,7 +931,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 194660}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2, z: 10}
+  m_LocalPosition: {x: 0, y: -3, z: 10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
@@ -1583,7 +1583,7 @@ MonoBehaviour:
   bitMoveTime: 0
   isBitFixed: 0
   reloadTime: 8
-  fireEffect: {fileID: 0}
+  fireEffect: {fileID: 137676, guid: e0a85b21b24c5d540a113abe1c3aab52, type: 2}
   bullet: {fileID: 107330, guid: e38eb992c1a5ba5489ed5312aec4ad10, type: 2}
   rapidCount: 1
   rapidInterval: 0

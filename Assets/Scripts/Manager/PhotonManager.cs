@@ -80,8 +80,11 @@ public class PhotonManager : MonoBehaviour
             isFirstScean = false;
             Camera.main.transform.localRotation = topCameraQuat;
 
-            ApplicationChrome.statusBarState = ApplicationChrome.States.Visible;
+#if USE_ANDROID
+            //Androidステータスバー
+            ApplicationChrome.statusBarState = ApplicationChrome.States.TranslucentOverContent;
             ApplicationChrome.navigationBarState = ApplicationChrome.States.Hidden;
+#endif
 
             //ユーザー情報取得
             UserManager.SetPlayerPrefs();
