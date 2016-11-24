@@ -84,6 +84,8 @@ GameObject:
   - 4: {fileID: 487318}
   - 33: {fileID: 3311184}
   - 23: {fileID: 2303248}
+  - 114: {fileID: 11466510}
+  - 114: {fileID: 11400880}
   m_Layer: 0
   m_Name: Box001
   m_TagString: Untagged
@@ -139,7 +141,7 @@ Transform:
   m_GameObject: {fileID: 105348}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 5}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 487318}
@@ -311,6 +313,19 @@ MonoBehaviour:
   viewIdField: 0
   instantiationId: -1
   isRuntimeInstantiated: 0
+--- !u!114 &11400880
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 140296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7c09568fdedf5d47b6d9263b5f09911, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  changeMaterial: {fileID: 2100000, guid: a64c83fe39a5ebf48b01cbd50284e63e, type: 2}
+  isMineOnly: 1
 --- !u!114 &11426530
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -364,6 +379,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scrollSpeedX: -0.1
   scrollSpeedY: -0.1
+--- !u!114 &11466510
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 140296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ownerId: 0
+  group: 0
+  prefixBackup: -1
+  observed: {fileID: 0}
+  synchronization: 0
+  onSerializeTransformOption: 3
+  onSerializeRigidBodyOption: 2
+  ownershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 0}
+  ObservedComponentsFoldoutOpen: 1
+  viewIdField: 0
+  instantiationId: -1
+  isRuntimeInstantiated: 0
 --- !u!114 &11482800
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -391,7 +431,6 @@ MonoBehaviour:
   breakEffect: {fileID: 0}
   maxHp: 150
   isReflaction: 1
-  changeTexture: {fileID: 0}
 --- !u!114 &11499104
 MonoBehaviour:
   m_ObjectHideFlags: 1

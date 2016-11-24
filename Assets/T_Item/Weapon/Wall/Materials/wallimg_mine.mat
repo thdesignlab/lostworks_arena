@@ -6,8 +6,8 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: 03 - Default
-  m_Shader: {fileID: 200, guid: 0000000000000000f000000000000000, type: 0}
+  m_Name: wallimg_mine
+  m_Shader: {fileID: 203, guid: 0000000000000000f000000000000000, type: 0}
   m_ShaderKeywords: 
   m_LightmapFlags: 5
   m_CustomRenderQueue: -1
@@ -19,9 +19,9 @@ Material:
         first:
           name: _MainTex
         second:
-          m_Texture: {fileID: 2800000, guid: 612bc38e2df81c44cb50e2890ecb9476, type: 3}
+          m_Texture: {fileID: 2800000, guid: 3d6add5cfb6343d4aa60857741911ad5, type: 3}
           m_Scale: {x: 1, y: 1}
-          m_Offset: {x: 0.8509083, y: 0.8509083}
+          m_Offset: {x: 0, y: 0}
       data:
         first:
           name: _BumpMap
@@ -139,8 +139,8 @@ Material:
       data:
         first:
           name: _Color
-        second: {r: 0.20000002, g: 0.20000002, b: 0.20000002, a: 1}
+        second: {r: 0.588, g: 0.588, b: 0.588, a: 1}
       data:
         first:
           name: _TintColor
-        second: {r: 0.14381327, g: 0.07352942, b: 1, a: 0.5}
+        second: {r: 0.5, g: 0.5, b: 0.5, a: 0.15686275}
