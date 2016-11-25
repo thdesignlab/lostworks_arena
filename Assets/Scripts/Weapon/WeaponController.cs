@@ -555,17 +555,20 @@ public class WeaponController : Photon.MonoBehaviour
         reloadTime = 1;
     }
 
+
     //##### CUSTOM #####
 
-    //リロード時間(rate=百分率)
-    public void CustomReloadTime(float rate)
+    //リロード時間
+    public void CustomReloadTime(int value)
     {
-        reloadTime *= (rate / 100);
+        reloadTime *= 1 + (value / 100);
+        if (reloadTime < 0) reloadTime = 0;
     }
 
-    //リロード発生しない確率(rate=百分率)
-    public void CustomNoReload(int rate)
+    //リロード発生しない確率
+    public void CustomNoReload(int value)
     {
-        noReloadRate = rate;
+        if (value < 0) return;
+        noReloadRate = value;
     }
 }

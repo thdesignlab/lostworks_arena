@@ -257,17 +257,43 @@ public class BulletWeaponController : WeaponController
         }
     }
 
-    //public override string GetDescriptionText()
-    //{
-    //    string description = "";
-    //    description += "武器のステータス出す?\n";
-    //    description += "Reload: " + base.reloadTime.ToString() + "s\n";
-    //    if (bullet != null)
-    //    {
-    //        BulletController bulletCtrl = bullet.GetComponent<BulletController>();
-    //        description += bulletCtrl.GetBulletDescription();
-    //        if (rapidCount > 0) description += "ShootCount: " + rapidCount.ToString() + "s";
-    //    }
-    //    return description;
-    //}
+
+    //##### CUSTOM #####
+
+    //RapidCount
+    public void CustomRapidCount(int value)
+    {
+        rapidCount += value;
+        if (rapidCount < 1) rapidCount = 1;
+    }
+
+    //RapidInterval
+    public void CustomRapidInterval(int value)
+    {
+        float rate = 1 + (value / 100);
+        rapidInterval *= rate;
+        if (rapidInterval < 0) rapidInterval = 0;
+    }
+
+    //SpreadCount増加
+    public void CustomSpreadCount(int value)
+    {
+        spreadCount += value;
+        if (spreadCount < 1) spreadCount = 1;
+    }
+
+    //SpreadDiff(value=割合)
+    public void CustomSpreadDiff(int value)
+    {
+        float rate = 1 + (value / 100);
+        spreadDiffAngle = (int)(spreadDiffAngle * rate);
+    }
+
+    //ブレ抑制(value=割合)
+    public void CustomFocusDiff(int value)
+    {
+        float rate = 1 + (value / 100);
+        focusDiff *= rate;
+        if (focusDiff < 0) focusDiff = 0;
+    }
 }

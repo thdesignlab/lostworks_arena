@@ -1,59 +1,149 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class BulletLevelController : WeaponLevelController
 {
-    [SerializeField, TooltipAttribute("0:damage,1:speed")]
-    protected int powerType = -1;
+    [SerializeField, TooltipAttribute("")]
+    protected List<int> powerCustomSystemList;
     [SerializeField]
-    protected float powerEffectValueDiff = 20;
-    [SerializeField, TooltipAttribute("0:reload,1:turnSpeed")]
-    protected int technicType = -1;
+    protected List<int> powerEffectValueDiffList;
+    [SerializeField, TooltipAttribute("")]
+    protected List<int> technicCustomSystemList;
     [SerializeField]
-    protected float technicEffectValueDiff = 20;
-    [SerializeField, TooltipAttribute("0:damage+reload,1:shootCount,")]
-    protected int uniqueType = -1;
+    protected List<int> technicEffectValueDiffList;
+    [SerializeField, TooltipAttribute("")]
+    protected List<int> uniqueCustomSystemList;
     [SerializeField]
-    protected float uniqueEffectValueDiff = 10;
+    protected List<int> uniqueEffectValueDiffList;
 
-    private GameObject bullet;
+    [SerializeField]
+    protected GameObject AddObject;     //追加用オブジェクト
 
-    protected override void SetEffectValue()
+    //##### 強化System #####
+    //発射数増加
+    const int CUSTOM_SYSTEM_RAPID_COUNT = 101;
+    //発射間隔
+    const int CUSTOM_SYSTEM_RAPID_INTERVAL = 102;
+    //同時発射数
+    const int CUSTOM_SYSTEM_SPREAD_COUNT = 103;
+    //発射角
+    const int CUSTOM_SYSTEM_SPREAD_DIFF = 104;
+    //ブレ抑制
+    const int CUSTOM_SYSTEM_FOCUS_DIFF = 105;
+
+    //ダメージアップ
+    const int CUSTOM_SYSTEM_DAMAGE = 131;
+    //旋回速度UP
+    const int CUSTOM_SYSTEM_TURN_SPEED = 132;
+    //判定拡大
+    const int CUSTOM_SYSTEM_COLLIDER = 133;
+    //ActiveTime
+    const int CUSTOM_SYSTEM_ACTIVE_TIME = 134;
+    //ActiveDistance
+    const int CUSTOM_SYSTEM_ACTIVE_DISTANCE = 135;
+    //StuckTime
+    const int CUSTOM_SYSTEM_STUCK_TIME = 136;
+
+
+    //カスタムSystemセットアップ
+    protected override void SetCustomSystem()
     {
-        powerEffectValue = powerEffectValueDiff * customLevel;
-        technicEffectValue = technicEffectValueDiff * customLevel;
-        uniqueEffectValue = uniqueEffectValueDiff * customLevel;
-    }
-
-    public void SetBulletLevel(GameObject target)
-    {
-        bullet = target;
-    }
-
-    protected override void CustomPower()
-    {
-        switch (customType)
+        switch (myCustomType)
         {
-            default:
-                base.CustomPower();
+            case Common.Weapon.CUSTOM_TYPE_POWER:
+                customSystemList = powerCustomSystemList;
+                effectValueList = powerEffectValueDiffList;
+                break;
+
+            case Common.Weapon.CUSTOM_TYPE_TECHNIC:
+                customSystemList = technicCustomSystemList;
+                effectValueList = technicEffectValueDiffList;
+                break;
+
+            case Common.Weapon.CUSTOM_TYPE_UNIQUE:
+                customSystemList = uniqueCustomSystemList;
+                effectValueList = uniqueEffectValueDiffList;
                 break;
         }
     }
-    protected override void CustomSpeed()
+
+    //武器強化実行
+    protected override void WeaponCustomExe(int customSystem, int effectValue)
     {
-        switch (customType)
+        BulletWeaponController bulletWeaponCtrl = myTran.GetComponent<BulletWeaponController>();
+
+        switch (customSystem)
         {
+            case CUSTOM_SYSTEM_RAPID_COUNT:
+                //発射数増加
+                bulletWeaponCtrl.CustomRapidCount(effectValue);
+                break;
+
+            case CUSTOM_SYSTEM_RAPID_INTERVAL:
+                //発射間隔
+                bulletWeaponCtrl.CustomRapidInterval(effectValue);
+                break;
+
+            case CUSTOM_SYSTEM_SPREAD_COUNT:
+                //同時発射数
+                bulletWeaponCtrl.CustomSpreadCount(effectValue);
+                break;
+
+            case CUSTOM_SYSTEM_SPREAD_DIFF:
+                //発射角
+                bulletWeaponCtrl.CustomSpreadDiff(effectValue);
+                break;
+
+            case CUSTOM_SYSTEM_FOCUS_DIFF:
+                //ブレ抑制
+                bulletWeaponCtrl.CustomFocusDiff(effectValue);
+                break;
+
             default:
-                base.CustomSpeed();
+                base.WeaponCustomExe(customSystem, effectValue);
                 break;
         }
     }
-    protected override void CustomUnique()
+
+    //弾丸強化
+    public void BulletCustom(GameObject bulletObj)
     {
-        switch (customType)
+        for (int i = 0; i < customSystemList.Count; i++)
         {
-            default:
-                base.CustomUnique();
+            int customSystem = customSystemList[i];
+            float effectValue = effectValueList[i] * myCustomLevel;
+            BulletCustomExe(bulletObj, customSystem, effectValue);
+        }
+    }
+
+    //弾丸強化実行
+    public void BulletCustomExe(GameObject bulletObj, int customSystem, float effectValue)
+    {
+        switch (customSystem)
+        {
+            case CUSTOM_SYSTEM_DAMAGE:
+                //ダメージアップ
+                break;
+
+            case CUSTOM_SYSTEM_TURN_SPEED:
+                //旋回速度UP
+                break;
+
+            case CUSTOM_SYSTEM_COLLIDER:
+                //判定拡大
+                break;
+
+            case CUSTOM_SYSTEM_ACTIVE_TIME:
+                //ActiveTime
+                break;
+
+            case CUSTOM_SYSTEM_ACTIVE_DISTANCE:
+                //ActiveDistance
+                break;
+
+            case CUSTOM_SYSTEM_STUCK_TIME:
+                //StuckTime
                 break;
         }
     }

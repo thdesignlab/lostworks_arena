@@ -1,16 +1,36 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
-public class WeaponLevelController : Photon.MonoBehaviour
+public abstract class WeaponLevelController : Photon.MonoBehaviour
 {
-    protected int customType = 0;
-    protected int customLevel = 0;
+    protected Transform myTran;
 
-    protected float powerEffectValue = 0;
-    protected float technicEffectValue = 0;
-    protected float uniqueEffectValue = 0;
+    //強化している系統、レベル
+    protected int myCustomType = 0;
+    protected int myCustomLevel = 0;
 
+    //対象の強化System
+    protected List<int> customSystemList;
+
+    //強化の効果値
+    protected List<int> effectValueList;
+
+    //武器Ctrl
     protected WeaponController weaponCtrl;
+
+
+    //##### 強化System #####
+    //リロード短縮
+    const int CUSTOM_SYSTEM_RELOAD_REDUCTION = 0;
+    //一定確率でリロードなし
+    const int CUSTOM_SYSTEM_NO_RELOAD = 1;
+
+
+    protected virtual void Awake()
+    {
+        myTran = transform;
+    }
 
     public virtual void Init(WeaponController ctrl, int type, int level = 1)
     {
@@ -21,61 +41,53 @@ public class WeaponLevelController : Photon.MonoBehaviour
         weaponCtrl = ctrl;
 
         //Custom情報
-        customType = type;
-        customLevel = level;
+        myCustomType = type;
+        myCustomLevel = level;
 
-        //効果値設定
-        SetEffectValue();
+        //強化System,効果値を決定
+        SetCustomSystem();
+    }
 
-        //通常武器
-        switch (type)
+    //カスタムSystemセットアップ
+    protected abstract void SetCustomSystem();
+
+    //武器強化
+    protected void WeaponCustom()
+    {
+        for (int i = 0; i < customSystemList.Count; i++)
         {
-            case Common.Weapon.CUSTOM_TYPE_POWER:
-                CustomPower();
+            int customSystem = customSystemList[i];
+            int effectValue = effectValueList[i] * myCustomLevel;
+            WeaponCustomExe(customSystem, effectValue);
+        }
+    }
+
+    //強化実行
+    protected virtual void WeaponCustomExe(int customSystem, int effectValue)
+    {
+        switch (customSystem)
+        {
+            case CUSTOM_SYSTEM_RELOAD_REDUCTION:
+                //リロード短縮
+                CustomReloadReduction(effectValue);
                 break;
 
-            case Common.Weapon.CUSTOM_TYPE_TECHNIC:
-                CustomSpeed();
-                break;
-
-            case Common.Weapon.CUSTOM_TYPE_UNIQUE:
-                CustomUnique();
+            case CUSTOM_SYSTEM_NO_RELOAD:
+                //NOリロード
+                CustomNoReload(effectValue);
                 break;
         }
     }
 
-    protected virtual void SetEffectValue()
+    //リロード
+    protected void CustomReloadReduction(int value)
     {
-        powerEffectValue = 30;
-        technicEffectValue = 30;
-        uniqueEffectValue = 30;
+        weaponCtrl.CustomReloadTime(value);
     }
 
-protected virtual void SetCustom()
+    //一定確率でリロード無効
+    protected void CustomNoReload(int value)
     {
-    }
-
-    protected virtual void CustomPower()
-    {
-        float rate = 100 - powerEffectValue;
-        weaponCtrl.CustomReloadTime(rate);
-    }
-    protected virtual void CustomSpeed()
-    {
-        float rate = 100 - technicEffectValue;
-        weaponCtrl.CustomReloadTime(rate);
-    }
-    protected virtual void CustomUnique()
-    {
-        weaponCtrl.CustomNoReload((int)uniqueEffectValue);
-    }
-
-    public int GetWeaponType()
-    {
-        return customType;
-    }
-    public int GetWeaponLevel()
-    {
-        return customLevel;
+        weaponCtrl.CustomNoReload(value);
     }
 }
