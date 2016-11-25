@@ -30,15 +30,13 @@ public abstract class WeaponLevelController : Photon.MonoBehaviour
     protected virtual void Awake()
     {
         myTran = transform;
+        weaponCtrl = GetComponent<WeaponController>();
     }
 
-    public virtual void Init(WeaponController ctrl, int type, int level = 1)
+    public virtual void Init(int type, int level = 1)
     {
         if (level <= 0 || Common.Weapon.MAX_CUSTOM_LEVEL < level) return;
         if (!Common.Weapon.customTypeNameDic.ContainsKey(type)) return;
-
-        //WeaponController
-        weaponCtrl = ctrl;
 
         //Custom情報
         myCustomType = type;
@@ -46,6 +44,23 @@ public abstract class WeaponLevelController : Photon.MonoBehaviour
 
         //強化System,効果値を決定
         SetCustomSystem();
+
+        //装備強化
+        WeaponCustom();
+
+        //カスタムレベル同期
+        CustomLevelSync();
+    }
+
+    //カスタムレベル同期
+    protected void CustomLevelSync(bool isReturn = true)
+    {
+    }
+    [PunRPC]
+    protected void CustomLevelSyncRPC(int type, int level)
+    {
+        myCustomType = type;
+        myCustomLevel = level;
     }
 
     //カスタムSystemセットアップ
@@ -54,10 +69,12 @@ public abstract class WeaponLevelController : Photon.MonoBehaviour
     //武器強化
     protected void WeaponCustom()
     {
+        Debug.Log("WeaponCustom");
         for (int i = 0; i < customSystemList.Count; i++)
         {
             int customSystem = customSystemList[i];
             int effectValue = effectValueList[i] * myCustomLevel;
+            Debug.Log(customSystem+" >> "+ effectValue);
             WeaponCustomExe(customSystem, effectValue);
         }
     }
@@ -65,6 +82,7 @@ public abstract class WeaponLevelController : Photon.MonoBehaviour
     //強化実行
     protected virtual void WeaponCustomExe(int customSystem, int effectValue)
     {
+        Debug.Log("base WeaponCustomExe");
         switch (customSystem)
         {
             case CUSTOM_SYSTEM_RELOAD_REDUCTION:

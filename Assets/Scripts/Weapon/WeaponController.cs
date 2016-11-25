@@ -86,9 +86,10 @@ public class WeaponController : Photon.MonoBehaviour
             }
         }
 
-        //武器LV設定(仮)
-        WeaponLevelController wepLvCtrl = myTran.GetComponent<WeaponLevelController>();
-        if (wepLvCtrl != null) wepLvCtrl.Init(this, Common.Weapon.CUSTOM_TYPE_UNIQUE);
+        if (photonView.isMine && !isNpc)
+        {
+            SetWeaponCustom(Common.Weapon.CUSTOM_TYPE_TECHNIC);
+        }
     }
 
     protected virtual void Start()
@@ -557,6 +558,13 @@ public class WeaponController : Photon.MonoBehaviour
 
 
     //##### CUSTOM #####
+
+    //武器カスタム設定
+    public void SetWeaponCustom(int type, int level = 1)
+    {
+        WeaponLevelController wepLvCtrl = GetComponent<WeaponLevelController>();
+        if (wepLvCtrl != null) wepLvCtrl.Init(type, level);
+    }
 
     //リロード時間
     public void CustomReloadTime(int value)

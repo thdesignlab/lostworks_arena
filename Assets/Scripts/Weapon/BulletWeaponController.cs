@@ -263,7 +263,7 @@ public class BulletWeaponController : WeaponController
     }
 
     //RapidInterval
-    public void CustomRapidInterval(int value)
+    public void CustomRapidInterval(float value)
     {
         float rate = 1 + (value / 100);
         rapidInterval *= rate;
@@ -278,14 +278,14 @@ public class BulletWeaponController : WeaponController
     }
 
     //SpreadDiff(value=割合)
-    public void CustomSpreadDiff(int value)
+    public void CustomSpreadDiff(float value)
     {
         float rate = 1 + (value / 100);
         spreadDiffAngle = (int)(spreadDiffAngle * rate);
     }
 
     //ブレ抑制(value=割合)
-    public void CustomFocusDiff(int value)
+    public void CustomFocusDiff(float value)
     {
         float rate = 1 + (value / 100);
         focusDiff *= rate;
