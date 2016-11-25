@@ -22,6 +22,7 @@ public class CrossRangeWeaponController : WeaponController
     [SerializeField]
     protected bool isStopInAttack;
 
+    protected EffectController effectCtrl;
     private Animator weaponAnimator;
     private string animationName = "";
 
@@ -32,8 +33,8 @@ public class CrossRangeWeaponController : WeaponController
     protected override void Awake()
     {
         base.Awake();
-        //bitPos = myBitTran.localPosition;
         weaponAnimator = myTran.GetComponent<Animator>();
+        if (blade != null) effectCtrl = blade.GetComponent<EffectController>();
     }
 
     protected override void Start()
@@ -51,7 +52,7 @@ public class CrossRangeWeaponController : WeaponController
                 yield return null;
                 continue;
             }
-            blade.GetComponent<EffectController>().SetOwner(playerTran, myTran.name);
+            if (effectCtrl != null) effectCtrl.EffectSetting(playerTran, targetTran, myTran);
             break;
         }
     }
@@ -140,14 +141,18 @@ public class CrossRangeWeaponController : WeaponController
         base.EndAction();
     }
 
-    private void SetBlade(bool flg)
+    private void SetBlade(bool flg, bool isSendRPC = true)
     {
-        photonView.RPC("SetBladeRPC", PhotonTargets.All, flg);
+        blade.SetActive(flg);
+        if (isSendRPC)
+        { 
+            photonView.RPC("SetBladeRPC", PhotonTargets.Others, flg);
+        }
     }
     [PunRPC]
     private void SetBladeRPC(bool flg)
     {
-        blade.SetActive(flg);
+        SetBlade(flg, false);
     }
 
     public override bool IsEnableFire()
@@ -176,5 +181,11 @@ public class CrossRangeWeaponController : WeaponController
                 animationName = MOTION_CENTER_SLASH;
                 break;
         }
+    }
+
+    public override void SetTarget(Transform target = null)
+    {
+        base.SetTarget(target);
+        if (effectCtrl != null) effectCtrl.SetTarget(target);
     }
 }

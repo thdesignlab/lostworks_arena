@@ -46,8 +46,8 @@ public class LaserWeaponController : WeaponController
             }
 
             //Bit移動用
-            base.bitToPos = muzzle.localPosition;
-            base.radius = Vector3.Distance(base.bitFromPos, base.bitToPos) / 2;
+            bitToPos = muzzle.localPosition;
+            radius = Vector3.Distance(base.bitFromPos, base.bitToPos) / 2;
         }
     }
 
@@ -82,7 +82,7 @@ public class LaserWeaponController : WeaponController
         PlayVoice();
         PlayAudio();
         GameObject laser = PhotonNetwork.Instantiate(Common.Func.GetResourceBullet(laserPrefab.name), muzzle.position, muzzle.rotation, 0);
-        SetBulletTarget(laser);
+        BulletSetting(laser);
         Transform laserTran = laser.transform;
         Transform laserEndTran = null;
         Transform laserMuzzle = null;
@@ -210,13 +210,9 @@ public class LaserWeaponController : WeaponController
         return true;
     }
 
-    protected void SetBulletTarget(GameObject bulletObj)
+    protected void BulletSetting(GameObject bulletObj)
     {
         BulletController bulletCtrl = bulletObj.GetComponent<BulletController>();
-        if (bulletCtrl != null)
-        {
-            bulletCtrl.SetTarget(targetTran);
-            bulletCtrl.SetOwner(playerTran, myTran.name);
-        }
+        if (bulletCtrl != null) bulletCtrl.BulletSetting(playerTran, targetTran, myTran);
     }
 }

@@ -1002,7 +1002,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
         InterfareMove(limit, null, false);
     }
 
-    //エフェクト切り替え
+    //エフェクト切り替え(予め非表示にされているもの)
     private void SwitchEffect(GameObject effect, bool flg)
     {
         if (effect == null) return;
@@ -1043,12 +1043,6 @@ public class PlayerStatus : Photon.MonoBehaviour {
 
     public void SetWinMark(int winCount, int loseCount)
     {
-        //if (GameController.Instance.gameMode == GameController.GAME_MODE_VS)
-        //{
-        //    ResetWinMark();
-        //    return;
-        //}
-
         //自分の勝マーク
         bool markFlg = true;
         int count = 1;

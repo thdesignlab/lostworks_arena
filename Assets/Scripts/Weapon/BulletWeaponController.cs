@@ -201,7 +201,6 @@ public class BulletWeaponController : WeaponController
         if (fireEffect != null)
         {
             //発射エフェクト
-            //GameObject.Instantiate(fireEffect, pos, fireEffect.transform.rotation);
             PhotonNetwork.Instantiate(Common.Func.GetResourceEffect(fireEffect.name), pos, fireEffect.transform.rotation, 0);
         }
         if (focusDiff > 0)
@@ -214,8 +213,8 @@ public class BulletWeaponController : WeaponController
         GameObject ob = PhotonNetwork.Instantiate(Common.Func.GetResourceBullet(bullet.name), pos, quat, groupId);
         bulletNo++;
         ob.name = ob.name + "_" + bulletNo.ToString();
-        SetBulletTarget(ob);
-        base.PlayAudio();
+        BulletSetting(ob);
+        PlayAudio();
 
         if (recoil > 0 && playerStatus != null)
         {
@@ -247,14 +246,10 @@ public class BulletWeaponController : WeaponController
         return v;
     }
 
-    protected void SetBulletTarget(GameObject bulletObj)
+    protected void BulletSetting(GameObject bulletObj)
     {
         BulletController bulletCtrl = bulletObj.GetComponent<BulletController>();
-        if (bulletCtrl != null)
-        {
-            bulletCtrl.SetTarget(targetTran);
-            bulletCtrl.SetOwner(playerTran, myTran.name);
-        }
+        if (bulletCtrl != null) bulletCtrl.BulletSetting(playerTran, targetTran, myTran);
     }
 
 

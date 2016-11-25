@@ -15,7 +15,8 @@ public class ObjectController : Photon.MonoBehaviour {
 
     private Transform myTran;
     private Transform ownerTran;
-    private string ownerWeapon;
+    private Transform targetTran;
+    private Transform weaponTran;
 
     private float activeTime = 0;
     private float activeDistance = 0;
@@ -61,11 +62,8 @@ public class ObjectController : Photon.MonoBehaviour {
 
     public void DestoryObject(bool isSendRpc = false)
     {
-        //Debug.Log(myTran.name + " >>" + photonView + " / "+ PhotonNetwork.player);
-        //if (!photonView) return;
         if (photonView.isMine)
         {
-            //Debug.Log("DestroyProccess >> " + myTran.name + " /" + PhotonNetwork.player);
             DestroyProccess();
         }
         else
@@ -88,19 +86,28 @@ public class ObjectController : Photon.MonoBehaviour {
         if (effectSpawn != null)
         {
             GameObject effectObj = PhotonNetwork.Instantiate(Common.Func.GetResourceEffect(effectSpawn.name), myTran.position, effectSpawn.transform.rotation, effectSpawnGroupId);
-            GetOwnerTran();
-            effectObj.GetComponent<EffectController>().SetOwner(ownerTran, ownerWeapon);
+            effectObj.GetComponent<EffectController>().EffectSetting(ownerTran, targetTran, weaponTran);
         }
         PhotonNetwork.Destroy(gameObject);
     }
 
-    private void GetOwnerTran()
+    public void ObjectSetting(Transform owner, Transform target, Transform weapon)
     {
-        EffectController effectCtrl = myTran.GetComponent<EffectController>();
-        if (effectCtrl != null) effectCtrl.GetOwner(out ownerTran, out ownerWeapon);
-
-        BulletController bulletCtrl = myTran.GetComponent<BulletController>();
-        if (bulletCtrl != null) bulletCtrl.GetOwner(out ownerTran, out ownerWeapon);
+        SetOwner(owner);
+        SetTarget(targetTran);
+        SetWeapon(weaponTran);
+    }
+    public void SetOwner(Transform owner)
+    {
+        ownerTran = owner;
+    }
+    public void SetTarget(Transform target)
+    {
+        targetTran = target;
+    }
+    public void SetWeapon(Transform weapon)
+    {
+        weaponTran = weapon;
     }
 
     public void Reset()

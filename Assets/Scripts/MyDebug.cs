@@ -15,6 +15,9 @@ public class MyDebug : SingletonMonoBehaviour<MyDebug>
     private float btnDown = 0;
     private bool dispLog = false;
 
+    private string preCondition = "";
+    private float preLogTime = 0;
+
     public void AdminLog(object key, object value)
     {
         AdminLog(key + " >> " + value);
@@ -39,11 +42,19 @@ public class MyDebug : SingletonMonoBehaviour<MyDebug>
 
     void HandleLog(string condition, string stackTrace, LogType type)
     {
+        if (condition == preCondition)
+        {
+            //同じメッセージは続けて出さない
+            if (Time.time - preLogTime < 1.0f) return;
+        }
+        preCondition = condition;
+        preLogTime = Time.time;
         //stackTrace += "\n"+UnityEngine.StackTraceUtility.ExtractStackTrace();
         // 必要な変数を宣言する
         //string dtNow = System.DateTime.Now.ToString("yyyy/MM/dd (ddd) HH:mm:ss");
         string dtNow = System.DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
-        string log = "### START ### -- "+ type.ToString() + " -- " + dtNow + "\ncondition : " + condition + "\nstackTrace : " + stackTrace + "\n### END ###\n";
+        string trace = stackTrace.Remove(0, (stackTrace.IndexOf("\n") + 1));
+        string log = "### START ### -- "+ type.ToString() + " -- " + dtNow + "\n【condition】" + condition + "\n【stackTrace】" + trace + "\n### END ###\n";
         //string log = "### START ### -- " + dtNow + "\n" + stackTrace + "\ntype : " + type.ToString() + "\n### END ###\n";
         PushLog(log, false);
     }

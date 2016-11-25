@@ -21,7 +21,14 @@ public class EffectController : Photon.MonoBehaviour
     protected Transform myTran;
     protected Transform ownerTran;
     protected PlayerStatus ownerStatus;
-    protected string ownerWeapon = "";
+    protected Transform targetTran;
+    protected PlayerStatus targetStatus;
+    protected Transform weaponTran;
+    private ObjectController _obCtrl;
+    protected ObjectController obCtrl
+    {
+        get { return _obCtrl ? _obCtrl : _obCtrl = GetComponent<ObjectController>(); }
+    }
 
     protected StatusChangeController statusChangeCtrl;
 
@@ -42,25 +49,23 @@ public class EffectController : Photon.MonoBehaviour
     {
         if (photonView.isMine)
         {
+            //ダメージ計算
             float dmg = damage;
             if (ownerStatus != null) dmg *= (ownerStatus.attackRate / 100);
+            if (ownerTran == otherObj.transform) dmg *= ownDamageRate;
 
             if (otherObj.tag == "Player" || otherObj.tag == "Target")
             {
-                if (ownerTran == otherObj.transform) dmg *= ownDamageRate;
-
-                if (dmg > 0)
+                if (dmg > 0 || statusChangeCtrl != null)
                 {
+                    //PlayerStatus
+                    PlayerStatus status = GetHitObjStatus(otherObj);
+
                     //ダメージ
-                    PlayerStatus status = otherObj.GetComponent<PlayerStatus>();
                     AddDamageProccess(status, dmg);
 
-                    //エフェクト
-                    if (damageEffect != null)
-                    {
-                        GameObject effectObj = PhotonNetwork.Instantiate(Common.Func.GetResourceEffect(damageEffect.name), otherObj.transform.position, damageEffect.transform.rotation, 0);
-                        effectObj.GetComponent<EffectController>().SetOwner(ownerTran, ownerWeapon);
-                    }
+                    //デバフ
+                    AddDebuff(status);
                 }
             }
             else if (otherObj.CompareTag(Common.CO.TAG_STRUCTURE))
@@ -90,33 +95,50 @@ public class EffectController : Photon.MonoBehaviour
         {
             if (otherObj.tag == "Player" || otherObj.tag == "Target")
             {
+                //ダメージ計算
                 float dmgPS = damagePerSecond;
                 if (ownerTran == otherObj.transform) dmgPS *= ownDamageRate;
                 if (ownerStatus != null) dmgPS *= (ownerStatus.attackRate / 100);
+                dmgPS *= Time.deltaTime;
 
-                if (dmgPS > 0)
+                if (dmgPS > 0 || statusChangeCtrl != null)
                 {
+                    //対象のStatuController取得
+                    PlayerStatus status = GetHitObjStatus(otherObj);
+
                     //ダメージ
-                    dmgPS *= Time.deltaTime;
-                    PlayerStatus status = otherObj.GetComponent<PlayerStatus>();
                     AddDamageProccess(status, dmgPS, true);
+
+                    //デバフ
+                    AddDebuff(status);
                 }
             }
         }
     }
 
+    protected PlayerStatus GetHitObjStatus(GameObject hitObj)
+    {
+        return (hitObj.transform == targetTran) ? targetStatus : hitObj.GetComponent<PlayerStatus>();
+    }
+
     protected void AddDamageProccess(PlayerStatus status, float dmg, bool isSlip = false)
     {
-        //対象へダメージを与える
-        bool isDamage = status.AddDamage(dmg, ownerWeapon, isSlip);
+        if (dmg <= 0) return;
 
-        //デバフ
-        AddDebuff(status);
+        //対象へダメージを与える
+        bool isDamage = status.AddDamage(dmg, GetWeaponName(), isSlip);
+
+        //HITエフェクト
+        if (damageEffect != null && !isSlip)
+        {
+            GameObject effectObj = PhotonNetwork.Instantiate(Common.Func.GetResourceEffect(damageEffect.name), myTran.position, damageEffect.transform.rotation, 0);
+            effectObj.GetComponent<EffectController>().EffectSetting(ownerTran, targetTran, weaponTran);
+        }
 
         //与えたダメージのログを保管
         if (isDamage && ownerStatus != null)
         {
-            ownerStatus.SetBattleLog(PlayerStatus.BATTLE_LOG_ATTACK, (int)dmg, ownerWeapon, isSlip);
+            ownerStatus.SetBattleLog(PlayerStatus.BATTLE_LOG_ATTACK, (int)dmg, GetWeaponName(), isSlip);
         }
     }
 
@@ -126,15 +148,41 @@ public class EffectController : Photon.MonoBehaviour
         statusChangeCtrl.Action(status);
     }
 
-    public void SetOwner(Transform owner, string weaponName)
+    public void EffectSetting(Transform owner, Transform target, Transform weapon)
+    {
+        SetOwner(owner);
+        SetTarget(target);
+        SetWeapon(weapon);
+    }
+
+    public void SetOwner(Transform owner)
     {
         ownerTran = owner;
-        ownerWeapon = weaponName;
+        if (obCtrl != null) obCtrl.SetOwner(ownerTran);
         if (ownerTran != null) ownerStatus = ownerTran.GetComponent<PlayerStatus>();
     }
-    public void GetOwner(out Transform tran, out string name)
+    public Transform GetOwner()
     {
-        tran = ownerTran;
-        name = ownerWeapon;
+        return ownerTran;
+    }
+
+    public void SetTarget(Transform target)
+    {
+        targetTran = target;
+        if (obCtrl != null) obCtrl.SetTarget(targetTran);
+        if (targetTran != null) targetStatus = targetTran.GetComponent<PlayerStatus>();
+    }
+
+    public void SetWeapon(Transform weapon)
+    {
+        weaponTran = weapon;
+        if (obCtrl != null) obCtrl.SetWeapon(weaponTran);
+
+        //カスタム
+    }
+
+    public string GetWeaponName()
+    {
+        return (weaponTran != null) ? weaponTran.name : myTran.name;
     }
 }

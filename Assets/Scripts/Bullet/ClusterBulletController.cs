@@ -79,8 +79,7 @@ public class ClusterBulletController : TrackingBulletController
                 int bulletNo = Common.Func.GetBulletNo(myTran.root.name);
                 ob.name = ob.name + "_" + bulletNo.ToString();
                 BulletController bulletCtrl = ob.GetComponent<BulletController>();
-                bulletCtrl.SetTarget(targetTran);
-                bulletCtrl.SetOwner(ownerTran, ownerWeapon);
+                bulletCtrl.BulletSetting(ownerTran, targetTran, weaponTran);
             }
             prePurgeTime = 0;
         }
@@ -88,7 +87,7 @@ public class ClusterBulletController : TrackingBulletController
         if (isPurgeDestroy)
         {
             //本体破棄
-            base.DestoryObject();
+            DestoryObject();
         }
     }
 }

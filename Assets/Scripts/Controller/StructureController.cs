@@ -32,6 +32,8 @@ public class StructureController : Photon.MonoBehaviour
     
     public void AddDamage(int damage, bool isSendRPC = true)
     {
+        if (damage <= 0) return;
+
         if (photonView.isMine)
         {
             if (parentCtrl != null)

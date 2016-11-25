@@ -180,7 +180,6 @@ public class PlayerController : MoveOfCharacter
             //{
             wepCtrl = parts.GetComponentInChildren<WeaponController>();
             if (wepCtrl == null) continue;
-
             wepCtrl.SetTarget(targetTran);
 
             switch (parts.name)

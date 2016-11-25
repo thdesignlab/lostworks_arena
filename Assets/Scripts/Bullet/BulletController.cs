@@ -34,9 +34,13 @@ public class BulletController : MoveOfCharacter
     protected Transform ownerTran;
     protected PlayerStatus ownerStatus;
     protected int ownerId = -1;
-    protected string ownerWeapon = "";
+    protected Transform weaponTran;
+    private ObjectController _obCtrl;
+    protected ObjectController obCtrl
+    {
+        get { return _obCtrl ? _obCtrl : _obCtrl = GetComponent<ObjectController>(); }
+    }
 
-    protected const int MIN_SEND_DAMAGE = 5;
 
     protected AudioController audioCtrl;
     protected StatusChangeController statusChangeCtrl;
@@ -55,11 +59,6 @@ public class BulletController : MoveOfCharacter
 
         audioCtrl = myTran.GetComponent<AudioController>();
         statusChangeCtrl = myTran.GetComponent<StatusChangeController>();
-    }
-
-    protected override void Start()
-    {
-        base.Start();
     }
 
     protected override void Update()
@@ -100,10 +99,8 @@ public class BulletController : MoveOfCharacter
     {
         if (photonView.isMine)
         {
-            if (IsSafety(otherObj))
-            {
-                return;
-            }
+            //HIT有効チェック
+            if (IsSafety(otherObj)) return;
 
             //ダメージを与える
             AddDamage(otherObj);
@@ -118,6 +115,7 @@ public class BulletController : MoveOfCharacter
                 isHit = false;
             }
 
+            //破壊チェック
             if (isHit && isHitBreak)
             {
                 DestoryObject();
@@ -134,7 +132,7 @@ public class BulletController : MoveOfCharacter
     {
         if (photonView.isMine)
         {
-            if (damagePerSecond <= 0) return;
+            //HIT有効チェック
             if (IsSafety(otherObj, false)) return;
 
             //ダメージを与える
@@ -154,31 +152,22 @@ public class BulletController : MoveOfCharacter
 
             if (hitObj.CompareTag("Player") || hitObj.tag == "Target")
             {
-                //プレイヤーステータス
-                PlayerStatus status = targetStatus;
-                if (hitObj.transform != targetTran)
+                if (dmg > 0 || statusChangeCtrl != null)
                 {
-                    status = hitObj.GetComponent<PlayerStatus>();
-                }
+                    //プレイヤーステータス
+                    PlayerStatus status = GetHitObjStatus(hitObj);
 
-                if (dmg > 0)
-                {
                     //ダメージ
                     AddDamageProccess(status, dmg);
 
-                    //ダメージエフェクト
-                    if (hitEffect != null)
-                    {
-                        GameObject effectObj = PhotonNetwork.Instantiate(Common.Func.GetResourceEffect(hitEffect.name), myTran.position, hitEffect.transform.rotation, 0);
-                        EffectController effectCtrl = effectObj.GetComponent<EffectController>();
-                        if (effectCtrl != null) SetOwner(ownerTran, ownerWeapon);
-                    }
-                }
+                    //デバフ
+                    AddDebuff(status);
 
-                //スタック
-                if (stuckTime > 0)
-                {
-                    status.InterfareMove(stuckTime);
+                    //スタック
+                    if (stuckTime > 0)
+                    {
+                        status.InterfareMove(stuckTime);
+                    }
                 }
 
                 //ノックバック
@@ -189,13 +178,10 @@ public class BulletController : MoveOfCharacter
             }
             else if (hitObj.CompareTag(Common.CO.TAG_STRUCTURE))
             {
-                if (IsReflection(hitObj))
-                {
-
-                }
+                //ダメージ倍率計算
                 if (myTran.tag == Common.CO.TAG_BULLET_EXTRA) dmg *= Common.CO.EXTRA_BULLET_BREAK_RATE;
                 StructureController structCtrl = hitObj.GetComponent<StructureController>();
-                structCtrl.AddDamage((int)dmg);
+                if (structCtrl != null) structCtrl.AddDamage((int)dmg);
             }
         }
     }
@@ -211,39 +197,52 @@ public class BulletController : MoveOfCharacter
             if (ownerStatus != null) dmg *= (ownerStatus.attackRate / 100);
             dmg *= Time.deltaTime;
 
-            if (dmg > 0)
+            if (hitObj.CompareTag("Player") || hitObj.tag == "Target")
             {
-                if (hitObj.CompareTag("Player") || hitObj.tag == "Target")
+                if (dmg > 0 || statusChangeCtrl != null)
                 {
                     //プレイヤーステータス
-                    PlayerStatus status = targetStatus;
-                    if (hitObj.transform != targetTran)
-                    {
-                        status = hitObj.GetComponent<PlayerStatus>();
-                    }
+                    PlayerStatus status = GetHitObjStatus(hitObj);
+
+                    //ダメージ
                     AddDamageProccess(status, dmg, true);
-                }
-                else if (hitObj.CompareTag(Common.CO.TAG_STRUCTURE))
-                {
-                    if (myTran.tag == Common.CO.TAG_BULLET_EXTRA) dmg *= Common.CO.EXTRA_BULLET_BREAK_RATE;
-                    hitObj.GetComponent<StructureController>().AddDamage((int)dmg);
+
+                    //デバフ
+                    AddDebuff(status);
                 }
             }
-        }
+            else if (hitObj.CompareTag(Common.CO.TAG_STRUCTURE))
+            {
+                if (myTran.tag == Common.CO.TAG_BULLET_EXTRA) dmg *= Common.CO.EXTRA_BULLET_BREAK_RATE;
+                hitObj.GetComponent<StructureController>().AddDamage((int)dmg);
+            }
+        }        
+    }
+
+    protected PlayerStatus GetHitObjStatus(GameObject hitObj)
+    {
+        return (hitObj.transform == targetTran) ? targetStatus : hitObj.GetComponent<PlayerStatus>();
     }
 
     protected void AddDamageProccess(PlayerStatus status, float dmg, bool isSlip = false)
     {
-        //対象へダメージを与える
-        bool isDamage = status.AddDamage(dmg, ownerWeapon, isSlip);
+        if (dmg <= 0) return;
 
-        //デバフ
-        AddDebuff(status);
+        //対象へダメージを与える
+        bool isDamage = status.AddDamage(dmg, GetWeaponName(), isSlip);
+
+        //HITエフェクト
+        if (hitEffect != null && !isSlip)
+        {
+            GameObject effectObj = PhotonNetwork.Instantiate(Common.Func.GetResourceEffect(hitEffect.name), myTran.position, hitEffect.transform.rotation, 0);
+            EffectController effectCtrl = effectObj.GetComponent<EffectController>();
+            if (effectCtrl != null) effectCtrl.EffectSetting(ownerTran, targetTran, weaponTran);
+        }
 
         //与えたダメージのログを保管
         if (isDamage && ownerStatus != null)
         {
-            ownerStatus.SetBattleLog(PlayerStatus.BATTLE_LOG_ATTACK, (int)dmg, ownerWeapon, isSlip);
+            ownerStatus.SetBattleLog(PlayerStatus.BATTLE_LOG_ATTACK, (int)dmg, GetWeaponName(), isSlip);
         }
     }
 
@@ -300,55 +299,106 @@ public class BulletController : MoveOfCharacter
         return speed;
     }
 
-    //ターゲットを設定する
-    public void SetTarget(Transform target)
+    //Owner,Target,Weapon情報をセット、同期する
+    public void BulletSetting(Transform owner, Transform target, Transform weapon, bool isSendRPC = true)
     {
-        if (target == null) return;
-        photonView.RPC("SetTargetRPC", PhotonTargets.All, PhotonView.Get(target.gameObject).viewID);
+        SetOwner(owner, false);
+        SetTarget(target, false);
+        SetWeapon(weapon, false);
+
+        if (isSendRPC)
+        {
+            int ownerViewId = (owner != null) ? PhotonView.Get(owner.gameObject).viewID : -1;
+            int targetViewId = (target != null) ? PhotonView.Get(target.gameObject).viewID : -1;
+            int weaponViewId = (weapon != null) ? PhotonView.Get(weapon.gameObject).viewID : -1;
+            object[] args = new object[] { ownerViewId, targetViewId, weaponViewId };
+            photonView.RPC("BulletSettingRPC", PhotonTargets.Others, args);
+        }
+    }
+    [PunRPC]
+    protected void BulletSettingRPC(int ownerViewId, int targetViewId, int weaponViewId)
+    {
+        SetOwnerRPC(ownerViewId);
+        SetTargetRPC(targetViewId);
+        SetWeaponRPC(weaponViewId);
     }
 
+    //ターゲットを設定する
+    public void SetTarget(Transform target, bool isSendRPC = true)
+    {
+        targetTran = target;
+        if (obCtrl != null) obCtrl.SetTarget(targetTran);
+
+        if (targetTran != null) targetStatus = targetTran.GetComponent<PlayerStatus>();
+
+        if (!isSendRPC)
+        {
+            int viewId = -1;
+            if (targetTran != null) viewId = PhotonView.Get(targetTran.gameObject).viewID;
+            photonView.RPC("SetTargetRPC", PhotonTargets.Others, viewId);
+        }
+    }
     [PunRPC]
-    protected virtual void SetTargetRPC(int targetViewId)
+    protected void SetTargetRPC(int targetViewId)
     {
         PhotonView targetView = PhotonView.Find(targetViewId);
-        if (targetView != null)
-        {
-            targetTran = targetView.gameObject.transform;
-            targetStatus = targetView.gameObject.GetComponent<PlayerStatus>();
-        }
+        Transform target = (targetView != null) ? targetView.gameObject.transform : null;
+        SetTarget(target, false);
     }
 
     //持ち主設定
-    public void SetOwner(Transform owner, string weaponName)
+    public void SetOwner(Transform owner, bool isSendRPC = true)
     {
-        int viewId = -1;
-        if (owner != null) viewId = PhotonView.Get(owner.gameObject).viewID;
-        object[] args = new object[] { viewId, weaponName };
-        photonView.RPC("SetOwnerRPC", PhotonTargets.All, args);
-    }
+        ownerTran = owner;
+        if (obCtrl != null) obCtrl.SetOwner(ownerTran);
 
-    [PunRPC]
-    protected virtual void SetOwnerRPC(int ownerViewId, string weaponName)
-    {
-        PhotonView ownerView = PhotonView.Find(ownerViewId);
-        if (ownerView != null)
+        if (ownerTran != null)
         {
-            ownerTran = ownerView.gameObject.transform;
             ownerStatus = ownerTran.GetComponent<PlayerStatus>();
-            ownerWeapon = weaponName;
             PhotonView pv = PhotonView.Get(ownerTran.gameObject);
             if (pv != null) ownerId = pv.ownerId;
         }
+
+        if (isSendRPC)
+        {
+            int viewId = -1;
+            if (ownerTran != null) viewId = PhotonView.Get(ownerTran.gameObject).viewID;
+            photonView.RPC("SetOwnerRPC", PhotonTargets.Others, viewId);
+        }
+    }
+    [PunRPC]
+    protected void SetOwnerRPC(int ownerViewId)
+    {
+        PhotonView ownerView = PhotonView.Find(ownerViewId);
+        Transform owner = (ownerView != null) ? ownerView.gameObject.transform : null;
+        SetOwner(owner, false);
     }
 
-    public virtual string GetBulletDescription()
+
+    //武器設定
+    public void SetWeapon(Transform weapon, bool isSendRPC = true)
     {
-        string description = "";
-        if (damage > 0) description += "Damage: " + damage.ToString()+"\n";
-        if (damagePerSecond > 0) description += "DOT: " + damagePerSecond.ToString() + "/s\n";
-        if (stuckTime > 0) description += "Stuck: " + stuckTime.ToString() + "\n";
-        if (knockBackRate > 0) description += "KnockBack: " + knockBackRate.ToString() + "\n";
-        return description;
+        weaponTran = weapon;
+        if (obCtrl != null) obCtrl.SetWeapon(weaponTran);
+
+        if (weaponTran != null)
+        {
+            //カスタム処理
+        }
+
+        if (isSendRPC)
+        {
+            int viewId = -1;
+            if (weaponTran != null) viewId = PhotonView.Get(weaponTran.gameObject).viewID;
+            photonView.RPC("SetWeaponRPC", PhotonTargets.Others, viewId);
+        }
+    }
+    [PunRPC]
+    protected void SetWeaponRPC(int weaponViewId)
+    {
+        PhotonView weaponView = PhotonView.Find(weaponViewId);
+        Transform weapon = (weaponView != null) ? weaponView.gameObject.transform : null;
+        SetWeapon(weapon, false);
     }
 
     protected void PlayAudio(int no = 0)
@@ -366,16 +416,12 @@ public class BulletController : MoveOfCharacter
     {
         return targetTran;
     }
-    public void GetOwner(out Transform tran, out string name)
-    {
-        tran = ownerTran;
-        name = ownerWeapon;
-    }
     public Transform GetOwner()
     {
         return ownerTran;
     }
 
+    //反射判定
     protected bool IsReflection(GameObject otherObj)
     {
         if (!otherObj.CompareTag(Common.CO.TAG_STRUCTURE)) return false;
@@ -386,25 +432,32 @@ public class BulletController : MoveOfCharacter
         return true;
     }
 
-    protected bool Reflection()
+    //反射処理
+    protected void Reflection(bool isSendRPC = true)
     {
         //owner,target
         Transform preOwnerTran = ownerTran;
-        SetOwner(null, ownerWeapon);
-        SetTarget(preOwnerTran);
+        BulletSetting(null, preOwnerTran, weaponTran, false);
 
         //object reset
-        ObjectController obCtrl = GetComponent<ObjectController>();
         if (obCtrl != null) obCtrl.Reset();
 
         //方向を変える
-        photonView.RPC("ReflectionRPC", PhotonTargets.All);
+        myTran.LookAt(preOwnerTran);
 
-        return true;
+        if (isSendRPC)
+        {
+            photonView.RPC("ReflectionRPC", PhotonTargets.Others);
+        }
     }
     [PunRPC]
     protected void ReflectionRPC()
     {
-        myTran.LookAt(ownerTran);
+        Reflection(false);
+    }
+
+    public string GetWeaponName()
+    {
+        return (weaponTran != null) ? weaponTran.name : myTran.name;
     }
 }
