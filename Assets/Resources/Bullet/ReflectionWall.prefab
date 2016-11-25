@@ -101,7 +101,7 @@ Transform:
   m_GameObject: {fileID: 107330}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 20, y: 20, z: 2}
+  m_LocalScale: {x: 20, y: 20, z: 3}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 452416}
@@ -286,8 +286,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.0000001, y: 1, z: 6}
-  m_Center: {x: 0, y: 0.5, z: 1}
+  m_Size: {x: 1.0000001, y: 1, z: 4}
+  m_Center: {x: 0, y: 0.5, z: 0.5}
 --- !u!114 &11400480
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -337,7 +337,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f086994b8c47ea443baf4face217f973, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effectSpawn: {fileID: 181024, guid: f53acf28b44356949b14e5e6dc566838, type: 2}
+  effectSpawn: {fileID: 0}
   activeLimitTime: 5
   activeLimitDistance: 0
   isNotAutoBreak: 0
@@ -428,7 +428,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 055031607bae32a42883e0623ddf5f62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  breakEffect: {fileID: 0}
+  breakEffect: {fileID: 181024, guid: f53acf28b44356949b14e5e6dc566838, type: 2}
   maxHp: 150
   isReflaction: 1
 --- !u!114 &11499104

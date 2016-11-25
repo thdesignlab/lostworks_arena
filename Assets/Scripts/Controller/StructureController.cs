@@ -90,6 +90,7 @@ public class StructureController : Photon.MonoBehaviour
 
     public bool IsReflaction()
     {
+        if (nowHp <= 0) return false;
         return isReflaction;
     }
 }

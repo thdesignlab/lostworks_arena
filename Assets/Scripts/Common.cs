@@ -656,6 +656,7 @@ namespace Common
             { 4005, new string[]{ "AssaultCharge", "", "", OBTAIN_TYPE_INIT}},
             { 4006, new string[]{ "ClusterMissile", "", "", OBTAIN_TYPE_STORE}},
             { 4007, new string[]{ "BlasterBomer", "", "", OBTAIN_TYPE_INIT}},
+            { 4008, new string[]{ "HeatCannon", "", "", OBTAIN_TYPE_INIT}},
         };
         //サブ武器リスト
         public static Dictionary<int, string[]> subWeaponLineUp = new Dictionary<int, string[]>()
@@ -969,7 +970,7 @@ namespace Common
         public const int STAGE_NPC_BGM = 1;
         public static Dictionary<int, int[]> stageNpcNoDic = new Dictionary<int, int[]>()
         {
-            { 1, new int[] { 10000, 0 } },
+            { 1, new int[] { 500, 0 } },
             { 2, new int[] { 100, 5 } },
             { 3, new int[] { 10001, 5 } },
             { 4, new int[] { 200, 1 } },

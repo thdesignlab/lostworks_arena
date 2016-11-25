@@ -9,6 +9,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 439300}
   - 95: {fileID: 9525342}
+  - 208: {fileID: 20887162}
   m_Layer: 0
   m_Name: ca20_sp_cam_setup
   m_TagString: Untagged
@@ -1118,9 +1119,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fab0cff8dbc4ad428570c6eeed5935d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  extraMotion: {fileID: 0}
   extraCam: {fileID: 102984}
   extraEffect: {fileID: 105566}
+  extraAddWeapon: {fileID: 0}
   fireTimeInAnim: 0.85
   useHpPerCondition: 25
 --- !u!114 &11469304
@@ -1193,6 +1194,21 @@ Behaviour:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 118698}
   m_Enabled: 1
+--- !u!208 &20887162
+NavMeshObstacle:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 102984}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 15, y: 15, z: 15}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

@@ -428,6 +428,7 @@ public class BulletController : MoveOfCharacter
         if (!otherObj.GetComponent<StructureController>().IsReflaction()) return false;
 
         BulletController bulletCtrl = otherObj.GetComponent<BulletController>();
+        if (myTran.tag == Common.CO.TAG_EFFECT) return false;
         if (bulletCtrl != null && bulletCtrl.GetOwner() == ownerTran) return false;
         return true;
     }

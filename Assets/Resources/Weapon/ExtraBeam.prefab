@@ -129,6 +129,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 403704}
+  - 208: {fileID: 20896208}
   m_Layer: 0
   m_Name: chara2_sp_cam_pre
   m_TagString: Untagged
@@ -769,7 +770,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 24301600, guid: 4817c32da9beaeb43b7c44b180d41730,
     type: 2}
-  m_audioClip: {fileID: 8300000, guid: 9159e5f07bbf5aa43bc2a29981528f06, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 0256e2930b02564468ba196e85012858, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -905,6 +906,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   extraCam: {fileID: 139808}
   extraEffect: {fileID: 130364}
+  extraAddWeapon: {fileID: 0}
   fireTimeInAnim: 0.8
   useHpPerCondition: 25
 --- !u!114 &11418882
@@ -1043,6 +1045,21 @@ Behaviour:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 136948}
   m_Enabled: 1
+--- !u!208 &20896208
+NavMeshObstacle:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 139808}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 15, y: 15, z: 15}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
