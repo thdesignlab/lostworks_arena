@@ -746,10 +746,12 @@ public class GameController : SingletonMonoBehaviour<GameController>
         {
             ObjectController obCtrl = targetNpc.GetComponent<ObjectController>();
             if (obCtrl != null) obCtrl.DestoryObject(targetNpc);
+            return;
         }
 
         Transform npc = GetNpcTran();
-        if (npc != null) StartCoroutine(CleanNpcProc(npc));
+        //if (npc != null) StartCoroutine(CleanNpcProc(npc));
+        if (npc != null) Destroy(npc.gameObject);
     }
     IEnumerator CleanNpcProc(Transform npc)
     {

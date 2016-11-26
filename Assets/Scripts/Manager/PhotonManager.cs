@@ -152,6 +152,7 @@ public class PhotonManager : MonoBehaviour
             if (PhotonNetwork.connected && !isConnectFailed)
             {
                 // *** 接続成功 ***
+                //if (!PhotonNetwork.automaticallySyncScene) PhotonNetwork.automaticallySyncScene = true;
 
                 if (networkArea.GetActive())
                 {

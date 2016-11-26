@@ -19,31 +19,20 @@ public class StatusChangeController : Photon.MonoBehaviour
     const int EFFECT_SPEED = 4;
     const int EFFECT_DEFENCE = 5;
 
-    //次の効果適用までの必要時間
-    private float leftTime = 0;
-
     void Awake()
     {
         if (effect != null) effect.SetActive(false);
     }
 
-    void Update()
-    {
-        if (leftTime >= 0) return;
-        leftTime -= Time.deltaTime;
-    }
-
     public void Action(PlayerStatus playerStatus)
     {
         if (playerStatus == null) return;
-        if (leftTime > 0) return;
-
-        leftTime = effectTime / 2;
 
         for (int i = 0; i < effectTypeList.Count; i++)
         {
             int effectType = effectTypeList[i];
             float effectRate = effectRateList[i];
+
             GameObject setEffect = effect;
             if (i > 0)
             {
@@ -51,6 +40,7 @@ public class StatusChangeController : Photon.MonoBehaviour
             }
             else if (effectRate < 1)
             {
+                if (playerStatus.IsForceInvincible()) continue;
                 setEffect = playerStatus.GetDebuffEffect();
             }
 

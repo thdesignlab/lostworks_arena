@@ -38,7 +38,7 @@ public class WeaponController : Photon.MonoBehaviour
     protected Transform myBitTran;
     protected Transform playerTran;
     protected PlayerStatus playerStatus;
-    protected bool isNpc = false;
+    public bool isNpc = false;
     protected int weaponNo;
 
     protected Button myBtn;

@@ -462,7 +462,7 @@ public class NpcController : MoveOfCharacter
     private void QuickTarget(Transform target)
     {
         if (target == null) return;
-        base.LookAtTarget(target, status.boostTurnSpeed, new Vector3(1, 0, 1));
+        LookAtTarget(target, status.boostTurnSpeed, new Vector3(1, 0, 1));
     }
     
     void OnTriggerStay(Collider other)

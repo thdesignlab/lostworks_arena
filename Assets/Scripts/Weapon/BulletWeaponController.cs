@@ -121,7 +121,7 @@ public class BulletWeaponController : WeaponController
     {
         //Bit移動
         BitOn();
-        base.StartBitMove(bitFromPos, bitToPos);
+        StartBitMove(bitFromPos, bitToPos);
         yield return new WaitForSeconds(bitMoveTime);
         ActionProccess();
     }

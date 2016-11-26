@@ -69,7 +69,7 @@ public abstract class WeaponLevelController : Photon.MonoBehaviour
     //武器強化
     protected void WeaponCustom()
     {
-        Debug.Log("WeaponCustom");
+        Debug.Log("WeaponCustom: "+transform.name);
         for (int i = 0; i < customSystemList.Count; i++)
         {
             int customSystem = customSystemList[i];

@@ -13,7 +13,7 @@ GameObject:
   - 114: {fileID: 11437972}
   m_Layer: 0
   m_Name: Muzzle
-  m_TagString: Untagged
+  m_TagString: Muzzle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -249,6 +249,7 @@ MonoBehaviour:
   effectSpawn: {fileID: 0}
   activeLimitTime: 0
   activeLimitDistance: 0
+  isNotAutoBreak: 0
 --- !u!114 &11447178
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -325,6 +326,7 @@ MonoBehaviour:
   effectSpawn: {fileID: 0}
   activeLimitTime: 2
   activeLimitDistance: 0
+  isNotAutoBreak: 0
 --- !u!114 &11494352
 MonoBehaviour:
   m_ObjectHideFlags: 1

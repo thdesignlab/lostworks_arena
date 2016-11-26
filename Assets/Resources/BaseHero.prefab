@@ -234,6 +234,7 @@ GameObject:
   - 4: {fileID: 430534}
   - 33: {fileID: 3354858}
   - 23: {fileID: 2337916}
+  - 114: {fileID: 11417374}
   m_Layer: 0
   m_Name: Grounded
   m_TagString: Untagged
@@ -297,6 +298,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 484438}
   - 95: {fileID: 9597418}
+  - 114: {fileID: 11472202}
   m_Layer: 0
   m_Name: Shield
   m_TagString: Untagged
@@ -448,6 +450,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 459396}
+  - 114: {fileID: 11434274}
   m_Layer: 0
   m_Name: Effect
   m_TagString: Untagged
@@ -1119,6 +1122,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerCam: {fileID: 155190, guid: 2484573abf4583d4982378c5e29a9f80, type: 2}
   isNpc: 0
+--- !u!114 &11417374
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 162654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ownerId: 0
+  group: 0
+  prefixBackup: -1
+  observed: {fileID: 0}
+  synchronization: 0
+  onSerializeTransformOption: 3
+  onSerializeRigidBodyOption: 2
+  ownershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 0}
+  ObservedComponentsFoldoutOpen: 1
+  viewIdField: 0
+  instantiationId: -1
+  isRuntimeInstantiated: 0
 --- !u!114 &11426262
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1163,6 +1191,31 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 184734}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ownerId: 0
+  group: 0
+  prefixBackup: -1
+  observed: {fileID: 0}
+  synchronization: 0
+  onSerializeTransformOption: 3
+  onSerializeRigidBodyOption: 2
+  ownershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 0}
+  ObservedComponentsFoldoutOpen: 1
+  viewIdField: 0
+  instantiationId: -1
+  isRuntimeInstantiated: 0
+--- !u!114 &11434274
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 195450}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
@@ -1427,6 +1480,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scrollSpeedX: 5
   scrollSpeedY: 0
+--- !u!114 &11472202
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 179912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ownerId: 0
+  group: 0
+  prefixBackup: -1
+  observed: {fileID: 0}
+  synchronization: 0
+  onSerializeTransformOption: 3
+  onSerializeRigidBodyOption: 2
+  ownershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 0}
+  ObservedComponentsFoldoutOpen: 1
+  viewIdField: 0
+  instantiationId: -1
+  isRuntimeInstantiated: 0
 --- !u!114 &11472536
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1471,7 +1549,8 @@ MonoBehaviour:
   onSerializeTransformOption: 3
   onSerializeRigidBodyOption: 2
   ownershipTransfer: 0
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 0}
   ObservedComponentsFoldoutOpen: 1
   viewIdField: 0
   instantiationId: -1

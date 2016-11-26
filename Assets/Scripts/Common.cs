@@ -178,12 +178,16 @@ namespace Common
             TAG_BULLET_MISSILE,
             TAG_BULLET_ENERGY,
         };
-
         //物理系の弾タグ
         public static string[] physicsBulletArray = new string[]
         {
             TAG_BULLET_PHYSICS,
             TAG_BULLET_MISSILE,
+        };
+        //エネルギー系の弾タグ
+        public static string[] energyBulletArray = new string[]
+        {
+            TAG_BULLET_ENERGY,
         };
 
         //ダメージ判定のあるタグ
@@ -358,7 +362,11 @@ namespace Common
         {
             return InArrayString(CO.physicsBulletArray, tag);
         }
-
+        //エネルギー弾判定
+        public static bool IsEnergyBullet(string tag)
+        {
+            return InArrayString(CO.energyBulletArray, tag);
+        }
         //弾判定
         public static bool IsBullet(string tag)
         {
@@ -376,7 +384,6 @@ namespace Common
         {
             float angle = (startAngle + anglePerSec * time) % 360;
             float radian = Mathf.PI / 180 * angle;
-            //Debug.Log("angle:" + angle + " / sin:"+ Mathf.Sin(radian));
             return Mathf.Sin(radian);
         }
 
@@ -458,10 +465,9 @@ namespace Common
                 }
                 catch (UnityException e)
                 {
-                    Debug.Log(e);
+                    MyDebug.Instance.AdminLog(e.Message);
                 }
             }
-            //Debug.Log(bulletName+" >> " +no);
             return no;
         }
 
@@ -970,7 +976,7 @@ namespace Common
         public const int STAGE_NPC_BGM = 1;
         public static Dictionary<int, int[]> stageNpcNoDic = new Dictionary<int, int[]>()
         {
-            { 1, new int[] { 500, 0 } },
+            { 1, new int[] { 10000, 0 } },
             { 2, new int[] { 100, 5 } },
             { 3, new int[] { 10001, 5 } },
             { 4, new int[] { 200, 1 } },

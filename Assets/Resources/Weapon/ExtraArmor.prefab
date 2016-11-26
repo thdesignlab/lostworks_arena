@@ -63,6 +63,7 @@ GameObject:
   - 4: {fileID: 410378}
   - 114: {fileID: 11425472}
   - 114: {fileID: 11459004}
+  - 114: {fileID: 11465596}
   m_Layer: 0
   m_Name: Unlimited
   m_TagString: Weapon
@@ -218,6 +219,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 425160}
+  - 114: {fileID: 11488196}
   m_Layer: 0
   m_Name: Super_pre
   m_TagString: Untagged
@@ -238,7 +240,6 @@ GameObject:
   - 135: {fileID: 13529504}
   - 114: {fileID: 11409620}
   - 114: {fileID: 11441354}
-  - 114: {fileID: 11451438}
   m_Layer: 0
   m_Name: ExtraArmorBomb
   m_TagString: ExtraBullet
@@ -971,19 +972,6 @@ MonoBehaviour:
   scaleTime: 1
   scaleLateTime: 1.4
   isParticle: 1
---- !u!114 &11451438
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 168642}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a2e5adbf805b9ad44998ac7cc5991b11, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rollSpeed: 360
-  rollAxis: {x: 0, y: 1, z: 0}
 --- !u!114 &11458530
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1054,6 +1042,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   basePrefab: {fileID: 110970, guid: a433cf8b5cf9f4c498d2e9eff3a697d7, type: 2}
+--- !u!114 &11465596
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 124330}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 425c062d8185cac43bce805e5293a1ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bitMotionType: 0
+  bitMoveTime: 3
+  isBitFixed: 0
+  reloadTime: 0
 --- !u!114 &11467246
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1106,6 +1109,31 @@ MonoBehaviour:
   boostWaitTime: 0
   boostCost: 0
   isStopInAttack: 0
+--- !u!114 &11488196
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 162938}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ownerId: 0
+  group: 0
+  prefixBackup: -1
+  observed: {fileID: 0}
+  synchronization: 0
+  onSerializeTransformOption: 3
+  onSerializeRigidBodyOption: 2
+  ownershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 0}
+  ObservedComponentsFoldoutOpen: 1
+  viewIdField: 0
+  instantiationId: -1
+  isRuntimeInstantiated: 0
 --- !u!114 &11490452
 MonoBehaviour:
   m_ObjectHideFlags: 1

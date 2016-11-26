@@ -1661,8 +1661,8 @@ MonoBehaviour:
   damageEffect: {fileID: 158438, guid: a89a49ccbd266694eb3d95c8ba4d1cd5, type: 2}
   damage: 100
   damagePerSecond: 0
-  isPhysicsBulletBreak: 1
-  isEnergyBulletBreak: 1
+  isPhysicsBulletBreak: 0
+  isEnergyBulletBreak: 0
   ownDamageRate: 0
   isFloorEffect: 0
   startScale: {x: 0.5, y: 0.5, z: 0.5}

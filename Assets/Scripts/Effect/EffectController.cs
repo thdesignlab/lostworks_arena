@@ -18,7 +18,11 @@ public class EffectController : Photon.MonoBehaviour
     [SerializeField]
     protected bool isFloorEffect = false;
 
-    protected Transform myTran;
+    private Transform _myTran;
+    protected Transform myTran
+    {
+        get { return _myTran ? _myTran : _myTran = transform; }
+    }
     protected Transform ownerTran;
     protected PlayerStatus ownerStatus;
     protected Transform targetTran;
@@ -34,7 +38,6 @@ public class EffectController : Photon.MonoBehaviour
 
     protected virtual void Awake()
     {
-        myTran = transform;
         if (isFloorEffect) myTran.position = new Vector3(myTran.position.x, 0, myTran.position.z);
         statusChangeCtrl = myTran.GetComponent<StatusChangeController>();
     }

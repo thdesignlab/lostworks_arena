@@ -166,7 +166,7 @@ public class BulletController : MoveOfCharacter
                     //スタック
                     if (stuckTime > 0)
                     {
-                        status.InterfareMove(stuckTime);
+                        status.AttackInterfareMove(stuckTime);
                     }
                 }
 
@@ -258,7 +258,7 @@ public class BulletController : MoveOfCharacter
         PhotonView pv = hitObj.GetPhotonView();
         if (pv != null && pv.isMine) return false;
 
-        if ((isEnergyBulletBreak && Common.Func.IsBullet(hitObj.tag))
+        if ((isEnergyBulletBreak && Common.Func.IsEnergyBullet(hitObj.tag))
             || (isPhysicsBulletBreak && Common.Func.IsPhysicsBullet(hitObj.tag)))
         {
             hitObj.GetComponent<ObjectController>().DestoryObject(true);
@@ -428,7 +428,7 @@ public class BulletController : MoveOfCharacter
         if (!otherObj.GetComponent<StructureController>().IsReflaction()) return false;
 
         BulletController bulletCtrl = otherObj.GetComponent<BulletController>();
-        if (myTran.tag == Common.CO.TAG_EFFECT) return false;
+        if (myTran.tag == Common.CO.TAG_EFFECT || myTran.tag == Common.CO.TAG_BULLET_EXTRA) return false;
         if (bulletCtrl != null && bulletCtrl.GetOwner() == ownerTran) return false;
         return true;
     }

@@ -314,9 +314,10 @@ MonoBehaviour:
   damageEffect: {fileID: 133516, guid: e2d7ae54e3828d840bad804c87cfcfe4, type: 2}
   damage: 200
   damagePerSecond: 0
-  isPhysicsBulletBreak: 1
-  isEnergyBulletBreak: 1
+  isPhysicsBulletBreak: 0
+  isEnergyBulletBreak: 0
   ownDamageRate: 0
+  isFloorEffect: 0
 --- !u!114 &11404256
 MonoBehaviour:
   m_ObjectHideFlags: 1

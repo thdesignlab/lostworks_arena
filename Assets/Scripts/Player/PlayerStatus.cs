@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.Events;
 
 
 public class PlayerStatus : Photon.MonoBehaviour {
@@ -84,11 +85,6 @@ public class PlayerStatus : Photon.MonoBehaviour {
     private float defaultRunSpeed;
     private float defaultJumpSpeed;
     private float defaultBoostSpeed;
-    private float defaultTurnSpeed;
-    private float defaultBoostTurnSpeed;
-    //private float defaultInvincibleTime;
-    //private int defaultRecoverSp;
-    //private float defaultAttackRate;
 
     private BaseMoveController moveCtrl;
     private bool isActiveSceane = true;
@@ -151,11 +147,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
         defaultRunSpeed = runSpeed;
         defaultJumpSpeed = jumpSpeed;
         defaultBoostSpeed = boostSpeed;
-        defaultTurnSpeed = turnSpeed;
-        defaultBoostTurnSpeed = boostTurnSpeed;
-        //defaultInvincibleTime = invincibleTime;
-        //defaultRecoverSp = recoverSp;
-        //defaultAttackRate = attackRate;
+        boostTurnSpeed = turnSpeed * 10;
 
         if (SceneManager.GetActiveScene().name == Common.CO.SCENE_CUSTOM)
         {
@@ -245,8 +237,6 @@ public class PlayerStatus : Photon.MonoBehaviour {
             runSpeed = defaultRunSpeed;
             jumpSpeed = defaultJumpSpeed;
             boostSpeed = defaultBoostSpeed;
-            turnSpeed = defaultTurnSpeed;
-            boostTurnSpeed = defaultBoostTurnSpeed;
 
             if (isNpc)
             {
@@ -371,15 +361,14 @@ public class PlayerStatus : Photon.MonoBehaviour {
         {
             if (!GameController.Instance.isGameStart || GameController.Instance.isGameEnd) return false;
         }
-
-        if (isForceInvincible) return false;
+        if (damage <= 0) return false;
 
         //無敵時間判定
-        if (leftInvincibleTime > 0)
+        if (leftInvincibleTime > 0 || isForceInvincible)
         {
             if (shield != null)
             {
-                photonView.RPC("OpenShieldRPC", PhotonTargets.All, shieldTime);
+                OpenShield(shieldTime);
             }
             return false;
         }
@@ -406,8 +395,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
         return true;
     }
 
-    [PunRPC]
-    private void OpenShieldRPC(float time)
+    private void OpenShield(float time, bool isSendRPC = true)
     {
         if (leftShieldTime > 0)
         {
@@ -418,10 +406,19 @@ public class PlayerStatus : Photon.MonoBehaviour {
         }
         else
         {
-            StartCoroutine(OpenShield(time));
+            StartCoroutine(OpenShieldProc(time));
+        }
+        if (isSendRPC)
+        {
+            photonView.RPC("OpenShieldRPC", PhotonTargets.Others, time);
         }
     }
-    IEnumerator OpenShield(float time)
+    [PunRPC]
+    private void OpenShieldRPC(float time)
+    {
+        OpenShield(time, false);
+    }
+    IEnumerator OpenShieldProc(float time)
     {
         leftShieldTime = time;
         shield.SetActive(true);
@@ -639,39 +636,42 @@ public class PlayerStatus : Photon.MonoBehaviour {
         }
     }
 
-    public void SetInvincible(bool flg = true, float time = 0, bool isShieldBisible = false)
+    public void SetInvincible(bool flg = true, float time = 0, bool isShieldVisible = false)
     {
         float setTime = time;
         if (flg)
         {
             if (setTime == 0) setTime = invincibleTime;
-            //if (setTime <= 0) return;
             if (leftInvincibleTime >= setTime) return;
         }
 
-        object[] args = new object[] { setTime , isShieldBisible };
+        object[] args = new object[] { setTime , isShieldVisible };
         photonView.RPC("SetInvincibleRPC", PhotonTargets.All, args);
     }
 
     [PunRPC]
-    private void SetInvincibleRPC(float time, bool isShieldBisible)
+    private void SetInvincibleRPC(float time, bool isShieldVisible)
     {
         leftInvincibleTime = time;
-        if (time > 0 && isShieldBisible)
+        if (time > 0 && isShieldVisible)
         {
-            StartCoroutine(OpenShield(time));
+            StartCoroutine(OpenShieldProc(time));
         }
     }
 
     //ロックされているかFLG
-    public void SetLocked(bool flg)
+    public void SetLocked(bool flg, bool isSendRPC = true)
     {
-        photonView.RPC("SetLockedRPC", PhotonTargets.All, flg);
+        isLocked = flg;
+        if (isSendRPC)
+        {
+            photonView.RPC("SetLockedRPC", PhotonTargets.Others, flg);
+        }
     }
     [PunRPC]
     private void SetLockedRPC(bool flg)
     {
-        isLocked = flg;
+        SetLocked(flg, false);
     }
 
     public bool IsLocked()
@@ -728,17 +728,29 @@ public class PlayerStatus : Photon.MonoBehaviour {
         //TurnSpeed
         index = Common.Character.STATUS_TURN_SPEED;
         turnSpeed = defaultStatus[index] * levelRate[index];
-        defaultTurnSpeed = turnSpeed;
+        boostTurnSpeed = turnSpeed * 10;
 
         index = Common.Character.STATUS_ATTACK_RATE;
         attackRate = defaultStatus[index] * levelRate[index];
-        //defaultAttackRate = attackRate;
     }
 
-    //SP回復量(自分専用)
-    public void AccelerateRecoverSp(float rate, float limit, GameObject effect = null)
+    //SP回復量
+    public void AccelerateRecoverSp(float rate, float limit, GameObject effect = null, bool isSendRPC = true)
     {
         StartCoroutine(CheckAccelerateRecoverSp(rate, limit, effect));
+        if (isSendRPC)
+        {
+            int parentViewId = (effect != null) ? GetParentViewId(effect) : - 1;
+            string effectName = (effect != null) ? effect.name : "";
+            object[] args = new object[] { rate, limit, parentViewId, effectName };
+            photonView.RPC("AccelerateRecoverSpRPC", PhotonTargets.Others, args);
+        }
+    }
+    [PunRPC]
+    private void AccelerateRecoverSpRPC(float rate, float limit, int parentViewId, string effectName)
+    {
+        GameObject effect = GetChildObject(parentViewId, effectName);
+        AccelerateRecoverSp(rate, limit, effect, false);
     }
     IEnumerator CheckAccelerateRecoverSp(float rate, float limit, GameObject effect = null)
     {
@@ -751,29 +763,23 @@ public class PlayerStatus : Photon.MonoBehaviour {
     }
 
     //攻撃力
-    public bool ChangeAttackRate(float rate, float limit, GameObject effect = null, bool isSendRpc = true)
+    public void ChangeAttackRate(float rate, float limit, GameObject effect = null, bool isSendRPC = true)
     {
-        if (photonView.isMine)
+        StartCoroutine(ChangeAttackRateProc(rate, limit, effect));
+        if (isSendRPC)
         {
-            StartCoroutine(ChangeAttackRateProc(rate, limit, effect));
+            int parentViewId = (effect != null) ? GetParentViewId(effect) : -1;
+            string effectName = (effect != null) ? effect.name : "";
+            object[] args = new object[] { rate, limit, parentViewId, effectName };
+            photonView.RPC("ChangeAttackRateRPC", PhotonTargets.Others, args);
         }
-        else
-        {
-            if (isSendRpc)
-            {
-                object[] args = new object[] { rate, limit, effect };
-                photonView.RPC("ChangeAttackRateRPC", PhotonTargets.Others, args);
-            }
-        }
-        return true;
     }
-
     [PunRPC]
-    public void ChangeAttackRateRPC(float rate, float limit, GameObject effect = null)
+    private void ChangeAttackRateRPC(float rate, float limit, int parentViewId, string effectName)
     {
+        GameObject effect = GetChildObject(parentViewId, effectName);
         ChangeAttackRate(rate, limit, effect, false);
     }
-
     IEnumerator ChangeAttackRateProc(float rate, float limit, GameObject effect = null)
     {
         int changeValue = (int)(attackRate * rate - attackRate);
@@ -785,29 +791,23 @@ public class PlayerStatus : Photon.MonoBehaviour {
     }
 
     //防御力
-    public bool ChangeDefRate(float rate, float limit, GameObject effect = null, bool isSendRpc = true)
+    public void ChangeDefRate(float rate, float limit, GameObject effect = null, bool isSendRPC = true)
     {
-        if (photonView.isMine)
+        StartCoroutine(ChangeDefRateProc(rate, limit, effect));
+        if (isSendRPC)
         {
-            StartCoroutine(ChangeDefRateProc(rate, limit, effect));
+            int parentViewId = (effect != null) ? GetParentViewId(effect) : -1;
+            string effectName = (effect != null) ? effect.name : "";
+            object[] args = new object[] { rate, limit, parentViewId, effectName };
+            photonView.RPC("ChangeDefRateRPC", PhotonTargets.Others, args);
         }
-        else
-        {
-            if (isSendRpc)
-            {
-                object[] args = new object[] { rate, limit, effect };
-                photonView.RPC("ChangeDefRateRPC", PhotonTargets.Others, args);
-            }
-        }
-        return true;
     }
-
     [PunRPC]
-    public void ChangeDefRateRPC(float rate, float limit, GameObject effect = null)
+    private void ChangeDefRateRPC(float rate, float limit, int parentViewId, string effectName)
     {
+        GameObject effect = GetChildObject(parentViewId, effectName);
         ChangeDefRate(rate, limit, effect, false);
     }
-
     IEnumerator ChangeDefRateProc(float rate, float limit, GameObject effect = null)
     {
         if (rate <= 0) yield break;
@@ -828,33 +828,28 @@ public class PlayerStatus : Photon.MonoBehaviour {
             InterfareMove(limit, effect, isSendRpc);
             return true;
         }
-
-        if (photonView.isMine)
+        if (nowSpeedRate != 1 && nowSpeedRate <= rate)
         {
-            if (nowSpeedRate != 1 && nowSpeedRate <= rate)
-            {
-                //既に別の効果が適用中
-                return false;
-            }
-            StartCoroutine(CheckAccelerateRunSpeed(rate, limit, effect));
+            //既に別の効果が適用中
+            return false;
         }
-        else
+
+        StartCoroutine(CheckAccelerateRunSpeed(rate, limit, effect));
+        if (isSendRpc)
         {
-            if (isSendRpc)
-            {
-                object[] args = new object[] { rate, limit, effect };
-                photonView.RPC("AccelerateRunSpeedRPC", PhotonTargets.Others, args);
-            }
+            int parentViewId = (effect != null) ? GetParentViewId(effect) : -1;
+            string effectName = (effect != null) ? effect.name : "";
+            object[] args = new object[] { rate, limit, parentViewId, effectName };
+            photonView.RPC("AccelerateRunSpeedRPC", PhotonTargets.Others, args);
         }
         return true;
     }
-
     [PunRPC]
-    public void AccelerateRunSpeedRPC(float rate, float limit, GameObject effect = null)
+    public void AccelerateRunSpeedRPC(float rate, float limit, int parentViewId, string effectName)
     {
+        GameObject effect = GetChildObject(parentViewId, effectName);
         AccelerateRunSpeed(rate, limit, effect, false);
     }
-
     IEnumerator CheckAccelerateRunSpeed(float rate, float limit, GameObject effect = null)
     {
         nowSpeedRate = rate;
@@ -882,56 +877,44 @@ public class PlayerStatus : Photon.MonoBehaviour {
     }
 
     //移動制限
+    public void AttackInterfareMove(float limit, GameObject effect = null)
+    {
+        if (effect == null) effect = stuckEffect;
+        InterfareMove(limit, stuckEffect);
+    }
     public void InterfareMove(float limit, GameObject effect = null, bool isSendRpc = true)
     {
-        //他人からの効果にはエフェクトをつける
-        if (isSendRpc && effect == null) effect = stuckEffect;
-
-        if (photonView.isMine)
+        if (interfareMoveTime > 0)
         {
-            if (interfareMoveTime > 0)
+            if (interfareMoveTime < limit || limit == 0)
             {
-                if (interfareMoveTime < limit || limit == 0)
-                {
-                    //残り時間上書き
-                    interfareMoveTime = limit;
-                }
-                return;
+                //残り時間上書き
+                interfareMoveTime = limit;
+                photonView.RPC("AddInterfareMoveRPC", PhotonTargets.Others, limit);
             }
-            StartCoroutine(CheckInterfareMove(limit, effect));
+            return;
         }
-        else
+
+        StartCoroutine(CheckInterfareMove(limit, effect));
+        if (isSendRpc)
         {
-            if (isSendRpc)
-            {
-                int effectViewId = -1;
-                PhotonView pv = PhotonView.Get(effect);
-                if (pv != null) effectViewId = pv.viewID;
-                object[] args = new object[] { limit, effectViewId };
-                photonView.RPC("InterfareMoveRPC", PhotonTargets.Others, args);
-            }
+            int parentViewId = (effect != null) ? GetParentViewId(effect) : -1;
+            string effectName = (effect != null) ? effect.name : "";
+            object[] args = new object[] { limit, parentViewId, effectName };
+            photonView.RPC("InterfareMoveRPC", PhotonTargets.Others, args);
         }
     }
-
     [PunRPC]
-    public void InterfareMoveRPC(float limit, int effectViewId)
+    public void AddInterfareMoveRPC(float limit)
     {
-        GameObject effect = null;
-        PhotonView pv = PhotonView.Find(effectViewId);
-        if (pv != null)
-        {
-            effect = pv.gameObject;
-        }
-        else
-        {
-            if (stuckEffect != null && PhotonView.Get(stuckEffect).viewID == effectViewId)
-            {
-                effect = stuckEffect;
-            }
-        }
+        interfareMoveTime = limit;
+    }
+    [PunRPC]
+    public void InterfareMoveRPC(float limit, int parentViewId, string effectName)
+    {
+        GameObject effect = GetChildObject(parentViewId, effectName);
         InterfareMove(limit, effect, false);
     }
-
     IEnumerator CheckInterfareMove(float limit, GameObject effect = null)
     {
         interfareMoveTime = limit;
@@ -956,21 +939,21 @@ public class PlayerStatus : Photon.MonoBehaviour {
         boostSpeed = defaultBoostSpeed * nowSpeedRate;
     }
 
-    //回転制限(自分専用)
+    //回転制限
     public void InterfareTurn(float rate, float limit)
     {
         StartCoroutine(CheckInterfareTurn(rate, limit));
     }
-
     IEnumerator CheckInterfareTurn(float rate, float limit)
     {
-        boostTurnSpeed = turnSpeed * rate;
-        if (rate < 1) turnSpeed *= rate;
+        int turnChangeValue = (int)(turnSpeed * rate - turnSpeed);
+        int boostTrunChangeValue = (rate < 1) ? (int)(boostTurnSpeed - turnSpeed - turnChangeValue) * -1 : 0;
 
+        boostTurnSpeed += boostTrunChangeValue;
+        turnSpeed += turnChangeValue;
         yield return new WaitForSeconds(limit);
-
-        boostTurnSpeed = defaultBoostTurnSpeed;
-        turnSpeed = defaultTurnSpeed;
+        boostTurnSpeed -= boostTrunChangeValue;
+        turnSpeed -= turnChangeValue;
     }
 
     //無敵時間延長(自分専用)
@@ -982,44 +965,75 @@ public class PlayerStatus : Photon.MonoBehaviour {
     {
         float changeValue = invincibleTime * rate - invincibleTime;
         invincibleTime += changeValue;
-        SwitchEffect(effect, true);
+        SwitchEffect(effect, true, true);
         yield return new WaitForSeconds(limit);
-        SwitchEffect(effect, false);
+        SwitchEffect(effect, false, true);
         invincibleTime -= changeValue;
     }
 
     //Ex武器用
-    public void SetForceInvincible(bool flg)
-    {
-        photonView.RPC("SetForceInvincibleRPC", PhotonTargets.All, flg);
-    }
-    [PunRPC]
-    private void SetForceInvincibleRPC(bool flg)
+    public void SetForceInvincible(bool flg, bool isSendRPC = true)
     {
         isForceInvincible = flg;
         float limit = 0;
         if (flg) limit = 10;
         InterfareMove(limit, null, false);
+        if (isSendRPC)
+        {
+            photonView.RPC("SetForceInvincibleRPC", PhotonTargets.Others, flg);
+        }
+    }
+    [PunRPC]
+    private void SetForceInvincibleRPC(bool flg)
+    {
+        SetForceInvincible(flg, false);
+    }
+    public bool IsForceInvincible()
+    {
+        return isForceInvincible;
     }
 
-    //エフェクト切り替え(予め非表示にされているもの)
-    private void SwitchEffect(GameObject effect, bool flg)
+    private int GetParentViewId(GameObject child)
+    {
+        int viewId = -1;
+        if (child != null && child.transform.parent != null)
+        {
+            PhotonView pv = PhotonView.Get(child.transform.parent);
+            if (pv != null) viewId = pv.viewID;
+        }
+        return viewId;
+    }
+    private GameObject GetChildObject(int parentViewId, string childName)
+    {
+        GameObject child = null;
+        PhotonView parentPV = PhotonView.Find(parentViewId);
+        if (parentPV != null && !string.IsNullOrEmpty(childName))
+        {
+            Transform parentTran = parentPV.gameObject.transform;
+            Transform childTran = parentTran.FindChild(childName);
+            if (childTran != null) child = childTran.gameObject;
+        }
+        return child;
+    }
+
+    //エフェクト切り替え
+    private void SwitchEffect(GameObject effect, bool flg, bool isSendRPC = false)
     {
         if (effect == null) return;
         effect.SetActive(flg);
-        PhotonView parentPv = PhotonView.Get(effect.transform.parent);
-        if (parentPv == null) return;
-        object[] arg = new object[] { parentPv.viewID, effect.name, flg };
-        photonView.RPC("SwitchEffectRPC", PhotonTargets.All, arg);
+
+        if (isSendRPC)
+        {
+            int parentViewId = GetParentViewId(effect);
+            object[] args = new object[] { parentViewId, effect.name, flg };
+            photonView.RPC("SwitchEffectRPC", PhotonTargets.Others, args);
+        }
     }
     [PunRPC]
     private void SwitchEffectRPC(int parentViewId, string effectName, bool flg)
     {
-        PhotonView pv = PhotonView.Find(parentViewId);
-        if (pv == null) return;
-        Transform effect = pv.transform.FindChild(effectName);
-        if (effect == null) return;
-        effect.gameObject.SetActive(flg);
+        GameObject effect = GetChildObject(parentViewId, effectName);
+        SwitchEffect(effect, flg, false);
     }
     public GameObject GetDebuffEffect()
     {
@@ -1148,7 +1162,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
 
         if (logBattleQueue[logType].Count >= BATTLE_LOG_COUNT) logBattleQueue[logType].Dequeue();
         logBattleQueue[logType].Enqueue(text);
-        if (console) Debug.Log(text);
+        if (console) MyDebug.Instance.AdminLog(logType, text);
 
         //ダメージソース
         GameController.Instance.SetDamageSource(logType, name, damage);
