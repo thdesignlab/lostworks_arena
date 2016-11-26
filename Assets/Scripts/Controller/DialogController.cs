@@ -65,6 +65,13 @@ public class DialogController : MonoBehaviour
     const string BUTTON_OK_TEXT = "OK";
     const string BUTTON_CANCEL_TEXT = "Cancel";
 
+    //ボタンText色
+    public static Color cancelColor = new Color32(255, 255, 255, 255);
+    public static Color blueColor = new Color32(0, 255, 234, 255);
+    public static Color redColor = new Color32(255, 79, 79, 255);
+    public static Color yellowColor = new Color32(238, 255, 79, 255);
+    public static Color greenColor = new Color32(79, 255, 109, 255);
+    public static Color purpleColor = new Color32(255, 79, 221, 255);
 
     //##### 選択ダイアログ表示 #####
     public static GameObject OpenSelectDialog(string text, Dictionary<string, UnityAction> btnInfoDic, bool isCancel = false)
@@ -74,9 +81,12 @@ public class DialogController : MonoBehaviour
     public static GameObject OpenSelectDialog(string text, string imageName, Dictionary<string, UnityAction> btnInfoDic, bool isCancel = false)
     {
         return OpenSelectDialog("", text, imageName, btnInfoDic, isCancel);
-
     }
     public static GameObject OpenSelectDialog(string title, string text, string imageName, Dictionary<string, UnityAction> btnInfoDic, bool isCancel)
+    {
+        return OpenSelectDialog(title, text, imageName, btnInfoDic, isCancel);
+    }
+    public static GameObject OpenSelectDialog(string title, string text, string imageName, Dictionary<string, UnityAction> btnInfoDic, bool isCancel, List<Color> btnColors)
     {
         CloseMessage();
         if (dialog != null) CloseDialog();
@@ -103,8 +113,7 @@ public class DialogController : MonoBehaviour
                 Transform imageTran = dialogTran.FindChild("DialogArea/Image");
                 imageTran.gameObject.SetActive(true);
                 Image img = imageTran.GetComponent<Image>();
-                img.sprite = imgSprite;
-                Debug.Log("type >> "+img.type);
+                img.sprite = imgSprite;g.type);
                 img.preserveAspect = true;
             }
         }
@@ -114,15 +123,22 @@ public class DialogController : MonoBehaviour
         textMessage.text = text;
 
         //セレクトボタン
+        int index = 0;
         foreach (string btnText in btnInfoDic.Keys)
         {
-            SetSelectBtn(btnText, btnInfoDic[btnText]);
+            Color btnColor = blueColor;
+            if (btnColors != null)
+            {
+                if (btnColors.Count > 0 && btnColors.Count > index) btnColor = btnColors[index];
+            }
+            SetSelectBtn(btnText, btnInfoDic[btnText], btnColor);
+            index++;
         }
 
         //Cancelボタン
         if (isCancel)
         {
-            SetSelectBtn(BUTTON_CANCEL_TEXT, null, new Color(255, 255, 255));
+            SetSelectBtn(BUTTON_CANCEL_TEXT, null, cancelColor);
         }
         return dialog;
     }

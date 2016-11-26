@@ -163,7 +163,6 @@ public class StoreManager : SingletonMonoBehaviour<StoreManager>
         }
         else
         {
-            DialogController.CloseMessage();
             DialogController.OpenDialog("接続Error");
         }
     }
@@ -183,10 +182,6 @@ public class StoreManager : SingletonMonoBehaviour<StoreManager>
     //獲得ポイントダイアログ
     private void PointGetDialog(int pt)
     {
-        Debug.Log("PointGetDialog1");
-        DialogController.CloseMessage();
-
-        Debug.Log("PointGetDialog2");
         //所持pt更新
         textPoint.text = UserManager.userPoint.ToString();
 
@@ -225,7 +220,8 @@ public class StoreManager : SingletonMonoBehaviour<StoreManager>
             //Tipsなし
             btnActionDic.Add(nextBtn, PlayGacha);
         }
-        DialogController.OpenSelectDialog(title, text, imgName, btnActionDic, true);
+        List<Color> btnColors = new List<Color>() { DialogController.blueColor, DialogController.purpleColor };
+        DialogController.OpenSelectDialog(title, text, imgName, btnActionDic, true, btnColors);
     }
 
 
@@ -490,20 +486,41 @@ public class StoreManager : SingletonMonoBehaviour<StoreManager>
         text += "「" + weaponName + "」\n";
         text += pt + "pt消費";
         Dictionary<string, UnityAction> btnList = new Dictionary<string, UnityAction>();
+        List<Color> btnColors = new List<Color>();
         foreach (int type in Common.Weapon.customTypeNameDic.Keys)
         {
             int customType = type;
             string btnText = Common.Weapon.customTypeNameDic[customType];
             UnityAction action = () => WeaponCustomExe(pt, weaponNo, customType);
+            Color btnColor = DialogController.blueColor;
             if (customType == nowCustomType)
             {
                 //解除
                 btnText = "【解除】"+ btnText;
                 action = () => WeaponCustomReset(weaponNo);
+                btnColor = DialogController.yellowColor;
+            }
+            else
+            {
+                switch (type)
+                {
+                    case Common.Weapon.CUSTOM_TYPE_POWER:
+                        btnColor = DialogController.redColor;
+                        break;
+
+                    case Common.Weapon.CUSTOM_TYPE_TECHNIC:
+                        btnColor = DialogController.blueColor;
+                        break;
+
+                    case Common.Weapon.CUSTOM_TYPE_UNIQUE:
+                        btnColor = DialogController.greenColor;
+                        break;
+                }
             }
             btnList.Add(btnText, action);
+            btnColors.Add(btnColor);
         }
-        DialogController.OpenSelectDialog(title, text, "", btnList, true);
+        DialogController.OpenSelectDialog(title, text, "", btnList, true, btnColors);
     }
     
     //カスタム実行
@@ -665,7 +682,8 @@ public class StoreManager : SingletonMonoBehaviour<StoreManager>
         };
 
         //確認ダイアログ
-        string text = "未開放のBGMです\n解放しますか？\n";
+        string text = "未開放のBGMです\n";
+        text += "解放しますか？\n\n";
         text += "「" + musicName + "」\n";
         text += NEED_MUSIC_POINT + "pt消費";
         DialogController.OpenDialog(text, buy, true);
