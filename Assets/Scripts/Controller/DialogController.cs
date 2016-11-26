@@ -113,7 +113,7 @@ public class DialogController : MonoBehaviour
                 Transform imageTran = dialogTran.FindChild("DialogArea/Image");
                 imageTran.gameObject.SetActive(true);
                 Image img = imageTran.GetComponent<Image>();
-                img.sprite = imgSprite;g.type);
+                img.sprite = imgSprite;
                 img.preserveAspect = true;
             }
         }
