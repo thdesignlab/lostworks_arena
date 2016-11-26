@@ -39,7 +39,7 @@ public class WeaponController : Photon.MonoBehaviour
     protected Transform playerTran;
     protected PlayerStatus playerStatus;
     public bool isNpc = false;
-    protected int weaponNo;
+    protected int weaponNo = 0;
 
     protected Button myBtn;
     protected Image imgGage;
@@ -71,7 +71,10 @@ public class WeaponController : Photon.MonoBehaviour
 
         myTran = transform;
         audioCtrl = myTran.GetComponent<AudioController>();
-        //string weaponName = myTran.name;
+
+        //名前変更
+        name = name.Replace("(Clone)", "");
+        weaponNo = Common.Weapon.GetWeaponNoFromName(name);
 
         //Bit用
         foreach (Transform child in myTran)
@@ -84,11 +87,6 @@ public class WeaponController : Photon.MonoBehaviour
                 if (bitAnimator == null) bitAnimator = myBitTran.GetComponentInChildren<Animator>();
                 myBitTran.localScale = Vector3.zero;
             }
-        }
-
-        if (photonView.isMine && !isNpc)
-        {
-            SetWeaponCustom(Common.Weapon.CUSTOM_TYPE_TECHNIC);
         }
     }
 
@@ -133,6 +131,14 @@ public class WeaponController : Photon.MonoBehaviour
             }
             yield return null;
         }
+
+        //武器強化
+        if (photonView.isMine && !isNpc)
+        {
+            int type = UserManager.GetWeaponCustomType(weaponNo);
+            SetWeaponCustom(type);
+        }
+
         isEnabledFire = true;
     }
 

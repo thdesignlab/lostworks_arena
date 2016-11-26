@@ -323,8 +323,8 @@ public class PlayerSetting : Photon.MonoBehaviour
             PhotonNetwork.Destroy(child.gameObject);
         }
 
+        //武器生成
         GameObject ob = PhotonNetwork.Instantiate(Common.Func.GetResourceWeapon(weapon.name), parts.position, parts.rotation, 0);
-        ob.name = ob.name.Replace("(Clone)", "");
 
         //装備をPartsの子に設定
         int partsViewId = PhotonView.Get(parts.gameObject).viewID;
@@ -361,15 +361,18 @@ public class PlayerSetting : Photon.MonoBehaviour
             if (weaponCtrl != null)
             {
                 playerCtrl.SetWeapon();
-                if (photonView.isMine && isActiveSceane)
+                if (photonView.isMine)
                 {
-                    if (MyDebug.Instance.isDebugMode)
+                    if (isActiveSceane)
                     {
-                        weaponCtrl.SetEnable(true);
-                    }
-                    else
-                    {
-                        weaponCtrl.SetEnable(false, true);
+                        if (MyDebug.Instance.isDebugMode)
+                        {
+                            weaponCtrl.SetEnable(true);
+                        }
+                        else
+                        {
+                            weaponCtrl.SetEnable(false, true);
+                        }
                     }
                 }
                 break;

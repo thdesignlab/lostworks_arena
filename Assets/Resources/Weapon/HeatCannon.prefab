@@ -753,10 +753,10 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 160908}
-  m_LocalRotation: {x: -0.092295945, y: 0.21263114, z: 0.70105743, w: 0.6743797}
+  m_LocalRotation: {x: -0.061628386, y: 0.2418448, z: 0.7044161, w: 0.664463}
   m_LocalPosition: {x: 0, y: 2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: -25, y: 10, z: 90}
+  m_LocalEulerAnglesHint: {x: -25, y: 15, z: 90}
   m_Children: []
   m_Father: {fileID: 488928}
   m_RootOrder: 2
@@ -973,10 +973,10 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 168608}
-  m_LocalRotation: {x: -0.2126311, y: 0.092295974, z: 0.6743798, w: 0.7010573}
+  m_LocalRotation: {x: -0.24184479, y: 0.06162843, z: 0.6644631, w: 0.704416}
   m_LocalPosition: {x: 0, y: 2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: -25, y: -10, z: 90}
+  m_LocalEulerAnglesHint: {x: -25, y: -15, z: 90}
   m_Children: []
   m_Father: {fileID: 488928}
   m_RootOrder: 3
@@ -1678,6 +1678,7 @@ MonoBehaviour:
   bitMoveTime: 0
   isBitFixed: 0
   reloadTime: 8
+  isNpc: 0
   fireEffect: {fileID: 0}
   bullet: {fileID: 118742, guid: 44317ae16d844ea439d902fb499d983b, type: 2}
   rapidCount: 6

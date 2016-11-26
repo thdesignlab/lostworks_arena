@@ -85,10 +85,6 @@ namespace Point
         {
             List<MasterPoint> data = GetData<List<MasterPoint>>(json);
             ModelManager.mstPointList = data;
-            foreach (MasterPoint row in ModelManager.mstPointList)
-            {
-                Debug.Log(row);
-            }
         }
     }
 

@@ -13,7 +13,8 @@ public class ScreenManager : SingletonMonoBehaviour<ScreenManager>
     [SerializeField]
     private float fadeTime = 0.5f;
 
-    private bool isUiFade = false;
+    public bool isSceneFade = false;
+    public bool isUiFade = false;
 
     protected override void Awake()
     {
@@ -33,6 +34,8 @@ public class ScreenManager : SingletonMonoBehaviour<ScreenManager>
     IEnumerator LoadProccess(string sceneName, string message = "")
     {
         Image[] imgs = new Image[] { fadeImg };
+
+        isSceneFade = true;
 
         //メッセージ表示
         if (message != "") DialogController.OpenMessage(message, DialogController.MESSAGE_POSITION_RIGHT);
@@ -56,6 +59,7 @@ public class ScreenManager : SingletonMonoBehaviour<ScreenManager>
 
         //メッセージ非表示
         if (message != "") DialogController.CloseMessage();
+        isSceneFade = false;
     }
 
     IEnumerator Fade(Image[] imgs, bool isFadeIn, bool isBlackOut = true)
@@ -108,7 +112,7 @@ public class ScreenManager : SingletonMonoBehaviour<ScreenManager>
         StartCoroutine(LoadUIProccess(fadeOutObj, fadeInObj, isChild));
     }
 
-    public void FadeUI(GameObject uiObj, bool isFadeIn, bool isChild = true, UnityAction callback = null)
+    public void FadeUI(GameObject uiObj, bool isFadeIn, bool isChild = true)
     {
         GameObject fadeOutObj = null;
         GameObject fadeInObj = null;
@@ -120,32 +124,25 @@ public class ScreenManager : SingletonMonoBehaviour<ScreenManager>
         {
             fadeOutObj = uiObj;
         }
-        StartCoroutine(LoadUIProccess(fadeOutObj, fadeInObj, isChild, callback));
+        StartCoroutine(LoadUIProccess(fadeOutObj, fadeInObj, isChild));
     }
 
-    public void FadeDialog(GameObject dialog, bool isFadeIn, UnityAction callback = null)
-    {
-        if (!isFadeIn) callback = () => Destroy(dialog);
-        FadeUI(dialog, isFadeIn, true, callback);
-    }
-
-    IEnumerator LoadUIProccess(GameObject fadeOutObj, GameObject fadeInObj, bool isChild, UnityAction callback = null)
+    IEnumerator LoadUIProccess(GameObject fadeOutObj, GameObject fadeInObj, bool isChild)
     {
         if (isUiFade)
         {
-            //Debug.Log("### wait fade start ###");
             for (;;)
             {
                 if (!isUiFade) break;
                 yield return null;
             }
-            //Debug.Log("### wait fade end ###");
         }
 
         isUiFade = true;
+        //if (isLoadMessage) DialogController.OpenMessage(DialogController.MESSAGE_LOADING, DialogController.MESSAGE_POSITION_RIGHT);
+
         if (fadeOutObj != null)
         {
-            //Debug.Log("Fade out start:"+ fadeOutObj.name);
             //フェードアウト
             Image[] fadeOutImgs;
             if (isChild)
@@ -159,12 +156,10 @@ public class ScreenManager : SingletonMonoBehaviour<ScreenManager>
             Coroutine fadeOut = StartCoroutine(Fade(fadeOutImgs, false, false));
             yield return fadeOut;
             fadeOutObj.SetActive(false);
-            //Debug.Log("Fade out end:" + fadeOutObj.name);
         }
 
         if (fadeInObj != null)
         {
-            //Debug.Log("Fade in start :" + fadeInObj.name);
             //フェードイン
             Image[] fadeInImgs;
             if (isChild)
@@ -177,10 +172,10 @@ public class ScreenManager : SingletonMonoBehaviour<ScreenManager>
             }
             Coroutine fadeIn = StartCoroutine(Fade(fadeInImgs, true, false));
             fadeInObj.SetActive(true);
-            //Debug.Log("Fade in end:" + fadeInObj.name);
             yield return fadeIn;
         }
-        if (callback != null) callback.Invoke();
+
+        //if (isLoadMessage) DialogController.CloseMessage();
         isUiFade = false;
     }
 

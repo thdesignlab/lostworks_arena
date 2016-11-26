@@ -12,9 +12,9 @@ public class UserManager
     public static List<int> userOpenWeapons;                //開放武器
     public static List<int> userOpenMissions;               //開放Mission(level, stage)
     public static List<int> userOpenMusics;                 //解放BGM
+    public static Dictionary<int, int> userCustomWeapons;   //武器改造(weaponNo, type)
 
     public static bool isAdmin;                     //管理者FLG
-    //public static Dictionary<int, int> userResult;  //ユーザー戦歴
     public static int userPoint;                    //所持ポイント
     public static string apiToken;                  //API接続用Token
 
@@ -29,8 +29,8 @@ public class UserManager
         userOpenWeapons = new List<int>() { };
         userOpenMissions = new List<int>() { 2, 1};
         userOpenMusics = new List<int>() { };
+        userCustomWeapons = new Dictionary<int, int> { };
         isAdmin = false;
-        //userResult = new Dictionary<int, int>();
         userPoint = 0;
         apiToken = "";
     }
@@ -50,6 +50,7 @@ public class UserManager
         SetUserOpenWeapons();
         SetUserOpenMissions();
         SetUserOpenMusics();
+        SetUserCustomWeapons();
         PlayerPrefs.Save();
     }
 
@@ -322,6 +323,23 @@ public class UserManager
         }
     }
 
+    //◆UserCustomWeapons
+    private static void SetUserCustomWeapons()
+    {
+        string key = Common.PP.CUSTOM_WEAPONS;
+
+        if (PlayerPrefs.HasKey(key))
+        {
+            //データ取得
+            userCustomWeapons = PlayerPrefsUtility.LoadDict<int, int>(key);
+        }
+        else
+        {
+            //保存
+            PlayerPrefsUtility.SaveDict<int, int>(key, userCustomWeapons);
+        }
+    }
+
 
     //##### ユーザー情報 #####
 
@@ -341,8 +359,6 @@ public class UserManager
         PlayerPrefsUtility.SaveDict<int, string>(Common.PP.USER_INFO, userInfo);
         PlayerPrefs.Save();
     }
-
-    //##### ユーザー戦績 #####
 
 
     //##### ユーザーコンフィグ #####
@@ -401,6 +417,36 @@ public class UserManager
         PlayerPrefsUtility.SaveList<int>(Common.PP.OPEN_MUSICS, userOpenMusics);
         PlayerPrefs.Save();
     }
+
+
+    //##### 改造武器 #####
+
+    //強化系統取得
+    public static int GetWeaponCustomType(int weaponNo)
+    {
+        int customType = 0;
+        if (userCustomWeapons.ContainsKey(weaponNo))
+        {
+            customType = userCustomWeapons[weaponNo];
+        }
+        return customType;
+    }
+
+    //保存
+    public static void SaveWeaponCustomInfo(int weaponNo, int type = 0)
+    {
+        if (userCustomWeapons.ContainsKey(weaponNo))
+        {
+            userCustomWeapons[weaponNo] = type;
+        }
+        else
+        {
+            userCustomWeapons.Add(weaponNo, type);
+        }
+        PlayerPrefsUtility.SaveDict<int, int>(Common.PP.CUSTOM_WEAPONS, userCustomWeapons);
+        PlayerPrefs.Save();
+    }
+
 
     //##### デバッグ #####
 

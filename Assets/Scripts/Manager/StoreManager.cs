@@ -33,7 +33,6 @@ public class StoreManager : SingletonMonoBehaviour<StoreManager>
     [SerializeField]
     private Object storeMusicObj;
 
-    private int mode = 0;
     const int MODE_MENU = 0;
     const int MODE_WEAPON_BUY = 1;
     const int MODE_WEAPON_CUSTOM = 2;
@@ -42,12 +41,13 @@ public class StoreManager : SingletonMonoBehaviour<StoreManager>
     private int PlayingMusicIndex = -1;
     const int NEED_MUSIC_POINT = 100;
 
+    private int needWeaponBuyPoint = 500;
+    private int needWeaopnCustomPoint = 1000;
+
     //point >> rate
     private Dictionary<int, int> pointTable = new Dictionary<int, int>()
     {
-        { 200, 200 },
-        { 500, 10 },
-        { 1000, 1 },
+        { 200, 1 },
     };
 
     protected override void Awake()
@@ -71,6 +71,36 @@ public class StoreManager : SingletonMonoBehaviour<StoreManager>
         DispMenu();
     }
 
+    public void ModeSelect(int mode)
+    {
+        StartCoroutine(ModeSelectProc(mode));
+    }
+    IEnumerator ModeSelectProc(int mode)
+    {
+        DialogController.OpenMessage(DialogController.MESSAGE_LOADING, DialogController.MESSAGE_POSITION_RIGHT);
+        yield return null;
+        switch (mode)
+        {
+            case MODE_MENU:
+                DispMenu();
+                break;
+
+            case MODE_WEAPON_BUY:
+                DispStoreWeaponBuyList();
+                break;
+
+            case MODE_WEAPON_CUSTOM:
+                DispWeaponCustomList();
+                break;
+
+            case MODE_MUSIC:
+                DispStoreMusicList();
+                break;
+        }
+        yield return null;
+        DialogController.CloseMessage();
+    }
+
     public void CloseStore()
     {
         if (SelectMenuList.gameObject.GetActive())
@@ -86,12 +116,10 @@ public class StoreManager : SingletonMonoBehaviour<StoreManager>
     }
 
     //メニュー表示
-    public void DispMenu()
+    private void DispMenu()
     {
-        DialogController.OpenMessage(DialogController.MESSAGE_LOADING, DialogController.MESSAGE_POSITION_RIGHT);
         DispListClear();
         SelectMenuList.gameObject.SetActive(true);
-        DialogController.CloseMessage();
     }
 
     //リスト表示初期化
@@ -204,13 +232,22 @@ public class StoreManager : SingletonMonoBehaviour<StoreManager>
     //##### 武器購入 #####
 
     //購入可能武器リスト表示
-    public void DispStoreWeaponBuyList()
+    private Transform _storeWeaponContent;
+    private Transform storeWeaponContent
     {
-        DialogController.OpenMessage(DialogController.MESSAGE_LOADING, DialogController.MESSAGE_POSITION_RIGHT);
+        get { return _storeWeaponContent ? _storeWeaponContent : _storeWeaponContent = WeaponGetList.FindChild("List/View/Content"); }
+    }
+    private Transform _storeWeaponPartsTab;
+    private Transform storeWeaponPartsTab
+    {
+        get { return _storeWeaponPartsTab ? _storeWeaponPartsTab : _storeWeaponPartsTab = WeaponGetList.FindChild("PartsTabs"); }
+    }
+    private int selectedBuyPartsNo = 0;
+
+    private void DispStoreWeaponBuyList()
+    {
         DispListClear();
         WeaponGetList.gameObject.SetActive(true);
-
-        Transform storeWeaponContent = WeaponGetList.FindChild("View/Content");
 
         //リストクリア
         foreach (Transform child in storeWeaponContent)
@@ -230,18 +267,55 @@ public class StoreManager : SingletonMonoBehaviour<StoreManager>
             rowTran.FindChild("WeaponName").GetComponent<Text>().text = Common.Weapon.GetWeaponName(weaponNo);
             rowTran.FindChild("TypeName").GetComponent<Text>().text = Common.Weapon.GetWeaponTypeName(weaponNo);
             rowTran.FindChild("Description").GetComponent<Text>().text = weaponInfo[Common.Weapon.DETAIL_DESCRIPTION_NO];
-            rowTran.FindChild("NeedPoint").GetComponent<Text>().text = Common.Weapon.GetStoreNeedPoint(weaponNo).ToString();
+            rowTran.FindChild("NeedPoint").GetComponent<Text>().text = needWeaponBuyPoint.ToString();
             int param = weaponNo;
             rowTran.GetComponent<Button>().onClick.AddListener(() => WeaponBuy(param));
             rowTran.SetParent(storeWeaponContent, false);
         }
-        DialogController.CloseMessage();
+        //フィルター
+        WeaponBuyListFilter(selectedBuyPartsNo);
+        //Tagセット
+        SetWeaponBuyTag();
+    }
+
+    //表示フィルター
+    public void WeaponBuyListFilter(int baseWeaponNo = 0)
+    {
+        selectedBuyPartsNo = baseWeaponNo;
+        string targetTypeName = Common.Weapon.GetWeaponTypeName(baseWeaponNo);
+        foreach (Transform rowTran in storeWeaponContent)
+        {
+            bool isDisp = true;
+            if (!string.IsNullOrEmpty(targetTypeName))
+            {
+                string typeName = rowTran.FindChild("TypeName").GetComponent<Text>().text;
+                isDisp = (targetTypeName == typeName);
+            }
+            rowTran.gameObject.SetActive(isDisp);
+        }
+    }
+
+    //Tag設定
+    private void SetWeaponBuyTag()
+    {
+        //Tagチェック
+        string targetTypeName = Common.Weapon.GetWeaponTypeName(selectedBuyPartsNo);
+        if (string.IsNullOrEmpty(targetTypeName)) targetTypeName = "All";
+        foreach (Transform tabTran in storeWeaponPartsTab)
+        {
+            string tabName = tabTran.FindChild("Text").GetComponent<Text>().text;
+            if (tabName == targetTypeName)
+            {
+                tabTran.GetComponent<Toggle>().isOn = true;
+                break;
+            }
+        }
     }
 
     //武器購入
     private void WeaponBuy(int weaponNo)
     {
-        int pt = Common.Weapon.GetStoreNeedPoint(weaponNo);
+        int pt = needWeaponBuyPoint;
         string weaponName = Common.Weapon.GetWeaponName(weaponNo);
 
         UnityAction buy = () =>
@@ -252,13 +326,12 @@ public class StoreManager : SingletonMonoBehaviour<StoreManager>
             Weapon.Buy WeaponBuy = new Weapon.Buy();
             WeaponBuy.SetApiFinishCallback(() => WeaponBuyResult(weaponNo));
             WeaponBuy.SetApiFinishErrorCallback(BuyErrorProc);
-            WeaponBuy.SetApiErrorIngnore();
             WeaponBuy.Exe(pt, weaponNo);
         };
 
         //確認ダイアログ
-        string text = "購入しますか？";
-        text += "「"+weaponName+"」";
+        string text = "購入しますか？\n";
+        text += "「"+weaponName+"」\n";
         text += pt+"pt消費";
         DialogController.OpenDialog(text, buy, true);
     }
@@ -290,23 +363,31 @@ public class StoreManager : SingletonMonoBehaviour<StoreManager>
                 errorMessage += "\nポイントが足りません";
                 break;
         }
+        //Tagセット
+        SetWeaponBuyTag();
         DialogController.OpenDialog(errorMessage);
     }
 
 
     //##### 武器カスタム #####
+    private Transform _weaponCustomContent;
+    private Transform weaponCustomContent
+    {
+        get { return _weaponCustomContent ? _weaponCustomContent : _weaponCustomContent = WeaponCustomList.FindChild("List/View/Content"); }
+    }
+    private Transform _weaponCustomPartsTab;
+    private Transform weaponCustomPartsTab
+    {
+        get { return _weaponCustomPartsTab ? _weaponCustomPartsTab : _weaponCustomPartsTab = WeaponCustomList.FindChild("PartsTabs"); }
+    }
+    private int selectedCustomPartsNo = 0;
 
     //改造武器リスト表示
-    public void DispWeaponCustomList()
+    private void DispWeaponCustomList()
     {
-        DialogController.OpenDialog("武器改造は準備中です");
-
-        DialogController.OpenMessage(DialogController.MESSAGE_LOADING, DialogController.MESSAGE_POSITION_RIGHT);
         DispListClear();
         WeaponCustomList.gameObject.SetActive(true);
-
-        Transform weaponCustomContent = WeaponCustomList.FindChild("View/Content");
-
+        
         //リストクリア
         foreach (Transform child in weaponCustomContent)
         {
@@ -315,13 +396,14 @@ public class StoreManager : SingletonMonoBehaviour<StoreManager>
 
         //武器リスト
         Dictionary<int, string[]> weaponList;
-        int[] partsNoArray = new int[] 
+        int[] partsNoArray = new int[]
         {
             Common.CO.PARTS_LEFT_HAND_NO,
             Common.CO.PARTS_LEFT_HAND_DASH_NO,
             Common.CO.PARTS_SHOULDER_NO,
             Common.CO.PARTS_SHOULDER_DASH_NO,
             Common.CO.PARTS_SUB_NO,
+            Common.CO.PARTS_EXTRA_NO,
         };
 
         foreach (int partsNo in partsNoArray)
@@ -332,52 +414,122 @@ public class StoreManager : SingletonMonoBehaviour<StoreManager>
                 string[] weaponInfo = weaponList[weaponNo];
                 //OPENチェック
                 if (!WeaponStore.Instance.IsEnabledEquip(weaponNo, true, weaponInfo)) continue;
+                //カスタム可能チェック
+                string prefabName = weaponInfo[Common.Weapon.DETAIL_PREFAB_NAME_NO];
+                GameObject weapon = (GameObject)Resources.Load(Common.Func.GetResourceWeapon(prefabName));
+                if (weapon == null) continue;
+                WeaponLevelController weaponLevelCtrl = weapon.GetComponent<WeaponLevelController>();
+                if (weaponLevelCtrl == null) continue;
 
                 GameObject row = (GameObject)Instantiate(storeCustomObj);
                 Transform rowTran = row.transform;
                 rowTran.FindChild("WeaponName").GetComponent<Text>().text = Common.Weapon.GetWeaponName(weaponNo);
                 rowTran.FindChild("TypeName").GetComponent<Text>().text = Common.Weapon.GetWeaponTypeName(weaponNo);
                 rowTran.FindChild("Description").GetComponent<Text>().text = weaponInfo[Common.Weapon.DETAIL_DESCRIPTION_NO];
-                rowTran.FindChild("NeedPoint").GetComponent<Text>().text = Common.Weapon.GetStoreNeedPoint(weaponNo).ToString();
+                rowTran.FindChild("NeedPoint").GetComponent<Text>().text = needWeaopnCustomPoint.ToString();
                 int param = weaponNo;
                 rowTran.GetComponent<Button>().onClick.AddListener(() => WeaponCustom(param));
                 rowTran.SetParent(weaponCustomContent, false);
             }
         }
-        DialogController.CloseMessage();
+        //フィルター
+        WeaponBuyListFilter(selectedCustomPartsNo);
+        //Tagセット
+        SetWeaponBuyTag();
+    }
+
+
+    //表示フィルター
+    public void WeaponCustomListFilter(int baseWeaponNo = 0)
+    {
+        selectedCustomPartsNo = baseWeaponNo;
+        string targetTypeName = Common.Weapon.GetWeaponTypeName(baseWeaponNo);
+        foreach (Transform rowTran in weaponCustomContent)
+        {
+            bool isDisp = true;
+            if (!string.IsNullOrEmpty(targetTypeName))
+            {
+                string typeName = rowTran.FindChild("TypeName").GetComponent<Text>().text;
+                isDisp = (targetTypeName == typeName);
+            }
+            rowTran.gameObject.SetActive(isDisp);
+        }
+    }
+
+    //Tag設定
+    private void SetWeaponCustomTag()
+    {
+        //Tagチェック
+        string targetTypeName = Common.Weapon.GetWeaponTypeName(selectedCustomPartsNo);
+        if (string.IsNullOrEmpty(targetTypeName)) targetTypeName = "All";
+        foreach (Transform tabTran in weaponCustomPartsTab)
+        {
+            string tabName = tabTran.FindChild("Text").GetComponent<Text>().text;
+            if (tabName == targetTypeName)
+            {
+                tabTran.GetComponent<Toggle>().isOn = true;
+                break;
+            }
+        }
     }
 
     //武器改造
     private void WeaponCustom(int weaponNo)
     {
-        DialogController.OpenDialog("準備中です");
-        return;
-
-        int pt = Common.Weapon.GetStoreNeedPoint(weaponNo);
+        int pt = needWeaopnCustomPoint;
         string weaponName = Common.Weapon.GetWeaponName(weaponNo);
 
-        UnityAction custom = () =>
-        {
-            DialogController.OpenMessage(DialogController.MESSAGE_LOADING, DialogController.MESSAGE_POSITION_RIGHT);
-
-            //point消費
-            //Weapon.Buy WeaponBuy = new Weapon.Buy();
-            //WeaponBuy.SetApiFinishCallback(() => WeaponCustomResult(weaponNo));
-            //WeaponBuy.SetApiFinishErrorCallback(CustomErrorProc);
-            //WeaponBuy.SetApiErrorIngnore();
-            //WeaponBuy.Exe(pt, weaponNo);
-            WeaponCustomResult(weaponNo);
-        };
+        //現在の強化系統
+        int nowCustomType = 0;
+        if (UserManager.userCustomWeapons.ContainsKey(weaponNo)) nowCustomType = UserManager.userCustomWeapons[weaponNo];
 
         //確認ダイアログ
-        string text = "改造します";
-        text += "「" + weaponName + "」";
+        string title = "強化系統を選択してください";
+        string text = "※1系統のみ強化できます\n";
+        text += "※強化系統の切り替えはできますがpointは戻りません\n\n";
+        text += "「" + weaponName + "」\n";
         text += pt + "pt消費";
-        DialogController.OpenDialog(text, custom, true);
+        Dictionary<string, UnityAction> btnList = new Dictionary<string, UnityAction>();
+        foreach (int type in Common.Weapon.customTypeNameDic.Keys)
+        {
+            int customType = type;
+            string btnText = Common.Weapon.customTypeNameDic[customType];
+            UnityAction action = () => WeaponCustomExe(pt, weaponNo, customType);
+            if (customType == nowCustomType)
+            {
+                //解除
+                btnText = "【解除】"+ btnText;
+                action = () => WeaponCustomReset(weaponNo);
+            }
+            btnList.Add(btnText, action);
+        }
+        DialogController.OpenSelectDialog(title, text, "", btnList, true);
+    }
+    
+    //カスタム実行
+    private void WeaponCustomExe(int pt, int weaponNo, int type)
+    {
+        DialogController.OpenMessage(DialogController.MESSAGE_LOADING, DialogController.MESSAGE_POSITION_RIGHT);
+
+        //point消費
+        Weapon.Custom WeaponCustom = new Weapon.Custom();
+        WeaponCustom.SetApiFinishCallback(() => WeaponCustomResult(weaponNo, type));
+        WeaponCustom.SetApiFinishErrorCallback(CustomErrorProc);
+        WeaponCustom.Exe(pt, weaponNo, type);
+    }
+
+    //カスタム解除
+    private void WeaponCustomReset(int weaponNo)
+    {
+        //武器カスタム状態更新
+        UserManager.SaveWeaponCustomInfo(weaponNo);
+        DispWeaponCustomList();
+
+        DialogController.OpenDialog("強化解除");
     }
 
     //武器カスタム成功処理
-    private void WeaponCustomResult(int weaponNo)
+    private void WeaponCustomResult(int weaponNo, int type)
     {
         DialogController.CloseMessage();
 
@@ -385,10 +537,10 @@ public class StoreManager : SingletonMonoBehaviour<StoreManager>
         textPoint.text = UserManager.userPoint.ToString();
 
         //武器カスタム状態更新
-        //UserManager.AddOpenWeapon(weaponNo);
+        UserManager.SaveWeaponCustomInfo(weaponNo, type);
         DispWeaponCustomList();
 
-        DialogController.OpenDialog("カスタム成功!!");
+        DialogController.OpenDialog("強化成功!!");
     }
 
     //武器カスタム失敗処理
@@ -409,11 +561,9 @@ public class StoreManager : SingletonMonoBehaviour<StoreManager>
 
     //##### BGM #####
 
-
     //購入可能BGMリスト表示
-    public void DispStoreMusicList()
+    private void DispStoreMusicList()
     {
-        DialogController.OpenMessage(DialogController.MESSAGE_LOADING, DialogController.MESSAGE_POSITION_RIGHT);
         DispListClear();
         MusicGetList.gameObject.SetActive(true);
 
@@ -460,7 +610,6 @@ public class StoreManager : SingletonMonoBehaviour<StoreManager>
             }
             rowTran.SetParent(storeMusicContent, false);
         }
-        DialogController.CloseMessage();
     }
 
     //BGM再生
@@ -502,7 +651,7 @@ public class StoreManager : SingletonMonoBehaviour<StoreManager>
     }
 
     //BGM購入
-    public void BuyMusic(int musicIndex, BgmManager battleBgm)
+    private void BuyMusic(int musicIndex, BgmManager battleBgm)
     {
         string musicName = battleBgm.GetAudioClipName();
 
@@ -523,7 +672,7 @@ public class StoreManager : SingletonMonoBehaviour<StoreManager>
     }
 
     //BGM購入成功処理
-    public void MusicBuyResult(int musicIndex)
+    private void MusicBuyResult(int musicIndex)
     {
         //所持ポイント表示
         textPoint.text = UserManager.userPoint.ToString();
@@ -536,7 +685,7 @@ public class StoreManager : SingletonMonoBehaviour<StoreManager>
     }
 
     //BGM購入失敗処理
-    public void BuyMusicErrorProc(string errorCode)
+    private void BuyMusicErrorProc(string errorCode)
     {
         string errorMessage = "BGM解放失敗";
         switch (errorCode)
@@ -547,5 +696,4 @@ public class StoreManager : SingletonMonoBehaviour<StoreManager>
         }
         DialogController.OpenDialog(errorMessage);
     }
-
 }

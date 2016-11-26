@@ -38,6 +38,37 @@ namespace Weapon
         public int point;
     }
 
+    //### 武器購入 ###
+    public class Custom : BaseApi
+    {
+        protected override string uri { get { return "weapon/custom"; } }
+
+        public void Exe(int point, int weaponNo, int customType, int customLevel = 1)
+        {
+            CustomResponse data = new CustomResponse();
+            data.point = point;
+            data.weapon_no = weaponNo;
+            data.custom_type = customType;
+            data.custom_level = customLevel;
+            string paramJson = JsonUtility.ToJson(data);
+
+            //実行
+            Post<PointRequest>(paramJson);
+        }
+        protected override void FinishCallback(string json)
+        {
+            PointRequest data = GetData<PointRequest>(json);
+            UserManager.userPoint = data.point;
+        }
+    }
+    public class CustomResponse
+    {
+        public int point;
+        public int weapon_no;
+        public int custom_type;
+        public int custom_level;
+    }
+
     //### 武器情報取得   ###
     public class Get : BaseApi
     {

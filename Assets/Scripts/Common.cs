@@ -227,7 +227,6 @@ namespace Common
     {
         //保存情報
         public const string USER_INFO = "UserInfo";
-        //public const string USER_RESULT = "UserResult";
         public const string USER_EQUIP = "UserEquipment";
         public const string USER_CONFIG = "UserConfig";
         public const string USER_CHARACTER = "UserCharacter";
@@ -235,19 +234,13 @@ namespace Common
         public const string OPEN_WEAPONS = "OpenWeapons";
         public const string OPEN_MISSIONS = "OpenMissions";
         public const string OPEN_MUSICS = "OpenMusics";
-        //public static string[] KEYS = new string[] { USER_INFO , USER_RESULT, USER_EQUIP, USER_CONFIG , USER_CHARACTER , OPEN_CHARACTERS , OPEN_WEAPONS , OPEN_MISSIONS };
+        public const string CUSTOM_WEAPONS = "CustomWeapons";
 
         //ユーザー情報項目
         public const int INFO_USER_ID = 0;
         public const int INFO_USER_NAME = 1;
         public const int INFO_UUID = 3;
         public const int INFO_PASSWORD = 4;
-
-        ////バトル結果項目
-        //public const int RESULT_BATTLE_COUNT = 0;
-        //public const int RESULT_WIN_COUNT = 1;
-        //public const int RESULT_LOSE_COUNT = 2;
-        //public const int RESULT_BATTLE_RATE = 3;
 
         //コンフィグ情報項目
         public const int CONFIG_BGM_VALUE = 0;
@@ -689,25 +682,25 @@ namespace Common
             { 10009, new string[]{ "ExtraGatling", "ExGatling", "", OBTAIN_TYPE_INIT}},
         };
 
-        //武器情報取得FLG
-        public static bool isGetWeaponDescription = false;
+        ////武器情報取得FLG
+        //public static bool isGetWeaponDescription = false;
 
-        //ストアで購入する際のpt
-        public static Dictionary<int, int> storeNeedPoint = new Dictionary<int, int>()
-        {
-            { 0, 1000 },
-        };
-        public static int GetStoreNeedPoint(int weaponNo)
-        {
-            int point = storeNeedPoint[0];
-            foreach (int no in storeNeedPoint.Keys)
-            {
-                if (weaponNo != no) continue;
-                point = storeNeedPoint[no];
-                break;
-            }
-            return point;
-        }
+        ////ストアで購入する際のpt
+        //public static Dictionary<int, int> storeNeedPoint = new Dictionary<int, int>()
+        //{
+        //    { 0, 1000 },
+        //};
+        //public static int GetStoreNeedPoint(int weaponNo)
+        //{
+        //    int point = storeNeedPoint[0];
+        //    foreach (int no in storeNeedPoint.Keys)
+        //    {
+        //        if (weaponNo != no) continue;
+        //        point = storeNeedPoint[no];
+        //        break;
+        //    }
+        //    return point;
+        //}
 
         //部位ごとの武器リスト取得
         public static Dictionary<int, string[]> GetWeaponList(int partsNo)
@@ -911,11 +904,11 @@ namespace Common
             string typeName = "";
             if (1000 <= weaponNo && weaponNo < 2000)
             {
-                typeName = "R/L";
+                typeName = "L/R";
             }
             else if (2000 <= weaponNo && weaponNo < 3000)
             {
-                typeName = "RD/LD";
+                typeName = "LD/RD";
             }
             else if (3000 <= weaponNo && weaponNo < 4000)
             {

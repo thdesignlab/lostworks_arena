@@ -17,7 +17,7 @@ public class ToggleButton : MonoBehaviour
         });
 
         //初期状態を反映
-        offGraphic.enabled = !toggle.isOn;
+        if (offGraphic != null) offGraphic.enabled = !toggle.isOn;
     }
 
     void OnValueChanged(bool value)
