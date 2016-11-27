@@ -1040,20 +1040,20 @@ public class PlayerStatus : Photon.MonoBehaviour {
         return debuffEffect;
     }
 
-    public void ResetWinMark()
-    {
-        bool markFlg = false;
-        //if (GameController.Instance.gameMode == GameController.GAME_MODE_VS) markFlg = true;
-        foreach (GameObject obj in winCountMineList)
-        {
-            obj.SetActive(markFlg);
-        }
-        foreach (GameObject obj in winCountEnemyList)
-        {
-            obj.SetActive(markFlg);
+    //public void ResetWinMark()
+    //{
+    //    bool markFlg = false;
+    //    //if (GameController.Instance.gameMode == GameController.GAME_MODE_VS) markFlg = true;
+    //    foreach (GameObject obj in winCountMineList)
+    //    {
+    //        obj.SetActive(markFlg);
+    //    }
+    //    foreach (GameObject obj in winCountEnemyList)
+    //    {
+    //        obj.SetActive(markFlg);
 
-        }
-    }
+    //    }
+    //}
 
     public void SetWinMark(int winCount, int loseCount)
     {
@@ -1063,7 +1063,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
         foreach (GameObject obj in winCountMineList)
         {
             if (winCount < count) markFlg = false;
-            obj.SetActive(markFlg);
+            if (obj != null) obj.SetActive(markFlg);
             count++;
         }
 
@@ -1073,7 +1073,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
         foreach (GameObject obj in winCountEnemyList)
         {
             if (loseCount < count) markFlg = false;
-            obj.SetActive(markFlg);
+            if (obj != null) obj.SetActive(markFlg);
             count++;
         }
     }

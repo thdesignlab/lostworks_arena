@@ -63,6 +63,9 @@ public class StoreManager : SingletonMonoBehaviour<StoreManager>
     {
         isDontDestroyOnLoad = false;
         base.Awake();
+
+        //フレームレート
+        Application.targetFrameRate = 15;
     }
 
     void Start()

@@ -365,14 +365,15 @@ public class PlayerSetting : Photon.MonoBehaviour
                 {
                     if (isActiveSceane)
                     {
-                        if (MyDebug.Instance.isDebugMode)
-                        {
-                            weaponCtrl.SetEnable(true);
-                        }
-                        else
-                        {
-                            weaponCtrl.SetEnable(false, true);
-                        }
+                        weaponCtrl.SetEnable(true);
+                        //if (MyDebug.Instance.isDebugMode)
+                        //{
+                        //    weaponCtrl.SetEnable(true);
+                        //}
+                        //else
+                        //{
+                        //    weaponCtrl.SetEnable(false, true);
+                        //}
                     }
                 }
                 break;

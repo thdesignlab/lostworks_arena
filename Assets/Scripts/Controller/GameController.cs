@@ -90,6 +90,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
     private GameObject levelSelectButton;
 
     const int WIN_COUNT_MAX = 2;
+    const int VS_DEFAULT_WIN_COUNT = 0;
     private int winCount = 0;
     private int loseCount = 0;
     private int totalContinueCount = 0;
@@ -105,8 +106,9 @@ public class GameController : SingletonMonoBehaviour<GameController>
     private bool isResultCheck = false;
 
     //バトル終了時獲得pt
-    const float WIN_POINT_RATE = 1.0f;
-    const int LOSE_POINT = 5;
+    private float pointRate = 2.0f;
+    const int WIN_POINT_MIN = 25;
+    const int LOSE_POINT = 10;
 
     //ミッションレベル更新pt係数
     const int MISSION_POINT_PER = 100;
@@ -123,8 +125,8 @@ public class GameController : SingletonMonoBehaviour<GameController>
         Init();
         CheckMode();
 
-        ////フレームレート
-        //Application.targetFrameRate = 60;
+        //フレームレート
+        Application.targetFrameRate = 60;
     }
 
     void Start()
@@ -514,25 +516,31 @@ public class GameController : SingletonMonoBehaviour<GameController>
                             }
                             Action apiCallback = () =>
                             {
+                                //Rate変化量を元にpt取得
                                 int diffRate = ModelManager.battleRecord.battle_rate - preRate;
-                                if (diffRate > battlePoint) battlePoint = (int)(diffRate * WIN_POINT_RATE);
+                                if (diffRate > battlePoint) battlePoint = diffRate;
+                                if (isWin && battlePoint < WIN_POINT_MIN) battlePoint = WIN_POINT_MIN;
+                                battlePoint = (int)(battlePoint * pointRate);
+                                Debug.Log(battlePoint);
+
+                                //ダイアログ情報設定
                                 string diffRateSign = diffRate >= 0 ? "+" : "";
                                 string dialogText = "Rate : " + ModelManager.battleRecord.battle_rate + "(" + diffRateSign + diffRate.ToString() + ")";
-                                if (battlePoint > 0) dialogText += "\n" + battlePoint.ToString() + "pt獲得";
-                                DialogController.OpenDialog(dialogText, buttons, actions);
-                                if (isWin) ContinueVs();
-
                                 if (battlePoint > 0)
                                 {
+                                    dialogText += "\n" + battlePoint.ToString() + "pt獲得";
                                     //point付与
                                     Point.Add pointAdd = new Point.Add();
                                     pointAdd.SetApiErrorIngnore();
                                     pointAdd.Exe(battlePoint, Common.API.POINT_LOG_KIND_BATTLE, ModelManager.battleInfo.battle_id);
                                 }
+                                //結果ダイアログ表示
+                                DialogController.OpenDialog(dialogText, buttons, actions);
+                                if (isWin) ContinueVs();
                             };
                             Battle.Finish battleFinish = new Battle.Finish();
                             battleFinish.SetApiFinishCallback(apiCallback);
-                            battleFinish.SetRetryCount(3);
+                            battleFinish.SetRetryCount(10);
                             battleFinish.SetApiErrorIngnore();
                             battleFinish.Exe(isWin);
 
@@ -806,6 +814,13 @@ public class GameController : SingletonMonoBehaviour<GameController>
 
     public void GoToTitle()
     {
+        if (!PhotonNetwork.offlineMode && !CheckPlayer())
+        {
+            RoomApi.Clear roomClear = new RoomApi.Clear();
+            roomClear.SetApiErrorIngnore();
+            roomClear.Exe();
+        }
+
         SoundManager.Instance.StopBgm();
         PhotonNetwork.LeaveRoom();
         ScreenManager.Instance.Load(Common.CO.SCENE_TITLE, DialogController.MESSAGE_LOADING);
@@ -898,7 +913,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
         {
             //バトル開始ログ作成
             Battle.Start battleStart = new Battle.Start();
-            battleStart.SetRetryCount(5);
+            battleStart.SetRetryCount(10);
             battleStart.SetApiFinishCallback(BattleStartCallback);
             battleStart.SetApiErrorIngnore();
             battleStart.Exe(enemyUserid);
@@ -1047,7 +1062,6 @@ public class GameController : SingletonMonoBehaviour<GameController>
         //ステージ記録
         Mission.Update missionUpdate = new Mission.Update();
         missionUpdate.SetApiErrorIngnore();
-        missionUpdate.SetRetryCount(5);
         missionUpdate.Exe(stageLevel, stageNo, totalContinueCount);
 
         //次のステージOPEN
@@ -1073,9 +1087,13 @@ public class GameController : SingletonMonoBehaviour<GameController>
     //勝敗リセット
     private void ResetWinMark()
     {
-        winCount = 0;
-        loseCount = 0;
-        myStatus.ResetWinMark();
+        int defaultWinCount = 0;
+        if (gameMode == GAME_MODE_VS) defaultWinCount = VS_DEFAULT_WIN_COUNT;
+        Debug.Log("ResetWinMark >> "+ defaultWinCount);
+        winCount = defaultWinCount;
+        loseCount = defaultWinCount;
+        myStatus.SetWinMark(winCount, loseCount);
+        //myStatus.ResetWinMark();
     }
 
     //デバッグ用
@@ -1083,7 +1101,8 @@ public class GameController : SingletonMonoBehaviour<GameController>
     {
         winCount = WIN_COUNT_MAX - 1;
         loseCount = WIN_COUNT_MAX - 1;
-        myStatus.ResetWinMark();
+        myStatus.SetWinMark(winCount, loseCount);
+        //myStatus.ResetWinMark();
     }
 
     //コンティニュー
@@ -1354,7 +1373,6 @@ public class GameController : SingletonMonoBehaviour<GameController>
         //ルーム名変更
         RoomApi.ChangeMaster roomApiChangeMaster = new RoomApi.ChangeMaster();
         roomApiChangeMaster.SetApiErrorIngnore();
-        roomApiChangeMaster.SetRetryCount(5);
         roomApiChangeMaster.Exe();
     }
 }

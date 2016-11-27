@@ -489,6 +489,7 @@ GameObject:
   - 143: {fileID: 14371944}
   - 114: {fileID: 11472166}
   - 114: {fileID: 11436634}
+  - 65: {fileID: 6568966}
   m_Layer: 0
   m_Name: TargetNpc
   m_TagString: Target
@@ -2584,6 +2585,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 2
+--- !u!65 &6568966
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 149894}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Size: {x: 4, y: 6, z: 6}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!95 &9515128
 Animator:
   serializedVersion: 3

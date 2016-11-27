@@ -122,7 +122,7 @@ public class BulletLevelController : WeaponLevelController
     }
 
     //弾丸強化実行
-    public void BulletCustomExe(GameObject bulletObj, int customSystem, float effectValue)
+    protected void BulletCustomExe(GameObject bulletObj, int customSystem, float effectValue)
     {
         switch (customSystem)
         {

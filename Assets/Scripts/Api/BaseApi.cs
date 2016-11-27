@@ -14,7 +14,7 @@ public abstract class BaseApi
     protected Action apiFinishCallback = null;              //API完了後処理
     protected Action<string> apiFinishErrorCallback = null; //API結果エラー後処理(errorCode)
     protected Action apiConnectErrorCallback = null;        //API接続エラー時処理
-    protected int retry = 1;                        //リトライ回数
+    protected int retry = 3;                        //リトライ回数
     protected bool isCheckVersion = false;          //Version差異チェックFLG
     protected bool isIgnoreVersionDiff = false;     //Version差異無視FLG
 

@@ -46,6 +46,7 @@ GameObject:
   - 114: {fileID: 11462982}
   - 114: {fileID: 11424272}
   - 136: {fileID: 13640026}
+  - 114: {fileID: 11472246}
   m_Layer: 0
   m_Name: ExtraHolyRayChild
   m_TagString: ExtraBullet
@@ -295,7 +296,7 @@ MonoBehaviour:
   UseGravity: 0
   hitEffect: {fileID: 135988, guid: d7cd433d10510fe46a35c39bac480fe1, type: 2}
   speed: 100
-  damage: 35
+  damage: 25
   damagePerSecond: 0
   stuckTime: 0
   knockBackRate: 0
@@ -368,6 +369,7 @@ MonoBehaviour:
   effectSpawn: {fileID: 0}
   activeLimitTime: 6
   activeLimitDistance: 0
+  isNotAutoBreak: 0
 --- !u!114 &11462982
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -391,6 +393,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   basePrefab: {fileID: 110970, guid: a433cf8b5cf9f4c498d2e9eff3a697d7, type: 2}
+--- !u!114 &11472246
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 181058}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 125673325fb8d414bbba101f7366ea31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectTime: 10
+  effectTypeList: 0200000003000000
+  effectRateList:
+  - 0.5
+  - 0.5
+  effect: {fileID: 0}
 --- !u!120 &12083320
 LineRenderer:
   m_ObjectHideFlags: 1

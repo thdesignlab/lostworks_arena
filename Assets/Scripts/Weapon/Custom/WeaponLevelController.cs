@@ -4,7 +4,17 @@ using System.Collections.Generic;
 
 public abstract class WeaponLevelController : Photon.MonoBehaviour
 {
-    protected Transform myTran;
+    private Transform _myTran;
+    protected Transform myTran
+    {
+        get { return _myTran ? _myTran : _myTran = transform; }
+    }
+    private WeaponController _weaponCtrl;
+    protected WeaponController weaponCtrl
+    {
+        get { return _weaponCtrl ? _weaponCtrl : _weaponCtrl = GetComponent<WeaponController>(); }
+    }
+    protected bool isReady = false;
 
     //強化している系統、レベル
     protected int myCustomType = 0;
@@ -16,9 +26,6 @@ public abstract class WeaponLevelController : Photon.MonoBehaviour
     //強化の効果値
     protected List<int> effectValueList;
 
-    //武器Ctrl
-    protected WeaponController weaponCtrl;
-
 
     //##### 強化System #####
     //リロード短縮
@@ -26,11 +33,12 @@ public abstract class WeaponLevelController : Photon.MonoBehaviour
     //一定確率でリロードなし
     const int CUSTOM_SYSTEM_NO_RELOAD = 1;
 
-
-    protected virtual void Awake()
+    void Start()
     {
-        myTran = transform;
-        weaponCtrl = GetComponent<WeaponController>();
+        if (!photonView.isMine)
+        {
+            CustomLevelSync(false);
+        }
     }
 
     public virtual void Init(int type, int level = 1)
@@ -48,19 +56,46 @@ public abstract class WeaponLevelController : Photon.MonoBehaviour
         //装備強化
         WeaponCustom();
 
+        isReady = true;
+
         //カスタムレベル同期
         CustomLevelSync();
     }
 
     //カスタムレベル同期
-    protected void CustomLevelSync(bool isReturn = true)
+    protected void CustomLevelSync(bool isMine = true)
     {
+        if (isMine)
+        {
+            //自分のレベルを同期
+            object[] args = new object[] { myCustomType, myCustomLevel };
+            photonView.RPC("CustomLevelSyncRPC", PhotonTargets.Others, args);
+        }
+        else
+        {
+            //相手のレベルを同期
+            photonView.RPC("RetrunCustomLevelRPC", PhotonTargets.Others);
+        }
     }
     [PunRPC]
     protected void CustomLevelSyncRPC(int type, int level)
     {
         myCustomType = type;
         myCustomLevel = level;
+    }
+    [PunRPC]
+    protected void RetrunCustomLevelRPC()
+    {
+        StartCoroutine(CustomLevelSyncProc());
+    }
+    IEnumerator CustomLevelSyncProc()
+    {
+        for (;;)
+        {
+            if (!isReady) yield return null;
+            CustomLevelSync();
+            break;
+        }
     }
 
     //カスタムSystemセットアップ

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.Events;
 
 public class MenuController : Photon.MonoBehaviour
 {
@@ -131,11 +132,12 @@ public class MenuController : Photon.MonoBehaviour
     //タイトルへ戻る
     public void OnTitleButton()
     {
-        RoomApi.Clear roomClear = new RoomApi.Clear();
-        roomClear.SetApiErrorIngnore();
-        roomClear.Exe();
+        UnityAction callback = () =>
+        {
+            GameController.Instance.GoToTitle();
+        };
 
-        DialogController.OpenDialog("タイトルに戻ります", () => GameController.Instance.GoToTitle(), true);
+        DialogController.OpenDialog("タイトルに戻ります", callback, true);
     }
 
     //一時停止

@@ -37,6 +37,9 @@ public class RankingManager : SingletonMonoBehaviour<RankingManager>
 
         //ランキング取得
         ArenaRanking(true);
+
+        //フレームレート
+        Application.targetFrameRate = 15;
     }
 
     public void CloseRanking()
