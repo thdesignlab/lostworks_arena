@@ -557,7 +557,7 @@ public class CustomManager : Photon.MonoBehaviour
         //武器文字色変更
         foreach (Transform btn in weaponButtonArea)
         {
-            btn.FindChild("Text").GetComponent<Text>().color = GetWeaponTextColor(int.Parse(btn.name));
+            btn.FindChild("WeaponName").GetComponent<Text>().color = GetWeaponTextColor(int.Parse(btn.name));
         }
 
         //試射
@@ -605,16 +605,32 @@ public class CustomManager : Photon.MonoBehaviour
         //装備可能武器取得
         List<int> weaponNoList = WeaponStore.Instance.GetSelectableWeaponNoList(selectedPartsNo, true);
 
-        //ボタン作成
+        //ボタン設置
         foreach (int weaponNo in weaponNoList)
         {
             int paramWeaponNo = weaponNo;
             string weaponName = Common.Weapon.GetWeaponName(paramWeaponNo);
-            GameObject btn = (GameObject)GameObject.Instantiate(selectedWeaponButton, Vector3.zero, Quaternion.identity);
+            //現在の強化状態
+            int nowCustomType = UserManager.GetWeaponCustomType(weaponNo);
+            Sprite customIcon = Common.Func.GetCustomIcon(nowCustomType);
+            //ボタン生成
+            GameObject btn = (GameObject)Instantiate(selectedWeaponButton, Vector3.zero, Quaternion.identity);
             btn.name = paramWeaponNo.ToString();
             btn.transform.SetParent(weaponButtonArea, false);
             btn.GetComponent<Button>().onClick.AddListener(() => WeaponSelect(paramWeaponNo));
-            Text btnText = btn.transform.FindChild("Text").GetComponent<Text>();
+            Text btnText = btn.transform.FindChild("WeaponName").GetComponent<Text>();
+            Transform customIconTran = btn.transform.FindChild("CustomIcon");
+            if (customIcon != null)
+            {
+                Image imgObj = customIconTran.GetComponent<Image>();
+                imgObj.sprite = customIcon;
+                imgObj.preserveAspect = true;
+                customIconTran.gameObject.SetActive(true);
+            }
+            else
+            {
+                customIconTran.gameObject.SetActive(false);
+            }
             btnText.text = weaponName;
             btnText.color = GetWeaponTextColor(int.Parse(btn.name));
         }

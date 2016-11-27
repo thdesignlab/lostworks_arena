@@ -372,6 +372,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
             }
             return false;
         }
+        float preDamage = damage;
 
         //防御力考慮
         if (defenceRate > 0 && defenceRate != 100)
@@ -381,6 +382,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
 
         //ダメージ
         totalDamage += damage;
+        if (isNpc) Debug.Log("【"+name+"】" + preDamage +" >> "+damage + "("+totalDamage+")");
         if (nowHp - totalDamage <= 0)
         {
             SetHp(0);

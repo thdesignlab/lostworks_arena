@@ -56,7 +56,7 @@ public class PhotonManager : MonoBehaviour
     private float camRotateTime = 0.5f;
 
     const float ROOM_LIST_RELOAD_TIME = 5;
-    private float roomListReloadTime = 0;
+    //private float roomListReloadTime = 0;
 
     //private InputField roomNameIF;
     private Text roomStatusText;
@@ -152,22 +152,27 @@ public class PhotonManager : MonoBehaviour
             if (PhotonNetwork.connected && !isConnectFailed)
             {
                 // *** 接続成功 ***
-                //if (!PhotonNetwork.automaticallySyncScene) PhotonNetwork.automaticallySyncScene = true;
-
-                if (networkArea.GetActive())
+                if (!PhotonNetwork.connectedAndReady)
                 {
-                    //接続状況更新
-                    roomStatusText.text = "Room :" + PhotonNetwork.countOfRooms + " / Player :" + PhotonNetwork.countOfPlayers;
+                    DialogController.OpenMessage(DialogController.MESSAGE_CONNECT, DialogController.MESSAGE_POSITION_RIGHT);
+                    return;
                 }
                 else
                 {
+                    if (networkArea.GetActive())
+                    {
+                        //接続状況更新
+                        roomStatusText.text = "Room :" + PhotonNetwork.countOfRooms + " / Player :" + PhotonNetwork.countOfPlayers;
+                    }
+                    else
+                    {
+                        //部屋選択表示
+                        SwitchNetworkArea(true, true);
+
+                        //初期値設定
+                        PlayerPrefs.SetString("playerName", PhotonNetwork.playerName);
+                    }
                     DialogController.CloseMessage();
-
-                    //部屋選択表示
-                    SwitchNetworkArea(true, true);
-
-                    //初期値設定
-                    PlayerPrefs.SetString("playerName", PhotonNetwork.playerName);
                 }
             }
             else

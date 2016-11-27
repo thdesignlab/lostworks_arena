@@ -21,7 +21,7 @@ public class FontReplacer : EditorWindow
 
         sp = serializedObject.FindProperty("font");
 
-        Debug.Log("font " + sp.propertyType);
+        Debug.Log("font " + sp.propertyType + " >> " + a);
     }
 
     void OnGUI()

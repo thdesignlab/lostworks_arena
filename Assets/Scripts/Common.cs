@@ -335,6 +335,28 @@ namespace Common
             return CO.RESOURCE_IMAGE + name;
         }
 
+        //カスタムIcon
+        public static Sprite GetCustomIcon(int customType)
+        {
+            string name = "";
+            switch (customType)
+            {
+                case Weapon.CUSTOM_TYPE_POWER:
+                    name = "Power";
+                    break;
+
+                case Weapon.CUSTOM_TYPE_TECHNIC:
+                    name = "Technic";
+                    break;
+
+                case Weapon.CUSTOM_TYPE_UNIQUE:
+                    name = "Unique";
+                    break;
+            }
+            Sprite icon = Resources.Load<Sprite>(CO.RESOURCE_IMAGE + "CustomIcon/" + name);
+            return icon;
+        }
+
         //配列チェック
         private static bool InArrayString(string[] tags, string tagName)
         {
@@ -544,14 +566,14 @@ namespace Common
         public static Dictionary<int, int[]> StatusDic = new Dictionary<int, int[]>()
         {
                             //hp, sp, run, boost, turn, atk%, atkI, boostI, tagI
-            { 100, new int[]{ 1000, 45, 35, 75, 30, 100, 3, 2, 2, 1 , 20} },
-            { 101, new int[]{ 1050, 35, 35, 55, 40, 110, 2, 2, 2, 1 , 20} },
-            { 200, new int[]{ 1200, 55, 30, 70, 20, 100, 3, 2, 3, 1 , 250} },
-            { 201, new int[]{ 1250, 45, 30, 50, 30, 110, 2, 2, 3, 1 , 250} },
-            { 300, new int[]{ 1000, 50, 30, 80, 25, 100, 3, 2, 2, 1 , 100} },
-            { 301, new int[]{ 1050, 40, 30, 60, 35, 110, 2, 2, 2, 1 , 100} },
-            { 400, new int[]{ 1000, 45, 30, 70, 20, 110, 3, 2, 3, 1 , 200} },
-            { 401, new int[]{ 1050, 35, 30, 50, 30, 120, 2, 2, 3, 1 , 200} },
+            { 100, new int[]{ 1000, 45, 35, 70, 30, 100, 3, 2, 2, 1 , 20} },
+            { 101, new int[]{ 1050, 35, 35, 50, 40, 110, 2, 2, 2, 1 , 20} },
+            { 200, new int[]{ 1200, 55, 30, 60, 20, 100, 3, 2, 3, 1 , 250} },
+            { 201, new int[]{ 1250, 45, 30, 45, 30, 110, 2, 2, 3, 1 , 250} },
+            { 300, new int[]{ 1000, 50, 30, 70, 25, 100, 3, 2, 2, 1 , 100} },
+            { 301, new int[]{ 1050, 40, 30, 50, 35, 110, 2, 2, 2, 1 , 100} },
+            { 400, new int[]{ 1000, 45, 30, 60, 20, 110, 3, 2, 3, 1 , 200} },
+            { 401, new int[]{ 1050, 35, 30, 45, 30, 120, 2, 2, 3, 1 , 200} },
             { 500, new int[]{ 1100, 35, 35, 70, 25, 105, 3, 2, 3, 1 , 150} },
             { 501, new int[]{ 1150, 25, 35, 50, 35, 115, 2, 2, 3, 1 , 150} },
             { 10000, new int[]{ 800, 35, 25, 50, 20, 80, 3, 3, 5, 0 , 150} },

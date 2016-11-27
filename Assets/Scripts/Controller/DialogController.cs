@@ -74,19 +74,19 @@ public class DialogController : MonoBehaviour
     public static Color purpleColor = new Color32(255, 79, 221, 255);
 
     //##### 選択ダイアログ表示 #####
-    public static GameObject OpenSelectDialog(string text, Dictionary<string, UnityAction> btnInfoDic, bool isCancel = false)
+    public static GameObject OpenSelectDialog(string text, Dictionary<string, UnityAction> btnInfoDic, bool isCancel = false, List<Object> btnObjects = null)
     {
-        return OpenSelectDialog("", text, "", btnInfoDic, isCancel);
+        return OpenSelectDialog("", text, "", btnInfoDic, isCancel, btnObjects);
     }
-    public static GameObject OpenSelectDialog(string text, string imageName, Dictionary<string, UnityAction> btnInfoDic, bool isCancel = false)
+    public static GameObject OpenSelectDialog(string text, Dictionary<string, UnityAction> btnInfoDic, bool isCancel = false, List<Color> btnColors = null)
     {
-        return OpenSelectDialog("", text, imageName, btnInfoDic, isCancel);
+        return OpenSelectDialog("", text, "", btnInfoDic, isCancel, null, btnColors);
     }
-    public static GameObject OpenSelectDialog(string title, string text, string imageName, Dictionary<string, UnityAction> btnInfoDic, bool isCancel)
+    public static GameObject OpenSelectDialog(string title, string text, string imageName, Dictionary<string, UnityAction> btnInfoDic, bool isCancel = false, List<Color> btnColors = null)
     {
-        return OpenSelectDialog(title, text, imageName, btnInfoDic, isCancel);
+        return OpenSelectDialog(title, text, imageName, btnInfoDic, isCancel, null, btnColors);
     }
-    public static GameObject OpenSelectDialog(string title, string text, string imageName, Dictionary<string, UnityAction> btnInfoDic, bool isCancel, List<Color> btnColors)
+    public static GameObject OpenSelectDialog(string title, string text, string imageName, Dictionary<string, UnityAction> btnInfoDic, bool isCancel = false, List<Object> btnObjects = null, List<Color> btnColors = null)
     {
         CloseMessage();
         if (dialog != null) CloseDialog();
@@ -126,31 +126,44 @@ public class DialogController : MonoBehaviour
         int index = 0;
         foreach (string btnText in btnInfoDic.Keys)
         {
-            Color btnColor = blueColor;
+            Object btnObj = null;
+            Color btnColor = default(Color);
+            if (btnObjects != null)
+            {
+                if (btnObjects.Count > 0 && btnObjects.Count > index) btnObj = btnObjects[index];
+            }
             if (btnColors != null)
             {
                 if (btnColors.Count > 0 && btnColors.Count > index) btnColor = btnColors[index];
             }
-            SetSelectBtn(btnText, btnInfoDic[btnText], btnColor);
+            SetSelectBtn(btnText, btnInfoDic[btnText], btnObj, btnColor);
             index++;
         }
 
         //Cancelボタン
         if (isCancel)
         {
-            SetSelectBtn(BUTTON_CANCEL_TEXT, null, cancelColor);
+            SetSelectBtn(BUTTON_CANCEL_TEXT, null, null, cancelColor);
         }
         return dialog;
     }
 
-    private static void SetSelectBtn(string btnText, UnityAction action = null, Color btnColor = default(Color))
+    private static void SetSelectBtn(string btnText, UnityAction action = null, Object btnObj = null, Color btnColor = default(Color))
     {
-        GameObject btnObj = Instantiate((GameObject)Resources.Load(RESOURCE_SELECT_BUTTON));
-        btnObj.GetComponent<Button>().onClick.AddListener(() => OnClickButton(action));
-        Text buttonText = btnObj.transform.GetComponentInChildren<Text>();
+        GameObject btn = null;
+        if (btnObj != null)
+        {
+            btn = (GameObject)Instantiate(btnObj);
+        }
+        else
+        {
+            btn = (GameObject)Instantiate(Resources.Load(RESOURCE_SELECT_BUTTON));
+        }
+        btn.GetComponent<Button>().onClick.AddListener(() => OnClickButton(action));
+        Text buttonText = btn.transform.GetComponentInChildren<Text>();
         if (buttonText != null) buttonText.text = btnText;
         if (btnColor != default(Color)) buttonText.color = btnColor;
-        btnObj.transform.SetParent(dialog.transform.FindChild("DialogArea"), false);
+        btn.transform.SetParent(dialog.transform.FindChild("DialogArea"), false);
     }
 
 

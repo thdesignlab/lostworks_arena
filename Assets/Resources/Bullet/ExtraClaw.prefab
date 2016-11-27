@@ -719,6 +719,7 @@ MonoBehaviour:
   effectSpawn: {fileID: 0}
   activeLimitTime: 0
   activeLimitDistance: 100
+  isNotAutoBreak: 0
 --- !u!114 &11467052
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -740,8 +741,8 @@ MonoBehaviour:
   damagePerSecond: 0
   stuckTime: 0
   knockBackRate: 0
-  isPhysicsBulletBreak: 0
-  isEnergyBulletBreak: 0
+  isPhysicsBulletBreak: 1
+  isEnergyBulletBreak: 1
   isHitBreak: 0
   safetyTime: 0.05
 --- !u!114 &11471620

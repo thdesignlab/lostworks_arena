@@ -23,12 +23,21 @@ public class StoreManager : SingletonMonoBehaviour<StoreManager>
     [SerializeField]
     private Object storeCustomObj;
 
+    //カスタムボタン
     [SerializeField]
-    private Color closeFontColor = new Color(0, 255, 223);
+    private Object powerCustomBtn;
     [SerializeField]
-    private Color normalFontColor = new Color(0, 255, 223);
+    private Object technicCustomBtn;
     [SerializeField]
-    private Color playFontColor = new Color(255, 0, 152);
+    private Object uniqueCustomBtn;
+
+    //Music用文字色
+    [SerializeField]
+    private Color closeFontColor = new Color32(0, 255, 223, 255);
+    [SerializeField]
+    private Color normalFontColor = new Color32(0, 255, 223, 255);
+    [SerializeField]
+    private Color playFontColor = new Color32(255, 0, 152, 255);
 
     [SerializeField]
     private Object storeMusicObj;
@@ -326,7 +335,7 @@ public class StoreManager : SingletonMonoBehaviour<StoreManager>
         };
 
         //確認ダイアログ
-        string text = "購入しますか？\n";
+        string text = "購入しますか？\n\n";
         text += "「"+weaponName+"」\n";
         text += pt+"pt消費";
         DialogController.OpenDialog(text, buy, true);
@@ -417,9 +426,21 @@ public class StoreManager : SingletonMonoBehaviour<StoreManager>
                 WeaponLevelController weaponLevelCtrl = weapon.GetComponent<WeaponLevelController>();
                 if (weaponLevelCtrl == null) continue;
 
+                //現在の強化状態
+                int nowCustomType = UserManager.GetWeaponCustomType(weaponNo);
+                Sprite customIcon = Common.Func.GetCustomIcon(nowCustomType);
+
                 GameObject row = (GameObject)Instantiate(storeCustomObj);
                 Transform rowTran = row.transform;
-                rowTran.FindChild("WeaponName").GetComponent<Text>().text = Common.Weapon.GetWeaponName(weaponNo);
+                if (customIcon != null)
+                {
+                    Transform customIconTran = rowTran.FindChild("NameArea/CustomIcon");
+                    Image imgObj = customIconTran.GetComponent<Image>();
+                    imgObj.sprite = customIcon;
+                    imgObj.preserveAspect = true;
+                    customIconTran.gameObject.SetActive(true);
+                }
+                rowTran.FindChild("NameArea/WeaponName").GetComponent<Text>().text = Common.Weapon.GetWeaponName(weaponNo);
                 rowTran.FindChild("TypeName").GetComponent<Text>().text = Common.Weapon.GetWeaponTypeName(weaponNo);
                 rowTran.FindChild("Description").GetComponent<Text>().text = weaponInfo[Common.Weapon.DETAIL_DESCRIPTION_NO];
                 rowTran.FindChild("NeedPoint").GetComponent<Text>().text = needWeaopnCustomPoint.ToString();
@@ -476,8 +497,7 @@ public class StoreManager : SingletonMonoBehaviour<StoreManager>
         string weaponName = Common.Weapon.GetWeaponName(weaponNo);
 
         //現在の強化系統
-        int nowCustomType = 0;
-        if (UserManager.userCustomWeapons.ContainsKey(weaponNo)) nowCustomType = UserManager.userCustomWeapons[weaponNo];
+        int nowCustomType = UserManager.GetWeaponCustomType(weaponNo);
 
         //確認ダイアログ
         string title = "強化系統を選択してください";
@@ -487,40 +507,42 @@ public class StoreManager : SingletonMonoBehaviour<StoreManager>
         text += pt + "pt消費";
         Dictionary<string, UnityAction> btnList = new Dictionary<string, UnityAction>();
         List<Color> btnColors = new List<Color>();
+        List<Object> customBtns = new List<Object>();
         foreach (int type in Common.Weapon.customTypeNameDic.Keys)
         {
             int customType = type;
             string btnText = Common.Weapon.customTypeNameDic[customType];
             UnityAction action = () => WeaponCustomExe(pt, weaponNo, customType);
             Color btnColor = DialogController.blueColor;
+            Object btnObj = null;
             if (customType == nowCustomType)
             {
                 //解除
-                btnText = "【解除】"+ btnText;
+                btnText += "【解除】";
                 action = () => WeaponCustomReset(weaponNo);
-                btnColor = DialogController.yellowColor;
             }
-            else
+            switch (type)
             {
-                switch (type)
-                {
-                    case Common.Weapon.CUSTOM_TYPE_POWER:
-                        btnColor = DialogController.redColor;
-                        break;
+                case Common.Weapon.CUSTOM_TYPE_POWER:
+                    btnColor = DialogController.redColor;
+                    btnObj = powerCustomBtn;
+                    break;
 
-                    case Common.Weapon.CUSTOM_TYPE_TECHNIC:
-                        btnColor = DialogController.blueColor;
-                        break;
+                case Common.Weapon.CUSTOM_TYPE_TECHNIC:
+                    btnColor = DialogController.blueColor;
+                    btnObj = technicCustomBtn;
+                    break;
 
-                    case Common.Weapon.CUSTOM_TYPE_UNIQUE:
-                        btnColor = DialogController.greenColor;
-                        break;
-                }
+                case Common.Weapon.CUSTOM_TYPE_UNIQUE:
+                    btnColor = DialogController.greenColor;
+                    btnObj = uniqueCustomBtn;
+                    break;
             }
             btnList.Add(btnText, action);
             btnColors.Add(btnColor);
+            customBtns.Add(btnObj);
         }
-        DialogController.OpenSelectDialog(title, text, "", btnList, true, btnColors);
+        DialogController.OpenSelectDialog(title, text, "", btnList, true, customBtns);
     }
     
     //カスタム実行

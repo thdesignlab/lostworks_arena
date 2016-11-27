@@ -13,7 +13,7 @@ public class ClusterBulletController : TrackingBulletController
     private float purgeTime;
     [SerializeField]
     private bool isPurgeDestroy = true;
-    private bool isPurge = false;
+    //private bool isPurge = false;
     protected float prePurgeTime = 0;
 
     protected override void Update()
@@ -54,7 +54,7 @@ public class ClusterBulletController : TrackingBulletController
 
     protected void Purge()
     {
-        isPurge = true;
+        //isPurge = true;
 
         //発射口
         Transform muzzle = null;
