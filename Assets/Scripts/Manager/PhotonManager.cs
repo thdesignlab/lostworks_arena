@@ -494,6 +494,8 @@ public class PhotonManager : MonoBehaviour
     //Room作成
     public void CreateRoom()
     {
+        if (!PhotonNetwork.connectedAndReady) return;
+
         Action createRoomCallback = () =>
         {
             DialogController.OpenMessage(DialogController.MESSAGE_CREATE_ROOM, DialogController.MESSAGE_POSITION_RIGHT);
@@ -516,12 +518,14 @@ public class PhotonManager : MonoBehaviour
     //入室
     public void JoinRoom(RoomInfo roomInfo = null)
     {
+        if (!PhotonNetwork.connectedAndReady) return;
         string roomName = "";
         if (roomInfo != null) roomName = roomInfo.name;
         JoinRoom(roomName);
     }
     public void JoinRoom(string roomName = "")
     {
+        if (!PhotonNetwork.connectedAndReady) return;
         if (roomName == "")
         {
             RandomJoinRoom();

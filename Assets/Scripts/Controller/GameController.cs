@@ -100,8 +100,8 @@ public class GameController : SingletonMonoBehaviour<GameController>
     private GameObject resultCanvas;
     private Text resultTextMine;
     private Text resultTextEnemy;
-    private Dictionary<string, int> damageSourceMine = new Dictionary<string, int>();
-    private Dictionary<string, int> damageSourceEnemy = new Dictionary<string, int>();
+    private Dictionary<string, float> damageSourceMine = new Dictionary<string, float>();
+    private Dictionary<string, float> damageSourceEnemy = new Dictionary<string, float>();
     private bool isResultCheck = false;
 
     //バトル終了時獲得pt
@@ -1130,8 +1130,8 @@ public class GameController : SingletonMonoBehaviour<GameController>
     public void OnResultCheck()
     {
         resultCanvas.SetActive(false);
-        damageSourceMine = new Dictionary<string, int>();
-        damageSourceEnemy = new Dictionary<string, int>();
+        damageSourceMine = new Dictionary<string, float>();
+        damageSourceEnemy = new Dictionary<string, float>();
         isResultCheck = true;
     }
 
@@ -1167,8 +1167,8 @@ public class GameController : SingletonMonoBehaviour<GameController>
     {
         isResultCheck = false;
         resultCanvas.SetActive(false);
-        damageSourceMine = new Dictionary<string, int>();
-        damageSourceEnemy = new Dictionary<string, int>();
+        damageSourceMine = new Dictionary<string, float>();
+        damageSourceEnemy = new Dictionary<string, float>();
     }
 
     private void PlayerSpawn()
@@ -1251,9 +1251,9 @@ public class GameController : SingletonMonoBehaviour<GameController>
         npcStatus.Init();
     }
 
-    public void SetDamageSource(int logType, string name, int damage)
+    public void SetDamageSource(int logType, string name, float damage)
     {
-        Dictionary<string, int> damageSource;
+        Dictionary<string, float> damageSource;
         if (logType == PlayerStatus.BATTLE_LOG_ATTACK)
         {
             damageSource = damageSourceMine;
@@ -1268,7 +1268,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
 
     private string CreateDamageSourceText(int type)
     {
-        Dictionary<string, int> damageSource;
+        Dictionary<string, float> damageSource;
         if (type == PlayerStatus.BATTLE_LOG_ATTACK)
         {
             damageSource = damageSourceMine;
@@ -1280,13 +1280,13 @@ public class GameController : SingletonMonoBehaviour<GameController>
 
         string text = "";
         List<string> nameList = new List<string>();
-        List<int> damageList = new List<int>();
+        List<float> damageList = new List<float>();
         float sumDamage = 0;
         foreach (string name in damageSource.Keys)
         {
             sumDamage += damageSource[name];
             int index = 0;
-            foreach (int damage in damageList)
+            foreach (float damage in damageList)
             {
                 if (damage <= damageSource[name]) break;
                 index++;
@@ -1297,7 +1297,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
 
         for (int i = 0; i < nameList.Count; i++)
         {
-            text += nameList[i] + " > " + damageList[i] + "(" + (int)(damageList[i] / sumDamage * 100) + "%)\n";
+            text += nameList[i] + " > " + Math.Round(damageList[i], 2) + "(" + Mathf.Round(damageList[i] / sumDamage * 100) + "%)\n";
         }
         return text;
     }

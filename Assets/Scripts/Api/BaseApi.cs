@@ -157,7 +157,14 @@ public abstract class BaseApi
     //接続エラー
     protected void ConnectError()
     {
-        if (apiConnectErrorCallback != null) apiConnectErrorCallback.Invoke();
+        if (apiConnectErrorCallback != null)
+        {
+            apiConnectErrorCallback.Invoke();
+        }
+        else
+        {
+            if (!isIgnoreError) GoToTitle();
+        }
     }
 
     //JSONよりResponseData取得

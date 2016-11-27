@@ -114,7 +114,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
     private Text[] battleLogArea = new Text[] { null, null };
     private Queue[] logBattleQueue = new Queue[] { null, null };
     private string[] preSlipDmgName = new string[] { "", "" };
-    private int[] slipTotalDmg = new int[] { 0, 0 };
+    private float[] slipTotalDmg = new float[] { 0, 0 };
 
     [HideInInspector]
     public VoiceManager voiceManager;
@@ -354,14 +354,14 @@ public class PlayerStatus : Photon.MonoBehaviour {
             SetHp(0);
         }
     }
-    public bool AddDamage(float damage, string name = "Unknown", bool isSlipDamage = false)
+    public float AddDamage(float damage, string name = "Unknown", bool isSlipDamage = false)
     {
-        if (!isActiveSceane) return false;
+        if (!isActiveSceane) return 0;
         if (!GameController.Instance.isPractice)
         {
-            if (!GameController.Instance.isGameStart || GameController.Instance.isGameEnd) return false;
+            if (!GameController.Instance.isGameStart || GameController.Instance.isGameEnd) return 0;
         }
-        if (damage <= 0) return false;
+        if (damage <= 0) return 0;
 
         //無敵時間判定
         if (leftInvincibleTime > 0 || isForceInvincible)
@@ -370,9 +370,8 @@ public class PlayerStatus : Photon.MonoBehaviour {
             {
                 OpenShield(shieldTime);
             }
-            return false;
+            return 0;
         }
-        float preDamage = damage;
 
         //防御力考慮
         if (defenceRate > 0 && defenceRate != 100)
@@ -382,7 +381,6 @@ public class PlayerStatus : Photon.MonoBehaviour {
 
         //ダメージ
         totalDamage += damage;
-        if (isNpc) Debug.Log("【"+name+"】" + preDamage +" >> "+damage + "("+totalDamage+")");
         if (nowHp - totalDamage <= 0)
         {
             SetHp(0);
@@ -394,7 +392,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
         //被ダメージログ
         SetBattleLog(BATTLE_LOG_DAMAGE, (int)damage, name, isSlipDamage);
 
-        return true;
+        return damage;
     }
 
     private void OpenShield(float time, bool isSendRPC = true)
@@ -1116,7 +1114,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
     
     //##### バトルログ #####
 
-    public void SetBattleLog(int logType, int damage, string name, bool isSlipDamage = false)
+    public void SetBattleLog(int logType, float damage, string name, bool isSlipDamage = false)
     {
         if (!isDispBattleLog) return;
         if (!photonView.isMine || isNpc) return;
@@ -1149,7 +1147,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
         }
     }
 
-    private void PushBattleLog(int logType, int damage, string name, bool console = false)
+    private void PushBattleLog(int logType, float damage, string name, bool console = false)
     {
         if (!isDispBattleLog) return;
         if (!photonView.isMine || isNpc) return;
@@ -1160,7 +1158,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
         name = name.Replace("(Clone)", "");
         string logName = name;
         if (logName.Length > 10) logName = logName.Substring(0, 10);
-        string text = "[" + battleLogNo[logType] + "]" + logName + " > " + damage.ToString();
+        string text = "[" + battleLogNo[logType] + "]" + logName + " > " + System.Math.Round(damage, 2).ToString();
 
         if (logBattleQueue[logType].Count >= BATTLE_LOG_COUNT) logBattleQueue[logType].Dequeue();
         logBattleQueue[logType].Enqueue(text);

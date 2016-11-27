@@ -154,7 +154,7 @@ MonoBehaviour:
   speed: 350
   damage: 50
   damagePerSecond: 0
-  stuckTime: 0.5
+  stuckTime: 0.3
   knockBackRate: 0
   isPhysicsBulletBreak: 0
   isEnergyBulletBreak: 0
@@ -185,8 +185,8 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 3.13
-  m_Height: 0
+  m_Radius: 3.5
+  m_Height: 8
   m_Direction: 2
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!198 &19819238

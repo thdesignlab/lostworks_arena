@@ -13,6 +13,8 @@ public class StatusChangeController : Photon.MonoBehaviour
     [SerializeField]
     private GameObject effect;
 
+    private float leftEffectTime = 0;
+
     const int EFFECT_ATTACK = 1;
     const int EFFECT_RECOVER_SP = 2;
     const int EFFECT_AVOID = 3;
@@ -22,6 +24,12 @@ public class StatusChangeController : Photon.MonoBehaviour
     void Awake()
     {
         if (effect != null) effect.SetActive(false);
+    }
+
+    void Update()
+    {
+        if (leftEffectTime <= 0) return;
+        leftEffectTime -= Time.deltaTime;
     }
 
     public void Action(PlayerStatus playerStatus)
@@ -43,6 +51,9 @@ public class StatusChangeController : Photon.MonoBehaviour
                 if (playerStatus.IsForceInvincible()) continue;
                 setEffect = playerStatus.GetDebuffEffect();
             }
+
+            if (leftEffectTime > 0) continue;
+            leftEffectTime = effectTime;
 
             switch (effectType)
             {

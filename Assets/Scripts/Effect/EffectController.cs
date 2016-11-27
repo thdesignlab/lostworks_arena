@@ -108,12 +108,14 @@ public class EffectController : Photon.MonoBehaviour
                 {
                     //対象のStatuController取得
                     PlayerStatus status = GetHitObjStatus(otherObj);
-
                     //ダメージ
                     AddDamageProccess(status, dmgPS, true);
 
-                    //デバフ
-                    AddDebuff(status);
+                    if (ownerTran != otherObj.transform)
+                    {
+                        //デバフ
+                        AddDebuff(status);
+                    }
                 }
             }
         }
@@ -129,7 +131,7 @@ public class EffectController : Photon.MonoBehaviour
         if (dmg <= 0) return;
 
         //対象へダメージを与える
-        bool isDamage = status.AddDamage(dmg, GetWeaponName(), isSlip);
+        float addDamage = status.AddDamage(dmg, GetWeaponName(), isSlip);
 
         //HITエフェクト
         if (damageEffect != null && !isSlip)
@@ -139,9 +141,9 @@ public class EffectController : Photon.MonoBehaviour
         }
 
         //与えたダメージのログを保管
-        if (isDamage && ownerStatus != null)
+        if (addDamage > 0 && ownerStatus != null)
         {
-            ownerStatus.SetBattleLog(PlayerStatus.BATTLE_LOG_ATTACK, (int)dmg, GetWeaponName(), isSlip);
+            ownerStatus.SetBattleLog(PlayerStatus.BATTLE_LOG_ATTACK, addDamage, GetWeaponName(), isSlip);
         }
     }
 

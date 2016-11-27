@@ -229,7 +229,7 @@ public class BulletController : MoveOfCharacter
         if (dmg <= 0) return;
 
         //対象へダメージを与える
-        bool isDamage = status.AddDamage(dmg, GetWeaponName(), isSlip);
+        float addDamage = status.AddDamage(dmg, GetWeaponName(), isSlip);
 
         //HITエフェクト
         if (hitEffect != null && !isSlip)
@@ -240,9 +240,9 @@ public class BulletController : MoveOfCharacter
         }
 
         //与えたダメージのログを保管
-        if (isDamage && ownerStatus != null)
+        if (addDamage > 0 && ownerStatus != null)
         {
-            ownerStatus.SetBattleLog(PlayerStatus.BATTLE_LOG_ATTACK, (int)dmg, GetWeaponName(), isSlip);
+            ownerStatus.SetBattleLog(PlayerStatus.BATTLE_LOG_ATTACK, addDamage, GetWeaponName(), isSlip);
         }
     }
 
