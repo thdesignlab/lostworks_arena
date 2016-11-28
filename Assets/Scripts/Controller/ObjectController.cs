@@ -123,15 +123,15 @@ public class ObjectController : Photon.MonoBehaviour {
     public void CustomActiveTime(float value)
     {
         if (activeLimitTime <= 0) return;
-        activeLimitTime *= 1 + (value + 100);
-        if (activeLimitTime <= 0) activeLimitTime = 0.1f;
+        activeLimitTime += value;
+        if (activeLimitTime <= 0) activeLimitTime = 0.5f;
     }
 
     //ActiveDistance
     public void CustomActiveDistance(float value)
     {
         if (activeLimitDistance <= 0) return;
-        activeLimitDistance *= 1 + (value + 100);
+        activeLimitDistance += value;
         if (activeLimitDistance <= 0) activeLimitDistance = 10; ;
     }
 

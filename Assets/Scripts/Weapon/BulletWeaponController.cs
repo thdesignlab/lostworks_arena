@@ -265,30 +265,33 @@ public class BulletWeaponController : WeaponController
     //RapidInterval
     public void CustomRapidInterval(float value)
     {
-        float rate = 1 + (value / 100);
-        rapidInterval *= rate;
+        rapidInterval += value;
         if (rapidInterval < 0) rapidInterval = 0;
     }
 
-    //SpreadCount増加
+    //SpreadCount
     public void CustomSpreadCount(int value)
     {
         spreadCount += value;
         if (spreadCount < 1) spreadCount = 1;
     }
 
-    //SpreadDiff(value=割合)
-    public void CustomSpreadDiff(float value)
+    //SpreadDiff
+    public void CustomSpreadDiff(int value)
     {
-        float rate = 1 + (value / 100);
-        spreadDiffAngle = (int)(spreadDiffAngle * rate);
+        spreadDiffAngle += value;
     }
 
-    //ブレ抑制(value=割合)
+    //ブレ抑制
     public void CustomFocusDiff(float value)
     {
-        float rate = 1 + (value / 100);
-        focusDiff *= rate;
+        focusDiff += value;
         if (focusDiff < 0) focusDiff = 0;
+    }
+
+    //弾変更
+    public void CustomChangeBullet(GameObject obj)
+    {
+        bullet = obj;
     }
 }

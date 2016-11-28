@@ -403,6 +403,7 @@ GameObject:
   - 114: {fileID: 11498362}
   - 114: {fileID: 11431380}
   - 114: {fileID: 11403950}
+  - 114: {fileID: 11421718}
   m_Layer: 0
   m_Name: GatlingGun
   m_TagString: Weapon
@@ -1569,6 +1570,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9afa1e6dd7dae2b4b86c732a5f351dee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &11421718
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 179934}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5ae7eb6027f9cc41bd60d7a75a7c396, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  powerCustomSystemList: 87000000
+  powerEffectValueDiffList:
+  - 50
+  technicCustomSystemList: 6900000085000000
+  technicEffectValueDiffList:
+  - -2
+  - 1.2
+  uniqueCustomSystemList: 88000000
+  uniqueEffectValueDiffList:
+  - 0.03
+  AddObject: {fileID: 0}
 --- !u!114 &11431380
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1584,6 +1607,7 @@ MonoBehaviour:
   bitMoveTime: 0
   isBitFixed: 0
   reloadTime: 3
+  isNpc: 0
   fireEffect: {fileID: 128990, guid: 26eff61a30ffb3040a1cf5904f260089, type: 2}
   bullet: {fileID: 162386, guid: 71549f6141740924a81f64ecd7184db9, type: 2}
   rapidCount: 50

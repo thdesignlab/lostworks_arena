@@ -11,9 +11,9 @@ GameObject:
   - 198: {fileID: 19859332}
   - 199: {fileID: 19958550}
   - 114: {fileID: 11413070}
-  - 135: {fileID: 13501112}
   - 114: {fileID: 11438964}
   - 114: {fileID: 11402460}
+  - 136: {fileID: 13613504}
   m_Layer: 0
   m_Name: PlasmaBullet
   m_TagString: EnergyBullet
@@ -79,7 +79,7 @@ MonoBehaviour:
   isLockOn: 0
   UseGravity: 0
   hitEffect: {fileID: 0}
-  speed: 500
+  speed: 450
   damage: 30
   damagePerSecond: 0
   stuckTime: 0
@@ -127,17 +127,19 @@ MonoBehaviour:
   effectSpawn: {fileID: 107126, guid: 43f2de49f98f9c74ba4ce0000583630f, type: 2}
   activeLimitTime: 0
   activeLimitDistance: 300
---- !u!135 &13501112
-SphereCollider:
+  isNotAutoBreak: 0
+--- !u!136 &13613504
+CapsuleCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 129546}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
   m_Radius: 1
+  m_Height: 3
+  m_Direction: 2
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!198 &19859332
 ParticleSystem:

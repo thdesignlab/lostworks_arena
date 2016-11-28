@@ -1030,9 +1030,9 @@ BoxCollider:
   m_GameObject: {fileID: 189410}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 4, y: 6, z: 6}
+  m_Size: {x: 3, y: 6, z: 5}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!95 &9539266
 Animator:
@@ -1714,7 +1714,7 @@ MonoBehaviour:
   bonusRecoverSpRate: 1.5
   bonusRecoverSpTime: 1
   boostCost: 100
-  invincibleTime: 0.4
+  invincibleTime: 0.45
   shield: {fileID: 179912}
   stuckEffect: {fileID: 154298}
   debuffEffect: {fileID: 173160}
@@ -1734,7 +1734,7 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 2
   m_Height: 6
-  m_Radius: 2.5
+  m_Radius: 1.5
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08

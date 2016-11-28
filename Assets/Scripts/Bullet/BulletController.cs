@@ -44,10 +44,15 @@ public class BulletController : MoveOfCharacter
     {
         get { return _obCtrl ? _obCtrl : _obCtrl = GetComponent<ObjectController>(); }
     }
+    private StatusChangeController _statusChangeCtrl;
+    protected StatusChangeController statusChangeCtrl
+    {
+        get { return _statusChangeCtrl ? _statusChangeCtrl : _statusChangeCtrl = GetComponent<StatusChangeController>(); }
+        set { _statusChangeCtrl = value; }
+    }
     protected BulletLevelController bulletLevelCtrl;
 
     protected AudioController audioCtrl;
-    protected StatusChangeController statusChangeCtrl;
 
     protected override void Awake()
     {
@@ -60,7 +65,6 @@ public class BulletController : MoveOfCharacter
         }
 
         audioCtrl = myTran.GetComponent<AudioController>();
-        statusChangeCtrl = myTran.GetComponent<StatusChangeController>();
     }
 
     protected override void Update()
@@ -85,6 +89,7 @@ public class BulletController : MoveOfCharacter
     //衝突時処理(Trigger=true)
     void OnTriggerEnter(Collider other)
     {
+        if (other.GetType().Name == "CharacterController") return;
         GameObject otherObj = other.gameObject;
         OnHit(otherObj);
     }
@@ -92,6 +97,7 @@ public class BulletController : MoveOfCharacter
     //接触時処理
     void OnTriggerStay(Collider other)
     {
+        if (other.GetType().Name == "CharacterController") return;
         GameObject otherObj = other.gameObject;
         OnStay(otherObj);
     }
@@ -470,10 +476,12 @@ public class BulletController : MoveOfCharacter
     //##### CUSTOM #####
     
     //ダメージ
-    public virtual void CustomDamage(float value)
+    public void CustomDamage(int value)
     {
-        damage = (int)(damage * (1 + (value / 100)));
+        damage += value;
+        damagePerSecond += value;
         if (damage < 0) damage = 0;
+        if (damagePerSecond < 0) damagePerSecond = 0;
     }
 
     //旋回速度UP
@@ -483,53 +491,91 @@ public class BulletController : MoveOfCharacter
     }
 
     //判定拡大
-    public virtual void CustomCollider(float value)
+    public void CustomCollider(float value)
     {
         if (myCollider == null) return;
-        float rate = 1 + (value / 100);
         switch (myCollider.GetType().Name)
         {
             case "BoxCollider":
                 BoxCollider box = (BoxCollider)myCollider;
-                box.size *= rate;
+                box.size *= value;
                 break;
 
             case "SphereCollider":
                 SphereCollider sphere = (SphereCollider)myCollider;
-                sphere.radius *= rate;
+                sphere.radius *= value;
                 break;
 
             case "CapsuleCollider":
                 CapsuleCollider capsule = (CapsuleCollider)myCollider;
-                capsule.radius *= rate;
-                capsule.height *= rate;
+                capsule.radius *= value;
+                capsule.height *= value;
                 break;
         }
     }
 
     //ActiveTime
-    public virtual void CustomActiveTime(float value)
+    public void CustomActiveTime(float value)
     {
         if (obCtrl != null) obCtrl.CustomActiveTime(value);
     }
 
     //ActiveDistance
-    public virtual void CustomActiveDistance(float value)
+    public void CustomActiveDistance(float value)
     {
         if (obCtrl != null) obCtrl.CustomActiveDistance(value);
     }
 
     //StuckTime
-    public virtual void CustomStuckTime(float value)
+    public void CustomStuckTime(float value)
     {
-        stuckTime *= 1 + (value / 100);
+        stuckTime += value;
         if (stuckTime < 0) stuckTime = 0;
     }
 
     //Knockback
-    public virtual void CustomKnockBack(float value)
+    public void CustomKnockBack(float value)
     {
-        knockBackRate *= 1 + (value / 100);
-        if (knockBackRate < 0) knockBackRate = 0;
+        knockBackRate += 1 + value;
     }
+
+    //HitEffect
+    public void CustomHitEffect(GameObject obj)
+    {
+        hitEffect = obj;
+    }
+
+    //BreakEffect
+    public void CustomBreakEffect(GameObject obj)
+    {
+        if (obCtrl != null) obCtrl.CustomSpawnEffect(obj);
+    }
+
+    //弾速
+    public void CustomSpeed(float value)
+    {
+        speed += value;
+    }
+
+    //StatusChangeController追加
+    private void AddStatusChangeCtrl()
+    {
+        if (statusChangeCtrl != null) return;
+        statusChangeCtrl = gameObject.AddComponent<StatusChangeController>();
+    }
+
+    //デバフ時間
+    public void CustomDebuffTime(float value)
+    {
+        AddStatusChangeCtrl();
+        statusChangeCtrl.AddEffectTime(value);
+    }
+
+    //デバフ:ATTACK
+    public void CustomDebuffAttack(float value)
+    {
+        AddStatusChangeCtrl();
+        statusChangeCtrl.AddStatusChange(StatusChangeController.EFFECT_ATTACK, value);
+    }
+
 }

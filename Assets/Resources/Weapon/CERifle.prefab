@@ -333,6 +333,7 @@ GameObject:
   - 114: {fileID: 11450302}
   - 114: {fileID: 11425770}
   - 114: {fileID: 11469168}
+  - 114: {fileID: 11403318}
   m_Layer: 0
   m_Name: CERifle
   m_TagString: Weapon
@@ -1558,6 +1559,27 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &11403318
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 171806}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5ae7eb6027f9cc41bd60d7a75a7c396, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  powerCustomSystemList: 67000000
+  powerEffectValueDiffList:
+  - 2
+  technicCustomSystemList: 00000000
+  technicEffectValueDiffList:
+  - -1.2
+  uniqueCustomSystemList: 8b000000
+  uniqueEffectValueDiffList:
+  - 0
+  AddObject: {fileID: 166232, guid: 513cdada11bc5db49a57dbf057590a9f, type: 2}
 --- !u!114 &11425770
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1573,12 +1595,13 @@ MonoBehaviour:
   bitMoveTime: 0
   isBitFixed: 0
   reloadTime: 4
+  isNpc: 0
   fireEffect: {fileID: 128990, guid: 26eff61a30ffb3040a1cf5904f260089, type: 2}
   bullet: {fileID: 190228, guid: 529236c0b0513e14c906a6b5469fbfd6, type: 2}
   rapidCount: 1
   rapidInterval: 1
-  spreadCount: 0
-  spreadDiffAngle: 0
+  spreadCount: 1
+  spreadDiffAngle: 10
   focusDiff: 1
   recoil: 0
 --- !u!114 &11433296

@@ -1571,11 +1571,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   powerCustomSystemList: 83000000
-  powerEffectValueDiffList: 19000000
+  powerEffectValueDiffList:
+  - 3
   technicCustomSystemList: 66000000
-  technicEffectValueDiffList: ecffffff
-  uniqueCustomSystemList: 0000000089000000
-  uniqueEffectValueDiffList: 19000000c8000000
+  technicEffectValueDiffList:
+  - -0.05
+  uniqueCustomSystemList: 0100000089000000
+  uniqueEffectValueDiffList:
+  - 30
+  - 10
   AddObject: {fileID: 0}
 --- !u!114 &11424064
 MonoBehaviour:

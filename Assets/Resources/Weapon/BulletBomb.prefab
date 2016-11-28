@@ -413,6 +413,7 @@ GameObject:
   - 114: {fileID: 11457880}
   - 114: {fileID: 11401406}
   - 114: {fileID: 11422172}
+  - 114: {fileID: 11488350}
   m_Layer: 0
   m_Name: BulletBomb
   m_TagString: Weapon
@@ -1573,6 +1574,7 @@ MonoBehaviour:
   bitMoveTime: 0
   isBitFixed: 0
   reloadTime: 4
+  isNpc: 0
   fireEffect: {fileID: 128990, guid: 26eff61a30ffb3040a1cf5904f260089, type: 2}
   bullet: {fileID: 105316, guid: 098e128fef120eb4297d8da3c4802d6a, type: 2}
   rapidCount: 3
@@ -1644,6 +1646,27 @@ MonoBehaviour:
   viewIdField: 0
   instantiationId: -1
   isRuntimeInstantiated: 0
+--- !u!114 &11488350
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 178848}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5ae7eb6027f9cc41bd60d7a75a7c396, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  powerCustomSystemList: 65000000
+  powerEffectValueDiffList:
+  - 2
+  technicCustomSystemList: 69000000
+  technicEffectValueDiffList:
+  - -1.5
+  uniqueCustomSystemList: 01000000
+  uniqueEffectValueDiffList:
+  - 66
+  AddObject: {fileID: 0}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

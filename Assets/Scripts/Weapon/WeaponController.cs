@@ -380,10 +380,13 @@ public class WeaponController : Photon.MonoBehaviour
         anim.SetBool(param, false);
     }
 
+    protected float prePlayAudio = 0;
     protected void PlayAudio(int no = 0)
     {
         if (audioCtrl == null) return;
+        if (Time.time - prePlayAudio < 0.1f) return;
         audioCtrl.Play(no);
+        prePlayAudio = Time.time;
     }
     protected void StopAudio(int no = 0)
     {

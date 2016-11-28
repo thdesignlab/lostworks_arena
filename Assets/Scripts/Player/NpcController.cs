@@ -75,31 +75,34 @@ public class NpcController : MoveOfCharacter
             float hpPer = status.GetNowHpPer();
             if (hpPer <= 25 && preHpPer > 25)
             {
+                status.ResetTargetNpcStatus();
                 atackIntervalTime = 0.5f;
                 boostIntervalTime = 0.5f;
                 searchIntervalTime = 2.0f;
                 status.runSpeed = 40;
-                status.defenceRate = 10;
+                status.defenceRate = 20;
                 Transform super = myTran.FindChild("Effect/Super");
                 if (super != null) super.gameObject.SetActive(true);
                 SoundManager.Instance.PlayBattleBgm();
             }
             else if (hpPer <= 50 && preHpPer > 50)
             {
+                status.ResetTargetNpcStatus();
                 atackIntervalTime = 1.0f;
                 boostIntervalTime = 1.0f;
                 searchIntervalTime = 2.0f;
                 status.runSpeed = 35;
-                status.defenceRate = 25;
+                status.defenceRate = 40;
                 SoundManager.Instance.PlayBattleBgm();
             }
             else if (hpPer <= 75 && preHpPer > 75)
             {
+                status.ResetTargetNpcStatus();
                 atackIntervalTime = 2.0f;
                 boostIntervalTime = 2.0f;
                 searchIntervalTime = 3.0f;
                 status.runSpeed = 30;
-                status.defenceRate = 50;
+                status.defenceRate = 60;
                 SoundManager.Instance.PlayBattleBgm();
             }
             preHpPer = hpPer;

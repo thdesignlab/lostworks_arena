@@ -26,7 +26,7 @@ public abstract class WeaponLevelController : Photon.MonoBehaviour
     protected List<int> customSystemList;
 
     //強化の効果値
-    protected List<int> effectValueList;
+    protected List<float> effectValueList;
 
 
     //##### 強化System #####
@@ -90,15 +90,7 @@ public abstract class WeaponLevelController : Photon.MonoBehaviour
     {
         WaitCustomReady(() => CustomLevelSync());
     }
-    //IEnumerator CustomLevelSyncProc()
-    //{
-    //    for (;;)
-    //    {
-    //        if (!isReady) yield return null;
-    //        CustomLevelSync();
-    //        break;
-    //    }
-    //}
+
     protected void WaitCustomReady(UnityAction callback)
     {
         if (isReady)
@@ -131,7 +123,7 @@ public abstract class WeaponLevelController : Photon.MonoBehaviour
             for (int i = 0; i < customSystemList.Count; i++)
             {
                 int customSystem = customSystemList[i];
-                int effectValue = effectValueList[i] * myCustomLevel;
+                float effectValue = effectValueList[i] * myCustomLevel;
                 WeaponCustomExe(customSystem, effectValue);
             }
         };
@@ -140,7 +132,7 @@ public abstract class WeaponLevelController : Photon.MonoBehaviour
     }
 
     //強化実行
-    protected virtual void WeaponCustomExe(int customSystem, int effectValue)
+    protected virtual void WeaponCustomExe(int customSystem, float effectValue)
     {
         switch (customSystem)
         {
@@ -151,13 +143,13 @@ public abstract class WeaponLevelController : Photon.MonoBehaviour
 
             case CUSTOM_SYSTEM_NO_RELOAD:
                 //NOリロード
-                CustomNoReload(effectValue);
+                CustomNoReload((int)effectValue);
                 break;
         }
     }
 
     //リロード
-    protected void CustomReloadReduction(int value)
+    protected void CustomReloadReduction(float value)
     {
         weaponCtrl.CustomReloadTime(value);
     }

@@ -27,6 +27,7 @@ GameObject:
   - 114: {fileID: 11409574}
   - 114: {fileID: 11451828}
   - 114: {fileID: 11432770}
+  - 114: {fileID: 11494622}
   m_Layer: 0
   m_Name: ChemicalCannon
   m_TagString: Weapon
@@ -1599,6 +1600,7 @@ MonoBehaviour:
   bitMoveTime: 0
   isBitFixed: 0
   reloadTime: 6
+  isNpc: 0
   fireEffect: {fileID: 166096, guid: 3833ddca33ae958409ea31c256116eb3, type: 2}
   bullet: {fileID: 187280, guid: 22f4c08291b3d944b9dae14872f76f18, type: 2}
   rapidCount: 1
@@ -1644,6 +1646,26 @@ MonoBehaviour:
   viewIdField: 0
   instantiationId: -1
   isRuntimeInstantiated: 0
+--- !u!114 &11494622
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 109452}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5ae7eb6027f9cc41bd60d7a75a7c396, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  powerCustomSystemList: 970000009c000000
+  powerEffectValueDiffList:
+  - -0.5
+  - 3
+  technicCustomSystemList: 
+  technicEffectValueDiffList: []
+  uniqueCustomSystemList: 
+  uniqueEffectValueDiffList: []
+  AddObject: {fileID: 0}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

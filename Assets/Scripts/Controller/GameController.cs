@@ -365,7 +365,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
             if (!spawns) return;
             foreach (Transform spawnTran in spawns.transform)
             {
-                PhotonNetwork.Instantiate(Common.Func.GetResourceStructure(stageStructure.name), spawnTran.position, spawnTran.rotation, 0);
+                PhotonNetwork.InstantiateSceneObject(Common.Func.GetResourceStructure(stageStructure.name), spawnTran.position, spawnTran.rotation, 0, null);
             }
         }
     }

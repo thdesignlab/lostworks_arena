@@ -735,9 +735,10 @@ public class PlayerStatus : Photon.MonoBehaviour {
     }
 
     //SP回復量
+    Coroutine spChange;
     public void AccelerateRecoverSp(float rate, float limit, GameObject effect = null, bool isSendRPC = true)
     {
-        StartCoroutine(CheckAccelerateRecoverSp(rate, limit, effect));
+        spChange = StartCoroutine(CheckAccelerateRecoverSp(rate, limit, effect));
         if (isSendRPC)
         {
             int parentViewId = (effect != null) ? GetParentViewId(effect) : - 1;
@@ -763,9 +764,10 @@ public class PlayerStatus : Photon.MonoBehaviour {
     }
 
     //攻撃力
+    Coroutine attackChange;
     public void ChangeAttackRate(float rate, float limit, GameObject effect = null, bool isSendRPC = true)
     {
-        StartCoroutine(ChangeAttackRateProc(rate, limit, effect));
+        attackChange = StartCoroutine(ChangeAttackRateProc(rate, limit, effect));
         if (isSendRPC)
         {
             int parentViewId = (effect != null) ? GetParentViewId(effect) : -1;
@@ -791,9 +793,10 @@ public class PlayerStatus : Photon.MonoBehaviour {
     }
 
     //防御力
+    Coroutine defChange;
     public void ChangeDefRate(float rate, float limit, GameObject effect = null, bool isSendRPC = true)
     {
-        StartCoroutine(ChangeDefRateProc(rate, limit, effect));
+        defChange = StartCoroutine(ChangeDefRateProc(rate, limit, effect));
         if (isSendRPC)
         {
             int parentViewId = (effect != null) ? GetParentViewId(effect) : -1;
@@ -1040,20 +1043,17 @@ public class PlayerStatus : Photon.MonoBehaviour {
         return debuffEffect;
     }
 
-    //public void ResetWinMark()
-    //{
-    //    bool markFlg = false;
-    //    //if (GameController.Instance.gameMode == GameController.GAME_MODE_VS) markFlg = true;
-    //    foreach (GameObject obj in winCountMineList)
-    //    {
-    //        obj.SetActive(markFlg);
-    //    }
-    //    foreach (GameObject obj in winCountEnemyList)
-    //    {
-    //        obj.SetActive(markFlg);
-
-    //    }
-    //}
+    public void ResetTargetNpcStatus()
+    {
+        if (defChange != null) StopCoroutine(defChange);
+        //attackChange;
+        //spChange;
+        interfareMoveTime = 0;
+        nowSpeedRate = 1;
+        runSpeed = defaultRunSpeed;
+        jumpSpeed = defaultJumpSpeed;
+        boostSpeed = defaultBoostSpeed;
+    }
 
     public void SetWinMark(int winCount, int loseCount)
     {

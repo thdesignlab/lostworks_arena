@@ -27,7 +27,7 @@ public class TrackingBulletController : BulletController
     {
         base.Awake();
 
-        defaultSpeed = base.speed;
+        defaultSpeed = speed;
         defaultTurnSpeed = turnSpeed;
         if (isLockFlat) lockVector = new Vector3(1, 0, 1);
         pointCtrl = myTran.GetComponentInChildren<LaserPointerController>();
@@ -38,14 +38,14 @@ public class TrackingBulletController : BulletController
         base.Update();
 
         //初回ターゲット待機時間
-        if (base.activeTime >= lockStartTime)
+        if (activeTime >= lockStartTime)
         {
             //ロック可能チェック
             enableSetAngle = true;
             if (isNeedLock)
             {
                 enableSetAngle = false;
-                if (base.targetStatus != null)
+                if (targetStatus != null)
                 {
                     enableSetAngle = base.targetStatus.IsLocked();
                 }
@@ -54,14 +54,25 @@ public class TrackingBulletController : BulletController
             //向き調整
             if (enableSetAngle)
             {
-                if (base.SetAngle(base.targetTran, turnSpeed, lockVector))
+                if (SetAngle(targetTran, turnSpeed, lockVector))
                 {
                     //ロック時スピード
-                    base.speed = defaultSpeed * lockedSpeedRate;
+                    speed = defaultSpeed * lockedSpeedRate;
                     turnSpeed = defaultTurnSpeed * lockedTurnSpeedRate;
                     if (pointCtrl != null) pointCtrl.SetOn();
                 }
             }
         }
     }
+
+    //##### CUSTOM #####
+
+    //旋回速度UP
+    public override void CustomTurnSpeed(float value)
+    {
+        turnSpeed += value;
+        if (turnSpeed < 0) turnSpeed = 0;
+        defaultTurnSpeed = turnSpeed;
+    }
+
 }

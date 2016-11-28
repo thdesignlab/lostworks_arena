@@ -447,6 +447,7 @@ GameObject:
   - 114: {fileID: 11484826}
   - 114: {fileID: 11474450}
   - 114: {fileID: 11487228}
+  - 114: {fileID: 11414960}
   m_Layer: 0
   m_Name: BlasterBomer
   m_TagString: Weapon
@@ -1557,6 +1558,27 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &11414960
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 191040}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5ae7eb6027f9cc41bd60d7a75a7c396, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  powerCustomSystemList: 8c000000
+  powerEffectValueDiffList:
+  - 20
+  technicCustomSystemList: 00000000
+  technicEffectValueDiffList:
+  - 2
+  uniqueCustomSystemList: 8b000000
+  uniqueEffectValueDiffList:
+  - 0
+  AddObject: {fileID: 144000, guid: 9ee86ad7c9364da48bcbbfa98ecacc84, type: 2}
 --- !u!114 &11444934
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1584,6 +1606,7 @@ MonoBehaviour:
   bitMoveTime: 0
   isBitFixed: 0
   reloadTime: 8
+  isNpc: 0
   fireEffect: {fileID: 0}
   bullet: {fileID: 118604, guid: 62772d8967d45e74199f87a6c9264341, type: 2}
   rapidCount: 1
