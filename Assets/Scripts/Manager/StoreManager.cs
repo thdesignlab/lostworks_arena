@@ -205,11 +205,11 @@ public class StoreManager : SingletonMonoBehaviour<StoreManager>
         if (!string.IsNullOrEmpty(ModelManager.tipsInfo.text))
         {
             //Tipsあり
-            text = "=== tips ===\n";
+            text = "## " + ModelManager.tipsInfo.title + " ##\n";
             text += ModelManager.tipsInfo.text;
             imgName = ModelManager.tipsInfo.image;
 
-            if (ModelManager.tipsInfo.last_flg == 0)
+            if (ModelManager.tipsInfo.no != ModelManager.tipsInfo.last_no)
             {
                 //Tips続きあり
                 string nextTipsBtn = nextBtn + "(next tips)";
