@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -8,7 +9,7 @@ public class BulletLevelController : WeaponLevelController
     protected List<int> powerCustomSystemList;
     [SerializeField]
     protected List<int> powerEffectValueDiffList;
-    [SerializeField, TooltipAttribute("131:Dmg,132:TurnSpd,133:Collider,134:ActTime,135:ActDistance,136:Stuck")]
+    [SerializeField, TooltipAttribute("131:Dmg,132:TurnSpd,133:Collider,134:ActTime,135:ActDistance,136:Stuck,137:Knockback")]
     protected List<int> technicCustomSystemList;
     [SerializeField]
     protected List<int> technicEffectValueDiffList;
@@ -50,6 +51,8 @@ public class BulletLevelController : WeaponLevelController
     const int CUSTOM_SYSTEM_ACTIVE_DISTANCE = 135;
     //StuckTime
     const int CUSTOM_SYSTEM_STUCK_TIME = 136;
+    //Knockback
+    const int CUSTOM_SYSTEM_KNOCKBACK = 137;
 
 
     //カスタムSystemセットアップ
@@ -111,43 +114,58 @@ public class BulletLevelController : WeaponLevelController
     }
 
     //弾丸強化
-    public void BulletCustom(GameObject bulletObj)
+    public void BulletCustom(BulletController bulletCtrl)
     {
-        for (int i = 0; i < customSystemList.Count; i++)
+        UnityAction callback = () =>
         {
-            int customSystem = customSystemList[i];
-            float effectValue = effectValueList[i] * myCustomLevel;
-            BulletCustomExe(bulletObj, customSystem, effectValue);
-        }
+            for (int i = 0; i < customSystemList.Count; i++)
+            {
+                int customSystem = customSystemList[i];
+                int effectValue = effectValueList[i] * myCustomLevel;
+                BulletCustomExe(bulletCtrl, customSystem, effectValue);
+            }
+        };
+        WaitCustomReady(callback);
     }
 
     //弾丸強化実行
-    protected void BulletCustomExe(GameObject bulletObj, int customSystem, float effectValue)
+    protected void BulletCustomExe(BulletController bulletCtrl, int customSystem, int effectValue)
     {
         switch (customSystem)
         {
             case CUSTOM_SYSTEM_DAMAGE:
                 //ダメージアップ
+                bulletCtrl.CustomDamage(effectValue);
                 break;
 
             case CUSTOM_SYSTEM_TURN_SPEED:
                 //旋回速度UP
+                bulletCtrl.CustomTurnSpeed(effectValue);
                 break;
 
             case CUSTOM_SYSTEM_COLLIDER:
                 //判定拡大
+                bulletCtrl.CustomCollider(effectValue);
                 break;
 
             case CUSTOM_SYSTEM_ACTIVE_TIME:
                 //ActiveTime
+                bulletCtrl.CustomActiveTime(effectValue);
                 break;
 
             case CUSTOM_SYSTEM_ACTIVE_DISTANCE:
                 //ActiveDistance
+                bulletCtrl.CustomActiveDistance(effectValue);
                 break;
 
             case CUSTOM_SYSTEM_STUCK_TIME:
                 //StuckTime
+                bulletCtrl.CustomStuckTime(effectValue);
+                break;
+
+            case CUSTOM_SYSTEM_KNOCKBACK:
+                //Knockback
+                bulletCtrl.CustomKnockBack(effectValue);
                 break;
         }
     }

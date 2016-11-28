@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
@@ -33,6 +34,7 @@ public class WeaponController : Photon.MonoBehaviour
     protected string motionParam = "";
 
     protected bool isEnabledFire = true;
+    protected bool isReady = false;
 
     protected Transform myTran;
     protected Transform myBitTran;
@@ -132,14 +134,35 @@ public class WeaponController : Photon.MonoBehaviour
             yield return null;
         }
 
+        isEnabledFire = true;
+        isReady = true;
+
         //武器強化
         if (photonView.isMine && !isNpc)
         {
             int type = UserManager.GetWeaponCustomType(weaponNo);
             SetWeaponCustom(type);
         }
-
-        isEnabledFire = true;
+    }
+    public void WaitReadyAction(UnityAction callback)
+    {
+        if (isReady)
+        {
+            callback.Invoke();
+        }
+        else
+        {
+            StartCoroutine(WaitReadyActionProc(callback));
+        }
+    }
+    IEnumerator WaitReadyActionProc(UnityAction callback)
+    {
+        for (;;)
+        {
+            if (isReady) break;
+            yield return null;
+        }
+        callback.Invoke();
     }
 
     public virtual void SetTarget(Transform target = null)
@@ -569,11 +592,14 @@ public class WeaponController : Photon.MonoBehaviour
     public void SetWeaponCustom(int type, int level = 1)
     {
         WeaponLevelController wepLvCtrl = GetComponent<WeaponLevelController>();
-        if (wepLvCtrl != null) wepLvCtrl.Init(type, level);
+        if (wepLvCtrl != null)
+        {
+            WaitReadyAction(() => wepLvCtrl.Init(type, level));
+        }
     }
 
     //リロード時間
-    public void CustomReloadTime(int value)
+    public void CustomReloadTime(float value)
     {
         reloadTime *= 1 + (value / 100);
         if (reloadTime < 0) reloadTime = 0;

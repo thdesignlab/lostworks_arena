@@ -30,7 +30,7 @@ GameObject:
   - 54: {fileID: 5456334}
   - 114: {fileID: 11473420}
   - 114: {fileID: 11428462}
-  - 136: {fileID: 13665918}
+  - 136: {fileID: 13639426}
   m_Layer: 0
   m_Name: RifleBullet
   m_TagString: Bullet
@@ -45,7 +45,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 163624}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.19, y: 0.83, z: 0.32}
+  m_LocalPosition: {x: 24.676134, y: 5.0199356, z: -45.668365}
   m_LocalScale: {x: 0.8, y: 0.8, z: 1.5}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -176,7 +176,7 @@ MonoBehaviour:
   isLockOn: 0
   UseGravity: 0
   hitEffect: {fileID: 135988, guid: d7cd433d10510fe46a35c39bac480fe1, type: 2}
-  speed: 600
+  speed: 500
   damage: 15
   damagePerSecond: 0
   stuckTime: 0.5
@@ -225,19 +225,19 @@ MonoBehaviour:
   activeLimitTime: 3
   activeLimitDistance: 0
   isNotAutoBreak: 0
---- !u!136 &13665918
+--- !u!136 &13639426
 CapsuleCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 163624}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 1
   m_Height: 6
   m_Direction: 2
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 0, z: -3}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

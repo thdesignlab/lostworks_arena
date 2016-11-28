@@ -115,4 +115,29 @@ public class ObjectController : Photon.MonoBehaviour {
         activeTime = 0;
         activeDistance = 0;
     }
+
+
+    //##### CUSTOM #####
+
+    //ActiveTime
+    public void CustomActiveTime(float value)
+    {
+        if (activeLimitTime <= 0) return;
+        activeLimitTime *= 1 + (value + 100);
+        if (activeLimitTime <= 0) activeLimitTime = 0.1f;
+    }
+
+    //ActiveDistance
+    public void CustomActiveDistance(float value)
+    {
+        if (activeLimitDistance <= 0) return;
+        activeLimitDistance *= 1 + (value + 100);
+        if (activeLimitDistance <= 0) activeLimitDistance = 10; ;
+    }
+
+    //SpawnEffect
+    public void CustomSpawnEffect(GameObject obj)
+    {
+        effectSpawn = obj;
+    }
 }

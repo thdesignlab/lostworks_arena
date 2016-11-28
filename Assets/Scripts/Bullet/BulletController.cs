@@ -30,17 +30,21 @@ public class BulletController : MoveOfCharacter
 
     protected Transform targetTran;
     protected PlayerStatus targetStatus;
-    protected Collider myCollider;
     protected Transform ownerTran;
     protected PlayerStatus ownerStatus;
     protected int ownerId = -1;
     protected Transform weaponTran;
+    private Collider _myCollider;
+    protected Collider myCollider
+    {
+        get { return _myCollider ? _myCollider : _myCollider = transform.GetComponentInChildren<Collider>(); }
+    }
     private ObjectController _obCtrl;
     protected ObjectController obCtrl
     {
         get { return _obCtrl ? _obCtrl : _obCtrl = GetComponent<ObjectController>(); }
     }
-
+    protected BulletLevelController bulletLevelCtrl;
 
     protected AudioController audioCtrl;
     protected StatusChangeController statusChangeCtrl;
@@ -50,8 +54,6 @@ public class BulletController : MoveOfCharacter
         base.Awake();
 
         //判定一時削除
-        myCollider = myTran.GetComponentInChildren<Collider>();
-
         if (myCollider != null)
         {
             myCollider.enabled = (safetyTime == 0) ? true : false;
@@ -384,6 +386,8 @@ public class BulletController : MoveOfCharacter
         if (weaponTran != null)
         {
             //カスタム処理
+            bulletLevelCtrl = weaponTran.GetComponent<BulletLevelController>();
+            if (bulletLevelCtrl != null) bulletLevelCtrl.BulletCustom(this);
         }
 
         if (isSendRPC)
@@ -460,5 +464,72 @@ public class BulletController : MoveOfCharacter
     public string GetWeaponName()
     {
         return (weaponTran != null) ? weaponTran.name : myTran.name;
+    }
+
+
+    //##### CUSTOM #####
+    
+    //ダメージ
+    public virtual void CustomDamage(float value)
+    {
+        damage = (int)(damage * (1 + (value / 100)));
+        if (damage < 0) damage = 0;
+    }
+
+    //旋回速度UP
+    public virtual void CustomTurnSpeed(float value)
+    {
+        return;
+    }
+
+    //判定拡大
+    public virtual void CustomCollider(float value)
+    {
+        if (myCollider == null) return;
+        float rate = 1 + (value / 100);
+        switch (myCollider.GetType().Name)
+        {
+            case "BoxCollider":
+                BoxCollider box = (BoxCollider)myCollider;
+                box.size *= rate;
+                break;
+
+            case "SphereCollider":
+                SphereCollider sphere = (SphereCollider)myCollider;
+                sphere.radius *= rate;
+                break;
+
+            case "CapsuleCollider":
+                CapsuleCollider capsule = (CapsuleCollider)myCollider;
+                capsule.radius *= rate;
+                capsule.height *= rate;
+                break;
+        }
+    }
+
+    //ActiveTime
+    public virtual void CustomActiveTime(float value)
+    {
+        if (obCtrl != null) obCtrl.CustomActiveTime(value);
+    }
+
+    //ActiveDistance
+    public virtual void CustomActiveDistance(float value)
+    {
+        if (obCtrl != null) obCtrl.CustomActiveDistance(value);
+    }
+
+    //StuckTime
+    public virtual void CustomStuckTime(float value)
+    {
+        stuckTime *= 1 + (value / 100);
+        if (stuckTime < 0) stuckTime = 0;
+    }
+
+    //Knockback
+    public virtual void CustomKnockBack(float value)
+    {
+        knockBackRate *= 1 + (value / 100);
+        if (knockBackRate < 0) knockBackRate = 0;
     }
 }

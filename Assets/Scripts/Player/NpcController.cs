@@ -528,7 +528,13 @@ public class NpcController : MoveOfCharacter
             if (parts != null)
             {
                 //装備
-                EquipWeapon(parts, weaponName);
+                GameObject weapon = EquipWeapon(parts, weaponName);
+                if (weapon != null)
+                {
+                    //ユーザーのカスタムレベルをコピー
+                    int type = UserManager.GetWeaponCustomType(weaponNo);
+                    weapon.GetComponent<WeaponController>().SetWeaponCustom(type);
+                }
             }
         }
         SetWeapons();
@@ -538,9 +544,9 @@ public class NpcController : MoveOfCharacter
             w.SetEnable(true);
         }
     }
-    private void EquipWeapon(Transform parts, string weaponName)
+    private GameObject EquipWeapon(Transform parts, string weaponName)
     {
-        if (parts == null || string.IsNullOrEmpty(weaponName)) return;
+        if (parts == null || string.IsNullOrEmpty(weaponName)) return null;
 
         //すでに装備している場合は破棄
         foreach (Transform child in parts)
@@ -551,5 +557,7 @@ public class NpcController : MoveOfCharacter
         GameObject weaponObj = PhotonNetwork.Instantiate(Common.Func.GetResourceWeapon(weaponName), parts.position, parts.rotation, 0);
         weaponObj.name = weaponObj.name.Replace("(Clone)", "");
         weaponObj.transform.SetParent(parts.transform, true);
+
+        return weaponObj;
     }
 }

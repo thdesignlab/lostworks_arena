@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -86,16 +88,36 @@ public abstract class WeaponLevelController : Photon.MonoBehaviour
     [PunRPC]
     protected void RetrunCustomLevelRPC()
     {
-        StartCoroutine(CustomLevelSyncProc());
+        WaitCustomReady(() => CustomLevelSync());
     }
-    IEnumerator CustomLevelSyncProc()
+    //IEnumerator CustomLevelSyncProc()
+    //{
+    //    for (;;)
+    //    {
+    //        if (!isReady) yield return null;
+    //        CustomLevelSync();
+    //        break;
+    //    }
+    //}
+    protected void WaitCustomReady(UnityAction callback)
+    {
+        if (isReady)
+        {
+            callback.Invoke();
+        }
+        else
+        {
+            StartCoroutine(WaitCustomReadyProc(callback));
+        }
+    }
+    IEnumerator WaitCustomReadyProc(UnityAction callback)
     {
         for (;;)
         {
-            if (!isReady) yield return null;
-            CustomLevelSync();
-            break;
+            if (isReady) break;
+            yield return null;
         }
+        callback.Invoke();
     }
 
     //カスタムSystemセットアップ
@@ -104,20 +126,22 @@ public abstract class WeaponLevelController : Photon.MonoBehaviour
     //武器強化
     protected void WeaponCustom()
     {
-        Debug.Log("WeaponCustom: "+transform.name);
-        for (int i = 0; i < customSystemList.Count; i++)
+        UnityAction callback = () =>
         {
-            int customSystem = customSystemList[i];
-            int effectValue = effectValueList[i] * myCustomLevel;
-            Debug.Log(customSystem+" >> "+ effectValue);
-            WeaponCustomExe(customSystem, effectValue);
-        }
+            for (int i = 0; i < customSystemList.Count; i++)
+            {
+                int customSystem = customSystemList[i];
+                int effectValue = effectValueList[i] * myCustomLevel;
+                WeaponCustomExe(customSystem, effectValue);
+            }
+        };
+
+        WaitCustomReady(callback);
     }
 
     //強化実行
     protected virtual void WeaponCustomExe(int customSystem, int effectValue)
     {
-        Debug.Log("base WeaponCustomExe");
         switch (customSystem)
         {
             case CUSTOM_SYSTEM_RELOAD_REDUCTION:
