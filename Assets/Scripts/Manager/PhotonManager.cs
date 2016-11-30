@@ -81,7 +81,8 @@ public class PhotonManager : MonoBehaviour
             Camera.main.transform.localRotation = topCameraQuat;
 
             //Androidステータスバー
-            ApplicationChrome.statusBarState = ApplicationChrome.States.TranslucentOverContent;
+            //ApplicationChrome.statusBarState = ApplicationChrome.States.TranslucentOverContent;
+            ApplicationChrome.statusBarState = ApplicationChrome.States.Visible;
             ApplicationChrome.navigationBarState = ApplicationChrome.States.Hidden;
 
             //ユーザー情報取得

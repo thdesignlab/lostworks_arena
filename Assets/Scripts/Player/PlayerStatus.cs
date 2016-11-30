@@ -735,10 +735,9 @@ public class PlayerStatus : Photon.MonoBehaviour {
     }
 
     //SP回復量
-    Coroutine spChange;
     public void AccelerateRecoverSp(float rate, float limit, GameObject effect = null, bool isSendRPC = true)
     {
-        spChange = StartCoroutine(CheckAccelerateRecoverSp(rate, limit, effect));
+        StartCoroutine(CheckAccelerateRecoverSp(rate, limit, effect));
         if (isSendRPC)
         {
             int parentViewId = (effect != null) ? GetParentViewId(effect) : - 1;
@@ -764,10 +763,9 @@ public class PlayerStatus : Photon.MonoBehaviour {
     }
 
     //攻撃力
-    Coroutine attackChange;
     public void ChangeAttackRate(float rate, float limit, GameObject effect = null, bool isSendRPC = true)
     {
-        attackChange = StartCoroutine(ChangeAttackRateProc(rate, limit, effect));
+        StartCoroutine(ChangeAttackRateProc(rate, limit, effect));
         if (isSendRPC)
         {
             int parentViewId = (effect != null) ? GetParentViewId(effect) : -1;
