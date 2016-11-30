@@ -87,7 +87,7 @@ namespace Weapon
 
             foreach (MasterWeapon mstWeapon in ModelManager.mstWeaponList)
             {
-                Common.Weapon.SetWeaponInfo(mstWeapon.weapon_no, mstWeapon.name, mstWeapon.description);
+                Common.Weapon.SetWeaponInfo(mstWeapon.weapon_no, mstWeapon.name, mstWeapon.rubi, mstWeapon.description);
             }
         }
     }

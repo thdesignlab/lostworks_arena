@@ -31,8 +31,8 @@ public class UserManager
         userOpenMusics = new List<int>() { };
         userCustomWeapons = new Dictionary<int, int> { };
         isAdmin = false;
-        userPoint = 0;
         apiToken = "";
+        userPoint = -1;
     }
 
     //ユーザー情報設定

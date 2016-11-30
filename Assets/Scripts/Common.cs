@@ -618,89 +618,90 @@ namespace Common
         public const int DETAIL_NAME_NO = 1;            //武器名
         public const int DETAIL_DESCRIPTION_NO = 2;     //説明
         public const int DETAIL_OBTAIN_TYPE_NO = 3;     //取得タイプ
+        public const int DETAIL_RUBY_NO = 4;     //武器名読み
 
         //ハンド武器リスト
         public static Dictionary<int, string[]> handWeaponLineUp = new Dictionary<int, string[]>()
         {
-            { 1000, new string[]{ "Rifle", "", "", OBTAIN_TYPE_INIT}},
-            { 1001, new string[]{ "BlasterLauncher", "", "", OBTAIN_TYPE_INIT}},
-            { 1002, new string[]{ "BeamCannon", "", "", OBTAIN_TYPE_INIT}},
-            { 1003, new string[]{ "PlasmaGun", "", "", OBTAIN_TYPE_INIT}},
-            { 1004, new string[]{ "BlazePillar", "", "", OBTAIN_TYPE_INIT}},
-            { 1005, new string[]{ "CERifle", "", "", OBTAIN_TYPE_INIT}},
-            { 1006, new string[]{ "Stinger", "", "", OBTAIN_TYPE_INIT}},
-            { 1007, new string[]{ "TridentPillar", "", "", OBTAIN_TYPE_INIT}},
-            { 1008, new string[]{ "FlameRadiation", "", "", OBTAIN_TYPE_STORE}},
-            { 1009, new string[]{ "HeartGun", "", "", OBTAIN_TYPE_INIT}},
-            { 1010, new string[]{ "Human", "", "", OBTAIN_TYPE_INIT}},
-            { 1011, new string[]{ "Whirlwind", "", "", OBTAIN_TYPE_INIT}},
+            { 1000, new string[]{ "Rifle", "", "", OBTAIN_TYPE_INIT, ""}},
+            { 1001, new string[]{ "BlasterLauncher", "", "", OBTAIN_TYPE_INIT, ""}},
+            { 1002, new string[]{ "BeamCannon", "", "", OBTAIN_TYPE_INIT, ""}},
+            { 1003, new string[]{ "PlasmaGun", "", "", OBTAIN_TYPE_INIT, ""}},
+            { 1004, new string[]{ "BlazePillar", "", "", OBTAIN_TYPE_INIT, ""}},
+            { 1005, new string[]{ "CERifle", "", "", OBTAIN_TYPE_INIT, ""}},
+            { 1006, new string[]{ "Stinger", "", "", OBTAIN_TYPE_INIT, ""}},
+            { 1007, new string[]{ "TridentPillar", "", "", OBTAIN_TYPE_INIT, ""}},
+            { 1008, new string[]{ "FlameRadiation", "", "", OBTAIN_TYPE_STORE, ""}},
+            { 1009, new string[]{ "HeartGun", "", "", OBTAIN_TYPE_INIT, ""}},
+            { 1010, new string[]{ "Human", "", "", OBTAIN_TYPE_INIT, ""}},
+            { 1011, new string[]{ "Whirlwind", "", "", OBTAIN_TYPE_INIT, ""}},
         };
         //ハンド武器(ダッシュ)リスト
         public static Dictionary<int, string[]> handDashWeaponLineUp = new Dictionary<int, string[]>()
         {
-            { 2000, new string[]{ "MachineGun", "", "", OBTAIN_TYPE_INIT}},
-            { 2001, new string[]{ "GatlingGun", "", "", OBTAIN_TYPE_INIT}},
-            { 2002, new string[]{ "PulseGun", "", "", OBTAIN_TYPE_INIT}},
-            { 2003, new string[]{ "ThrowingDagger", "", "", OBTAIN_TYPE_INIT}},
-            { 2004, new string[]{ "PenetrateDagger", "", "", OBTAIN_TYPE_INIT}},
-            { 2005, new string[]{ "LaserBlade", "", "", OBTAIN_TYPE_INIT}},
-            { 2006, new string[]{ "BulletBomb", "", "", OBTAIN_TYPE_INIT}},
-            { 2007, new string[]{ "Grudge", "", "", OBTAIN_TYPE_INIT}},
-            { 2008, new string[]{ "MachinegunBit", "", "", OBTAIN_TYPE_INIT}},
-            { 2009, new string[]{ "GatlingClaw", "", "", OBTAIN_TYPE_STORE}},
-            { 2010, new string[]{ "PlasmaBlade", "", "", OBTAIN_TYPE_INIT}},
+            { 2000, new string[]{ "MachineGun", "", "", OBTAIN_TYPE_INIT, ""}},
+            { 2001, new string[]{ "GatlingGun", "", "", OBTAIN_TYPE_INIT, ""}},
+            { 2002, new string[]{ "PulseGun", "", "", OBTAIN_TYPE_INIT, ""}},
+            { 2003, new string[]{ "ThrowingDagger", "", "", OBTAIN_TYPE_INIT, ""}},
+            { 2004, new string[]{ "PenetrateDagger", "", "", OBTAIN_TYPE_INIT, ""}},
+            { 2005, new string[]{ "LaserBlade", "", "", OBTAIN_TYPE_INIT, ""}},
+            { 2006, new string[]{ "BulletBomb", "", "", OBTAIN_TYPE_INIT, ""}},
+            { 2007, new string[]{ "Grudge", "", "", OBTAIN_TYPE_INIT, ""}},
+            { 2008, new string[]{ "MachinegunBit", "", "", OBTAIN_TYPE_INIT, ""}},
+            { 2009, new string[]{ "GatlingClaw", "", "", OBTAIN_TYPE_STORE, ""}},
+            { 2010, new string[]{ "PlasmaBlade", "", "", OBTAIN_TYPE_INIT, ""}},
         };
         //背中武器リスト
         public static Dictionary<int, string[]> shoulderWeaponLineUp = new Dictionary<int, string[]>()
         {
-            { 3000, new string[]{ "Bioparachute", "", "", OBTAIN_TYPE_INIT }},
-            { 3001, new string[]{ "HugeLaser", "", "", OBTAIN_TYPE_INIT}},
-            { 3002, new string[]{ "SatelliteMissile", "", "", OBTAIN_TYPE_INIT}},
-            { 3003, new string[]{ "Cyclone", "", "", OBTAIN_TYPE_INIT}},
-            { 3004, new string[]{ "EnergyShield", "", "", OBTAIN_TYPE_INIT}},
-            { 3005, new string[]{ "ChargeArrow", "", "", OBTAIN_TYPE_INIT}},
-            { 3006, new string[]{ "SearchRay", "", "", OBTAIN_TYPE_STORE}},
-            { 3007, new string[]{ "EnergyLauncher", "", "", OBTAIN_TYPE_INIT }},
-            { 3008, new string[]{ "HighBeamCannon", "", "", OBTAIN_TYPE_INIT }},
-            { 3009, new string[]{ "ChemicalCannon", "", "", OBTAIN_TYPE_INIT }},
-            { 3010, new string[]{ "ReflectionWall", "", "", OBTAIN_TYPE_INIT}},
+            { 3000, new string[]{ "Bioparachute", "", "", OBTAIN_TYPE_INIT, ""}},
+            { 3001, new string[]{ "HugeLaser", "", "", OBTAIN_TYPE_INIT, ""}},
+            { 3002, new string[]{ "SatelliteMissile", "", "", OBTAIN_TYPE_INIT, ""}},
+            { 3003, new string[]{ "Cyclone", "", "", OBTAIN_TYPE_INIT, ""}},
+            { 3004, new string[]{ "EnergyShield", "", "", OBTAIN_TYPE_INIT, ""}},
+            { 3005, new string[]{ "ChargeArrow", "", "", OBTAIN_TYPE_INIT, ""}},
+            { 3006, new string[]{ "SearchRay", "", "", OBTAIN_TYPE_STORE, ""}},
+            { 3007, new string[]{ "EnergyLauncher", "", "", OBTAIN_TYPE_INIT, "" }},
+            { 3008, new string[]{ "HighBeamCannon", "", "", OBTAIN_TYPE_INIT, "" }},
+            { 3009, new string[]{ "ChemicalCannon", "", "", OBTAIN_TYPE_INIT, "" }},
+            { 3010, new string[]{ "ReflectionWall", "", "", OBTAIN_TYPE_INIT, ""}},
         };
         //背中武器(ダッシュ)リスト
         public static Dictionary<int, string[]> shoulderDashWeaponLineUp = new Dictionary<int, string[]>()
         {
-            { 4000, new string[]{ "MissileLauncher", "", "", OBTAIN_TYPE_INIT}},
-            { 4001, new string[]{ "ClusterLaser", "", "", OBTAIN_TYPE_INIT}},
-            { 4002, new string[]{ "GatlingBit", "", "", OBTAIN_TYPE_INIT}},
-            { 4003, new string[]{ "Shotgun", "", "", OBTAIN_TYPE_INIT}},
-            { 4004, new string[]{ "RoundMissile", "", "", OBTAIN_TYPE_INIT}},
-            { 4005, new string[]{ "AssaultCharge", "", "", OBTAIN_TYPE_INIT}},
-            { 4006, new string[]{ "ClusterMissile", "", "", OBTAIN_TYPE_STORE}},
-            { 4007, new string[]{ "BlasterBomer", "", "", OBTAIN_TYPE_INIT}},
-            { 4008, new string[]{ "HeatCannon", "", "", OBTAIN_TYPE_INIT}},
+            { 4000, new string[]{ "MissileLauncher", "", "", OBTAIN_TYPE_INIT, ""}},
+            { 4001, new string[]{ "ClusterLaser", "", "", OBTAIN_TYPE_INIT, ""}},
+            { 4002, new string[]{ "GatlingBit", "", "", OBTAIN_TYPE_INIT, ""}},
+            { 4003, new string[]{ "Shotgun", "", "", OBTAIN_TYPE_INIT, ""}},
+            { 4004, new string[]{ "RoundMissile", "", "", OBTAIN_TYPE_INIT, ""}},
+            { 4005, new string[]{ "AssaultCharge", "", "", OBTAIN_TYPE_INIT, ""}},
+            { 4006, new string[]{ "ClusterMissile", "", "", OBTAIN_TYPE_STORE, ""}},
+            { 4007, new string[]{ "BlasterBomer", "", "", OBTAIN_TYPE_INIT, ""}},
+            { 4008, new string[]{ "HeatCannon", "", "", OBTAIN_TYPE_INIT, ""}},
         };
         //サブ武器リスト
         public static Dictionary<int, string[]> subWeaponLineUp = new Dictionary<int, string[]>()
         {
-            { 5001, new string[]{ "AvoidBurst", "", "", OBTAIN_TYPE_INIT}},
-            { 5000, new string[]{ "InvincibleShield", "", "", OBTAIN_TYPE_NONE}},
-            { 5002, new string[]{ "BoostRecoverSp", "", "", OBTAIN_TYPE_INIT}},
-            { 5003, new string[]{ "SpeedBurst", "", "", OBTAIN_TYPE_INIT}},
-            { 5004, new string[]{ "AttackBurst", "", "", OBTAIN_TYPE_INIT}},
-            { 5005, new string[]{ "DefenceBurst", "", "", OBTAIN_TYPE_INIT}},
+            { 5001, new string[]{ "AvoidBurst", "", "", OBTAIN_TYPE_INIT, ""}},
+            { 5000, new string[]{ "InvincibleShield", "", "", OBTAIN_TYPE_NONE, ""}},
+            { 5002, new string[]{ "BoostRecoverSp", "", "", OBTAIN_TYPE_INIT, ""}},
+            { 5003, new string[]{ "SpeedBurst", "", "", OBTAIN_TYPE_INIT, ""}},
+            { 5004, new string[]{ "AttackBurst", "", "", OBTAIN_TYPE_INIT, ""}},
+            { 5005, new string[]{ "DefenceBurst", "", "", OBTAIN_TYPE_INIT, ""}},
         };
         //スペシャル武器リスト
         public static Dictionary<int, string[]> extraWeaponLineUp = new Dictionary<int, string[]>()
         {
-            { 10000, new string[]{ "ExtraArmor", "ExArmor", "", OBTAIN_TYPE_INIT}},
-            { 10001, new string[]{ "ExtraBeam", "ExBeam", "", OBTAIN_TYPE_INIT}},
-            { 10002, new string[]{ "ExtraBurning", "ExBurning", "", OBTAIN_TYPE_INIT}},
-            { 10003, new string[]{ "ExtraRifle", "ExRifle", "", OBTAIN_TYPE_INIT}},
-            { 10004, new string[]{ "ExtraShadowSewing", "ExShadowDagger", "", OBTAIN_TYPE_INIT}},
-            { 10005, new string[]{ "ExtraClaw", "ExClaw", "", OBTAIN_TYPE_INIT}},
-            { 10006, new string[]{ "ExtraHolyRay", "ExHolyRay", "", OBTAIN_TYPE_INIT}},
-            { 10007, new string[]{ "ExtraScythe", "ExScythe", "", OBTAIN_TYPE_INIT}},
-            { 10008, new string[]{ "ExtraMissileLauncher", "ExMissileLauncher", "", OBTAIN_TYPE_INIT}},
-            { 10009, new string[]{ "ExtraGatling", "ExGatling", "", OBTAIN_TYPE_INIT}},
+            { 10000, new string[]{ "ExtraArmor", "ExArmor", "", OBTAIN_TYPE_INIT, ""}},
+            { 10001, new string[]{ "ExtraBeam", "ExBeam", "", OBTAIN_TYPE_INIT, ""}},
+            { 10002, new string[]{ "ExtraBurning", "ExBurning", "", OBTAIN_TYPE_INIT, ""}},
+            { 10003, new string[]{ "ExtraRifle", "ExRifle", "", OBTAIN_TYPE_INIT, ""}},
+            { 10004, new string[]{ "ExtraShadowSewing", "ExShadowDagger", "", OBTAIN_TYPE_INIT, ""}},
+            { 10005, new string[]{ "ExtraClaw", "ExClaw", "", OBTAIN_TYPE_INIT, ""}},
+            { 10006, new string[]{ "ExtraHolyRay", "ExHolyRay", "", OBTAIN_TYPE_INIT, ""}},
+            { 10007, new string[]{ "ExtraScythe", "ExScythe", "", OBTAIN_TYPE_INIT, ""}},
+            { 10008, new string[]{ "ExtraMissileLauncher", "ExMissileLauncher", "", OBTAIN_TYPE_INIT, ""}},
+            { 10009, new string[]{ "ExtraGatling", "ExGatling", "", OBTAIN_TYPE_INIT, ""}},
         };
 
         ////武器情報取得FLG
@@ -822,12 +823,16 @@ namespace Common
         }
 
         //武器情報セット
-        public static void SetWeaponInfo(int weaponNo, string name = "", string description = "")
+        public static void SetWeaponInfo(int weaponNo, string name = "", string ruby = "", string description = "")
         {
             string[] weaponInfo = GetWeaponInfo(weaponNo);
             if (!string.IsNullOrEmpty(name))
             {
                 weaponInfo[DETAIL_NAME_NO] = name;
+            }
+            if (!string.IsNullOrEmpty(ruby))
+            {
+                weaponInfo[DETAIL_RUBY_NO] = ruby;
             }
             if (!string.IsNullOrEmpty(description))
             {
