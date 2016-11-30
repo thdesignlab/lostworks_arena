@@ -680,6 +680,7 @@ namespace Common
             { 4006, new string[]{ "ClusterMissile", "", "", OBTAIN_TYPE_STORE, ""}},
             { 4007, new string[]{ "BlasterBomer", "", "", OBTAIN_TYPE_INIT, ""}},
             { 4008, new string[]{ "HeatCannon", "", "", OBTAIN_TYPE_INIT, ""}},
+            { 4009, new string[]{ "SorwdGeyser", "", "", OBTAIN_TYPE_INIT, ""}},
         };
         //サブ武器リスト
         public static Dictionary<int, string[]> subWeaponLineUp = new Dictionary<int, string[]>()
