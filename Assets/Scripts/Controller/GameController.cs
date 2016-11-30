@@ -1089,7 +1089,6 @@ public class GameController : SingletonMonoBehaviour<GameController>
     {
         int defaultWinCount = 0;
         if (gameMode == GAME_MODE_VS) defaultWinCount = VS_DEFAULT_WIN_COUNT;
-        Debug.Log("ResetWinMark >> "+ defaultWinCount);
         winCount = defaultWinCount;
         loseCount = defaultWinCount;
         myStatus.SetWinMark(winCount, loseCount);

@@ -68,16 +68,16 @@ public class CustomManager : CustomCommonManager
     private int tableIndex = 0;
     private float charaChangeAngle = 120.0f;
     private float charaChangeTime = 1.0f;
-    private float charaSideAngle = 10.0f;
-    private float charaSideTime = 0.2f;
+    //private float charaSideAngle = 10.0f;
+    //private float charaSideTime = 0.2f;
     private bool isTurnTable = false;
 
     //キャンバスステータス
     private int selectedPartsNo = -1;
-    private float selectModeTime = 0.2f;
+    //private float selectModeTime = 0.2f;
 
     //武器セレクトエリア
-    private bool isOpenWeaponCanvas = false;
+    //private bool isOpenWeaponCanvas = false;
     private ScrollRect weaponScrollView;
     private LayoutElement weaponScrollViewLayout;
     private RectTransform weaponButtonAreaRectTran;
@@ -282,7 +282,14 @@ public class CustomManager : CustomCommonManager
         if (colorChangeButton != null)
         {
             bool isExistsColor = (selectableCharaList[charaIndex].Count >= 2);
-            if (isExistsColor) colorChangeButton.SetActive(flg);
+            if (isExistsColor)
+            {
+                colorChangeButton.SetActive(flg);
+            }
+            else
+            {
+                colorChangeButton.SetActive(false);
+            }
         }
     }
 
