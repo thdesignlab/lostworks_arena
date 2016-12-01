@@ -371,6 +371,10 @@ public class UserManager
 
     //##### ユーザーキャラクター #####
 
+    public static bool OpenNewCharacter(int npcNo)
+    {
+        return false;
+    }
 
     //##### 解放ミッション #####
 

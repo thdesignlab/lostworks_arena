@@ -1085,6 +1085,8 @@ public class GameController : SingletonMonoBehaviour<GameController>
 
             //次のステージOPEN
             UserManager.OpenNextMission(stageLevel, stageNo);
+
+            //npcNo
         }
 
         //次のステージチェック

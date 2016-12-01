@@ -522,6 +522,7 @@ namespace Common
         public const string OBTAIN_TYPE_NONE = "NONE";
         public const string OBTAIN_TYPE_INIT = "INIT";
         public const string OBTAIN_TYPE_STORE = "STORE";
+        public const string OBTAIN_TYPE_MISSION = "MISSION";
 
         //武器リストNo
         public const int DETAIL_PREFAB_NAME_NO = 0;     //プレハブ名
@@ -534,15 +535,15 @@ namespace Common
         public static Dictionary<int, string[]> characterLineUp = new Dictionary<int, string[]>()
         {
             {100, new string[]{ "Hero1", "Proto", "0", OBTAIN_TYPE_INIT, "10000"}},
-            {101, new string[]{ "Hero1", "Proto", "1", OBTAIN_TYPE_INIT, "10000"}},
+            {101, new string[]{ "Hero1", "Proto", "1", OBTAIN_TYPE_MISSION, "10000"}},
             {200, new string[]{ "Hero2", "Aria", "0", OBTAIN_TYPE_INIT, "10001"}},
-            {201, new string[]{ "Hero2", "Aria", "1", OBTAIN_TYPE_INIT, "10001"}},
+            {201, new string[]{ "Hero2", "Aria", "1", OBTAIN_TYPE_MISSION, "10001"}},
             {300, new string[]{ "Hero3", "Mike", "0", OBTAIN_TYPE_INIT, "10005"}},
-            {301, new string[]{ "Hero3", "Mike", "1", OBTAIN_TYPE_INIT, "10005"}},
+            {301, new string[]{ "Hero3", "Mike", "1", OBTAIN_TYPE_MISSION, "10005"}},
             {400, new string[]{ "Hero4", "Makina", "0", OBTAIN_TYPE_INIT, "10006"}},
-            {401, new string[]{ "Hero4", "Makina", "1", OBTAIN_TYPE_INIT, "10006"}},
+            {401, new string[]{ "Hero4", "Makina", "1", OBTAIN_TYPE_MISSION, "10006"}},
             {500, new string[]{ "Hero5", "Unknown", "0", OBTAIN_TYPE_INIT, "10007"}},
-            {501, new string[]{ "Hero5", "Unknown", "1", OBTAIN_TYPE_INIT, "10007"}},
+            {501, new string[]{ "Hero5", "Unknown", "1", OBTAIN_TYPE_MISSION, "10007"}},
             {600, new string[]{ "Hero6", "Vaio", "0", OBTAIN_TYPE_INIT, "10010"}},
             {10000, new string[]{ "Npc1", "Bit", "0", OBTAIN_TYPE_NONE, "10002"}},
             {10001, new string[]{ "Npc2", "BitBrack", "0", OBTAIN_TYPE_NONE, "10003"}},
@@ -707,26 +708,6 @@ namespace Common
             { 10009, new string[]{ "ExtraGatling", "ExGatling", "", OBTAIN_TYPE_INIT, ""}},
             { 10010, new string[]{ "ExtraMedoroa", "Medoroa", "", OBTAIN_TYPE_INIT, ""}},
         };
-
-        ////武器情報取得FLG
-        //public static bool isGetWeaponDescription = false;
-
-        ////ストアで購入する際のpt
-        //public static Dictionary<int, int> storeNeedPoint = new Dictionary<int, int>()
-        //{
-        //    { 0, 1000 },
-        //};
-        //public static int GetStoreNeedPoint(int weaponNo)
-        //{
-        //    int point = storeNeedPoint[0];
-        //    foreach (int no in storeNeedPoint.Keys)
-        //    {
-        //        if (weaponNo != no) continue;
-        //        point = storeNeedPoint[no];
-        //        break;
-        //    }
-        //    return point;
-        //}
 
         //部位ごとの武器リスト取得
         public static Dictionary<int, string[]> GetWeaponList(int partsNo)
