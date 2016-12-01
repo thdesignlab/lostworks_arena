@@ -73,6 +73,19 @@ public class ExtraWeaponController : Photon.MonoBehaviour
         //無敵開始
         playerStatus.SetForceInvincible(true);
 
+        //攻撃モーション
+        float animTime = -1;
+        if (charaAnimator != null)
+        {
+            for (;;)
+            {
+                //Wait状態になるまで待つ
+                if (IsWaitAnimation()) break;
+                yield return null;
+            }
+            charaAnimator.SetBool(Common.CO.MOTION_EXTRA_ATTACK, true);
+        }
+
         //カメラ切り替え
         SwitchExtraCamera(true);
 
@@ -83,7 +96,7 @@ public class ExtraWeaponController : Photon.MonoBehaviour
         bool isFire = false;
         for (;;)
         {
-            float animTime = GetActionTime();
+            animTime = GetActionTime();
             if (!isReady && (charaAnimator == null || 0 < animTime && animTime < 1))
             {
                 isReady = true;
@@ -119,8 +132,10 @@ public class ExtraWeaponController : Photon.MonoBehaviour
             if (!wepCtrl.IsAction()) break;
             yield return null;
         }
+        
         //攻撃モーション終了
         SwitchExtraEffect(false);
+        if (charaAnimator != null) charaAnimator.SetBool(Common.CO.MOTION_EXTRA_ATTACK, false);
 
         //無敵解除
         playerStatus.SetForceInvincible(false);
@@ -152,8 +167,6 @@ public class ExtraWeaponController : Photon.MonoBehaviour
     [PunRPC]
     private void SwitchExtraEffectRPC(bool flg)
     {
-        //攻撃モーション
-        if (charaAnimator != null) charaAnimator.SetBool(Common.CO.MOTION_EXTRA_ATTACK, flg);
         //追加エフェクト
         if (extraEffect != null) extraEffect.SetActive(flg);
     }
@@ -186,6 +199,12 @@ public class ExtraWeaponController : Photon.MonoBehaviour
         if (!IsLeftUsableCount()) return false;
         
         return true;
+    }
+
+    public bool IsWaitAnimation()
+    {
+        AnimatorStateInfo stateInfo = charaAnimator.GetCurrentAnimatorStateInfo(0);
+        return stateInfo.IsTag(TAG_ANIMATION_WAIT);
     }
 
     private bool IsLeftUsableCount()
