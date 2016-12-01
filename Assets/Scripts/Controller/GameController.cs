@@ -398,6 +398,12 @@ public class GameController : SingletonMonoBehaviour<GameController>
                                 //ステージクリア
                                 //NextStage
                                 int preMissionLevel = UserManager.userOpenMissions[Common.PP.MISSION_LEVEL];
+
+                                //キャラ開放チェック
+                                Coroutine checkOpenChara = StartCoroutine(CheckOpenCharacter());
+                                yield return checkOpenChara;
+
+                                //NextStageチェック
                                 if (SetNextStage())
                                 {
                                     isStageSetting = true;
@@ -1025,7 +1031,6 @@ public class GameController : SingletonMonoBehaviour<GameController>
                         //管理者
                         txt.color = Color.yellow;
                         btn.onClick.AddListener(() => OnSelectLevel(setLevel));
-                        isAdminPlay = true;
                     }
                     else
                     {
@@ -1056,6 +1061,8 @@ public class GameController : SingletonMonoBehaviour<GameController>
     {
         stageLevel = level;
         levelSelectCanvas.SetActive(false);
+        if (UserManager.userOpenMissions[Common.PP.MISSION_LEVEL] < level) isAdminPlay = true;
+        Debug.Log("isAdminPlay >> "+ isAdminPlay);
     }
 
     //次のレベル挑戦
@@ -1073,6 +1080,40 @@ public class GameController : SingletonMonoBehaviour<GameController>
         return stageNo;
     }
 
+    IEnumerator CheckOpenCharacter()
+    {
+        bool isChecked = true;
+        if (!isAdminPlay)
+        {
+            Debug.Log("npcNo >> " + npcNo);
+            if (UserManager.OpenNewCharacter(npcNo))
+            {
+                //キャラOPEN
+                isChecked = false;
+                string title = "キャラクター解放!!";
+                string text = "";
+                string charaIconName = "CharaIcon/chara_" + npcNo.ToString();
+                //Sprite charaIcon = Resources.Load<Sprite>(Common.Func.GetResourceSprite("CharaIcon/chara_" + npcNo.ToString()));
+                Dictionary<string, UnityAction> btnList = new Dictionary<string, UnityAction>();
+                btnList.Add("OK", () => { isChecked = true; });
+                DialogController.OpenSelectDialog(title, text, charaIconName, btnList, false);
+            }
+        }
+
+        float waitTime = 10;
+        for (;;)
+        {
+            if (isChecked) break;
+            waitTime -= Time.deltaTime;
+            if (waitTime <= 0)
+            {
+                DialogController.CloseDialog();
+                isChecked = true;
+            }
+            yield return null;
+        }
+    }
+
     //次のステージNo設定
     private bool SetNextStage()
     {
@@ -1085,8 +1126,6 @@ public class GameController : SingletonMonoBehaviour<GameController>
 
             //次のステージOPEN
             UserManager.OpenNextMission(stageLevel, stageNo);
-
-            //npcNo
         }
 
         //次のステージチェック

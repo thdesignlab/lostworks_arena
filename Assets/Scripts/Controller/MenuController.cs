@@ -91,7 +91,7 @@ public class MenuController : Photon.MonoBehaviour
 
     void OnEnable()
     {
-        if (defaultMenuPos != null) myTran.localPosition = defaultMenuPos;
+        myTran.localPosition = defaultMenuPos;
         enableMenuAction = true;
     }
 

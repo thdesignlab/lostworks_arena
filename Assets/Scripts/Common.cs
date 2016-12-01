@@ -1031,7 +1031,7 @@ namespace Common
         }
 
         //カラーチェンジするレベル
-        public const int NPC_COLOR_CHANGE_LEVEL = 6;
+        public const int NPC_COLOR_CHANGE_LEVEL = 5;
 
         public static int GetStageNpcNo(int level, int stageNo)
         {

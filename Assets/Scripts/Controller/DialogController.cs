@@ -74,19 +74,23 @@ public class DialogController : MonoBehaviour
     public static Color purpleColor = new Color32(255, 79, 221, 255);
 
     //##### 選択ダイアログ表示 #####
-    public static GameObject OpenSelectDialog(string text, Dictionary<string, UnityAction> btnInfoDic, bool isCancel = false, List<Object> btnObjects = null)
+    public static GameObject OpenSelectDialog(string text, Dictionary<string, UnityAction> btnInfoDic, bool isCancel)
+    {
+        return OpenSelectDialog("", text, "", btnInfoDic, isCancel);
+    }
+    public static GameObject OpenSelectDialog(string text, Dictionary<string, UnityAction> btnInfoDic, bool isCancel, List<Object> btnObjects)
     {
         return OpenSelectDialog("", text, "", btnInfoDic, isCancel, btnObjects);
     }
-    public static GameObject OpenSelectDialog(string text, Dictionary<string, UnityAction> btnInfoDic, bool isCancel = false, List<Color> btnColors = null)
+    public static GameObject OpenSelectDialog(string text, Dictionary<string, UnityAction> btnInfoDic, bool isCancel, List<Color> btnColors)
     {
         return OpenSelectDialog("", text, "", btnInfoDic, isCancel, null, btnColors);
     }
-    public static GameObject OpenSelectDialog(string title, string text, string imageName, Dictionary<string, UnityAction> btnInfoDic, bool isCancel = false, List<Color> btnColors = null)
+    public static GameObject OpenSelectDialog(string title, string text, string imageName, Dictionary<string, UnityAction> btnInfoDic, bool isCancel, List<Color> btnColors)
     {
         return OpenSelectDialog(title, text, imageName, btnInfoDic, isCancel, null, btnColors);
     }
-    public static GameObject OpenSelectDialog(string title, string text, string imageName, Dictionary<string, UnityAction> btnInfoDic, bool isCancel = false, List<Object> btnObjects = null, List<Color> btnColors = null)
+    public static GameObject OpenSelectDialog(string title, string text, string imageName, Dictionary<string, UnityAction> btnInfoDic, bool isCancel, List<Object> btnObjects = null, List<Color> btnColors = null)
     {
         CloseMessage();
         if (dialog != null) CloseDialog();

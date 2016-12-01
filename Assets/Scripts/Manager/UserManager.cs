@@ -373,7 +373,16 @@ public class UserManager
 
     public static bool OpenNewCharacter(int npcNo)
     {
-        return false;
+        if (!Common.Character.characterLineUp.ContainsKey(npcNo)) return false;
+        if (Common.Character.characterLineUp[npcNo][Common.Character.DETAIL_OBTAIN_TYPE_NO] != Common.Character.OBTAIN_TYPE_MISSION) return false;
+        if (userOpenCharacters.Contains(npcNo)) return false;
+
+        //解放
+        userOpenCharacters.Add(npcNo);
+        PlayerPrefsUtility.SaveList<int>(Common.PP.OPEN_CHARACTERS, userOpenCharacters);
+        PlayerPrefs.Save();
+
+        return true;
     }
 
     //##### 解放ミッション #####
