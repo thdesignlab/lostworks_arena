@@ -915,7 +915,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
         {
             if (playerStatus == null) return;
             playerStatus.Init();
-            if (playerStatus.userId.ToString() != UserManager.userInfo[Common.PP.INFO_USER_ID]) enemyUserid = playerStatus.userId;
+            if (playerStatus.userId != UserManager.GetUserId()) enemyUserid = playerStatus.userId;
         }
         if (PhotonNetwork.isMasterClient && gameMode == GAME_MODE_VS && !isVsStart)
         {

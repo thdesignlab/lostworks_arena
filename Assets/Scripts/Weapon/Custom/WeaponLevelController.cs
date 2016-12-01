@@ -6,6 +6,30 @@ using System.Collections.Generic;
 
 public abstract class WeaponLevelController : Photon.MonoBehaviour
 {
+    //##### 強化System #####
+
+    //リロード短縮
+    const int CUSTOM_SYSTEM_RELOAD_REDUCTION = 0;
+    //一定確率でリロードなし
+    const int CUSTOM_SYSTEM_NO_RELOAD = 1;
+
+
+    [SerializeField]
+    protected List<int> powerCustomSystemList;
+    [SerializeField]
+    protected List<float> powerEffectValueDiffList;
+    [SerializeField]
+    protected List<int> technicCustomSystemList;
+    [SerializeField]
+    protected List<float> technicEffectValueDiffList;
+    [SerializeField]
+    protected List<int> uniqueCustomSystemList;
+    [SerializeField]
+    protected List<float> uniqueEffectValueDiffList;
+
+    [SerializeField]
+    protected GameObject AddObject;     //追加用オブジェクト
+
     private Transform _myTran;
     protected Transform myTran
     {
@@ -29,11 +53,6 @@ public abstract class WeaponLevelController : Photon.MonoBehaviour
     protected List<float> effectValueList;
 
 
-    //##### 強化System #####
-    //リロード短縮
-    const int CUSTOM_SYSTEM_RELOAD_REDUCTION = 0;
-    //一定確率でリロードなし
-    const int CUSTOM_SYSTEM_NO_RELOAD = 1;
 
     void Start()
     {
@@ -113,7 +132,26 @@ public abstract class WeaponLevelController : Photon.MonoBehaviour
     }
 
     //カスタムSystemセットアップ
-    protected abstract void SetCustomSystem();
+    protected void SetCustomSystem()
+    {
+        switch (myCustomType)
+        {
+            case Common.Weapon.CUSTOM_TYPE_POWER:
+                customSystemList = powerCustomSystemList;
+                effectValueList = powerEffectValueDiffList;
+                break;
+
+            case Common.Weapon.CUSTOM_TYPE_TECHNIC:
+                customSystemList = technicCustomSystemList;
+                effectValueList = technicEffectValueDiffList;
+                break;
+
+            case Common.Weapon.CUSTOM_TYPE_UNIQUE:
+                customSystemList = uniqueCustomSystemList;
+                effectValueList = uniqueEffectValueDiffList;
+                break;
+        }
+    }
 
     //武器強化
     protected void WeaponCustom()

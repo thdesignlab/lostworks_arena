@@ -69,7 +69,7 @@ public class UserManager
         //ユーザーID
         if (!userInfo.ContainsKey(Common.PP.INFO_USER_ID))
         {
-            userInfo.Add(Common.PP.INFO_USER_ID, "");
+            userInfo.Add(Common.PP.INFO_USER_ID, "-1");
             isUpdate = true;
         }
         //ユーザー名
@@ -360,6 +360,16 @@ public class UserManager
         PlayerPrefs.Save();
     }
 
+    //ユーザーID取得
+    public static int GetUserId()
+    {
+        int uid = -1;
+        if (userInfo.ContainsKey(Common.PP.INFO_USER_ID))
+        {
+            uid = int.Parse(userInfo[Common.PP.INFO_USER_ID]);
+        }
+        return uid;
+    }
 
     //##### ユーザーコンフィグ #####
 

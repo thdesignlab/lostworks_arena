@@ -71,6 +71,7 @@ public abstract class BaseApi
                 //ユーザー新規作成
                 User.Create userCreate = new User.Create();
                 userCreate.SetApiFinishCallback(action);
+                userCreate.SetApiErrorIngnore();
                 userCreate.Exe();
                 return;
             }
@@ -79,6 +80,7 @@ public abstract class BaseApi
                 //ログイン
                 Auth.Login authLogin = new Auth.Login();
                 authLogin.SetApiFinishCallback(action);
+                authLogin.SetApiErrorIngnore();
                 authLogin.Exe();
                 return;
             }

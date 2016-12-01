@@ -246,7 +246,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
             {
                 StartCoroutine(SetHpSlider(hpBarMine, hpBarMineImage));
 
-                userId = int.Parse(UserManager.userInfo[Common.PP.INFO_USER_ID]);
+                userId = UserManager.GetUserId();
                 userName = UserManager.userInfo[Common.PP.INFO_USER_NAME];
                 battleRate = ModelManager.battleRecord.battle_rate;
                 object[] args = new object[] { userId, userName, battleRate };

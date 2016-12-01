@@ -5,29 +5,8 @@ using System.Collections.Generic;
 
 public class BulletLevelController : WeaponLevelController
 {
-    [SerializeField, TooltipAttribute("101:RpdCnt,102:RpdInt,103:SpreadCnt,104:SpreadDiff,105:FocusDiff,106:changeBullet")]
-    protected List<int> powerCustomSystemList;
-    [SerializeField]
-    protected List<float> powerEffectValueDiffList;
-    [SerializeField, TooltipAttribute("131:Dmg,132:TurnSpd,133:Collider,134:ActTime,135:ActDistance,136:Stuck,137:Knockback,138:HitEffect,139:BreakEffect,140:speed")]
-    protected List<int> technicCustomSystemList;
-    [SerializeField]
-    protected List<float> technicEffectValueDiffList;
-    [SerializeField, TooltipAttribute("(debuff)151:atk,152:sp,153:avd,154:spd,155:def,156:time")]
-    protected List<int> uniqueCustomSystemList;
-    [SerializeField]
-    protected List<float> uniqueEffectValueDiffList;
-
-    [SerializeField]
-    protected GameObject AddObject;     //追加用オブジェクト
-
-    private BulletWeaponController _bulletWeaponCtrl;
-    protected BulletWeaponController bulletWeaponCtrl
-    {
-        get { return _bulletWeaponCtrl ? _bulletWeaponCtrl : _bulletWeaponCtrl = GetComponent<BulletWeaponController>(); }
-    }
-
     //##### 強化System #####
+
     //発射数増加
     const int CUSTOM_SYSTEM_RAPID_COUNT = 101;
     //発射間隔
@@ -61,6 +40,8 @@ public class BulletLevelController : WeaponLevelController
     const int CUSTOM_SYSTEM_BREAK_EFFECT = 139;
     //Speed
     const int CUSTOM_SYSTEM_SPEED = 140;
+    //Scale
+    const int CUSTOM_SYSTEM_SCALE = 141;
 
     //状態異常：ATK
     const int CUSTOM_SYSTEM_DEBUFF_ATTACK = 151;
@@ -75,27 +56,13 @@ public class BulletLevelController : WeaponLevelController
     //状態異常：Time
     const int CUSTOM_SYSTEM_DEBUFF_TIME = 156;
 
+    //Effect
+    //const int CUSTOM_SYSTEM_D = 171;
 
-    //カスタムSystemセットアップ
-    protected override void SetCustomSystem()
+    private BulletWeaponController _bulletWeaponCtrl;
+    protected BulletWeaponController bulletWeaponCtrl
     {
-        switch (myCustomType)
-        {
-            case Common.Weapon.CUSTOM_TYPE_POWER:
-                customSystemList = powerCustomSystemList;
-                effectValueList = powerEffectValueDiffList;
-                break;
-
-            case Common.Weapon.CUSTOM_TYPE_TECHNIC:
-                customSystemList = technicCustomSystemList;
-                effectValueList = technicEffectValueDiffList;
-                break;
-
-            case Common.Weapon.CUSTOM_TYPE_UNIQUE:
-                customSystemList = uniqueCustomSystemList;
-                effectValueList = uniqueEffectValueDiffList;
-                break;
-        }
+        get { return _bulletWeaponCtrl ? _bulletWeaponCtrl : _bulletWeaponCtrl = GetComponent<BulletWeaponController>(); }
     }
 
     //武器強化実行
