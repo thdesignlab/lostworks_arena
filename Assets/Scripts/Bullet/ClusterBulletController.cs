@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class ClusterBulletController : TrackingBulletController
 {
@@ -11,6 +12,8 @@ public class ClusterBulletController : TrackingBulletController
     private float purgeDistance;
     [SerializeField]
     private float purgeTime;
+    [SerializeField]
+    private float purgeDiff = 0;
     [SerializeField]
     private bool isPurgeDestroy = true;
     //private bool isPurge = false;
@@ -57,32 +60,46 @@ public class ClusterBulletController : TrackingBulletController
         //isPurge = true;
 
         //発射口
-        Transform muzzle = null;
+        //Transform muzzle = null;
+        List<Transform> muzzles = new List<Transform>();
         foreach (Transform child in myTran)
         {
-            if (child.tag == Common.CO.TAG_MUZZLE)
-            {
-                muzzle = child;
-                break;
-            }
+            if (child.tag == Common.CO.TAG_MUZZLE) muzzles.Add(child);
+            //{
+                //muzzle = child;
+                //break; 
+            //}
         }
-        if (muzzle == null) muzzle = myTran;
+        //if (muzzle == null) muzzle = myTran;
+        if (muzzles.Count == 0) muzzles.Add(myTran);
 
-        if (muzzle != null)
+        //子供生成
+        float moveAngle = 360 / childeBulletCount;
+        for (int i = 0; i < childeBulletCount; i++)
         {
-            //子供生成
-            float moveAngle = 360 / childeBulletCount;
-            for (int i = 0; i < childeBulletCount; i++)
+            int muzzleIndex = i % muzzles.Count;
+            Transform muzzle = muzzles[muzzleIndex];
+            Vector3 muzzlePos = muzzle.position;
+            Quaternion muzzleRot = muzzle.rotation;
+            if (purgeDiff > 0)
             {
-                base.myTran.Rotate(Vector3.forward, moveAngle);
-                GameObject ob = PhotonNetwork.Instantiate(Common.Func.GetResourceBullet(childBullet.name), muzzle.position, muzzle.rotation, 0);
-                int bulletNo = Common.Func.GetBulletNo(myTran.root.name);
-                ob.name = ob.name + "_" + bulletNo.ToString();
-                BulletController bulletCtrl = ob.GetComponent<BulletController>();
-                bulletCtrl.BulletSetting(ownerTran, targetTran, weaponTran);
+                muzzleRot *= Quaternion.AngleAxis(Random.Range(-purgeDiff, purgeDiff), Vector3.up);
+                muzzleRot *= Quaternion.AngleAxis(Random.Range(-purgeDiff, purgeDiff), Vector3.right);
             }
-            prePurgeTime = 0;
+            else
+            {
+                if (muzzles.Count == 1)
+                {
+                    myTran.Rotate(Vector3.forward, moveAngle);
+                }
+            }
+            GameObject ob = PhotonNetwork.Instantiate(Common.Func.GetResourceBullet(childBullet.name), muzzlePos, muzzleRot, 0);
+            int bulletNo = Common.Func.GetBulletNo(myTran.root.name);
+            ob.name = ob.name + "_" + bulletNo.ToString();
+            BulletController bulletCtrl = ob.GetComponent<BulletController>();
+            bulletCtrl.BulletSetting(ownerTran, targetTran, weaponTran);
         }
+        prePurgeTime = 0;
 
         if (isPurgeDestroy)
         {

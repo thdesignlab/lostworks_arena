@@ -149,15 +149,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageEffect: {fileID: 0}
-  damage: 30
+  damage: 10
   damagePerSecond: 0
   isPhysicsBulletBreak: 0
   isEnergyBulletBreak: 0
   ownDamageRate: 0
   isFloorEffect: 1
   startScale: {x: 0, y: 0, z: 0}
-  endScale: {x: 2, y: 2, z: 6}
-  scaleTime: 0.2
+  endScale: {x: 4, y: 4, z: 6}
+  scaleTime: 0.3
   scaleLateTime: 0
   isParticle: 0
 --- !u!114 &11462776

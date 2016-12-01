@@ -119,7 +119,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 135970}
   m_LocalRotation: {x: -0.6755903, y: 0, z: 0, w: 0.73727727}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 8, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: -85, y: 0, z: 0}
   m_Children: []
@@ -132,7 +132,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 180878}
   m_LocalRotation: {x: -0.7121553, y: 0.17485562, z: 0.19082145, w: 0.65256995}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: -95, y: 30, z: 0}
   m_Children: []
@@ -158,7 +158,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 151870}
   m_LocalRotation: {x: -0.65257007, y: 0.19082142, z: 0.17485565, w: 0.71215516}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: -85, y: 30, z: 0}
   m_Children: []
@@ -171,7 +171,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 153624}
   m_LocalRotation: {x: -0.7372774, y: 0, z: 0, w: 0.67559016}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -8, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: -95, y: 0, z: 0}
   m_Children: []
@@ -258,7 +258,7 @@ MonoBehaviour:
   isLockOn: 0
   UseGravity: 0
   hitEffect: {fileID: 0}
-  speed: 150
+  speed: 100
   damage: 0
   damagePerSecond: 0
   stuckTime: 0
@@ -274,9 +274,10 @@ MonoBehaviour:
   isNeedLock: 0
   isLockFlat: 0
   childBullet: {fileID: 187170, guid: 1228428817da54b47b7c43a445cf15fa, type: 2}
-  childeBulletCount: 10
+  childeBulletCount: 15
   purgeDistance: 5
-  purgeTime: 0
+  purgeTime: 2
+  purgeDiff: 30
   isPurgeDestroy: 1
 --- !u!114 &11437068
 MonoBehaviour:
@@ -292,7 +293,7 @@ MonoBehaviour:
   pointer: {fileID: 0}
   impactPoint: {fileID: 169900, guid: c63314ceed9215d4da6af309a2d2b891, type: 2}
   maxLength: 50
-  pointSize: 1
+  pointSize: 1.5
 --- !u!114 &11470852
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -199,7 +199,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 158328}
   m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 70.17063, y: 57.646706, z: 7.1675754}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
   m_Children:
@@ -458,16 +458,16 @@ MonoBehaviour:
   isLockOn: 1
   UseGravity: 0
   hitEffect: {fileID: 0}
-  speed: 200
+  speed: 120
   damage: 100
   damagePerSecond: 0
-  stuckTime: 3
+  stuckTime: 1.5
   knockBackRate: 0
   isPhysicsBulletBreak: 0
   isEnergyBulletBreak: 0
   isHitBreak: 1
   safetyTime: 0.1
-  turnSpeed: 1000
+  turnSpeed: 100
   lockStartTime: 1
   lockedSpeedRate: 1
   lockedTurnSpeedRate: 1

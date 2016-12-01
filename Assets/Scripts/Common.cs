@@ -543,7 +543,7 @@ namespace Common
             {401, new string[]{ "Hero4", "Makina", "1", OBTAIN_TYPE_INIT, "10006"}},
             {500, new string[]{ "Hero5", "Unknown", "0", OBTAIN_TYPE_INIT, "10007"}},
             {501, new string[]{ "Hero5", "Unknown", "1", OBTAIN_TYPE_INIT, "10007"}},
-            {600, new string[]{ "Hero6", "KyonC", "0", OBTAIN_TYPE_INIT, "10010"}},
+            {600, new string[]{ "Hero6", "Vaio", "0", OBTAIN_TYPE_INIT, "10010"}},
             {10000, new string[]{ "Npc1", "Bit", "0", OBTAIN_TYPE_NONE, "10002"}},
             {10001, new string[]{ "Npc2", "BitBrack", "0", OBTAIN_TYPE_NONE, "10003"}},
             {10002, new string[]{ "Npc3", "BitYellow", "0", OBTAIN_TYPE_NONE, "10004"}},
