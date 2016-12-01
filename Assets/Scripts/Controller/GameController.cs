@@ -113,6 +113,8 @@ public class GameController : SingletonMonoBehaviour<GameController>
     //ミッションレベル更新pt係数
     const int MISSION_POINT_PER = 100;
 
+    private bool isAdminPlay = false;
+
     protected override void Awake()
     {
         isDontDestroyOnLoad = false;
@@ -1004,21 +1006,36 @@ public class GameController : SingletonMonoBehaviour<GameController>
 
             //レベル設定ダイアログ
             RectTransform content = levelSelectCanvas.transform.FindChild("ScrollView/Viewport/Content").GetComponent<RectTransform>();
-            content.sizeDelta = new Vector2(0, (maxLevel + 1) * 180);
-            for (int i = maxLevel + 1; i > 0; i--)
+
+            //content.sizeDelta = new Vector2(0, (maxLevel + 1) * 180);
+            int overCount = (UserManager.isAdmin) ? 10 : 1;
+            for (int i = maxLevel + overCount; i > 0; i--)
             {
                 int setLevel = i;
-                GameObject btn = (GameObject)Instantiate(levelSelectButton, Vector3.zero, Quaternion.identity);
-                btn.transform.SetParent(content, false);
-                btn.transform.GetComponentInChildren<Text>().text = Common.Mission.GetLevelName(setLevel);
+                GameObject btnObj = (GameObject)Instantiate(levelSelectButton, Vector3.zero, Quaternion.identity);
+                Transform btnTran = btnObj.transform;
+                btnTran.SetParent(content, false);
+                btnTran.GetComponentInChildren<Text>().text = Common.Mission.GetLevelName(setLevel);
+                Button btn = btnTran.GetComponent<Button>();
+                Text txt = btnTran.GetComponentInChildren<Text>();
                 if (i > maxLevel)
                 {
-                    btn.transform.GetComponent<Button>().interactable = false;
-                    btn.transform.GetComponentInChildren<Text>().color = Color.grey;
+                    if (UserManager.isAdmin)
+                    {
+                        //管理者
+                        txt.color = Color.yellow;
+                        btn.onClick.AddListener(() => OnSelectLevel(setLevel));
+                        isAdminPlay = true;
+                    }
+                    else
+                    {
+                        btn.interactable = false;
+                        txt.color = Color.grey;
+                    }
                 }
                 else
                 {
-                    btn.transform.GetComponent<Button>().onClick.AddListener(() => OnSelectLevel(setLevel));
+                    btn.onClick.AddListener(() => OnSelectLevel(setLevel));
                 }
             }
             levelSelectCanvas.SetActive(true);
@@ -1059,13 +1076,16 @@ public class GameController : SingletonMonoBehaviour<GameController>
     //次のステージNo設定
     private bool SetNextStage()
     {
-        //ステージ記録
-        Mission.Update missionUpdate = new Mission.Update();
-        missionUpdate.SetApiErrorIngnore();
-        missionUpdate.Exe(stageLevel, stageNo, totalContinueCount);
+        if (!isAdminPlay)
+        {
+            //ステージ記録
+            Mission.Update missionUpdate = new Mission.Update();
+            missionUpdate.SetApiErrorIngnore();
+            missionUpdate.Exe(stageLevel, stageNo, totalContinueCount);
 
-        //次のステージOPEN
-        UserManager.OpenNextMission(stageLevel, stageNo);
+            //次のステージOPEN
+            UserManager.OpenNextMission(stageLevel, stageNo);
+        }
 
         //次のステージチェック
         if (!Common.Mission.stageNpcNoDic.ContainsKey(stageNo + 1)) return false;

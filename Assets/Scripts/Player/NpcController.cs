@@ -159,11 +159,11 @@ public class NpcController : MoveOfCharacter
     {
         //レベル決定
         if (level < 0) level = 0;
-        int settingMaxLevel = Common.Mission.npcLevelStatusDic.Count;
+        int settingMaxLevel = Common.Mission.npcLevelStatusDic.Count - 1;
         int overLevel = 0;
         if (settingMaxLevel < level)
         {
-            overLevel = settingMaxLevel - level;
+            overLevel = level - settingMaxLevel;
             level = settingMaxLevel;
         }
 

@@ -15,7 +15,11 @@ public class MenuController : Photon.MonoBehaviour
     [SerializeField]
     private bool isRight = false;
 
-    private Transform myTran;
+    private Transform _myTran;
+    private Transform myTran
+    {
+        get { return _myTran ? _myTran : _myTran = transform; }
+    }
     private GameObject pauseButton;
     private GameObject npcButton;
     //private Camera mainCam;
@@ -29,9 +33,15 @@ public class MenuController : Photon.MonoBehaviour
     const string BUTTON_PAUSE = "PauseButton";
     const string BUTTON_CPU_BATTLE = "NpcButton";
 
-    void Start()
+    private Vector3 defaultMenuPos;
+
+    void Awake()
     {
-        myTran = transform;
+        defaultMenuPos = myTran.localPosition;
+    }
+
+    void Start()
+    { 
         Transform menuObj = myTran.FindChild(MENU_BUTTONS);
         //一時停止ボタン
         Transform pauseTran = menuObj.FindChild(BUTTON_PAUSE);
@@ -79,6 +89,12 @@ public class MenuController : Photon.MonoBehaviour
         }
     }
 
+    void OnEnable()
+    {
+        if (defaultMenuPos != null) myTran.localPosition = defaultMenuPos;
+        enableMenuAction = true;
+    }
+
     public void OnMenuToggleButton()
     {
         if (enableMenuAction)
@@ -113,6 +129,7 @@ public class MenuController : Photon.MonoBehaviour
                 slide = slideLength - totalSlide;
             }
             myTran.localPosition += slideVector * slide;
+
             totalSlide += slide;
             if (Mathf.Abs(totalSlide) >= Mathf.Abs(slideLength)) break;
             yield return null;

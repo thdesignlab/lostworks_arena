@@ -199,6 +199,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 402916}
+  - 208: {fileID: 20861998}
   m_Layer: 0
   m_Name: ExtraCamera
   m_TagString: Untagged
@@ -1357,7 +1358,7 @@ MonoBehaviour:
   extraCam: {fileID: 141620}
   extraEffect: {fileID: 185952}
   extraAddWeapon: {fileID: 0}
-  fireTimeInAnim: 0.85
+  fireTimeInAnim: 0.9
   useHpPerCondition: 25
 --- !u!114 &11421336
 MonoBehaviour:
@@ -4560,6 +4561,21 @@ ParticleSystemRenderer:
   m_Mesh1: {fileID: 0}
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
+--- !u!208 &20861998
+NavMeshObstacle:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 141620}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 50, y: 50, z: 50}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 0
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

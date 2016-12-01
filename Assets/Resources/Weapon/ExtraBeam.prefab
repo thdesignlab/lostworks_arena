@@ -1029,6 +1029,7 @@ MonoBehaviour:
   bitMoveTime: 0
   isBitFixed: 0
   reloadTime: 25
+  isNpc: 0
   laserPrefab: {fileID: 178444, guid: 0c59cb8fd80239f40984650cdc36b762, type: 2}
   effectiveLength: 400
   effectiveWidth: 2
@@ -1057,7 +1058,7 @@ NavMeshObstacle:
   m_Extents: {x: 15, y: 15, z: 15}
   m_MoveThreshold: 0.1
   m_Carve: 1
-  m_CarveOnlyStationary: 1
+  m_CarveOnlyStationary: 0
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0.5
 --- !u!1001 &100100000

@@ -1057,6 +1057,7 @@ MonoBehaviour:
   bitMoveTime: 3
   isBitFixed: 0
   reloadTime: 0
+  isNpc: 0
 --- !u!114 &11467246
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1101,6 +1102,7 @@ MonoBehaviour:
   bitMoveTime: 0
   isBitFixed: 0
   reloadTime: 25
+  isNpc: 0
   blade: {fileID: 133464}
   attackTime: 4
   attackWaitTime: 0
@@ -5715,7 +5717,7 @@ NavMeshObstacle:
   m_Extents: {x: 25, y: 25, z: 25}
   m_MoveThreshold: 0.1
   m_Carve: 1
-  m_CarveOnlyStationary: 1
+  m_CarveOnlyStationary: 0
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0.5
 --- !u!1001 &100100000

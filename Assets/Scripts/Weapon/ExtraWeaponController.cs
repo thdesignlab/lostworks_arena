@@ -20,7 +20,7 @@ public class ExtraWeaponController : Photon.MonoBehaviour
     private PlayerStatus playerStatus;
     private Transform myParentTran;
     private GameObject extraBtn;
-    private GameObject menuCanvas;
+    private Canvas menuCanvas;
     private WeaponController addWeaponCtrl;
 
     private const string TAG_ANIMATION_WAIT = "Wait";
@@ -55,7 +55,8 @@ public class ExtraWeaponController : Photon.MonoBehaviour
         charaAnimator = anim;
         playerStatus = status;
         myParentTran = playerStatus.transform;
-        menuCanvas = GameObject.Find("MenuCanvas");
+        GameObject menuCanvasObj = GameObject.Find("MenuCanvas");
+        if (menuCanvasObj != null) menuCanvas = menuCanvasObj.GetComponent<Canvas>();
     }
 
     public void Fire(Transform targetTran = null)
@@ -155,7 +156,7 @@ public class ExtraWeaponController : Photon.MonoBehaviour
         if (extraCam != null && !playerStatus.IsNpc())
         {
             extraCam.SetActive(flg);
-            if (menuCanvas != null) menuCanvas.SetActive(!flg);
+            if (menuCanvas != null) menuCanvas.enabled = !flg;
         }
     }
 
