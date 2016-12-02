@@ -16,6 +16,10 @@ public class CustomCommonManager : SingletonMonoBehaviour<CustomCommonManager>
     protected Object technicCustomBtn;
     [SerializeField]
     protected Object uniqueCustomBtn;
+    [SerializeField]
+    protected Object cancelCustomBtn;
+
+    protected GameObject playMovieObj;
 
     protected int needWeaponBuyPoint = 500;
     protected int needWeaopnCustomPoint = 1000;
@@ -44,6 +48,12 @@ public class CustomCommonManager : SingletonMonoBehaviour<CustomCommonManager>
         pointTable.Exe();
     }
 
+    protected void SwitchBonusText()
+    {
+        if (playMovieObj == null) return;
+        bool flg = UserManager.isGachaFree;
+        playMovieObj.transform.FindChild("BonusText").gameObject.SetActive(flg);
+    }
 
     //##### Point処理 #####
 
@@ -106,6 +116,7 @@ public class CustomCommonManager : SingletonMonoBehaviour<CustomCommonManager>
     {
         //所持pt更新
         textPoint.text = UserManager.userPoint.ToString();
+        SwitchBonusText();
 
         string title = pt + "pt獲得";
         string text = "";
@@ -172,7 +183,7 @@ public class CustomCommonManager : SingletonMonoBehaviour<CustomCommonManager>
             int customType = type;
             string btnText = Common.Weapon.customTypeNameDic[customType];
             UnityAction action = () => WeaponCustomExe(pt, weaponNo, customType, callback);
-            Color btnColor = DialogController.blueColor;
+            //Color btnColor = DialogController.blueColor;
             Object btnObj = null;
             if (customType == nowCustomType)
             {
@@ -183,25 +194,30 @@ public class CustomCommonManager : SingletonMonoBehaviour<CustomCommonManager>
             switch (type)
             {
                 case Common.Weapon.CUSTOM_TYPE_POWER:
-                    btnColor = DialogController.redColor;
+                    //btnColor = DialogController.redColor;
                     btnObj = powerCustomBtn;
                     break;
 
                 case Common.Weapon.CUSTOM_TYPE_TECHNIC:
-                    btnColor = DialogController.blueColor;
+                    //btnColor = DialogController.blueColor;
                     btnObj = technicCustomBtn;
                     break;
 
                 case Common.Weapon.CUSTOM_TYPE_UNIQUE:
-                    btnColor = DialogController.greenColor;
+                    //btnColor = DialogController.greenColor;
                     btnObj = uniqueCustomBtn;
                     break;
             }
             btnList.Add(btnText, action);
-            btnColors.Add(btnColor);
+            //btnColors.Add(btnColor);
             customBtns.Add(btnObj);
         }
-        DialogController.OpenSelectDialog(title, text, "", btnList, true, customBtns);
+
+        //キャンセル
+        btnList.Add("Cancel", null);
+        customBtns.Add(cancelCustomBtn);
+
+        DialogController.OpenSelectDialog(title, text, "", btnList, false, customBtns);
     }
     
     //カスタム実行

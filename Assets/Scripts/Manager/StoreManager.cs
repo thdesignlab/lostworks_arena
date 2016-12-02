@@ -44,6 +44,8 @@ public class StoreManager : CustomCommonManager
     {
         base.Awake();
 
+        playMovieObj = GameObject.Find("PointGetList");
+
         //フレームレート
         Application.targetFrameRate = 15;
     }

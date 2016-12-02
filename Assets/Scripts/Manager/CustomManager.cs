@@ -82,7 +82,6 @@ public class CustomManager : CustomCommonManager
     private LayoutElement weaponScrollViewLayout;
     private RectTransform weaponButtonAreaRectTran;
     private Transform weaponButtonArea;
-    private GameObject playMovieObj;
 
     private Dictionary<int, List<Image>> partsFrameMap = new Dictionary<int, List<Image>>();
     private Dictionary<int, List<Image>> bitImgMap = new Dictionary<int, List<Image>>();
