@@ -28,6 +28,7 @@ namespace Gacha
         {
             PlayResponse data = GetData<PlayResponse>(json);
             UserManager.userPoint = data.point;
+            UserManager.isGachaFree = false;
             ModelManager.tipsInfo = data.tips;
         }
     }

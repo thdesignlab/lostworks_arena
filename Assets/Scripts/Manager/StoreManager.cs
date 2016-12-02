@@ -4,11 +4,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Events;
 
-public class StoreManager : SingletonMonoBehaviour<StoreManager>
+public class StoreManager : CustomCommonManager
 {
-    [SerializeField]
-    private Text textPoint;
-
     [SerializeField]
     private Transform SelectMenuList;
     [SerializeField]
@@ -22,15 +19,7 @@ public class StoreManager : SingletonMonoBehaviour<StoreManager>
     private Object storeWeaponObj;
     [SerializeField]
     private Object storeCustomObj;
-
-    //カスタムボタン
-    [SerializeField]
-    private Object powerCustomBtn;
-    [SerializeField]
-    private Object technicCustomBtn;
-    [SerializeField]
-    private Object uniqueCustomBtn;
-
+    
     //Music用文字色
     [SerializeField]
     private Color closeFontColor = new Color32(0, 255, 223, 255);
@@ -49,35 +38,19 @@ public class StoreManager : SingletonMonoBehaviour<StoreManager>
 
     private int PlayingMusicIndex = -1;
     const int NEED_MUSIC_POINT = 100;
-
-    private int needWeaponBuyPoint = 500;
-    private int needWeaopnCustomPoint = 1000;
-
-    //point >> rate
-    private Dictionary<int, int> pointTable = new Dictionary<int, int>()
-    {
-        { 200, 1 },
-    };
+    
 
     protected override void Awake()
     {
-        isDontDestroyOnLoad = false;
         base.Awake();
 
         //フレームレート
         Application.targetFrameRate = 15;
     }
 
-    void Start()
+    protected override void Start()
     {
-        //所持ポイント表示
-        textPoint.text = UserManager.userPoint.ToString();
-
-        //ポイントテーブル取得
-        Point.Table pointTable = new Point.Table();
-        pointTable.SetApiFinishCallback(() => SetPointTable());
-        pointTable.SetApiErrorIngnore();
-        pointTable.Exe();
+        base.Start();
 
         //初期表示
         DispMenu();
@@ -142,100 +115,6 @@ public class StoreManager : SingletonMonoBehaviour<StoreManager>
         WeaponCustomList.gameObject.SetActive(false);
         MusicGetList.gameObject.SetActive(false);
     }
-
-    //##### Point処理 #####
-
-    //pt抽選テーブル設定
-    private void SetPointTable()
-    {
-        if (ModelManager.mstPointList.Count != 0)
-        {
-            pointTable = new Dictionary<int, int>();
-            foreach (MasterPoint mstPoint in ModelManager.mstPointList)
-            {
-                pointTable.Add(mstPoint.point, mstPoint.rate);
-            }
-        }
-    }
-
-    //ガチャ実行
-    private void PlayGacha()
-    {
-        DialogController.OpenMessage(DialogController.MESSAGE_LOADING, DialogController.MESSAGE_POSITION_RIGHT);
-        System.Action onFinish = () => AddPoint();
-        System.Action onSkipped = () => AddPoint(0.5f);
-        System.Action onFailed = () => GachaErrorAction();
-        UnityAds.Instance.Play(null, null, onFinish, onFailed, onSkipped);
-    }
-    private void GachaErrorAction()
-    {
-        if (Common.Func.IsPc())
-        {
-            AddPoint();
-        }
-        else
-        {
-            DialogController.OpenDialog("接続Error");
-        }
-    }
-
-    //ポイント付与
-    private void AddPoint(float ptRate = 1)
-    {
-        int pt = Common.Func.Draw<int>(pointTable);
-        pt = (int)(pt * ptRate);
-
-        //ガチャAPI
-        Gacha.Play pointAdd = new Gacha.Play();
-        pointAdd.SetApiFinishCallback(() => PointGetDialog(pt));
-        pointAdd.Exe(pt);
-    }
-
-    //獲得ポイントダイアログ
-    private void PointGetDialog(int pt)
-    {
-        //所持pt更新
-        textPoint.text = UserManager.userPoint.ToString();
-
-        string title = pt + "pt獲得";
-        string text = "";
-        string imgName = "";
-        string nextBtn = "もう一度";
-        Dictionary<string, UnityAction> btnActionDic = new Dictionary<string, UnityAction>();
-        if (!string.IsNullOrEmpty(ModelManager.tipsInfo.text))
-        {
-            //Tipsあり
-            text = "## " + ModelManager.tipsInfo.title + " ##\n";
-            text += ModelManager.tipsInfo.text;
-            imgName = ModelManager.tipsInfo.image;
-
-            if (ModelManager.tipsInfo.no != ModelManager.tipsInfo.last_no)
-            {
-                //Tips続きあり
-                string nextTipsBtn = nextBtn + "(next tips)";
-                btnActionDic.Add(nextTipsBtn, PlayGacha);
-                string newTipsBtn = nextBtn + "(new tips)";
-                UnityAction newTipsAction = () => {
-                    ModelManager.tipsInfo = new TipsInfo();
-                    PlayGacha();
-                };
-                btnActionDic.Add(newTipsBtn, newTipsAction);
-            }
-            else
-            {
-                //Tips続きなし
-                btnActionDic.Add(nextBtn, PlayGacha);
-            }
-        }
-        else
-        {
-            //Tipsなし
-            btnActionDic.Add(nextBtn, PlayGacha);
-        }
-        List<Color> btnColors = new List<Color>() { DialogController.blueColor, DialogController.purpleColor };
-        DialogController.OpenSelectDialog(title, text, imgName, btnActionDic, true, btnColors);
-    }
-
 
     //##### 武器購入 #####
 
@@ -491,113 +370,6 @@ public class StoreManager : SingletonMonoBehaviour<StoreManager>
                 break;
             }
         }
-    }
-
-    //武器改造
-    private void WeaponCustom(int weaponNo)
-    {
-        int pt = needWeaopnCustomPoint;
-        string weaponName = Common.Weapon.GetWeaponName(weaponNo);
-
-        //現在の強化系統
-        int nowCustomType = UserManager.GetWeaponCustomType(weaponNo);
-
-        //確認ダイアログ
-        string title = "強化系統を選択してください";
-        string text = "※1系統のみ強化できます\n";
-        text += "※強化系統の切り替えはできますがpointは戻りません\n\n";
-        text += "「" + weaponName + "」\n";
-        text += pt + "pt消費";
-        Dictionary<string, UnityAction> btnList = new Dictionary<string, UnityAction>();
-        List<Color> btnColors = new List<Color>();
-        List<Object> customBtns = new List<Object>();
-        foreach (int type in Common.Weapon.customTypeNameDic.Keys)
-        {
-            int customType = type;
-            string btnText = Common.Weapon.customTypeNameDic[customType];
-            UnityAction action = () => WeaponCustomExe(pt, weaponNo, customType);
-            Color btnColor = DialogController.blueColor;
-            Object btnObj = null;
-            if (customType == nowCustomType)
-            {
-                //解除
-                btnText += "【解除】";
-                action = () => WeaponCustomReset(weaponNo);
-            }
-            switch (type)
-            {
-                case Common.Weapon.CUSTOM_TYPE_POWER:
-                    btnColor = DialogController.redColor;
-                    btnObj = powerCustomBtn;
-                    break;
-
-                case Common.Weapon.CUSTOM_TYPE_TECHNIC:
-                    btnColor = DialogController.blueColor;
-                    btnObj = technicCustomBtn;
-                    break;
-
-                case Common.Weapon.CUSTOM_TYPE_UNIQUE:
-                    btnColor = DialogController.greenColor;
-                    btnObj = uniqueCustomBtn;
-                    break;
-            }
-            btnList.Add(btnText, action);
-            btnColors.Add(btnColor);
-            customBtns.Add(btnObj);
-        }
-        DialogController.OpenSelectDialog(title, text, "", btnList, true, customBtns);
-    }
-    
-    //カスタム実行
-    private void WeaponCustomExe(int pt, int weaponNo, int type)
-    {
-        DialogController.OpenMessage(DialogController.MESSAGE_LOADING, DialogController.MESSAGE_POSITION_RIGHT);
-
-        //point消費
-        Weapon.Custom WeaponCustom = new Weapon.Custom();
-        WeaponCustom.SetApiFinishCallback(() => WeaponCustomResult(weaponNo, type));
-        WeaponCustom.SetApiFinishErrorCallback(CustomErrorProc);
-        WeaponCustom.Exe(pt, weaponNo, type);
-    }
-
-    //カスタム解除
-    private void WeaponCustomReset(int weaponNo)
-    {
-        //武器カスタム状態更新
-        UserManager.SaveWeaponCustomInfo(weaponNo);
-        DispWeaponCustomList();
-
-        DialogController.OpenDialog("強化解除");
-    }
-
-    //武器カスタム成功処理
-    private void WeaponCustomResult(int weaponNo, int type)
-    {
-        DialogController.CloseMessage();
-
-        //所持ポイント表示
-        textPoint.text = UserManager.userPoint.ToString();
-
-        //武器カスタム状態更新
-        UserManager.SaveWeaponCustomInfo(weaponNo, type);
-        DispWeaponCustomList();
-
-        DialogController.OpenDialog("強化成功!!");
-    }
-
-    //武器カスタム失敗処理
-    private void CustomErrorProc(string errorCode)
-    {
-        DialogController.CloseMessage();
-
-        string errorMessage = "エラー";
-        switch (errorCode)
-        {
-            case "300000":
-                errorMessage += "\nポイントが足りません";
-                break;
-        }
-        DialogController.OpenDialog(errorMessage);
     }
 
 

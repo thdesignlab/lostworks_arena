@@ -64,10 +64,18 @@ public class CustomCommonManager : SingletonMonoBehaviour<CustomCommonManager>
     protected void PlayGacha()
     {
         DialogController.OpenMessage(DialogController.MESSAGE_LOADING, DialogController.MESSAGE_POSITION_RIGHT);
-        System.Action onFinish = () => AddPoint();
-        System.Action onSkipped = () => AddPoint(0.5f);
-        System.Action onFailed = () => GachaErrorAction();
-        UnityAds.Instance.Play(null, null, onFinish, onFailed, onSkipped);
+
+        if (UserManager.isGachaFree)
+        {
+            AddPoint();
+        }
+        else
+        {
+            System.Action onFinish = () => AddPoint();
+            System.Action onSkipped = () => AddPoint();
+            System.Action onFailed = () => GachaErrorAction();
+            UnityAds.Instance.Play(null, null, onFinish, onFailed, onSkipped);
+        }
     }
     protected void GachaErrorAction()
     {

@@ -19,6 +19,7 @@ namespace Point
         {
             GetResponse data = GetData<GetResponse>(json);
             UserManager.userPoint = data.point;
+            UserManager.isGachaFree = data.gacha_free;
         }
     }
 
@@ -97,5 +98,6 @@ namespace Point
     public class GetResponse
     {
         public int point;
+        public bool gacha_free;
     }
 }

@@ -16,6 +16,7 @@ public class UserManager
 
     public static bool isAdmin;                     //管理者FLG
     public static int userPoint;                    //所持ポイント
+    public static bool isGachaFree;                 //ガチャFreeFlg
     public static string apiToken;                  //API接続用Token
 
     //ユーザー情報初期値設定
