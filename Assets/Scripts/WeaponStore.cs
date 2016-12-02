@@ -124,7 +124,7 @@ public class WeaponStore : SingletonMonoBehaviour<WeaponStore>
     public void CustomMenuClose()
     {
         weaponCanvas.SetActive(false);
-        myPlayerTran.gameObject.GetComponent<PlayerSetting>().CustomEnd();
+        //myPlayerTran.gameObject.GetComponent<PlayerSetting>().CustomEnd();
     }
 
     public void OnCancelEquipButton()

@@ -48,12 +48,12 @@ public class GameController : SingletonMonoBehaviour<GameController>
     public bool isPractice = false;
 
     private List<PlayerStatus> playerStatuses = new List<PlayerStatus>();
-    private PlayerSetting playerSetting;
+    //private PlayerSetting playerSetting;
     private SpriteStudioController spriteStudioCtrl;
     private Script_SpriteStudio_Root scriptRoot;
 
     const string MESSAGE_WAITING = "PlayerWaiting...";
-    const string MESSAGE_CUSTOMIZE = "Customizing";
+    //const string MESSAGE_CUSTOMIZE = "Customizing";
     const string MESSAGE_READY = "Ready";
     const string MESSAGE_START = "Go";
     //const string MESSAGE_WIN = "Win";
@@ -619,109 +619,109 @@ public class GameController : SingletonMonoBehaviour<GameController>
             }
             else
             {
-                //待機中
-                if (playerSetting.IsCustomEnd())
+                ////待機中
+                //if (playerSetting.IsCustomEnd())
+                //{
+                //装備設定終了
+                GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+                if (players.Length == needPlayerCount)
                 {
-                    //装備設定終了
-                    GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-                    if (players.Length == needPlayerCount)
+                    //対戦準備
+                    playerStatuses = new List<PlayerStatus>();
+                    foreach (GameObject player in players)
                     {
-                        //対戦準備
-                        playerStatuses = new List<PlayerStatus>();
-                        foreach (GameObject player in players)
+                        PlayerSetting setting = player.GetComponent<PlayerSetting>();
+                        if (setting == null)
                         {
-                            PlayerSetting setting = player.GetComponent<PlayerSetting>();
-                            if (setting == null)
-                            {
-                                DestroyPlayer(player);
-                                continue;
-                            }
-                            if (!setting.IsCustomEnd())
-                            {
-                                SetTextUp(MESSAGE_CUSTOMIZE + setting.GetLeftCustomTime().ToString(), colorWait);
-                                break;
-                            }
-                            PlayerStatus ps = player.GetComponent<PlayerStatus>();
-                            if (ps == null)
-                            {
-                                DestroyPlayer(player);
-                                continue;
-                            }
-                            if (!ps.isReadyBattle) continue;
-
-                            playerStatuses.Add(ps);
+                            DestroyPlayer(player);
+                            continue;
                         }
-
-                        if (playerStatuses.Count == needPlayerCount)
+                        //if (!setting.IsCustomEnd())
+                        //{
+                        //    SetTextUp(MESSAGE_CUSTOMIZE + setting.GetLeftCustomTime().ToString(), colorWait);
+                        //    break;
+                        //}
+                        PlayerStatus ps = player.GetComponent<PlayerStatus>();
+                        if (ps == null)
                         {
-                            //バトル準備完了
-                            GameReady();
+                            DestroyPlayer(player);
+                            continue;
+                        }
+                        if (!ps.isReadyBattle) continue;
 
-                            SetTextUp();
-                            SetTextCenter();
-                            if (gameMode == GAME_MODE_MISSION || gameMode == GAME_MODE_VS)
+                        playerStatuses.Add(ps);
+                    }
+
+                    if (playerStatuses.Count == needPlayerCount)
+                    {
+                        //バトル準備完了
+                        GameReady();
+
+                        SetTextUp();
+                        SetTextCenter();
+                        if (gameMode == GAME_MODE_MISSION || gameMode == GAME_MODE_VS)
+                        {
+                            int round = winCount + loseCount + 1;
+                            if (round == 1)
                             {
-                                int round = winCount + loseCount + 1;
-                                if (round == 1)
-                                {
-                                    //ステージ文字
-                                    string stageText = MESSAGE_STAGE_READY + stageNo.ToString();
-                                    if (Common.Mission.stageNpcNoDic.Count == stageNo) stageText = "Final "+MESSAGE_STAGE_READY;
-                                    SetTextLine(stageText, colorLine);
-                                    yield return new WaitForSeconds(2);
-                                }
-                                //ラウンド文字
-                                SetTextLine(MESSAGE_ROUND_READY + round.ToString(), colorLine, 2.0f);
+                                //ステージ文字
+                                string stageText = MESSAGE_STAGE_READY + stageNo.ToString();
+                                if (Common.Mission.stageNpcNoDic.Count == stageNo) stageText = "Final "+MESSAGE_STAGE_READY;
+                                SetTextLine(stageText, colorLine);
                                 yield return new WaitForSeconds(2);
                             }
-
-                            //カウントダウン
-                            SetTextCenter(MESSAGE_READY, colorReady);
+                            //ラウンド文字
+                            SetTextLine(MESSAGE_ROUND_READY + round.ToString(), colorLine, 2.0f);
                             yield return new WaitForSeconds(2);
-                            for (int i = readyTime; i > 0; i--)
-                            {
-                                SetTextCenter(i.ToString(), colorReady);
-                                yield return new WaitForSeconds(1);
-                            }
-                            SetTextCenter(MESSAGE_START, colorReady, 2);
+                        }
 
-                            //対戦スタート
-                            GameStart();
-                        }
-                    }
-                    else
-                    {
-                        if (gameMode == GAME_MODE_MISSION)
+                        //カウントダウン
+                        SetTextCenter(MESSAGE_READY, colorReady);
+                        yield return new WaitForSeconds(2);
+                        for (int i = readyTime; i > 0; i--)
                         {
-                            //ミッションモード
-                            if (stageLevel > 0)
-                            {
-                                //NPC召喚
-                                StageSetting();
-                            }
-                            else
-                            {
-                                //レベル未選択
-                                SetTextUp(MESSAGE_LEVEL_SELECT, colorWait);
-                            }
+                            SetTextCenter(i.ToString(), colorReady);
+                            yield return new WaitForSeconds(1);
                         }
-                        else
-                        {
-                            //対戦モード
-                            if (PhotonNetwork.countOfPlayersInRooms < needPlayerCount)
-                            {
-                                //SetWaitMessage(MESSAGE_WAITING);
-                                SetTextUp(MESSAGE_WAITING, colorWait);
-                            }
-                        }
+                        SetTextCenter(MESSAGE_START, colorReady, 2);
+
+                        //対戦スタート
+                        GameStart();
                     }
                 }
                 else
                 {
-                    //装備設定中
-                    //SetWaitMessage(MESSAGE_CUSTOMIZE + playerSetting.GetLeftCustomTime().ToString());
-                    SetTextUp(MESSAGE_CUSTOMIZE + playerSetting.GetLeftCustomTime().ToString(), colorWait);
+                    if (gameMode == GAME_MODE_MISSION)
+                    {
+                        //ミッションモード
+                        if (stageLevel > 0)
+                        {
+                            //NPC召喚
+                            StageSetting();
+                        }
+                        else
+                        {
+                            //レベル未選択
+                            SetTextUp(MESSAGE_LEVEL_SELECT, colorWait);
+                        }
+                    }
+                    else
+                    {
+                        //対戦モード
+                        if (PhotonNetwork.countOfPlayersInRooms < needPlayerCount)
+                        {
+                            //SetWaitMessage(MESSAGE_WAITING);
+                            SetTextUp(MESSAGE_WAITING, colorWait);
+                        }
+                    }
                 }
+                //}
+                //else
+                //{
+                //    //装備設定中
+                //    //SetWaitMessage(MESSAGE_CUSTOMIZE + playerSetting.GetLeftCustomTime().ToString());
+                //    SetTextUp(MESSAGE_CUSTOMIZE + playerSetting.GetLeftCustomTime().ToString(), colorWait);
+                //}
             }
 
             yield return new WaitForSeconds(0.1f);
@@ -1255,7 +1255,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
         //ベースボディ生成
         string charaName = Common.CO.CHARACTER_BASE;
         GameObject player = SpawnProcess(charaName);
-        playerSetting = player.GetComponent<PlayerSetting>();
+        //playerSetting = player.GetComponent<PlayerSetting>();
         myStatus = player.GetComponent<PlayerStatus>();
         SetCanvasInfo();
         ResetGame();
