@@ -25,8 +25,9 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 453636}
-  - 136: {fileID: 13603628}
   - 114: {fileID: 11462776}
+  - 136: {fileID: 13603628}
+  - 136: {fileID: 13660100}
   - 114: {fileID: 11436716}
   - 114: {fileID: 11415390}
   - 114: {fileID: 11444154}
@@ -109,7 +110,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effectSpawn: {fileID: 0}
-  activeLimitTime: 3
+  activeLimitTime: 2
   activeLimitDistance: 0
   isNotAutoBreak: 0
 --- !u!114 &11436716
@@ -149,8 +150,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageEffect: {fileID: 0}
-  damage: 10
-  damagePerSecond: 0
+  damage: 0
+  damagePerSecond: 10
   isPhysicsBulletBreak: 0
   isEnergyBulletBreak: 0
   ownDamageRate: 0
@@ -194,7 +195,20 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 0.4
+  m_Radius: 0.5
+  m_Height: 4
+  m_Direction: 2
+  m_Center: {x: 0, y: 0, z: 1}
+--- !u!136 &13660100
+CapsuleCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 187170}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.3
   m_Height: 4
   m_Direction: 2
   m_Center: {x: 0, y: 0, z: 1}

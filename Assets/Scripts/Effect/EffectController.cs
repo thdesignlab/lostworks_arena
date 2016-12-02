@@ -33,13 +33,18 @@ public class EffectController : Photon.MonoBehaviour
     {
         get { return _obCtrl ? _obCtrl : _obCtrl = GetComponent<ObjectController>(); }
     }
+    private StatusChangeController _statusChangeCtrl;
+    protected StatusChangeController statusChangeCtrl
+    {
+        get { return _statusChangeCtrl ? _statusChangeCtrl : _statusChangeCtrl = GetComponent<StatusChangeController>(); }
+        set { _statusChangeCtrl = value; }
+    }
+    protected EffectLevelController effectLevelCtrl;
 
-    protected StatusChangeController statusChangeCtrl;
 
     protected virtual void Awake()
     {
         if (isFloorEffect) myTran.position = new Vector3(myTran.position.x, 0, myTran.position.z);
-        statusChangeCtrl = myTran.GetComponent<StatusChangeController>();
     }
 
     void OnTriggerEnter(Collider other)
@@ -155,11 +160,11 @@ public class EffectController : Photon.MonoBehaviour
         statusChangeCtrl.Action(status);
     }
 
-    public void EffectSetting(Transform owner, Transform target, Transform weapon)
+    public void EffectSetting(Transform owner, Transform target, Transform weapon, bool isCustom = true)
     {
         SetOwner(owner);
         SetTarget(target);
-        SetWeapon(weapon);
+        SetWeapon(weapon, isCustom);
     }
 
     public void SetOwner(Transform owner)
@@ -180,16 +185,122 @@ public class EffectController : Photon.MonoBehaviour
         if (targetTran != null) targetStatus = targetTran.GetComponent<PlayerStatus>();
     }
 
-    public void SetWeapon(Transform weapon)
+    public void SetWeapon(Transform weapon, bool isCustom)
     {
         weaponTran = weapon;
         if (obCtrl != null) obCtrl.SetWeapon(weaponTran);
 
         //カスタム
+        if (isCustom && weaponTran != null) SetCustom();
     }
 
     public string GetWeaponName()
     {
         return (weaponTran != null) ? weaponTran.name : myTran.name;
+    }
+
+
+    //##### CUSTOM #####
+
+    private void SetCustom(bool isSendRPC = true)
+    {
+        EffectLevelController effectLevelCtrl = weaponTran.GetComponent<EffectLevelController>();
+        if (effectLevelCtrl != null)
+        {
+            effectLevelCtrl.EffectCustom(this);
+            if (isSendRPC) photonView.RPC("SetCustomRPC", PhotonTargets.Others);
+        }
+    }
+    [PunRPC]
+    private void SetCustomRPC()
+    {
+        SetCustom(false);
+    }
+
+    //Damage
+    public void CustomDamage(int value)
+    {
+        damage += value;
+    }
+
+    //DamagePerSecont
+    public void CustomDPS(int value)
+    {
+        damagePerSecond += value;
+    }
+
+    //EndScale
+    public virtual void CustomEndScale(float value)
+    {
+        myTran.localScale *= value;
+        ParticleSystem particle = myTran.GetComponentInChildren<ParticleSystem>();
+        if (particle != null) particle.startSize *= value;
+    }
+
+    //ActiveTime
+    public void CustomActiveTime(float value)
+    {
+        if (obCtrl != null) obCtrl.CustomActiveTime(value);
+    }
+
+    //ActiveDistance
+    public void CustomActiveDistance(float value)
+    {
+        if (obCtrl != null) obCtrl.CustomActiveDistance(value);
+    }
+
+    //SpawnObject
+    public void CustomBreakEffect(GameObject obj)
+    {
+        if (obCtrl != null) obCtrl.CustomSpawnEffect(obj);
+    }
+
+    //StatusChangeController追加
+    private void AddStatusChangeCtrl()
+    {
+        if (statusChangeCtrl != null) return;
+        statusChangeCtrl = gameObject.AddComponent<StatusChangeController>();
+    }
+
+    //デバフ時間
+    public void CustomDebuffTime(float value)
+    {
+        AddStatusChangeCtrl();
+        statusChangeCtrl.AddEffectTime(value);
+    }
+
+    //デバフ:ATTACK
+    public void CustomDebuffAttack(float value)
+    {
+        AddStatusChangeCtrl();
+        statusChangeCtrl.AddStatusChange(StatusChangeController.EFFECT_ATTACK, value);
+    }
+
+    //デバフ:SP
+    public void CustomDebuffSp(float value)
+    {
+        AddStatusChangeCtrl();
+        statusChangeCtrl.AddStatusChange(StatusChangeController.EFFECT_RECOVER_SP, value);
+    }
+
+    //デバフ:AVOID
+    public void CustomDebuffAvoid(float value)
+    {
+        AddStatusChangeCtrl();
+        statusChangeCtrl.AddStatusChange(StatusChangeController.EFFECT_AVOID, value);
+    }
+
+    //デバフ:SPEED
+    public void CustomDebuffSpeed(float value)
+    {
+        AddStatusChangeCtrl();
+        statusChangeCtrl.AddStatusChange(StatusChangeController.EFFECT_SPEED, value);
+    }
+
+    //デバフ:DEF
+    public void CustomDebuffDefence(float value)
+    {
+        AddStatusChangeCtrl();
+        statusChangeCtrl.AddStatusChange(StatusChangeController.EFFECT_DEFENCE, value);
     }
 }

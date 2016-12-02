@@ -465,6 +465,7 @@ GameObject:
   - 114: {fileID: 11463682}
   - 114: {fileID: 11472496}
   - 114: {fileID: 11453772}
+  - 114: {fileID: 11434254}
   m_Layer: 0
   m_Name: MachinegunBit
   m_TagString: Weapon
@@ -1675,6 +1676,30 @@ MonoBehaviour:
   viewIdField: 0
   instantiationId: -1
   isRuntimeInstantiated: 0
+--- !u!114 &11434254
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 173222}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5ae7eb6027f9cc41bd60d7a75a7c396, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  powerCustomSystemList: 83000000
+  powerEffectValueDiffList:
+  - 5
+  powerObject: {fileID: 0}
+  technicCustomSystemList: 69000000
+  technicEffectValueDiffList:
+  - -2
+  technicObject: {fileID: 0}
+  uniqueCustomSystemList: 870000008c000000
+  uniqueEffectValueDiffList:
+  - 100
+  - 100
+  uniqueObject: {fileID: 0}
 --- !u!114 &11438634
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1828,6 +1853,7 @@ MonoBehaviour:
   bitMoveTime: 1
   isBitFixed: 1
   reloadTime: 5
+  isNpc: 0
   fireEffect: {fileID: 128990, guid: 26eff61a30ffb3040a1cf5904f260089, type: 2}
   bullet: {fileID: 135886, guid: 3dcff0c42c925244e824db92f7078c81, type: 2}
   rapidCount: 25

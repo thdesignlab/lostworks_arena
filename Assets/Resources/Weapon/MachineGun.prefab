@@ -1573,14 +1573,17 @@ MonoBehaviour:
   powerCustomSystemList: 83000000
   powerEffectValueDiffList:
   - 3
-  technicCustomSystemList: 66000000
+  powerObject: {fileID: 0}
+  technicCustomSystemList: 6600000087000000
   technicEffectValueDiffList:
   - -0.05
+  - 100
+  technicObject: {fileID: 0}
   uniqueCustomSystemList: 0100000089000000
   uniqueEffectValueDiffList:
   - 30
   - 10
-  AddObject: {fileID: 0}
+  uniqueObject: {fileID: 0}
 --- !u!114 &11424064
 MonoBehaviour:
   m_ObjectHideFlags: 1

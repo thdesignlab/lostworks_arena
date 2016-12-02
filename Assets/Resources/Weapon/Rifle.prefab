@@ -1595,17 +1595,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5ae7eb6027f9cc41bd60d7a75a7c396, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  powerCustomSystemList: 83000000
+  powerCustomSystemList: 65000000
   powerEffectValueDiffList:
-  - 20
+  - 1
+  powerObject: {fileID: 0}
   technicCustomSystemList: 0000000069000000
   technicEffectValueDiffList:
-  - -1
+  - -1.5
   - -0.1
+  technicObject: {fileID: 0}
   uniqueCustomSystemList: 88000000
   uniqueEffectValueDiffList:
   - 0.15
-  AddObject: {fileID: 0}
+  uniqueObject: {fileID: 0}
 --- !u!114 &11441512
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1640,7 +1642,7 @@ MonoBehaviour:
   fireEffect: {fileID: 128990, guid: 26eff61a30ffb3040a1cf5904f260089, type: 2}
   bullet: {fileID: 163624, guid: f040bd39e982cc74dbd0bd4376503925, type: 2}
   rapidCount: 1
-  rapidInterval: 0.8
+  rapidInterval: 0.1
   spreadCount: 0
   spreadDiffAngle: 0
   focusDiff: 0.1

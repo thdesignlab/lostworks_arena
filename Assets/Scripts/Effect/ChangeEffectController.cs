@@ -59,4 +59,13 @@ public class ChangeEffectController : EffectController
             myCollider.radius = scale.x / 2;
         }
     }
+
+    
+    //##### CUSTOM #####
+
+    //Scale
+    public override void CustomEndScale(float value)
+    {
+        endScale *= value;
+    }
 }

@@ -378,6 +378,7 @@ GameObject:
   - 114: {fileID: 11471404}
   - 114: {fileID: 11496724}
   - 114: {fileID: 11461306}
+  - 114: {fileID: 11459008}
   m_Layer: 0
   m_Name: HeatCannon
   m_TagString: Weapon
@@ -1627,6 +1628,31 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   basePrefab: {fileID: 193044, guid: a94f9fdda92af004e818b390b34f1362, type: 2}
+--- !u!114 &11459008
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 168826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5ae7eb6027f9cc41bd60d7a75a7c396, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  powerCustomSystemList: 2e010000
+  powerEffectValueDiffList:
+  - 15
+  powerObject: {fileID: 0}
+  technicCustomSystemList: 000000002f010000
+  technicEffectValueDiffList:
+  - -1.5
+  - 1.5
+  technicObject: {fileID: 0}
+  uniqueCustomSystemList: 4f01000050010000
+  uniqueEffectValueDiffList:
+  - -0.3
+  - 3
+  uniqueObject: {fileID: 0}
 --- !u!114 &11461306
 MonoBehaviour:
   m_ObjectHideFlags: 1

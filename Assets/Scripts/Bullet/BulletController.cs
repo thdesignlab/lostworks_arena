@@ -44,6 +44,11 @@ public class BulletController : MoveOfCharacter
     {
         get { return _obCtrl ? _obCtrl : _obCtrl = GetComponent<ObjectController>(); }
     }
+    private ChangeEffectController _effectCtrl;
+    protected ChangeEffectController effectCtrl
+    {
+        get { return _effectCtrl ? _effectCtrl : _effectCtrl = GetComponent<ChangeEffectController>(); }
+    }
     private StatusChangeController _statusChangeCtrl;
     protected StatusChangeController statusChangeCtrl
     {
@@ -244,7 +249,7 @@ public class BulletController : MoveOfCharacter
         {
             GameObject effectObj = PhotonNetwork.Instantiate(Common.Func.GetResourceEffect(hitEffect.name), myTran.position, hitEffect.transform.rotation, 0);
             EffectController effectCtrl = effectObj.GetComponent<EffectController>();
-            if (effectCtrl != null) effectCtrl.EffectSetting(ownerTran, targetTran, weaponTran);
+            if (effectCtrl != null) effectCtrl.EffectSetting(ownerTran, targetTran, weaponTran, false);
         }
 
         //与えたダメージのログを保管
@@ -308,27 +313,27 @@ public class BulletController : MoveOfCharacter
     }
 
     //Owner,Target,Weapon情報をセット、同期する
-    public void BulletSetting(Transform owner, Transform target, Transform weapon, bool isSendRPC = true)
+    public void BulletSetting(Transform owner, Transform target, Transform weapon, bool isCustom = true, bool isSendRPC = true)
     {
         SetOwner(owner, false);
         SetTarget(target, false);
-        SetWeapon(weapon, false);
+        SetWeapon(weapon, isCustom, false);
 
         if (isSendRPC)
         {
             int ownerViewId = (owner != null) ? PhotonView.Get(owner.gameObject).viewID : -1;
             int targetViewId = (target != null) ? PhotonView.Get(target.gameObject).viewID : -1;
             int weaponViewId = (weapon != null) ? PhotonView.Get(weapon.gameObject).viewID : -1;
-            object[] args = new object[] { ownerViewId, targetViewId, weaponViewId };
+            object[] args = new object[] { ownerViewId, targetViewId, weaponViewId, isCustom };
             photonView.RPC("BulletSettingRPC", PhotonTargets.Others, args);
         }
     }
     [PunRPC]
-    protected void BulletSettingRPC(int ownerViewId, int targetViewId, int weaponViewId)
+    protected void BulletSettingRPC(int ownerViewId, int targetViewId, int weaponViewId, bool isCustom)
     {
         SetOwnerRPC(ownerViewId);
         SetTargetRPC(targetViewId);
-        SetWeaponRPC(weaponViewId);
+        SetWeaponRPC(weaponViewId, isCustom);
     }
 
     //ターゲットを設定する
@@ -384,31 +389,36 @@ public class BulletController : MoveOfCharacter
 
 
     //武器設定
-    public void SetWeapon(Transform weapon, bool isSendRPC = true)
+    public void SetWeapon(Transform weapon, bool isCustom = true, bool isSendRPC = true)
     {
         weaponTran = weapon;
-        if (obCtrl != null) obCtrl.SetWeapon(weaponTran);
 
-        if (weaponTran != null)
+        if (weaponTran != null && isCustom)
         {
             //カスタム処理
             bulletLevelCtrl = weaponTran.GetComponent<BulletLevelController>();
-            if (bulletLevelCtrl != null) bulletLevelCtrl.BulletCustom(this);
+            if (bulletLevelCtrl != null)
+            {
+                bulletLevelCtrl.BulletCustom(this);
+            }
         }
+
+        if (obCtrl != null) obCtrl.SetWeapon(weaponTran, isCustom);
 
         if (isSendRPC)
         {
             int viewId = -1;
             if (weaponTran != null) viewId = PhotonView.Get(weaponTran.gameObject).viewID;
-            photonView.RPC("SetWeaponRPC", PhotonTargets.Others, viewId);
+            object[] args = new object[] { viewId, isCustom };
+            photonView.RPC("SetWeaponRPC", PhotonTargets.Others, args);
         }
     }
     [PunRPC]
-    protected void SetWeaponRPC(int weaponViewId)
+    protected void SetWeaponRPC(int weaponViewId, bool isCustom)
     {
         PhotonView weaponView = PhotonView.Find(weaponViewId);
         Transform weapon = (weaponView != null) ? weaponView.gameObject.transform : null;
-        SetWeapon(weapon, false);
+        SetWeapon(weapon, isCustom, false);
     }
 
     protected void PlayAudio(int no = 0)
@@ -557,6 +567,21 @@ public class BulletController : MoveOfCharacter
         speed += value;
     }
 
+    //弾スケール
+    public void CustomScale(float value)
+    {
+        if (effectCtrl != null)
+        {
+            effectCtrl.CustomEndScale(value);
+        }
+        else
+        {
+            myTran.localScale *= value;
+            ParticleSystem particle = myTran.GetComponentInChildren<ParticleSystem>();
+            if (particle != null) particle.startSize *= value;
+        }
+    }
+
     //StatusChangeController追加
     private void AddStatusChangeCtrl()
     {
@@ -576,6 +601,34 @@ public class BulletController : MoveOfCharacter
     {
         AddStatusChangeCtrl();
         statusChangeCtrl.AddStatusChange(StatusChangeController.EFFECT_ATTACK, value);
+    }
+
+    //デバフ:SP
+    public void CustomDebuffSp(float value)
+    {
+        AddStatusChangeCtrl();
+        statusChangeCtrl.AddStatusChange(StatusChangeController.EFFECT_RECOVER_SP, value);
+    }
+
+    //デバフ:AVOID
+    public void CustomDebuffAvoid(float value)
+    {
+        AddStatusChangeCtrl();
+        statusChangeCtrl.AddStatusChange(StatusChangeController.EFFECT_AVOID, value);
+    }
+
+    //デバフ:SPEED
+    public void CustomDebuffSpeed(float value)
+    {
+        AddStatusChangeCtrl();
+        statusChangeCtrl.AddStatusChange(StatusChangeController.EFFECT_SPEED, value);
+    }
+
+    //デバフ:DEF
+    public void CustomDebuffDefence(float value)
+    {
+        AddStatusChangeCtrl();
+        statusChangeCtrl.AddStatusChange(StatusChangeController.EFFECT_DEFENCE, value);
     }
 
 }

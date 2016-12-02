@@ -3,7 +3,7 @@ using UnityEngine.Events;
 using System.Collections;
 using System.Collections.Generic;
 
-public class BulletLevelController : WeaponLevelController
+public class BulletLevelController : EffectLevelController
 {
     //##### 強化System #####
 
@@ -56,14 +56,13 @@ public class BulletLevelController : WeaponLevelController
     //状態異常：Time
     const int CUSTOM_SYSTEM_DEBUFF_TIME = 156;
 
-    //Effect
-    //const int CUSTOM_SYSTEM_D = 171;
 
     private BulletWeaponController _bulletWeaponCtrl;
     protected BulletWeaponController bulletWeaponCtrl
     {
         get { return _bulletWeaponCtrl ? _bulletWeaponCtrl : _bulletWeaponCtrl = GetComponent<BulletWeaponController>(); }
     }
+
 
     //武器強化実行
     protected override void WeaponCustomExe(int customSystem, float effectValue)
@@ -97,7 +96,7 @@ public class BulletLevelController : WeaponLevelController
 
             case CUSTOM_SYSTEM_CHANGE_BULLET:
                 //弾変更
-                bulletWeaponCtrl.CustomChangeBullet(AddObject);
+                bulletWeaponCtrl.CustomChangeBullet(addObject);
                 break;
 
             default:
@@ -163,17 +162,22 @@ public class BulletLevelController : WeaponLevelController
 
             case CUSTOM_SYSTEM_HIT_EFFECT:
                 //HitEffect
-                bulletCtrl.CustomHitEffect(AddObject);
+                bulletCtrl.CustomHitEffect(addObject);
                 break;
 
             case CUSTOM_SYSTEM_BREAK_EFFECT:
                 //BreakEffect
-                bulletCtrl.CustomBreakEffect(AddObject);
+                bulletCtrl.CustomBreakEffect(addObject);
                 break;
 
             case CUSTOM_SYSTEM_SPEED:
                 //Speed
                 bulletCtrl.CustomSpeed(effectValue);
+                break;
+
+            case CUSTOM_SYSTEM_SCALE:
+                //Scale
+                bulletCtrl.CustomScale(effectValue);
                 break;
 
             case CUSTOM_SYSTEM_DEBUFF_ATTACK:
@@ -183,22 +187,22 @@ public class BulletLevelController : WeaponLevelController
 
             case CUSTOM_SYSTEM_DEBUFF_SP:
                 //debuff:sp
-
+                bulletCtrl.CustomDebuffSp(effectValue);
                 break;
 
             case CUSTOM_SYSTEM_DEBUFF_AVOID:
                 //debuff:avoid
-
+                bulletCtrl.CustomDebuffAvoid(effectValue);
                 break;
 
             case CUSTOM_SYSTEM_DEBUFF_SPEED:
                 //debuff:speed
-
+                bulletCtrl.CustomDebuffSpeed(effectValue);
                 break;
 
             case CUSTOM_SYSTEM_DEBUFF_DEFENCE:
                 //debuff:defence
-
+                bulletCtrl.CustomDebuffDefence(effectValue);
                 break;
 
             case CUSTOM_SYSTEM_DEBUFF_TIME:
@@ -207,4 +211,21 @@ public class BulletLevelController : WeaponLevelController
                 break;
         }
     }
+
+
+    //SpawnEffect強化
+    public void bulletEffectCustom(EffectController effectCtrl)
+    {
+        //UnityAction callback = () =>
+        //{
+        //    for (int i = 0; i < customSystemList.Count; i++)
+        //    {
+        //        int customSystem = customSystemList[i];
+        //        float effectValue = effectValueList[i] * myCustomLevel;
+        //        SpawnEffectCustomExe(effectCtrl, customSystem, effectValue);
+        //    }
+        //};
+        //WaitCustomReady(callback);
+    }
+
 }

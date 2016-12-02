@@ -19,16 +19,19 @@ public abstract class WeaponLevelController : Photon.MonoBehaviour
     [SerializeField]
     protected List<float> powerEffectValueDiffList;
     [SerializeField]
+    protected GameObject powerObject;
+    [SerializeField]
     protected List<int> technicCustomSystemList;
     [SerializeField]
     protected List<float> technicEffectValueDiffList;
     [SerializeField]
+    protected GameObject technicObject;
+    [SerializeField]
     protected List<int> uniqueCustomSystemList;
     [SerializeField]
     protected List<float> uniqueEffectValueDiffList;
-
     [SerializeField]
-    protected GameObject AddObject;     //追加用オブジェクト
+    protected GameObject uniqueObject;
 
     private Transform _myTran;
     protected Transform myTran
@@ -45,14 +48,15 @@ public abstract class WeaponLevelController : Photon.MonoBehaviour
     //強化している系統、レベル
     protected int myCustomType = 0;
     protected int myCustomLevel = 0;
-
+    
     //対象の強化System
     protected List<int> customSystemList;
 
     //強化の効果値
     protected List<float> effectValueList;
 
-
+    //追加オブジェクト
+    protected GameObject addObject;
 
     void Start()
     {
@@ -139,16 +143,19 @@ public abstract class WeaponLevelController : Photon.MonoBehaviour
             case Common.Weapon.CUSTOM_TYPE_POWER:
                 customSystemList = powerCustomSystemList;
                 effectValueList = powerEffectValueDiffList;
+                addObject = powerObject;
                 break;
 
             case Common.Weapon.CUSTOM_TYPE_TECHNIC:
                 customSystemList = technicCustomSystemList;
                 effectValueList = technicEffectValueDiffList;
+                addObject = technicObject;
                 break;
 
             case Common.Weapon.CUSTOM_TYPE_UNIQUE:
                 customSystemList = uniqueCustomSystemList;
                 effectValueList = uniqueEffectValueDiffList;
+                addObject = uniqueObject;
                 break;
         }
     }

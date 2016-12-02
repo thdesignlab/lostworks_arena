@@ -144,6 +144,7 @@ GameObject:
   - 114: {fileID: 11463982}
   - 114: {fileID: 11447228}
   - 114: {fileID: 11466388}
+  - 114: {fileID: 11418932}
   m_Layer: 0
   m_Name: EnergyShield
   m_TagString: Weapon
@@ -1760,6 +1761,31 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &11418932
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 112252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5ae7eb6027f9cc41bd60d7a75a7c396, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  powerCustomSystemList: 83000000
+  powerEffectValueDiffList:
+  - 15
+  technicCustomSystemList: 00000000860000008c000000
+  technicEffectValueDiffList:
+  - -2
+  - 8
+  - 2
+  uniqueCustomSystemList: 980000009a0000009c000000
+  uniqueEffectValueDiffList:
+  - -0.8
+  - -0.3
+  - 3
+  AddObject: {fileID: 0}
 --- !u!114 &11447228
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1775,6 +1801,7 @@ MonoBehaviour:
   bitMoveTime: 0
   isBitFixed: 0
   reloadTime: 6
+  isNpc: 0
   fireEffect: {fileID: 0}
   bullet: {fileID: 104904, guid: 15b3009b249af2f48b57a9adb3465adb, type: 2}
   rapidCount: 8

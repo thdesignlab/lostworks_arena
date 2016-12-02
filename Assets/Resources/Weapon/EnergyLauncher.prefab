@@ -250,6 +250,7 @@ GameObject:
   - 114: {fileID: 11400208}
   - 114: {fileID: 11463230}
   - 114: {fileID: 11485328}
+  - 114: {fileID: 11400512}
   m_Layer: 0
   m_Name: EnergyLauncher
   m_TagString: Weapon
@@ -1698,6 +1699,27 @@ MonoBehaviour:
   viewIdField: 0
   instantiationId: -1
   isRuntimeInstantiated: 0
+--- !u!114 &11400512
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 144686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5ae7eb6027f9cc41bd60d7a75a7c396, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  powerCustomSystemList: 83000000
+  powerEffectValueDiffList:
+  - 10
+  technicCustomSystemList: 67000000
+  technicEffectValueDiffList:
+  - 4
+  uniqueCustomSystemList: 9c000000
+  uniqueEffectValueDiffList:
+  - 5
+  AddObject: {fileID: 0}
 --- !u!114 &11463230
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1713,6 +1735,7 @@ MonoBehaviour:
   bitMoveTime: 0
   isBitFixed: 0
   reloadTime: 6
+  isNpc: 0
   fireEffect: {fileID: 128990, guid: 26eff61a30ffb3040a1cf5904f260089, type: 2}
   bullet: {fileID: 134700, guid: 7347eec3273bb384383c41abd870d27a, type: 2}
   rapidCount: 8

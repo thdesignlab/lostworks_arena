@@ -19,10 +19,6 @@ public class PlayerSetting : Photon.MonoBehaviour
     string[] charaInfo = new string[] { };
     string charaColorName = "0";
 
-    //private bool isCustomEnd = true;
-    //private int customizeTime = 15;
-    //private int leftCustomizeTime = 0;
-
     private Dictionary<int, int> weaponMap = new Dictionary<int, int>();
 
     private bool isActiveSceane = true;
@@ -51,7 +47,6 @@ public class PlayerSetting : Photon.MonoBehaviour
 
         if (photonView.isMine)
         {
-            //Debug.Log("isMine:"+transform.name);
             if (isNpc)
             {
                 //##### NPCの場合 #####
@@ -73,9 +68,6 @@ public class PlayerSetting : Photon.MonoBehaviour
                 //NPC情報設定
                 GameController.Instance.SetTarget(myTran);
                 GameController.Instance.SetNpcTran(myTran);
-
-                ////カスタマイズ完了FLG
-                //isCustomEnd = true;
 
                 GameController.Instance.ResetGame();
             }
@@ -104,14 +96,12 @@ public class PlayerSetting : Photon.MonoBehaviour
 
                 //装備設定
                 EquipWeaponUserInfo();
-                //isCustomEnd = true;
             }
             //playerCanvas.SetActive(true);
         }
         else
         {
             //##### 対戦相手のキャラクターの場合 #####
-            //Debug.Log("target:" + transform.name);
             //コントローラーを無効化
             playerStatus.enabled = true;
             playerCtrl.enabled = false;
@@ -124,10 +114,6 @@ public class PlayerSetting : Photon.MonoBehaviour
             //親子設定
             SetMainBodyParent();
             SetWeaponParent();
-
-            ////カスタマイズ完了FLG
-            //isCustomEnd = true;
-            //SetCustomStatus();
         }
     }
 
@@ -215,7 +201,6 @@ public class PlayerSetting : Photon.MonoBehaviour
 
     private void SetCharacterColor(Transform bodyTran, string colorName, bool isSendRPC = true)
     {
-        Debug.Log(bodyTran.name+" >>"+ colorName);
         Transform charaBoxTran = bodyTran.FindChild(Common.CO.PARTS_MAIN_BODY);
         if (charaBoxTran != null)
         {
@@ -230,23 +215,6 @@ public class PlayerSetting : Photon.MonoBehaviour
         if (bodyView == null) return;
         SetCharacterColor(bodyView.transform, colorName, false);
     }
-
-    //IEnumerator CustomizeCountDown()
-    //{
-    //    isCustomEnd = false;
-    //    leftCustomizeTime = customizeTime;
-    //    for (;;)
-    //    {
-    //        yield return new WaitForSeconds(1);
-    //        leftCustomizeTime--;
-    //        if (isCustomEnd) break;
-    //        if (leftCustomizeTime <= 0)
-    //        {
-    //            WeaponStore.Instance.CustomMenuClose();
-    //            break;
-    //        }
-    //    }
-    //}
 
     private void EquipWeaponUserInfo()
     {
@@ -348,7 +316,6 @@ public class PlayerSetting : Photon.MonoBehaviour
         int partsViewId = PhotonView.Get(parts.gameObject).viewID;
         int weaponViewId = PhotonView.Get(ob).viewID;
         weaponMap[partsViewId] = weaponViewId;
-        //Debug.Log(partsViewId.ToString()+" : "+ weaponViewId.ToString());
         object[] args = new object[] { partsViewId, weaponViewId };
         photonView.RPC("SetParentRPC", PhotonTargets.Others, args);
         ob.transform.SetParent(parts.transform, true);
@@ -360,8 +327,6 @@ public class PlayerSetting : Photon.MonoBehaviour
     [PunRPC]
     private void SetParentRPC(int parentViewId, int childViewId)
     {
-        //Debug.Log("SetParentRPC: " + myTran.name + ": " + parentViewId.ToString() + " >> " + childViewId.ToString());
-
         PhotonView parent = PhotonView.Find(parentViewId);
         PhotonView child = PhotonView.Find(childViewId);
         if (parent == null || child == null) return;
@@ -399,7 +364,6 @@ public class PlayerSetting : Photon.MonoBehaviour
     {
         if (photonView.isMine)
         {
-            //Debug.Log("[SetWeaponParent]" + myTran.name + ": " + weaponMap.Count.ToString());
             foreach (int key in weaponMap.Keys)
             {
                 object[] args = new object[] { key, weaponMap[key] };
@@ -407,38 +371,5 @@ public class PlayerSetting : Photon.MonoBehaviour
             }
         }
     }
-
-    //public void CustomEnd()
-    //{
-    //    if (isCustomEnd) return;
-    //    photonView.RPC("CustomEndRPC", PhotonTargets.All);
-    //}
-    //[PunRPC]
-    //private void CustomEndRPC()
-    //{
-    //    isCustomEnd = true;
-    //    leftCustomizeTime = 0;
-    //}
-    //public bool IsCustomEnd()
-    //{
-    //    //Debug.Log(myTran.name+" : "+isCustomEnd.ToString());
-    //    return isCustomEnd;
-    //}
-    //public int GetLeftCustomTime()
-    //{
-    //    return leftCustomizeTime;
-    //}
-    //private void SetCustomStatus()
-    //{
-    //    photonView.RPC("SetCustomStatusRPC", PhotonTargets.All);
-    //}
-    //[PunRPC]
-    //private void SetCustomStatusRPC()
-    //{
-    //    if (photonView.isMine && isCustomEnd)
-    //    {
-    //        photonView.RPC("CustomEndRPC", PhotonTargets.Others);
-    //    }
-    //}
 
 }

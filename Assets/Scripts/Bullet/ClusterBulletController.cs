@@ -97,7 +97,7 @@ public class ClusterBulletController : TrackingBulletController
             int bulletNo = Common.Func.GetBulletNo(myTran.root.name);
             ob.name = ob.name + "_" + bulletNo.ToString();
             BulletController bulletCtrl = ob.GetComponent<BulletController>();
-            bulletCtrl.BulletSetting(ownerTran, targetTran, weaponTran);
+            bulletCtrl.BulletSetting(ownerTran, targetTran, weaponTran, false);
         }
         prePurgeTime = 0;
 

@@ -21,6 +21,8 @@ public class ObjectController : Photon.MonoBehaviour {
     private float activeTime = 0;
     private float activeDistance = 0;
 
+    private bool isEffectCustom = false;
+
     void Start()
     {
         myTran = transform;
@@ -86,7 +88,7 @@ public class ObjectController : Photon.MonoBehaviour {
         if (effectSpawn != null)
         {
             GameObject effectObj = PhotonNetwork.Instantiate(Common.Func.GetResourceEffect(effectSpawn.name), myTran.position, effectSpawn.transform.rotation, effectSpawnGroupId);
-            effectObj.GetComponent<EffectController>().EffectSetting(ownerTran, targetTran, weaponTran);
+            effectObj.GetComponent<EffectController>().EffectSetting(ownerTran, targetTran, weaponTran, isEffectCustom);
         }
         PhotonNetwork.Destroy(gameObject);
     }
@@ -105,9 +107,10 @@ public class ObjectController : Photon.MonoBehaviour {
     {
         targetTran = target;
     }
-    public void SetWeapon(Transform weapon)
+    public void SetWeapon(Transform weapon, bool isCustom = false)
     {
         weaponTran = weapon;
+        isEffectCustom = isCustom;
     }
 
     public void Reset()

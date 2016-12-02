@@ -254,6 +254,7 @@ MonoBehaviour:
   effectSpawn: {fileID: 0}
   activeLimitTime: 0
   activeLimitDistance: 100
+  isNotAutoBreak: 0
 --- !u!114 &11480204
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -271,7 +272,7 @@ MonoBehaviour:
   UseGravity: 0
   hitEffect: {fileID: 135988, guid: d7cd433d10510fe46a35c39bac480fe1, type: 2}
   speed: 130
-  damage: 10
+  damage: 8
   damagePerSecond: 0
   stuckTime: 0
   knockBackRate: 0

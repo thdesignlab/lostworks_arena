@@ -434,6 +434,7 @@ GameObject:
   - 114: {fileID: 11483144}
   - 114: {fileID: 11488754}
   - 114: {fileID: 11431078}
+  - 114: {fileID: 11425298}
   m_Layer: 0
   m_Name: SatelliteMissile
   m_TagString: Weapon
@@ -1557,6 +1558,30 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &11425298
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 193652}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5ae7eb6027f9cc41bd60d7a75a7c396, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  powerCustomSystemList: 65000000
+  powerEffectValueDiffList:
+  - 1
+  powerObject: {fileID: 0}
+  technicCustomSystemList: 000000008c000000
+  technicEffectValueDiffList:
+  - -2
+  - 5
+  technicObject: {fileID: 0}
+  uniqueCustomSystemList: 2f010000
+  uniqueEffectValueDiffList:
+  - 2
+  uniqueObject: {fileID: 0}
 --- !u!114 &11431078
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1620,10 +1645,11 @@ MonoBehaviour:
   bitMoveTime: 0
   isBitFixed: 0
   reloadTime: 8
+  isNpc: 0
   fireEffect: {fileID: 0}
   bullet: {fileID: 192564, guid: 381742e8f5b05964380abab9ed52ca91, type: 2}
   rapidCount: 1
-  rapidInterval: 0
+  rapidInterval: 1.5
   spreadCount: 0
   spreadDiffAngle: 0
   focusDiff: 0
