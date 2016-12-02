@@ -55,6 +55,7 @@ public class CustomManager : CustomCommonManager
     private float buttonHeight;
     private float buttonWidth;
     private float descriptionHeight;
+    private float weaponListHeight;
 
     private Transform charaTran;
     private PlayerController playerCtrl;
@@ -136,9 +137,11 @@ public class CustomManager : CustomCommonManager
         weaponButtonAreaRectTran = weaponButtonArea.GetComponent<RectTransform>();
         buttonHeight = equipWeaponRow.GetComponent<LayoutElement>().preferredHeight + weaponButtonArea.GetComponent<VerticalLayoutGroup>().spacing;
         descriptionHeight = equipWeaponRow.transform.FindChild("WeaponDescription").GetComponent<RectTransform>().rect.height;
+        weaponListHeight = weaponSelectArea.rect.height;
         weaponSelectArea.gameObject.SetActive(false);
 
         playMovieObj = GameObject.Find("PointGetArea");
+        SwitchBonusText();
         playMovieObj.SetActive(false);
 
         partsNameText.text = "";
@@ -687,7 +690,7 @@ public class CustomManager : CustomCommonManager
         float dispWeaponCount = weaponNoList.Count;
         weaponScrollViewLayout.preferredHeight = dispWeaponCount * buttonHeight + descriptionHeight;
         weaponButtonAreaRectTran.sizeDelta = new Vector2(weaponButtonAreaRectTran.rect.width, weaponScrollViewLayout.preferredHeight);
-        if (weaponScrollViewLayout.preferredHeight > 1000) weaponScrollViewLayout.preferredHeight = 1000;
+        if (weaponScrollViewLayout.preferredHeight > weaponListHeight) weaponScrollViewLayout.preferredHeight = weaponListHeight;
 
         //アニメーション
         if (dispWeaponCount > 0) StartCoroutine(WeaponRowAnimation(nowWeaponNo));

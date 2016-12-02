@@ -165,6 +165,15 @@ public class GameController : SingletonMonoBehaviour<GameController>
         if (textLine == null) textLine = screenTran.FindChild(Common.CO.TEXT_LINE).GetComponent<Text>();
         SetTextUp();
         SetTextCenter();
+
+        //ステータスバー対策
+        switch (Application.platform)
+        {
+            //case RuntimePlatform.Android:
+            case RuntimePlatform.IPhonePlayer:
+                screenTran.FindChild("Status/HiddenLine").GetComponent<LayoutElement>().preferredHeight = 50;
+                break;
+        }
     }
 
     private void SetTextUp(string text = "", Color color = default(Color), float fadeout = 0)
@@ -1062,7 +1071,6 @@ public class GameController : SingletonMonoBehaviour<GameController>
         stageLevel = level;
         levelSelectCanvas.SetActive(false);
         if (UserManager.userOpenMissions[Common.PP.MISSION_LEVEL] < level) isAdminPlay = true;
-        Debug.Log("isAdminPlay >> "+ isAdminPlay);
     }
 
     //次のレベル挑戦
