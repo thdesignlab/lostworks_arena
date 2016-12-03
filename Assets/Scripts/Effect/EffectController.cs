@@ -255,6 +255,24 @@ public class EffectController : Photon.MonoBehaviour
         if (obCtrl != null) obCtrl.CustomSpawnEffect(obj);
     }
 
+    //HitEffect
+    public void CustomDamageEffect(GameObject obj)
+    {
+        damageEffect = obj;
+    }
+
+    //isPhysicsBulletBreak
+    public void CustomPhysicsBreak()
+    {
+        isPhysicsBulletBreak = true;
+    }
+
+    //isEnergyBulletBreak
+    public void CustomEnergyBreak()
+    {
+        isEnergyBulletBreak = true;
+    }
+
     //StatusChangeController追加
     private void AddStatusChangeCtrl()
     {

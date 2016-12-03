@@ -22,19 +22,27 @@ public class CrossRangeWeaponController : WeaponController
     [SerializeField]
     protected bool isStopInAttack;
 
-    protected EffectController effectCtrl;
+    private EffectController _effectCtrl;
+    protected EffectController effectCtrl
+    {
+        get { return _effectCtrl ? _effectCtrl : _effectCtrl = blade.GetComponent<EffectController>(); }
+        set { _effectCtrl = value; }
+    }
     private Animator weaponAnimator;
     private string animationName = "";
+
+    private int secondAttackRate = 0;
 
     private const string MOTION_RIGHT_SLASH = "SlashR";
     private const string MOTION_LEFT_SLASH = "SlashL";
     private const string MOTION_CENTER_SLASH = "SlashC";
+    private const string MOTION_SECOND_ATTACK = "SecondAttack";
+
 
     protected override void Awake()
     {
         base.Awake();
         weaponAnimator = myTran.GetComponent<Animator>();
-        if (blade != null) effectCtrl = blade.GetComponent<EffectController>();
     }
 
     protected override void Start()
@@ -63,7 +71,7 @@ public class CrossRangeWeaponController : WeaponController
         StartCoroutine(BladeOn());
     }
 
-    IEnumerator BladeOn()
+    IEnumerator BladeOn(bool isCheckSecondAttack = true)
     {
         bool isBladeOn = false;
         bool isBladeOff = false;
@@ -136,9 +144,21 @@ public class CrossRangeWeaponController : WeaponController
             yield return null;
         }
 
+        
+        if (isCheckSecondAttack && Random.Range(0, 100) <= secondAttackRate)
+        {
+            Coroutine secondAtk = StartCoroutine(SecondAttack());
+            yield return secondAtk;
+        }
         if (weaponAnimator != null) weaponAnimator.SetBool(animationName, false);
 
         base.EndAction();
+    }
+    IEnumerator SecondAttack()
+    {
+        //MOTION_SECOND_ATTACK
+        Coroutine bladeOn = StartCoroutine(BladeOn(false));
+        yield return bladeOn;
     }
 
     private void SetBlade(bool flg, bool isSendRPC = true)
@@ -187,5 +207,95 @@ public class CrossRangeWeaponController : WeaponController
     {
         base.SetTarget(target);
         if (effectCtrl != null) effectCtrl.SetTarget(target);
+    }
+
+
+    //##### CUSTOM #####
+
+    //blade変更
+    public void CustomChangeBlade(GameObject obj)
+    {
+        GameObject newBlade = PhotonNetwork.Instantiate(Common.Func.GetResourceEffect(obj.name), Vector3.zero, Quaternion.identity, 0);
+        newBlade.transform.SetParent(myTran, false);
+        int bladeViewId = PhotonView.Get(newBlade).viewID;
+        photonView.RPC("CustomChangeBladeRPC", PhotonTargets.Others, bladeViewId);
+        blade = newBlade;
+        effectCtrl = blade.GetComponent<EffectController>();
+    }
+    [PunRPC]
+    private void CustomChangeBladeRPC(int bladeViewId)
+    {
+        PhotonView bladeView = PhotonView.Find(bladeViewId);
+        if (bladeView == null) return;
+        bladeView.transform.SetParent(myTran, false);
+        blade = bladeView.gameObject;
+    }
+
+    //攻撃時間
+    public void CustomAttackTime(float value)
+    {
+        attackTime += value;
+    }
+
+    //攻撃開始待機時間
+    public void CustomAttackWaitTime(float value)
+    {
+        attackWaitTime += value;
+    }
+
+    //ブースト速度
+    public void CustomBoostSpeed(float value)
+    {
+        boostSpeed += value;
+    }
+
+    //ブースト時間
+    public void CustomBoostTime(float value)
+    {
+        boostTime += value;
+    }
+
+    //ブースト開始待機時間
+    public void CustomBoostWaitTime(float value)
+    {
+        boostWaitTime += value;
+    }
+
+    //ブースト消費SP
+    public void CustomBoostCost(int value)
+    {
+        boostCost += value;
+    }
+
+    //追撃発生率
+    public void CustomSecondAttack(int value)
+    {
+        secondAttackRate += value;
+    }
+
+    //ダメージ
+    public void CustomDamage(int value)
+    {
+        if (effectCtrl != null) effectCtrl.CustomDamage(value);
+    }
+
+    public void CustomPhysicsBreak()
+    {
+        if (effectCtrl != null) effectCtrl.CustomPhysicsBreak();
+    }
+
+    public void CustomEnergyBreak()
+    {
+        if (effectCtrl != null) effectCtrl.CustomEnergyBreak();
+    }
+
+    public void CustomEndScale(float value)
+    {
+        if (effectCtrl != null) effectCtrl.CustomEndScale(value);
+    }
+
+    public void CustomChangeHitEffect(GameObject obj)
+    {
+        if (effectCtrl != null) effectCtrl.CustomDamageEffect(obj);
     }
 }

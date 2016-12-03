@@ -42,6 +42,13 @@ public class BulletLevelController : EffectLevelController
     const int CUSTOM_SYSTEM_SPEED = 140;
     //Scale
     const int CUSTOM_SYSTEM_SCALE = 141;
+    //LockStartTime
+    const int CUSTOM_SYSTEM_LOCK_TIME = 142;
+    //LockedSpeedRate
+    const int CUSTOM_SYSTEM_LOCKED_SPEED_RATE = 143;
+    //LockedTurnSpeedRate
+    const int CUSTOM_SYSTEM_LOCKED_TURN_RATE = 144;
+
 
     //状態異常：ATK
     const int CUSTOM_SYSTEM_DEBUFF_ATTACK = 151;
@@ -180,6 +187,21 @@ public class BulletLevelController : EffectLevelController
                 bulletCtrl.CustomScale(effectValue);
                 break;
 
+            case CUSTOM_SYSTEM_LOCK_TIME:
+                //Scale
+                bulletCtrl.CustomLockTime(effectValue);
+                break;
+
+            case CUSTOM_SYSTEM_LOCKED_SPEED_RATE:
+                //Scale
+                bulletCtrl.CustomLockedSpeedRate(effectValue);
+                break;
+
+            case CUSTOM_SYSTEM_LOCKED_TURN_RATE:
+                //Scale
+                bulletCtrl.CustomLockedTurnRate(effectValue);
+                break;
+
             case CUSTOM_SYSTEM_DEBUFF_ATTACK:
                 //debuff:attack
                 bulletCtrl.CustomDebuffAttack(effectValue);
@@ -211,21 +233,4 @@ public class BulletLevelController : EffectLevelController
                 break;
         }
     }
-
-
-    //SpawnEffect強化
-    public void bulletEffectCustom(EffectController effectCtrl)
-    {
-        //UnityAction callback = () =>
-        //{
-        //    for (int i = 0; i < customSystemList.Count; i++)
-        //    {
-        //        int customSystem = customSystemList[i];
-        //        float effectValue = effectValueList[i] * myCustomLevel;
-        //        SpawnEffectCustomExe(effectCtrl, customSystem, effectValue);
-        //    }
-        //};
-        //WaitCustomReady(callback);
-    }
-
 }

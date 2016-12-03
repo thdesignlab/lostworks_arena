@@ -36,7 +36,8 @@ public class WeaponController : Photon.MonoBehaviour
     protected bool isEnabledFire = true;
     protected bool isReady = false;
 
-    protected Transform myTran;
+    private Transform _myTran;
+    protected Transform myTran { get { return _myTran ? _myTran : _myTran = transform; } }
     protected Transform myBitTran;
     protected Transform playerTran;
     protected PlayerStatus playerStatus;
@@ -71,7 +72,6 @@ public class WeaponController : Photon.MonoBehaviour
             isActiveSceane = false;
         }
 
-        myTran = transform;
         audioCtrl = myTran.GetComponent<AudioController>();
 
         //名前変更

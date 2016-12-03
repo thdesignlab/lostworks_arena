@@ -75,4 +75,23 @@ public class TrackingBulletController : BulletController
         defaultTurnSpeed = turnSpeed;
     }
 
+    //ロック開始時間
+    public override void CustomLockTime(float value)
+    {
+        lockStartTime += value;
+    }
+
+    //ロック後スピードrate
+    public override void CustomLockedSpeedRate(float value)
+    {
+        lockedSpeedRate += value;
+        return;
+    }
+
+    //ロック後ターンRate
+    public override void CustomLockedTurnRate(float value)
+    {
+        lockedTurnSpeedRate += value;
+        return;
+    }
 }

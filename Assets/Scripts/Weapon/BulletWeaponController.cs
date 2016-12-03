@@ -34,7 +34,11 @@ public class BulletWeaponController : WeaponController
     protected override void Awake()
     {
         base.Awake();
+        SetMuzzle();
+    }
 
+    protected void SetMuzzle()
+    {
         //発射口取得
         Transform bitPoint = null;
         foreach (Transform child in myTran)
@@ -61,17 +65,6 @@ public class BulletWeaponController : WeaponController
             }
         }
 
-        //Bit移動用
-        if (bitPoint != null)
-        {
-            base.bitToPos = bitPoint.localPosition;
-        }
-        else
-        {
-            base.bitToPos = muzzles[0].localPosition;
-        }
-        base.radius = Vector3.Distance(base.bitFromPos, base.bitToPos) / 2;
-
         if (rapidCount <= 0) rapidCount = 1;
         if (spreadCount <= 0) spreadCount = 1;
 
@@ -79,6 +72,17 @@ public class BulletWeaponController : WeaponController
         {
             startMuzzleAngle = spreadDiffAngle * (spreadCount - 1) / -2;
         }
+
+        //Bit移動用
+        if (bitPoint != null)
+        {
+            bitToPos = bitPoint.localPosition;
+        }
+        else
+        {
+            bitToPos = muzzles[0].localPosition;
+        }
+        radius = Vector3.Distance(bitFromPos, bitToPos) / 2;
     }
 
     public override void SetTarget(Transform target = null)
@@ -274,12 +278,14 @@ public class BulletWeaponController : WeaponController
     {
         spreadCount += value;
         if (spreadCount < 1) spreadCount = 1;
+        SetMuzzle();
     }
 
     //SpreadDiff
     public void CustomSpreadDiff(int value)
     {
         spreadDiffAngle += value;
+        SetMuzzle();
     }
 
     //ブレ抑制

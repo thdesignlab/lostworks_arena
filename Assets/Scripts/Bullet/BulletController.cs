@@ -582,6 +582,24 @@ public class BulletController : MoveOfCharacter
         }
     }
 
+    //ロック開始時間
+    public virtual void CustomLockTime(float value)
+    {
+        return;
+    }
+
+    //ロック後スピードrate
+    public virtual void CustomLockedSpeedRate(float value)
+    {
+        return;
+    }
+
+    //ロック後ターンRate
+    public virtual void CustomLockedTurnRate(float value)
+    {
+        return;
+    }
+
     //StatusChangeController追加
     private void AddStatusChangeCtrl()
     {

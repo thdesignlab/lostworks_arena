@@ -29,7 +29,6 @@ GameObject:
   - 114: {fileID: 11440804}
   - 114: {fileID: 11491250}
   - 114: {fileID: 11439436}
-  - 114: {fileID: 11476426}
   m_Layer: 0
   m_Name: Dagger
   m_TagString: EnergyBullet
@@ -137,22 +136,6 @@ MonoBehaviour:
   viewIdField: 0
   instantiationId: -1
   isRuntimeInstantiated: 0
---- !u!114 &11476426
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 149156}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 125673325fb8d414bbba101f7366ea31, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  effectTime: 2
-  effectTypeList: 02000000
-  effectRateList:
-  - 0.7
-  effect: {fileID: 0}
 --- !u!114 &11491250
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -170,7 +153,7 @@ MonoBehaviour:
   UseGravity: 0
   hitEffect: {fileID: 135988, guid: d7cd433d10510fe46a35c39bac480fe1, type: 2}
   speed: 300
-  damage: 10
+  damage: 2
   damagePerSecond: 0
   stuckTime: 0
   knockBackRate: 0
