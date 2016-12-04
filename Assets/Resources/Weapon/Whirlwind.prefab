@@ -664,7 +664,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 131078}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
@@ -1633,7 +1633,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isCheckGrounded: 0
   glideGravityRate: 1
-  isLockOn: 1
+  isLockOn: 0
   aimSpeed: 60
 --- !u!114 &11464248
 MonoBehaviour:
@@ -1666,11 +1666,10 @@ MonoBehaviour:
   - -1
   - 1
   technicObject: {fileID: 0}
-  uniqueCustomSystemList: 650000008c00000087000000
+  uniqueCustomSystemList: 8900000067000000
   uniqueEffectValueDiffList:
+  - 50
   - 2
-  - -50
-  - 100
   uniqueObject: {fileID: 0}
 --- !u!1001 &100100000
 Prefab:

@@ -1577,10 +1577,11 @@ MonoBehaviour:
   technicEffectValueDiffList:
   - 3
   - 300
-  - 10
+  - 5
   technicObject: {fileID: 0}
-  uniqueCustomSystemList: 6a000000
+  uniqueCustomSystemList: 670000006a000000
   uniqueEffectValueDiffList:
+  - 1
   - 0
   uniqueObject: {fileID: 171032, guid: b027ae111d8b8934f88a8edbdf189707, type: 2}
 --- !u!114 &11442446
@@ -1650,7 +1651,7 @@ MonoBehaviour:
   fireEffect: {fileID: 0}
   bullet: {fileID: 178894, guid: f58996077c0191749ab1bbdc4ac0cdec, type: 2}
   rapidCount: 1
-  rapidInterval: 0
+  rapidInterval: 1
   spreadCount: 3
   spreadDiffAngle: 30
   focusDiff: 1

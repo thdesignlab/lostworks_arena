@@ -324,10 +324,10 @@ MonoBehaviour:
   isLockOn: 0
   UseGravity: 0
   hitEffect: {fileID: 0}
-  speed: 5
+  speed: 12
   damage: 5
   damagePerSecond: 0
-  stuckTime: 0
+  stuckTime: 0.5
   knockBackRate: 0
   isPhysicsBulletBreak: 0
   isEnergyBulletBreak: 0
@@ -376,7 +376,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   breakEffect: {fileID: 107548, guid: 7e38c193ad9f20749bdc636e79a31f53, type: 2}
-  maxHp: 100
+  maxHp: 50
   isReflaction: 1
 --- !u!135 &13552894
 SphereCollider:

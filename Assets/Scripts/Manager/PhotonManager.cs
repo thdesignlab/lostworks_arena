@@ -158,23 +158,21 @@ public class PhotonManager : MonoBehaviour
                     DialogController.OpenMessage(DialogController.MESSAGE_CONNECT, DialogController.MESSAGE_POSITION_RIGHT);
                     return;
                 }
+
+                if (networkArea.GetActive())
+                {
+                    //接続状況更新
+                    roomStatusText.text = "Room :" + PhotonNetwork.countOfRooms + " / Player :" + PhotonNetwork.countOfPlayers;
+                }
                 else
                 {
-                    if (networkArea.GetActive())
-                    {
-                        //接続状況更新
-                        roomStatusText.text = "Room :" + PhotonNetwork.countOfRooms + " / Player :" + PhotonNetwork.countOfPlayers;
-                    }
-                    else
-                    {
-                        //部屋選択表示
-                        SwitchNetworkArea(true, true);
+                    //部屋選択表示
+                    SwitchNetworkArea(true, true);
 
-                        //初期値設定
-                        PlayerPrefs.SetString("playerName", PhotonNetwork.playerName);
-                    }
-                    DialogController.CloseMessage();
+                    //初期値設定
+                    PlayerPrefs.SetString("playerName", PhotonNetwork.playerName);
                 }
+                DialogController.CloseMessage();
             }
             else
             {
@@ -495,13 +493,12 @@ public class PhotonManager : MonoBehaviour
     //Room作成
     public void CreateRoom()
     {
-        Debug.Log("connectedAndReady >> " + PhotonNetwork.connectedAndReady);
         if (!PhotonNetwork.connectedAndReady) return;
-        Debug.Log("CreateRoom");
+
+        DialogController.OpenMessage(DialogController.MESSAGE_CREATE_ROOM, DialogController.MESSAGE_POSITION_RIGHT);
 
         Action createRoomCallback = () =>
         {
-            DialogController.OpenMessage(DialogController.MESSAGE_CREATE_ROOM, DialogController.MESSAGE_POSITION_RIGHT);
             if (PhotonNetwork.countOfRooms >= MAX_ROOM_COUNT)
             {
                 DialogController.CloseMessage();

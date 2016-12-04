@@ -330,7 +330,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 2
+  m_CollisionDetection: 0
 --- !u!96 &9618226
 TrailRenderer:
   m_ObjectHideFlags: 1
@@ -405,6 +405,7 @@ MonoBehaviour:
   effectSpawn: {fileID: 109874, guid: 45752b7016b587141a9cc7a60c12fe4b, type: 2}
   activeLimitTime: 3
   activeLimitDistance: 0
+  isNotAutoBreak: 0
 --- !u!114 &11430502
 MonoBehaviour:
   m_ObjectHideFlags: 1

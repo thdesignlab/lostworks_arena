@@ -403,7 +403,7 @@ public class PlayerController : MoveOfCharacter
                 speed *= status.glideJump;
             }
             //Debug.Log("speed: " + speed.ToString());
-            if (speed == 0) return;
+            if (speed <= 0) return;
 
             //base.Move(move, speed);
             base.isGrounded = false;
@@ -424,7 +424,7 @@ public class PlayerController : MoveOfCharacter
             if (speed == 0) return;
         }
 
-        if (move == Vector3.zero || speed <= 0) return;
+        if (move == Vector3.zero || speed == 0) return;
 
         //SP消費
         status.UseSp(status.boostCost);

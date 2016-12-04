@@ -23,6 +23,8 @@ public class ObjectController : Photon.MonoBehaviour {
 
     private bool isEffectCustom = false;
 
+    protected bool isDestroyProc = false;
+
     void Start()
     {
         myTran = transform;
@@ -64,6 +66,9 @@ public class ObjectController : Photon.MonoBehaviour {
 
     public void DestoryObject(bool isSendRpc = false)
     {
+        if (isDestroyProc) return;
+        isDestroyProc = true;
+
         if (photonView.isMine)
         {
             DestroyProccess();

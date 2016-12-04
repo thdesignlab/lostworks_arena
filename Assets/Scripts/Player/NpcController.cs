@@ -423,7 +423,7 @@ public class NpcController : MoveOfCharacter
             {
                 speed *= status.glideJump;
             }
-            if (speed == 0) return;
+            if (speed <= 0) return;
 
             //base.Move(move, speed);
             isGrounded = false;
@@ -441,7 +441,7 @@ public class NpcController : MoveOfCharacter
             if (speed == 0) return;
         }
 
-        if (move != Vector3.zero && speed > 0)
+        if (move != Vector3.zero && speed != 0)
         {
             //SP消費
             status.UseSp(status.boostCost);

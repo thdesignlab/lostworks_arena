@@ -32,7 +32,6 @@ public class BulletController : MoveOfCharacter
     protected PlayerStatus targetStatus;
     protected Transform ownerTran;
     protected PlayerStatus ownerStatus;
-    protected int ownerId = -1;
     protected Transform weaponTran;
     private Collider _myCollider;
     protected Collider myCollider
@@ -184,7 +183,7 @@ public class BulletController : MoveOfCharacter
                 }
 
                 //ノックバック
-                if (knockBackRate > 0)
+                if (knockBackRate != 0)
                 {
                     TargetKnockBack(hitObj.transform, knockBackRate);
                 }
@@ -268,9 +267,6 @@ public class BulletController : MoveOfCharacter
     //ターゲットを破壊する
     protected bool TargetDestory(GameObject hitObj)
     {
-        PhotonView pv = hitObj.GetPhotonView();
-        if (pv != null && pv.isMine) return false;
-
         if ((isEnergyBulletBreak && Common.Func.IsEnergyBullet(hitObj.tag))
             || (isPhysicsBulletBreak && Common.Func.IsPhysicsBullet(hitObj.tag)))
         {
@@ -287,18 +283,23 @@ public class BulletController : MoveOfCharacter
         //一度衝突しているものは無視
         if (isHit && isHitCheck) return true;
 
-        //エフェクトはスルー
+        //エフェクトは無視
         //HIT判定はエフェクト側で行う
         if (hitObj.CompareTag(Common.CO.TAG_EFFECT)) return true;
 
-        //ターゲットにあたった場合は有効
+        //ターゲット,障害物は有効
         if (hitObj.transform != targetTran && !hitObj.CompareTag(Common.CO.TAG_STRUCTURE))
         {
             //持ち主に当たった場合無視
             if (hitObj.transform == ownerTran) return true;
-            
+
+            //自分のオブジェクトは無視
             PhotonView pv = PhotonView.Get(hitObj);
-            if (pv != null && pv.ownerId == ownerId) return true;
+            if (pv != null && pv.isMine && Common.Func.IsBullet(hitObj.tag))
+            {
+                BulletController hitBullet = hitObj.GetComponent<BulletController>();
+                if (hitBullet != null && hitBullet.GetOwner() == ownerTran) return true;
+            }
         }
 
         if (isHitCheck) isHit = true;
@@ -369,7 +370,7 @@ public class BulletController : MoveOfCharacter
         {
             ownerStatus = ownerTran.GetComponent<PlayerStatus>();
             PhotonView pv = PhotonView.Get(ownerTran.gameObject);
-            if (pv != null) ownerId = pv.ownerId;
+            //if (pv != null) ownerId = pv.ownerId;
         }
 
         if (isSendRPC)

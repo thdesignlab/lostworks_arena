@@ -29,6 +29,7 @@ GameObject:
   - 114: {fileID: 11440804}
   - 114: {fileID: 11491250}
   - 114: {fileID: 11439436}
+  - 54: {fileID: 5456080}
   m_Layer: 0
   m_Name: Dagger
   m_TagString: EnergyBullet
@@ -96,6 +97,21 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 118820}
   m_Mesh: {fileID: 4300000, guid: dbb40fa87000fc04dab1abcb1fcd1522, type: 3}
+--- !u!54 &5456080
+Rigidbody:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 149156}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!114 &11439436
 MonoBehaviour:
   m_ObjectHideFlags: 1

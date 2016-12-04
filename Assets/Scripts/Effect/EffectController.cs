@@ -84,11 +84,7 @@ public class EffectController : Photon.MonoBehaviour
             }
 
             //対象を破壊
-            if ((isEnergyBulletBreak && Common.Func.IsBullet(otherObj.tag))
-                || (isPhysicsBulletBreak && Common.Func.IsPhysicsBullet(otherObj.tag)))
-            {
-                otherObj.GetComponent<ObjectController>().DestoryObject(true);
-            }
+            TargetDestory(otherObj);
         }
     }
 
@@ -158,6 +154,29 @@ public class EffectController : Photon.MonoBehaviour
     {
         if (statusChangeCtrl == null) return;
         statusChangeCtrl.Action(status);
+    }
+
+    //ターゲットを破壊する
+    protected bool TargetDestory(GameObject hitObj)
+    {
+        if (ownerTran == hitObj.transform) return false;
+
+        //自分のオブジェクトは無視
+        PhotonView pv = PhotonView.Get(hitObj);
+        if (pv != null && pv.isMine && Common.Func.IsBullet(hitObj.tag))
+        {
+            BulletController hitBullet = hitObj.GetComponent<BulletController>();
+            if (hitBullet != null && hitBullet.GetOwner() == ownerTran) return false;
+        }
+
+        if ((isEnergyBulletBreak && Common.Func.IsEnergyBullet(hitObj.tag))
+            || (isPhysicsBulletBreak && Common.Func.IsPhysicsBullet(hitObj.tag)))
+        {
+            hitObj.GetComponent<ObjectController>().DestoryObject(true);
+            return true;
+        }
+
+        return false;
     }
 
     public void EffectSetting(Transform owner, Transform target, Transform weapon, bool isCustom = true, bool isSendRPC = true)
