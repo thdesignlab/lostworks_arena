@@ -275,7 +275,7 @@ public class PlayerController : MoveOfCharacter
         return true;
     }
 
-    private void QuickTarget(Transform target, bool isSetBodyAngle = false)
+    public void QuickTarget(Transform target, bool isSetBodyAngle = false)
     {
         //Debug.Log("QuickTarget");
         if (target == null) return;

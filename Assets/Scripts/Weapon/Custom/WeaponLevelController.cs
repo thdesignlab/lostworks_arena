@@ -81,8 +81,6 @@ public abstract class WeaponLevelController : Photon.MonoBehaviour
         //装備強化
         WeaponCustom();
 
-        isReady = true;
-
         //カスタムレベル同期
         CustomLevelSync();
     }
@@ -107,6 +105,7 @@ public abstract class WeaponLevelController : Photon.MonoBehaviour
     {
         myCustomType = type;
         myCustomLevel = level;
+        SetCustomSystem();
     }
     [PunRPC]
     protected void RetrunCustomLevelRPC()
@@ -125,11 +124,15 @@ public abstract class WeaponLevelController : Photon.MonoBehaviour
             StartCoroutine(WaitCustomReadyProc(callback));
         }
     }
+    const float WAIT_LIMIT = 15;
     IEnumerator WaitCustomReadyProc(UnityAction callback)
     {
+        float procTime = 0;
         for (;;)
         {
             if (isReady) break;
+            procTime += Time.deltaTime;
+            if (procTime >= WAIT_LIMIT) yield break;
             yield return null;
         }
         callback.Invoke();
@@ -158,6 +161,7 @@ public abstract class WeaponLevelController : Photon.MonoBehaviour
                 addObject = uniqueObject;
                 break;
         }
+        isReady = true;
     }
 
     //武器強化

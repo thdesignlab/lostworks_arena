@@ -66,6 +66,7 @@ GameObject:
   - 114: {fileID: 11467116}
   - 114: {fileID: 11442578}
   - 114: {fileID: 11427162}
+  - 114: {fileID: 11433654}
   m_Layer: 0
   m_Name: FlameRadiation
   m_TagString: Weapon
@@ -269,6 +270,30 @@ MonoBehaviour:
   isEnergyBulletBreak: 1
   ownDamageRate: 0
   isFloorEffect: 0
+--- !u!114 &11433654
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 164782}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 283dbcc7af77b364397b94a580c17b62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  powerCustomSystemList: 18020000
+  powerEffectValueDiffList:
+  - 50
+  powerObject: {fileID: 0}
+  technicCustomSystemList: 00000000f6010000
+  technicEffectValueDiffList:
+  - -2
+  - 2
+  technicObject: {fileID: 0}
+  uniqueCustomSystemList: f5010000
+  uniqueEffectValueDiffList:
+  - 0
+  uniqueObject: {fileID: 189462, guid: e6f9cf04aa4adc547b43f08904d2c92b, type: 2}
 --- !u!114 &11442578
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -284,6 +309,7 @@ MonoBehaviour:
   bitMoveTime: 0
   isBitFixed: 0
   reloadTime: 5
+  isNpc: 0
   blade: {fileID: 160860}
   attackTime: 4
   attackWaitTime: 0

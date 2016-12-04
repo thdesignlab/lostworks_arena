@@ -176,7 +176,7 @@ public class CustomCommonManager : SingletonMonoBehaviour<CustomCommonManager>
         text += "「" + weaponName + "」\n";
         text += pt + "pt消費";
         Dictionary<string, UnityAction> btnList = new Dictionary<string, UnityAction>();
-        List<Color> btnColors = new List<Color>();
+        //List<Color> btnColors = new List<Color>();
         List<Object> customBtns = new List<Object>();
         foreach (int type in Common.Weapon.customTypeNameDic.Keys)
         {

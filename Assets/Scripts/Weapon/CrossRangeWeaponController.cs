@@ -28,6 +28,18 @@ public class CrossRangeWeaponController : WeaponController
         get { return _effectCtrl ? _effectCtrl : _effectCtrl = blade.GetComponent<EffectController>(); }
         set { _effectCtrl = value; }
     }
+    private PlayerController _playerCtrl;
+    protected PlayerController playerCtrl
+    {
+        get { return _playerCtrl ? _playerCtrl : _playerCtrl = playerTran.GetComponent<PlayerController>(); }
+    }
+    private NpcController _npcCtrl;
+    protected NpcController npcCtrl
+    {
+        get { return _npcCtrl ? _npcCtrl : _npcCtrl = playerTran.GetComponent<NpcController>(); }
+    }
+
+
     private Animator weaponAnimator;
     private string animationName = "";
 
@@ -71,16 +83,35 @@ public class CrossRangeWeaponController : WeaponController
         StartCoroutine(BladeOn());
     }
 
-    IEnumerator BladeOn(bool isCheckSecondAttack = true)
+    IEnumerator BladeOn()
+    {
+        //斬戟モーション開始
+        if (weaponAnimator != null) weaponAnimator.SetBool(animationName, true);
+
+        //攻撃
+        Coroutine atkProc = StartCoroutine(AttackProc());
+        yield return atkProc;
+
+        //追撃判定
+        if (secondAttackRate > 0 && Random.Range(0, 100) <= secondAttackRate)
+        {
+            Coroutine secondAtk = StartCoroutine(SecondAttack());
+            yield return secondAtk;
+        }
+
+        //斬戟モーション終了
+        if (weaponAnimator != null) weaponAnimator.SetBool(animationName, false);
+
+        base.EndAction();
+    }
+
+    IEnumerator AttackProc()
     {
         bool isBladeOn = false;
         bool isBladeOff = false;
         bool isBoostOn = false;
         bool isBoostOff = false;
         float attackProcTime = 0;
-
-        //斬戟モーション
-        if (weaponAnimator != null) weaponAnimator.SetBool(animationName, true);
 
         for (;;)
         {
@@ -143,22 +174,32 @@ public class CrossRangeWeaponController : WeaponController
 
             yield return null;
         }
-
-        
-        if (isCheckSecondAttack && Random.Range(0, 100) <= secondAttackRate)
-        {
-            Coroutine secondAtk = StartCoroutine(SecondAttack());
-            yield return secondAtk;
-        }
-        if (weaponAnimator != null) weaponAnimator.SetBool(animationName, false);
-
-        base.EndAction();
     }
+
     IEnumerator SecondAttack()
     {
-        //MOTION_SECOND_ATTACK
-        Coroutine bladeOn = StartCoroutine(BladeOn(false));
-        yield return bladeOn;
+        if (targetTran != null)
+        {
+            if (isNpc)
+            {
+                npcCtrl.QuickTarget(targetTran);
+            }
+            else
+            {
+                playerCtrl.QuickTarget(targetTran, true);
+            }
+            yield return new WaitForSeconds(0.2f);
+        }
+
+        //斬戟モーション開始
+        if (weaponAnimator != null) weaponAnimator.SetBool(MOTION_SECOND_ATTACK, true);
+
+        //攻撃
+        Coroutine atkProc = StartCoroutine(AttackProc());
+        yield return atkProc;
+
+        //斬戟モーション終了
+        if (weaponAnimator != null) weaponAnimator.SetBool(MOTION_SECOND_ATTACK, false);
     }
 
     private void SetBlade(bool flg, bool isSendRPC = true)
@@ -215,20 +256,28 @@ public class CrossRangeWeaponController : WeaponController
     //blade変更
     public void CustomChangeBlade(GameObject obj)
     {
-        GameObject newBlade = PhotonNetwork.Instantiate(Common.Func.GetResourceEffect(obj.name), Vector3.zero, Quaternion.identity, 0);
-        newBlade.transform.SetParent(myTran, false);
-        int bladeViewId = PhotonView.Get(newBlade).viewID;
-        photonView.RPC("CustomChangeBladeRPC", PhotonTargets.Others, bladeViewId);
-        blade = newBlade;
-        effectCtrl = blade.GetComponent<EffectController>();
+        if (photonView.isMine)
+        {
+            GameObject newBlade = PhotonNetwork.Instantiate(Common.Func.GetResourceEffect(obj.name), Vector3.zero, Quaternion.identity, 0);
+            newBlade.transform.SetParent(myTran, false);
+            object[] args = new object[] { photonView.viewID, newBlade.name };
+            photonView.RPC("CustomChangeBladeRPC", PhotonTargets.Others, args);
+            blade = newBlade;
+            blade.SetActive(false);
+            effectCtrl = blade.GetComponent<EffectController>();
+        }
     }
     [PunRPC]
-    private void CustomChangeBladeRPC(int bladeViewId)
+    private void CustomChangeBladeRPC(int parentViewId, string bladeName)
     {
-        PhotonView bladeView = PhotonView.Find(bladeViewId);
-        if (bladeView == null) return;
-        bladeView.transform.SetParent(myTran, false);
-        blade = bladeView.gameObject;
+        PhotonView parentView = PhotonView.Find(parentViewId);
+        if (parentView == null) return;
+        Transform prentTran = parentView.transform;
+        Transform bladeTran = prentTran.Find(bladeName);
+        bladeTran.SetParent(prentTran, false);
+        blade = bladeTran.gameObject;
+        blade.SetActive(false);
+        effectCtrl = blade.GetComponent<EffectController>();
     }
 
     //攻撃時間
@@ -277,6 +326,11 @@ public class CrossRangeWeaponController : WeaponController
     public void CustomDamage(int value)
     {
         if (effectCtrl != null) effectCtrl.CustomDamage(value);
+    }
+
+    public void CustomDPS(int value)
+    {
+        if (effectCtrl != null) effectCtrl.CustomDPS(value);
     }
 
     public void CustomPhysicsBreak()

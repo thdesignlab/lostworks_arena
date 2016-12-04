@@ -34,7 +34,8 @@ public class CrossRangeLevelController : EffectLevelController
     const int CUSTOM_SYSTEM_BLADE_END_SCALE = 534;
     //BladeHitEffect
     const int CUSTOM_SYSTEM_BLADE_HIT_EFFECT = 535;
-
+    //BladeHitEffect
+    const int CUSTOM_SYSTEM_BLADE_DPS = 536;
 
 
     private CrossRangeWeaponController _crossRangeWeaponCtrl;
@@ -83,6 +84,10 @@ public class CrossRangeLevelController : EffectLevelController
 
             case CUSTOM_SYSTEM_BLADE_DAMAGE:
                 crossRangeWeaponCtrl.CustomDamage((int)effectValue);
+                break;
+
+            case CUSTOM_SYSTEM_BLADE_DPS:
+                crossRangeWeaponCtrl.CustomDPS((int)effectValue);
                 break;
 
             case CUSTOM_SYSTEM_BLADE_PHYSICS_BREAK:

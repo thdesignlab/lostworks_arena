@@ -338,6 +338,7 @@ GameObject:
   - 114: {fileID: 11470286}
   - 114: {fileID: 11444862}
   - 114: {fileID: 11425750}
+  - 114: {fileID: 11425440}
   m_Layer: 0
   m_Name: ReflectionWall
   m_TagString: Weapon
@@ -1557,6 +1558,30 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &11425440
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 175358}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63f8af699ff98bd428243ee1e2d0d977, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  powerCustomSystemList: 21030000
+  powerEffectValueDiffList:
+  - 250
+  powerObject: {fileID: 0}
+  technicCustomSystemList: 00000000
+  technicEffectValueDiffList:
+  - -3
+  technicObject: {fileID: 0}
+  uniqueCustomSystemList: 860000008d000000
+  uniqueEffectValueDiffList:
+  - 2
+  - 2
+  uniqueObject: {fileID: 0}
 --- !u!114 &11425750
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1583,6 +1608,7 @@ MonoBehaviour:
   bitMoveTime: 0
   isBitFixed: 0
   reloadTime: 8
+  isNpc: 0
   fireEffect: {fileID: 137676, guid: e0a85b21b24c5d540a113abe1c3aab52, type: 2}
   bullet: {fileID: 107330, guid: e38eb992c1a5ba5489ed5312aec4ad10, type: 2}
   rapidCount: 1

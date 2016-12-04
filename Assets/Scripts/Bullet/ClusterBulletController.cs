@@ -42,6 +42,7 @@ public class ClusterBulletController : TrackingBulletController
                 if (Vector3.Distance(myTran.position, targetTran.position) <= purgeDistance)
                 {
                     purge = true;
+                    purgeDistance = 0;
                 }
 
             }
@@ -106,5 +107,32 @@ public class ClusterBulletController : TrackingBulletController
             //本体破棄
             DestoryObject();
         }
+    }
+
+    //##### CUSTOM #####
+
+    public void CustomChangeChildBullet(GameObject obj)
+    {
+        childBullet = obj;
+    }
+    public void CustomChildCount(int value)
+    {
+        childeBulletCount += value;
+    }
+    public void CustomPurgeDistance(float value)
+    {
+        purgeDistance += value;
+    }
+    public void CustomPurgeTime(float value)
+    {
+        purgeTime = value;
+    }
+    public void CustomPurgeDiff(float value)
+    {
+        purgeDiff += value;
+    }
+    public void CustomPurgeDestroy(bool flg)
+    {
+        isPurgeDestroy = flg;
     }
 }

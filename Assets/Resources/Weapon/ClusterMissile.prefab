@@ -236,6 +236,7 @@ GameObject:
   - 114: {fileID: 11475826}
   - 114: {fileID: 11465950}
   - 114: {fileID: 11427908}
+  - 114: {fileID: 11430648}
   m_Layer: 0
   m_Name: ClusterMissile
   m_TagString: Weapon
@@ -1572,6 +1573,7 @@ MonoBehaviour:
   bitMoveTime: 0
   isBitFixed: 0
   reloadTime: 6
+  isNpc: 0
   fireEffect: {fileID: 0}
   bullet: {fileID: 152178, guid: 6455472290c63b140874f19c221eaaa6, type: 2}
   rapidCount: 1
@@ -1580,6 +1582,32 @@ MonoBehaviour:
   spreadDiffAngle: 0
   focusDiff: 0
   recoil: 0
+--- !u!114 &11430648
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 143158}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff9a44d7f069fa545a552478535bc0e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  powerCustomSystemList: bf020000c2020000
+  powerEffectValueDiffList:
+  - 50
+  - 0
+  powerObject: {fileID: 0}
+  technicCustomSystemList: 00000000
+  technicEffectValueDiffList:
+  - -2
+  technicObject: {fileID: 0}
+  uniqueCustomSystemList: 8e00000084000000bf020000
+  uniqueEffectValueDiffList:
+  - 1
+  - 50
+  - -50
+  uniqueObject: {fileID: 0}
 --- !u!114 &11465950
 MonoBehaviour:
   m_ObjectHideFlags: 1

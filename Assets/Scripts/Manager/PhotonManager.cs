@@ -495,7 +495,9 @@ public class PhotonManager : MonoBehaviour
     //Room作成
     public void CreateRoom()
     {
+        Debug.Log("connectedAndReady >> " + PhotonNetwork.connectedAndReady);
         if (!PhotonNetwork.connectedAndReady) return;
+        Debug.Log("CreateRoom");
 
         Action createRoomCallback = () =>
         {

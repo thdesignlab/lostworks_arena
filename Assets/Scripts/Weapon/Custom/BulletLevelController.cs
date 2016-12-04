@@ -128,7 +128,7 @@ public class BulletLevelController : EffectLevelController
     }
 
     //弾丸強化実行
-    protected void BulletCustomExe(BulletController bulletCtrl, int customSystem, float effectValue)
+    protected virtual void BulletCustomExe(BulletController bulletCtrl, int customSystem, float effectValue)
     {
         switch (customSystem)
         {

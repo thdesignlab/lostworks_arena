@@ -1698,7 +1698,6 @@ MonoBehaviour:
   glideGravityRate: 1
   isLockOn: 0
   UseGravity: 0
-  GRAVITY_LIMIT_RATE: 1.5
   hitEffect: {fileID: 135988, guid: d7cd433d10510fe46a35c39bac480fe1, type: 2}
   speed: 100
   damage: 1
@@ -1717,7 +1716,7 @@ MonoBehaviour:
   isLockFlat: 0
   chargeEffect: {fileID: 175020}
   maxChargeTime: 3
-  maxSpeedRate: 5
+  maxSpeedRate: 4
   maxDamageRate: 120
   maxSizeRate: 5
   limitTime: 2

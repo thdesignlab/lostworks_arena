@@ -93,4 +93,20 @@ public class StructureController : Photon.MonoBehaviour
         if (nowHp <= 0) return false;
         return isReflaction;
     }
+
+    //##### CUSTOM #####
+
+    public void CustomHp(int value)
+    {
+        maxHp = value;
+        nowHp = maxHp;
+    }
+    public void CustomReflection(bool flg)
+    {
+        isReflaction = flg;
+    }
+    public void CustomChangeBreakEffect(GameObject obj)
+    {
+        breakEffect = obj;
+    }
 }

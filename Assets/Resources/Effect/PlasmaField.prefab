@@ -49,7 +49,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damageEffect: {fileID: 0}
   damage: 0
-  damagePerSecond: 15
+  damagePerSecond: 10
   isPhysicsBulletBreak: 0
   isEnergyBulletBreak: 0
   ownDamageRate: 0
@@ -91,7 +91,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effectSpawn: {fileID: 0}
-  activeLimitTime: 4
+  activeLimitTime: 3
   activeLimitDistance: 0
   isNotAutoBreak: 0
 --- !u!114 &11449242

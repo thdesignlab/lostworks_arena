@@ -417,6 +417,7 @@ GameObject:
   - 114: {fileID: 11439944}
   - 114: {fileID: 11482238}
   - 114: {fileID: 11444356}
+  - 114: {fileID: 11415022}
   m_Layer: 0
   m_Name: SorwdGeyser
   m_TagString: Weapon
@@ -1557,6 +1558,31 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &11415022
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 189480}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff9a44d7f069fa545a552478535bc0e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  powerCustomSystemList: bd020000
+  powerEffectValueDiffList:
+  - 0
+  powerObject: {fileID: 165998, guid: 9f7dd634e277b1f429246c32f60d737a, type: 2}
+  technicCustomSystemList: be020000840000006a000000
+  technicEffectValueDiffList:
+  - 4
+  - 20
+  - 0
+  technicObject: {fileID: 154160, guid: 43c04bd1b16db034b87c75b27d18ae3b, type: 2}
+  uniqueCustomSystemList: bd020000
+  uniqueEffectValueDiffList:
+  - 0
+  uniqueObject: {fileID: 177484, guid: 7846eed8dfd4de5438fcf45635ff0205, type: 2}
 --- !u!114 &11439944
 MonoBehaviour:
   m_ObjectHideFlags: 1

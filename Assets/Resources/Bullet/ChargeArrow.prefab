@@ -49,6 +49,7 @@ MonoBehaviour:
   effectSpawn: {fileID: 0}
   activeLimitTime: 0
   activeLimitDistance: 0
+  isNotAutoBreak: 0
 --- !u!114 &11467102
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -105,7 +106,7 @@ MonoBehaviour:
   lockedTurnSpeedRate: 1
   isNeedLock: 1
   isLockFlat: 0
-  chargeEffect: {fileID: 0}
+  chargeEffect: {fileID: 103904, guid: 57ffac70765a39847a7213eb4769d81f, type: 2}
   maxChargeTime: 3
   maxSpeedRate: 1
   maxDamageRate: 25

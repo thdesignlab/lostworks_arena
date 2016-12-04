@@ -71,4 +71,24 @@ public class ChainBulletController : TrackingBulletController
             DestoryObject();
         }
     }
+
+
+    //##### CUSTOM #####
+
+    public void CustomChangeChainObject(GameObject obj)
+    {
+        chainObject = obj;
+    }
+    public void CustomChainCount(int value)
+    {
+        chainCount += value;
+    }
+    public void CustomChainTime(float value)
+    {
+        chainTime += value;
+    }
+    public void CustomChainDistance(float value)
+    {
+        chainDistance += value;
+    }
 }

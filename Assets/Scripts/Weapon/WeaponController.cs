@@ -41,6 +41,7 @@ public class WeaponController : Photon.MonoBehaviour
     protected Transform myBitTran;
     protected Transform playerTran;
     protected PlayerStatus playerStatus;
+    [HideInInspector]
     public bool isNpc = false;
     protected int weaponNo = 0;
 

@@ -130,6 +130,7 @@ GameObject:
   - 114: {fileID: 11495544}
   - 95: {fileID: 9528538}
   - 114: {fileID: 11496696}
+  - 114: {fileID: 11421910}
   m_Layer: 0
   m_Name: PlasmaBlade
   m_TagString: Weapon
@@ -1619,8 +1620,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 11436126}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 3
-  instantiationId: 3
+  viewIdField: 0
+  instantiationId: -1
   isRuntimeInstantiated: 0
 --- !u!114 &11421672
 MonoBehaviour:
@@ -1644,9 +1645,35 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 11463754}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 2
-  instantiationId: 2
+  viewIdField: 0
+  instantiationId: -1
   isRuntimeInstantiated: 0
+--- !u!114 &11421910
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 131032}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 283dbcc7af77b364397b94a580c17b62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  powerCustomSystemList: 13020000
+  powerEffectValueDiffList:
+  - 80
+  powerObject: {fileID: 0}
+  technicCustomSystemList: f8010000f90100001402000015020000
+  technicEffectValueDiffList:
+  - 200
+  - -0.25
+  - 0
+  - 0
+  technicObject: {fileID: 0}
+  uniqueCustomSystemList: 17020000
+  uniqueEffectValueDiffList:
+  - 0
+  uniqueObject: {fileID: 0}
 --- !u!114 &11436126
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1865,8 +1892,8 @@ MonoBehaviour:
   - {fileID: 11486276}
   - {fileID: 11496696}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 4
-  instantiationId: 4
+  viewIdField: 0
+  instantiationId: -1
   isRuntimeInstantiated: 0
 --- !u!114 &11495544
 MonoBehaviour:

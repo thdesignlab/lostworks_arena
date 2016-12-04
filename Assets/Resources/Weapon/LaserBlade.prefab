@@ -1736,8 +1736,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 11471398}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 3
-  instantiationId: 3
+  viewIdField: 0
+  instantiationId: -1
   isRuntimeInstantiated: 0
 --- !u!114 &11422540
 MonoBehaviour:
@@ -1761,8 +1761,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 11449254}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 2
-  instantiationId: 2
+  viewIdField: 0
+  instantiationId: -1
   isRuntimeInstantiated: 0
 --- !u!114 &11437310
 MonoBehaviour:
@@ -1963,13 +1963,15 @@ MonoBehaviour:
   powerEffectValueDiffList:
   - 2
   powerObject: {fileID: 0}
-  technicCustomSystemList: f5010000
+  technicCustomSystemList: 1402000015020000fb010000
   technicEffectValueDiffList:
   - 0
-  technicObject: {fileID: 125456, guid: 889cf12816cc6b2409ba91dd4864936c, type: 2}
+  - 0
+  - -50
+  technicObject: {fileID: 0}
   uniqueCustomSystemList: fc010000
   uniqueEffectValueDiffList:
-  - 75
+  - 100
   uniqueObject: {fileID: 0}
 --- !u!114 &11455672
 MonoBehaviour:
@@ -1994,8 +1996,8 @@ MonoBehaviour:
   - {fileID: 11437310}
   - {fileID: 11450368}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 4
-  instantiationId: 4
+  viewIdField: 0
+  instantiationId: -1
   isRuntimeInstantiated: 0
 --- !u!114 &11471398
 MonoBehaviour:

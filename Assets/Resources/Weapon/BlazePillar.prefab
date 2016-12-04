@@ -169,6 +169,7 @@ GameObject:
   - 114: {fileID: 11443044}
   - 114: {fileID: 11454000}
   - 114: {fileID: 11420658}
+  - 114: {fileID: 11458288}
   m_Layer: 0
   m_Name: BlazePillar
   m_TagString: Weapon
@@ -1629,6 +1630,30 @@ MonoBehaviour:
   spreadDiffAngle: 0
   focusDiff: 0
   recoil: 0
+--- !u!114 &11458288
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 134098}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0ab2bfc531175e4a8e29d7303fa179b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  powerCustomSystemList: 2e010000
+  powerEffectValueDiffList:
+  - 20
+  powerObject: {fileID: 0}
+  technicCustomSystemList: 840000002f010000
+  technicEffectValueDiffList:
+  - 10
+  - 1.2
+  technicObject: {fileID: 0}
+  uniqueCustomSystemList: 8c000000
+  uniqueEffectValueDiffList:
+  - 20
+  uniqueObject: {fileID: 0}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

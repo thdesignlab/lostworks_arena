@@ -47,6 +47,7 @@ GameObject:
   - 114: {fileID: 11486114}
   - 114: {fileID: 11416910}
   - 114: {fileID: 11409724}
+  - 114: {fileID: 11471598}
   m_Layer: 0
   m_Name: AssaultCharge
   m_TagString: Weapon
@@ -357,13 +358,14 @@ MonoBehaviour:
   bitMoveTime: 0
   isBitFixed: 0
   reloadTime: 5
+  isNpc: 0
   blade: {fileID: 145072}
   attackTime: 0.5
   attackWaitTime: 0
-  boostSpeed: 200
+  boostSpeed: 150
   boostTime: 0.5
   boostWaitTime: 0
-  boostCost: 50
+  boostCost: 100
   isStopInAttack: 0
 --- !u!114 &11424164
 MonoBehaviour:
@@ -428,6 +430,31 @@ MonoBehaviour:
   viewIdField: 0
   instantiationId: -1
   isRuntimeInstantiated: 0
+--- !u!114 &11471598
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 129648}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 283dbcc7af77b364397b94a580c17b62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  powerCustomSystemList: f8010000
+  powerEffectValueDiffList:
+  - 80
+  powerObject: {fileID: 0}
+  technicCustomSystemList: 16020000
+  technicEffectValueDiffList:
+  - 2
+  technicObject: {fileID: 0}
+  uniqueCustomSystemList: fb0100001402000015020000
+  uniqueEffectValueDiffList:
+  - -50
+  - 0
+  - 0
+  uniqueObject: {fileID: 0}
 --- !u!114 &11480602
 MonoBehaviour:
   m_ObjectHideFlags: 1

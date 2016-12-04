@@ -128,7 +128,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
         CheckMode();
 
         //フレームレート
-        Application.targetFrameRate = 60;
+        Application.targetFrameRate = -1;
     }
 
     void Start()
@@ -538,7 +538,6 @@ public class GameController : SingletonMonoBehaviour<GameController>
                                 if (diffRate > battlePoint) battlePoint = diffRate;
                                 if (isWin && battlePoint < WIN_POINT_MIN) battlePoint = WIN_POINT_MIN;
                                 battlePoint = (int)(battlePoint * pointRate);
-                                Debug.Log(battlePoint);
 
                                 //ダイアログ情報設定
                                 string diffRateSign = diffRate >= 0 ? "+" : "";
@@ -1093,7 +1092,6 @@ public class GameController : SingletonMonoBehaviour<GameController>
         bool isChecked = true;
         if (!isAdminPlay)
         {
-            Debug.Log("npcNo >> " + npcNo);
             if (UserManager.OpenNewCharacter(npcNo))
             {
                 //キャラOPEN

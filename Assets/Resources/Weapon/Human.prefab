@@ -41,6 +41,7 @@ GameObject:
   - 114: {fileID: 11442446}
   - 114: {fileID: 11468722}
   - 114: {fileID: 11457354}
+  - 114: {fileID: 11410932}
   m_Layer: 0
   m_Name: Human
   m_TagString: Weapon
@@ -1557,6 +1558,31 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &11410932
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 101762}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63f8af699ff98bd428243ee1e2d0d977, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  powerCustomSystemList: 6a000000
+  powerEffectValueDiffList:
+  - 0
+  powerObject: {fileID: 112532, guid: e45a677c1da0c4e4da976adb22d5770f, type: 2}
+  technicCustomSystemList: 86000000210300008c000000
+  technicEffectValueDiffList:
+  - 3
+  - 300
+  - 10
+  technicObject: {fileID: 0}
+  uniqueCustomSystemList: 6a000000
+  uniqueEffectValueDiffList:
+  - 0
+  uniqueObject: {fileID: 171032, guid: b027ae111d8b8934f88a8edbdf189707, type: 2}
 --- !u!114 &11442446
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1620,6 +1646,7 @@ MonoBehaviour:
   bitMoveTime: 0
   isBitFixed: 0
   reloadTime: 5
+  isNpc: 0
   fireEffect: {fileID: 0}
   bullet: {fileID: 178894, guid: f58996077c0191749ab1bbdc4ac0cdec, type: 2}
   rapidCount: 1

@@ -160,38 +160,102 @@ public class EffectController : Photon.MonoBehaviour
         statusChangeCtrl.Action(status);
     }
 
-    public void EffectSetting(Transform owner, Transform target, Transform weapon, bool isCustom = true)
+    public void EffectSetting(Transform owner, Transform target, Transform weapon, bool isCustom = true, bool isSendRPC = true)
     {
         SetOwner(owner);
         SetTarget(target);
         SetWeapon(weapon, isCustom);
+
+        if (isSendRPC)
+        {
+            int ownerViewId = (owner != null) ? PhotonView.Get(owner.gameObject).viewID : -1;
+            int targetViewId = (target != null) ? PhotonView.Get(target.gameObject).viewID : -1;
+            int weaponViewId = (weapon != null) ? PhotonView.Get(weapon.gameObject).viewID : -1;
+            object[] args = new object[] { ownerViewId, targetViewId, weaponViewId, isCustom };
+            photonView.RPC("EffectSettingRPC", PhotonTargets.Others, args);
+        }
+    }
+    [PunRPC]
+    protected void EffectSettingRPC(int ownerViewId, int targetViewId, int weaponViewId, bool isCustom)
+    {
+        SetOwnerRPC(ownerViewId);
+        SetTargetRPC(targetViewId);
+        SetWeaponRPC(weaponViewId, isCustom);
     }
 
-    public void SetOwner(Transform owner)
+    public void SetOwner(Transform owner, bool isSendRPC = true)
     {
         ownerTran = owner;
         if (obCtrl != null) obCtrl.SetOwner(ownerTran);
         if (ownerTran != null) ownerStatus = ownerTran.GetComponent<PlayerStatus>();
+
+        if (isSendRPC)
+        {
+            int viewId = -1;
+            if (ownerTran != null) viewId = PhotonView.Get(ownerTran.gameObject).viewID;
+            photonView.RPC("SetOwnerRPC", PhotonTargets.Others, viewId);
+        }
     }
+    [PunRPC]
+    protected void SetOwnerRPC(int ownerViewId)
+    {
+        PhotonView ownerView = PhotonView.Find(ownerViewId);
+        Transform owner = (ownerView != null) ? ownerView.transform : null;
+        SetOwner(owner, false);
+    }
+
     public Transform GetOwner()
     {
         return ownerTran;
     }
 
-    public void SetTarget(Transform target)
+    public void SetTarget(Transform target, bool isSendRPC = true)
     {
         targetTran = target;
         if (obCtrl != null) obCtrl.SetTarget(targetTran);
         if (targetTran != null) targetStatus = targetTran.GetComponent<PlayerStatus>();
+
+        if (isSendRPC)
+        {
+            int viewId = -1;
+            if (targetTran != null) viewId = PhotonView.Get(targetTran.gameObject).viewID;
+            photonView.RPC("SetTargetRPC", PhotonTargets.Others, viewId);
+        }
+    }
+    [PunRPC]
+    protected void SetTargetRPC(int targetViewId)
+    {
+        PhotonView targetView = PhotonView.Find(targetViewId);
+        Transform target = (targetView != null) ? targetView.transform : null;
+        SetTarget(target, false);
     }
 
-    public void SetWeapon(Transform weapon, bool isCustom)
+    public void SetWeapon(Transform weapon, bool isCustom, bool isSendRPC = true)
     {
         weaponTran = weapon;
         if (obCtrl != null) obCtrl.SetWeapon(weaponTran);
 
         //カスタム
-        if (isCustom && weaponTran != null) SetCustom();
+        if (isCustom && weaponTran != null)
+        {
+            EffectLevelController effectLevelCtrl = weaponTran.GetComponent<EffectLevelController>();
+            if (effectLevelCtrl != null) effectLevelCtrl.EffectCustom(this);
+        }
+
+        if (isSendRPC)
+        {
+            int viewId = -1;
+            if (weaponTran != null) viewId = PhotonView.Get(weaponTran.gameObject).viewID;
+            object[] args = new object[] { viewId, isCustom };
+            photonView.RPC("SetWeaponRPC", PhotonTargets.Others, args);
+        }
+    }
+    [PunRPC]
+    public void SetWeaponRPC(int viewId, bool isCustom)
+    {
+        PhotonView weaponView = PhotonView.Find(viewId);
+        Transform weapon = (weaponView != null) ? weaponView.transform : null;
+        SetWeapon(weapon, isCustom, false);
     }
 
     public string GetWeaponName()
@@ -201,21 +265,6 @@ public class EffectController : Photon.MonoBehaviour
 
 
     //##### CUSTOM #####
-
-    private void SetCustom(bool isSendRPC = true)
-    {
-        EffectLevelController effectLevelCtrl = weaponTran.GetComponent<EffectLevelController>();
-        if (effectLevelCtrl != null)
-        {
-            effectLevelCtrl.EffectCustom(this);
-            if (isSendRPC) photonView.RPC("SetCustomRPC", PhotonTargets.Others);
-        }
-    }
-    [PunRPC]
-    private void SetCustomRPC()
-    {
-        SetCustom(false);
-    }
 
     //Damage
     public void CustomDamage(int value)

@@ -77,6 +77,7 @@ MonoBehaviour:
   effectSpawn: {fileID: 0}
   activeLimitTime: 2
   activeLimitDistance: 0
+  isNotAutoBreak: 0
 --- !u!114 &11476194
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -103,7 +104,7 @@ MonoBehaviour:
   isHitBreak: 1
   safetyTime: 0.5
   turnSpeed: 180
-  lockStartTime: 0
+  lockStartTime: 0.5
   lockedSpeedRate: 1
   lockedTurnSpeedRate: 1
   isNeedLock: 1
@@ -112,6 +113,7 @@ MonoBehaviour:
   childeBulletCount: 4
   purgeDistance: 50
   purgeTime: 0
+  purgeDiff: 0
   isPurgeDestroy: 1
 --- !u!114 &11484936
 MonoBehaviour:

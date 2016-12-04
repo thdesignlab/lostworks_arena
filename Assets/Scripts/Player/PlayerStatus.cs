@@ -233,6 +233,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
             if (GameController.Instance.gameMode == GameController.GAME_MODE_VS) SetNmaeText();
 
             nowSpeedRate = 1;
+            if (RunSpeedChangeCoroutine != null) StopCoroutine(RunSpeedChangeCoroutine);
             interfareMoveTime = 0;
             runSpeed = defaultRunSpeed;
             jumpSpeed = defaultJumpSpeed;
@@ -699,6 +700,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
     //##### パラメータ変更系 #####
     private float nowSpeedRate = 1;
     private float interfareMoveTime = 0;
+    private Coroutine RunSpeedChangeCoroutine;
 
     //初期ステータス設定
     public void SetStatus(int[] defaultStatus, float[] levelRate)
@@ -730,6 +732,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
         turnSpeed = defaultStatus[index] * levelRate[index];
         boostTurnSpeed = turnSpeed * 10;
 
+        //AttackRate
         index = Common.Character.STATUS_ATTACK_RATE;
         attackRate = defaultStatus[index] * levelRate[index];
     }
@@ -835,7 +838,8 @@ public class PlayerStatus : Photon.MonoBehaviour {
             return false;
         }
 
-        StartCoroutine(CheckAccelerateRunSpeed(rate, limit, effect));
+        if (RunSpeedChangeCoroutine != null) StopCoroutine(RunSpeedChangeCoroutine);
+        RunSpeedChangeCoroutine = StartCoroutine(CheckAccelerateRunSpeed(rate, limit, effect));
         if (isSendRpc)
         {
             int parentViewId = (effect != null) ? GetParentViewId(effect) : -1;
@@ -854,9 +858,9 @@ public class PlayerStatus : Photon.MonoBehaviour {
     IEnumerator CheckAccelerateRunSpeed(float rate, float limit, GameObject effect = null)
     {
         nowSpeedRate = rate;
-        runSpeed *= rate;
-        jumpSpeed *= rate;
-        boostSpeed *= rate;
+        runSpeed = defaultRunSpeed * rate;
+        jumpSpeed = defaultJumpSpeed * rate;
+        boostSpeed = defaultBoostSpeed * rate;
         SwitchEffect(effect, true);
 
         for (;;)
@@ -873,8 +877,8 @@ public class PlayerStatus : Photon.MonoBehaviour {
             runSpeed = defaultRunSpeed;
             jumpSpeed = defaultJumpSpeed;
             boostSpeed = defaultBoostSpeed;
-            nowSpeedRate = 1;
         }
+        nowSpeedRate = 1;
     }
 
     //移動制限
@@ -1048,6 +1052,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
         //spChange;
         interfareMoveTime = 0;
         nowSpeedRate = 1;
+        if (RunSpeedChangeCoroutine != null) StopCoroutine(RunSpeedChangeCoroutine);
         runSpeed = defaultRunSpeed;
         jumpSpeed = defaultJumpSpeed;
         boostSpeed = defaultBoostSpeed;

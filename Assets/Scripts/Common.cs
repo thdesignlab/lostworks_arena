@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Common
 {
@@ -513,6 +514,11 @@ namespace Common
             }
             return drawObj;
         }
+
+        public static TKey RandomDic<TKey, TValue>(Dictionary<TKey, TValue> dic)
+        {
+            return dic.ElementAt(Random.Range(0, dic.Count)).Key;
+        }
     }
 
     //### キャラクター詳細 ###
@@ -568,15 +574,15 @@ namespace Common
         {
                             //hp, sp, run, boost, turn, atk%, atkI, boostI, tagI
             { 100, new int[]{ 1000, 45, 35, 70, 30, 100, 3, 2, 2, 1 , 20} },
-            { 101, new int[]{ 1050, 35, 35, 50, 40, 110, 2, 2, 2, 1 , 20} },
+            { 101, new int[]{ 1050, 35, 35, 50, 40, 110, 3, 2, 2, 1 , 20} },
             { 200, new int[]{ 1200, 55, 30, 60, 20, 100, 3, 2, 3, 1 , 250} },
-            { 201, new int[]{ 1250, 45, 30, 45, 30, 110, 2, 2, 3, 1 , 250} },
+            { 201, new int[]{ 1250, 45, 30, 45, 30, 110, 3, 2, 3, 1 , 250} },
             { 300, new int[]{ 1000, 50, 30, 70, 25, 100, 3, 2, 2, 1 , 100} },
-            { 301, new int[]{ 1050, 40, 30, 50, 35, 110, 2, 2, 2, 1 , 100} },
+            { 301, new int[]{ 1050, 40, 30, 50, 35, 110, 3, 2, 2, 1 , 100} },
             { 400, new int[]{ 1000, 45, 30, 60, 20, 110, 3, 2, 3, 1 , 200} },
-            { 401, new int[]{ 1050, 35, 30, 45, 30, 120, 2, 2, 3, 1 , 200} },
+            { 401, new int[]{ 1050, 35, 30, 45, 30, 120, 3, 2, 3, 1 , 200} },
             { 500, new int[]{ 1100, 35, 35, 70, 25, 105, 3, 2, 3, 1 , 150} },
-            { 501, new int[]{ 1150, 25, 35, 50, 35, 115, 2, 2, 3, 1 , 150} },
+            { 501, new int[]{ 1150, 25, 35, 50, 35, 115, 3, 2, 3, 1 , 150} },
             { 600, new int[]{ 1100, 35, 35, 70, 25, 105, 3, 2, 3, 1 , 150} },
             { 10000, new int[]{ 800, 35, 25, 50, 20, 80, 3, 3, 5, 0 , 150} },
             { 10001, new int[]{ 850, 35, 25, 55, 20, 90, 3, 3, 5, 0 , 150} },
@@ -981,14 +987,14 @@ namespace Common
         public static Dictionary<int, int[]> stageNpcNoDic = new Dictionary<int, int[]>()
         {
             { 1, new int[] { 10000, 0 } },
-            { 2, new int[] { 100, 5 } },
-            { 3, new int[] { 10001, 5 } },
+            { 2, new int[] { 300, 2 } },
+            { 3, new int[] { 10002, 2 } },
             { 4, new int[] { 200, 1 } },
-            { 5, new int[] { 10002, 1 } },
-            { 6, new int[] { 300, 2 } },
-            { 7, new int[] { 10003, 2 } },
+            { 5, new int[] { 10003, 1 } },
+            { 6, new int[] { 100, 5 } },
+            { 7, new int[] { 10004, 5 } },
             { 8, new int[] { 400, 3 } },
-            { 9, new int[] { 10004, 3 } },
+            { 9, new int[] { 600, 4 } },
             { 10, new int[] { 500, 6 } },
         };
 
@@ -1033,6 +1039,9 @@ namespace Common
         //カラーチェンジするレベル
         public const int NPC_COLOR_CHANGE_LEVEL = 5;
 
+        //武器強化状態になるレベル
+        public const int NPC_CUSTOM_CHANGE_LEVEL = 10;
+
         public static int GetStageNpcNo(int level, int stageNo)
         {
             int npcNo = stageNpcNoDic[stageNo][STAGE_NPC_NAME];
@@ -1049,14 +1058,15 @@ namespace Common
                              //hp,   sp,   run,  boost,turn, atk%, atkI, boostI, tagI
             { 0, new float[] { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f } },
             { 1, new float[] { 0.5f, 0.6f, 0.7f, 0.7f, 0.7f, 0.5f, 2.0f, 2.0f, 2.0f } },
-            { 2, new float[] { 0.7f, 0.7f, 0.8f, 0.8f, 0.8f, 0.6f, 1.6f, 1.6f, 1.6f } },
-            { 3, new float[] { 0.8f, 0.8f, 0.9f, 1.0f, 0.9f, 0.7f, 1.3f, 1.3f, 1.3f } },
-            { 4, new float[] { 0.9f, 1.0f, 1.0f, 1.1f, 1.0f, 0.8f, 1.2f, 1.2f, 1.0f } },
-            { 5, new float[] { 1.0f, 1.1f, 1.0f, 1.1f, 1.2f, 0.9f, 1.0f, 1.0f, 1.0f } },
-            { 6, new float[] { 1.1f, 1.2f, 1.1f, 1.2f, 1.4f, 1.0f, 0.8f, 0.9f, 0.8f } },
-            { 7, new float[] { 1.1f, 1.3f, 1.1f, 1.2f, 1.5f, 1.1f, 0.7f, 0.8f, 0.8f } },
-            { 8, new float[] { 1.2f, 1.4f, 1.2f, 1.2f, 1.5f, 1.1f, 0.7f, 0.7f, 0.6f } },
-            { 9, new float[] { 1.2f, 1.5f, 1.2f, 1.2f, 1.5f, 1.1f, 0.5f, 0.5f, 0.5f } },
+            { 2, new float[] { 0.7f, 0.7f, 0.8f, 0.7f, 0.8f, 0.6f, 1.6f, 1.6f, 1.6f } },
+            { 3, new float[] { 0.8f, 0.8f, 0.9f, 0.8f, 0.9f, 0.7f, 1.3f, 1.3f, 1.3f } },
+            { 4, new float[] { 0.9f, 1.0f, 1.0f, 0.8f, 1.0f, 0.8f, 1.2f, 1.2f, 1.0f } },
+            { 5, new float[] { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f } },
+            { 6, new float[] { 1.0f, 1.1f, 1.1f, 1.0f, 1.1f, 1.0f, 0.9f, 0.9f, 0.9f } },
+            { 7, new float[] { 1.1f, 1.2f, 1.1f, 1.1f, 1.2f, 1.0f, 0.8f, 0.8f, 0.8f } },
+            { 8, new float[] { 1.1f, 1.3f, 1.1f, 1.1f, 1.3f, 1.1f, 0.7f, 0.7f, 0.7f } },
+            { 9, new float[] { 1.2f, 1.4f, 1.2f, 1.2f, 1.4f, 1.1f, 0.6f, 0.6f, 0.6f } },
+            { 10, new float[] { 1.2f, 1.5f, 1.2f, 1.2f, 1.5f, 1.1f, 0.5f, 0.5f, 0.5f } },
         };
         //設定レベル以上の場合の追加Rate
         public static float[] overLevelState = new float[] { 0.05f, 0.1f, 0, 0, 0.05f, 0.05f, 0, 0, 0 };

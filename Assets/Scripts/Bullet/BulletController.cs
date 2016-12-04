@@ -344,7 +344,7 @@ public class BulletController : MoveOfCharacter
 
         if (targetTran != null) targetStatus = targetTran.GetComponent<PlayerStatus>();
 
-        if (!isSendRPC)
+        if (isSendRPC)
         {
             int viewId = -1;
             if (targetTran != null) viewId = PhotonView.Get(targetTran.gameObject).viewID;
@@ -355,7 +355,7 @@ public class BulletController : MoveOfCharacter
     protected void SetTargetRPC(int targetViewId)
     {
         PhotonView targetView = PhotonView.Find(targetViewId);
-        Transform target = (targetView != null) ? targetView.gameObject.transform : null;
+        Transform target = (targetView != null) ? targetView.transform : null;
         SetTarget(target, false);
     }
 
@@ -383,7 +383,7 @@ public class BulletController : MoveOfCharacter
     protected void SetOwnerRPC(int ownerViewId)
     {
         PhotonView ownerView = PhotonView.Find(ownerViewId);
-        Transform owner = (ownerView != null) ? ownerView.gameObject.transform : null;
+        Transform owner = (ownerView != null) ? ownerView.transform : null;
         SetOwner(owner, false);
     }
 
@@ -417,7 +417,7 @@ public class BulletController : MoveOfCharacter
     protected void SetWeaponRPC(int weaponViewId, bool isCustom)
     {
         PhotonView weaponView = PhotonView.Find(weaponViewId);
-        Transform weapon = (weaponView != null) ? weaponView.gameObject.transform : null;
+        Transform weapon = (weaponView != null) ? weaponView.transform : null;
         SetWeapon(weapon, isCustom, false);
     }
 

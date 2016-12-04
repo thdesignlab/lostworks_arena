@@ -267,6 +267,7 @@ GameObject:
   - 114: {fileID: 11471392}
   - 114: {fileID: 11419794}
   - 114: {fileID: 11422498}
+  - 114: {fileID: 11427568}
   m_Layer: 0
   m_Name: TridentPillar
   m_TagString: Weapon
@@ -1584,10 +1585,11 @@ MonoBehaviour:
   bitMoveTime: 0
   isBitFixed: 0
   reloadTime: 3
+  isNpc: 0
   fireEffect: {fileID: 0}
   bullet: {fileID: 108490, guid: bdc54a231711a734ea004eba35d6e44c, type: 2}
   rapidCount: 1
-  rapidInterval: 1
+  rapidInterval: 0.5
   spreadCount: 3
   spreadDiffAngle: 30
   focusDiff: 0
@@ -1603,6 +1605,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9afa1e6dd7dae2b4b86c732a5f351dee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &11427568
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 152978}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0ab2bfc531175e4a8e29d7303fa179b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  powerCustomSystemList: 2d010000
+  powerEffectValueDiffList:
+  - 10
+  powerObject: {fileID: 0}
+  technicCustomSystemList: 2f0100005a020000
+  technicEffectValueDiffList:
+  - 1.2
+  - 1
+  technicObject: {fileID: 0}
+  uniqueCustomSystemList: 01000000
+  uniqueEffectValueDiffList:
+  - 50
+  uniqueObject: {fileID: 0}
 --- !u!114 &11471392
 MonoBehaviour:
   m_ObjectHideFlags: 1

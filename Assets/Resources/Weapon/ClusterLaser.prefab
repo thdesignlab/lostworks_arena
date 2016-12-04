@@ -496,6 +496,7 @@ GameObject:
   - 114: {fileID: 11460656}
   - 114: {fileID: 11442404}
   - 114: {fileID: 11463220}
+  - 114: {fileID: 11413550}
   m_Layer: 0
   m_Name: ClusterLaser
   m_TagString: Weapon
@@ -1557,6 +1558,31 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &11413550
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 199582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff9a44d7f069fa545a552478535bc0e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  powerCustomSystemList: 6700000068000000
+  powerEffectValueDiffList:
+  - -10
+  powerObject: {fileID: 0}
+  technicCustomSystemList: 0000000001000000
+  technicEffectValueDiffList:
+  - -1
+  - 25
+  technicObject: {fileID: 0}
+  uniqueCustomSystemList: 8c00000084000000
+  uniqueEffectValueDiffList:
+  - 40
+  - 20
+  uniqueObject: {fileID: 0}
 --- !u!114 &11439728
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1620,6 +1646,7 @@ MonoBehaviour:
   bitMoveTime: 0
   isBitFixed: 0
   reloadTime: 6
+  isNpc: 0
   fireEffect: {fileID: 0}
   bullet: {fileID: 154394, guid: c0202ec3ef616f242bd11cf9269454c5, type: 2}
   rapidCount: 1

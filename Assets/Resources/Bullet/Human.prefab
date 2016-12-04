@@ -29,9 +29,10 @@ GameObject:
   - 114: {fileID: 11465248}
   - 114: {fileID: 11495616}
   - 114: {fileID: 11404352}
+  - 114: {fileID: 11461032}
   m_Layer: 0
   m_Name: Human
-  m_TagString: EnergyBullet
+  m_TagString: Structure
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -60,7 +61,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 158716}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2, z: 2}
+  m_LocalPosition: {x: 0, y: 2, z: 4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
@@ -110,7 +111,7 @@ MonoBehaviour:
   isLockOn: 0
   UseGravity: 0
   hitEffect: {fileID: 135988, guid: d7cd433d10510fe46a35c39bac480fe1, type: 2}
-  speed: 15
+  speed: 10
   damage: 5
   damagePerSecond: 0
   stuckTime: 0
@@ -160,7 +161,22 @@ MonoBehaviour:
   childeBulletCount: 1
   purgeDistance: 0
   purgeTime: 0.5
+  purgeDiff: 0
   isPurgeDestroy: 0
+--- !u!114 &11461032
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 178894}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 055031607bae32a42883e0623ddf5f62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  breakEffect: {fileID: 107548, guid: 7e38c193ad9f20749bdc636e79a31f53, type: 2}
+  maxHp: 50
+  isReflaction: 0
 --- !u!114 &11465248
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -223,7 +239,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effectSpawn: {fileID: 184720, guid: 82b912ace74f847418e0246912ccc7e9, type: 2}
-  activeLimitTime: 8
+  activeLimitTime: 5
   activeLimitDistance: 0
   isNotAutoBreak: 0
 --- !u!135 &13570988
@@ -236,7 +252,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.15
+  m_Radius: 3
   m_Center: {x: 0, y: 0.2, z: 0}
 --- !u!198 &19817506
 ParticleSystem:

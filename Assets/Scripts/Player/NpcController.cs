@@ -25,6 +25,9 @@ public class NpcController : MoveOfCharacter
     private int preHp = 0;
     private float preHpPer = 0;
 
+    private int npcLevel = -1;
+    private bool isSetWeapon = false;
+
     private Vector3 randomMoveTarget = Vector3.zero;
 
     //private PlayerMotionController motionCtrl;
@@ -158,6 +161,7 @@ public class NpcController : MoveOfCharacter
     public void SetLevel(int level)
     {
         //レベル決定
+        npcLevel = level;
         if (level < 0) level = 0;
         int settingMaxLevel = Common.Mission.npcLevelStatusDic.Count - 1;
         int overLevel = 0;
@@ -169,7 +173,8 @@ public class NpcController : MoveOfCharacter
 
         //キャラステータス取得
         int[] npcStatusArray = Common.Character.StatusDic[GameController.Instance.npcNo];
-        float[] statusLevelRate = Common.Mission.npcLevelStatusDic[level];
+        float[] statusLevelRate = new float[Common.Mission.npcLevelStatusDic[level].Length];
+        Common.Mission.npcLevelStatusDic[level].CopyTo(statusLevelRate, 0);
         if (overLevel > 0)
         {
             int i = 0;
@@ -181,7 +186,7 @@ public class NpcController : MoveOfCharacter
         }
 
         //ステータス設定
-        status.SetStatus(npcStatusArray, statusLevelRate);
+        status.SetStatus(Common.Character.StatusDic[GameController.Instance.npcNo], statusLevelRate);
 
         //攻撃間隔
         int index = Common.Character.STATUS_ATTACK_INTERVAL;
@@ -198,6 +203,9 @@ public class NpcController : MoveOfCharacter
         //ターゲットタイプ
         targetType = npcStatusArray[Common.Character.STATUS_TARGET_TYPE];
         walkRadius = npcStatusArray[Common.Character.STATUS_TARGET_DISTANCE];
+
+        //装備強化
+        StartCoroutine(SetWeaponCustom());
     }
 
     public void SetWeapons()
@@ -259,6 +267,26 @@ public class NpcController : MoveOfCharacter
                         continue;
                 }
                 weapons.Add(wepCtrl);
+            }
+        }
+
+        isSetWeapon = true;
+    }
+
+    IEnumerator SetWeaponCustom()
+    {
+        for (;;)
+        {
+            if (isSetWeapon) break;
+            yield return null;
+        }
+
+        if (npcLevel >= Common.Mission.NPC_CUSTOM_CHANGE_LEVEL)
+        {
+            foreach (WeaponController weapon in weapons)
+            {
+                int type = Common.Func.RandomDic(Common.Weapon.customTypeNameDic);
+                weapon.SetWeaponCustom(type);
             }
         }
     }
@@ -462,7 +490,7 @@ public class NpcController : MoveOfCharacter
         }
     }
 
-    private void QuickTarget(Transform target)
+    public void QuickTarget(Transform target)
     {
         if (target == null) return;
         LookAtTarget(target, status.boostTurnSpeed, new Vector3(1, 0, 1));
