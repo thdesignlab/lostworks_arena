@@ -1805,6 +1805,7 @@ MonoBehaviour:
   bitMoveTime: 0
   isBitFixed: 0
   reloadTime: 2
+  isStopInAttack: 1
   isNpc: 0
   blade: {fileID: 170112}
   attackTime: 1
@@ -1813,7 +1814,7 @@ MonoBehaviour:
   boostTime: 0.5
   boostWaitTime: 0.2
   boostCost: 50
-  isStopInAttack: 1
+  isStopInBlade: 0
 --- !u!114 &11444040
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1965,8 +1966,8 @@ MonoBehaviour:
   powerObject: {fileID: 0}
   technicCustomSystemList: 1402000015020000fb010000
   technicEffectValueDiffList:
-  - 0
-  - 0
+  - 1
+  - 10
   - -50
   technicObject: {fileID: 0}
   uniqueCustomSystemList: fc010000

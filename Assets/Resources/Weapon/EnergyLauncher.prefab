@@ -1713,13 +1713,15 @@ MonoBehaviour:
   powerCustomSystemList: 83000000
   powerEffectValueDiffList:
   - 10
-  technicCustomSystemList: 67000000
+  powerObject: {fileID: 0}
+  technicCustomSystemList: 65000000
   technicEffectValueDiffList:
   - 4
+  technicObject: {fileID: 0}
   uniqueCustomSystemList: 9c000000
   uniqueEffectValueDiffList:
   - 5
-  AddObject: {fileID: 0}
+  uniqueObject: {fileID: 0}
 --- !u!114 &11463230
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1735,6 +1737,7 @@ MonoBehaviour:
   bitMoveTime: 0
   isBitFixed: 0
   reloadTime: 6
+  isStopInAttack: 0
   isNpc: 0
   fireEffect: {fileID: 128990, guid: 26eff61a30ffb3040a1cf5904f260089, type: 2}
   bullet: {fileID: 134700, guid: 7347eec3273bb384383c41abd870d27a, type: 2}

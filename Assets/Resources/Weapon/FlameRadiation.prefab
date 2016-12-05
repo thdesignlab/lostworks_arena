@@ -267,7 +267,7 @@ MonoBehaviour:
   damage: 0
   damagePerSecond: 100
   isPhysicsBulletBreak: 1
-  isEnergyBulletBreak: 1
+  isEnergyBulletBreak: 0
   ownDamageRate: 0
   isFloorEffect: 0
 --- !u!114 &11433654
@@ -287,7 +287,7 @@ MonoBehaviour:
   powerObject: {fileID: 0}
   technicCustomSystemList: 00000000f6010000
   technicEffectValueDiffList:
-  - -2
+  - -1
   - 2
   technicObject: {fileID: 0}
   uniqueCustomSystemList: f5010000
@@ -309,6 +309,7 @@ MonoBehaviour:
   bitMoveTime: 0
   isBitFixed: 0
   reloadTime: 5
+  isStopInAttack: 0
   isNpc: 0
   blade: {fileID: 160860}
   attackTime: 4
@@ -317,7 +318,7 @@ MonoBehaviour:
   boostTime: 0
   boostWaitTime: 0
   boostCost: 0
-  isStopInAttack: 0
+  isStopInBlade: 0
 --- !u!114 &11463762
 MonoBehaviour:
   m_ObjectHideFlags: 1

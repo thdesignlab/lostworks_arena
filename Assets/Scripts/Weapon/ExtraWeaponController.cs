@@ -143,7 +143,7 @@ public class ExtraWeaponController : Photon.MonoBehaviour
 
         isShooting = false;
     }
-
+    
     private void AddWeaponFire()
     {
         if (addWeaponCtrl == null) return;

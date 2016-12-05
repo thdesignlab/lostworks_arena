@@ -1609,13 +1609,14 @@ MonoBehaviour:
   bitMoveTime: 0.5
   isBitFixed: 0
   reloadTime: 8
+  isStopInAttack: 1
+  isNpc: 0
   laserPrefab: {fileID: 108382, guid: cf05095eaf849d945932d8127c7a6d73, type: 2}
   effectiveLength: 300
-  effectiveWidth: 30
+  effectiveWidth: 20
   effectiveTime: 2.5
   effectiveLengthTime: 0
   effectiveWidthTime: 0.5
-  runSpeedRate: 0
   turnSpeedRate: 0.5
   laserMazzleMaxScale: 2.5
 --- !u!114 &11461232

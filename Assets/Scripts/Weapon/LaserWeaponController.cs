@@ -17,8 +17,8 @@ public class LaserWeaponController : WeaponController
     private float effectiveLengthTime;   //最大長になるまでの時間
     [SerializeField]
     private float effectiveWidthTime;   //最大幅になるまでの時間
-    [SerializeField]
-    private float runSpeedRate;   //移動速度制限
+    //[SerializeField]
+    //private float runSpeedRate;   //移動速度制限
     [SerializeField]
     private float turnSpeedRate;   //回転速度制限
     [SerializeField]
@@ -56,6 +56,19 @@ public class LaserWeaponController : WeaponController
         //base.Action();
         isAction = true;
 
+        //移動制限
+        if (isStopInAttack && atkMotionTime > 0)
+        {
+            playerStatus.InterfareMove(atkMotionTime, null, false);
+        }
+
+        //ステータスUP
+        if (playerStatus != null && statusChangeCtrl != null)
+        {
+            if (statusChangeCtrl.GetEffectTime() <= 0) statusChangeCtrl.AddEffectTime(atkMotionTime);
+            statusChangeCtrl.Action(playerStatus);
+        }
+        
         //発射
         StartCoroutine(LaserShoot());
     }
@@ -73,7 +86,7 @@ public class LaserWeaponController : WeaponController
         if (playerStatus != null)
         {
             //移動・回転制限
-            playerStatus.AccelerateRunSpeed(runSpeedRate, effectiveTime, null, false);
+            //playerStatus.AccelerateRunSpeed(runSpeedRate, effectiveTime, null, false);
             playerStatus.InterfareTurn(turnSpeedRate, effectiveTime);
             if (aimingCtrl != null) aimingCtrl.SetAimSpeed(turnSpeedRate);
         }
@@ -214,5 +227,40 @@ public class LaserWeaponController : WeaponController
     {
         BulletController bulletCtrl = bulletObj.GetComponent<BulletController>();
         if (bulletCtrl != null) bulletCtrl.BulletSetting(playerTran, targetTran, myTran);
+    }
+
+    protected override float GetAtkMotionTime()
+    {
+        float time = effectiveTime + bitMoveTime;
+        return (time >= 0) ? time : 0;
+    }
+
+
+    //##### CUSTOM #####
+
+    public void CustomChangeLaserObject(GameObject obj)
+    {
+        laserPrefab = obj;
+    }
+    public void CustomEffectiveLength(float value)
+    {
+        effectiveLength += value;
+    }
+    public void CustomEffectiveWidth(float value)
+    {
+        effectiveWidth += value;
+    }
+    public void CustomEffectiveTime(float value)
+    {
+        effectiveTime += value;
+        atkMotionTime = -1;
+    }
+    public void CustomEffectiveLengthTime(float value)
+    {
+        effectiveLengthTime += value;
+    }
+    public void CustomEffectiveWidthTime(float value)
+    {
+        effectiveWidthTime += value;
     }
 }

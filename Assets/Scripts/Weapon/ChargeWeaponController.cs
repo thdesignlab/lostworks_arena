@@ -113,4 +113,11 @@ public class ChargeWeaponController : BulletWeaponController
         bulletCtrls.Add(ob.transform.GetComponent<ChargeBulletController>());
         rapidIntervalTime = 0;
     }
+
+    protected override float GetAtkMotionTime()
+    {
+        ChargeBulletController chargeBulletController = bullet.GetComponent<ChargeBulletController>();
+        float time = chargeBulletController.GetMaxChargeTime() + bitMoveTime;
+        return (time >= 0) ? time : 0;
+    }
 }

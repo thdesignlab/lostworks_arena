@@ -1574,6 +1574,7 @@ MonoBehaviour:
   bitMoveTime: 0
   isBitFixed: 0
   reloadTime: 3
+  isStopInAttack: 0
   isNpc: 0
   fireEffect: {fileID: 0}
   bullet: {fileID: 149156, guid: 52a730b4be60ce847828510f9eb6c82d, type: 2}
@@ -1615,7 +1616,7 @@ MonoBehaviour:
   technicEffectValueDiffList:
   - 4
   - -2
-  - -0.8
+  - -0.7
   - 1
   technicObject: {fileID: 0}
   uniqueCustomSystemList: 97000000990000009b0000009c000000

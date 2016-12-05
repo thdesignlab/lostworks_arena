@@ -35,6 +35,7 @@ public class StatusChangeController : Photon.MonoBehaviour
     public void Action(PlayerStatus playerStatus)
     {
         if (playerStatus == null) return;
+        if (leftEffectTime > 0) return;
 
         for (int i = 0; i < effectTypeList.Count; i++)
         {
@@ -52,7 +53,6 @@ public class StatusChangeController : Photon.MonoBehaviour
                 setEffect = playerStatus.GetDebuffEffect();
             }
 
-            if (leftEffectTime > 0) continue;
             leftEffectTime = effectTime;
 
             switch (effectType)

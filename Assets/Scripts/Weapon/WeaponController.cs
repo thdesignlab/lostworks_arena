@@ -28,6 +28,18 @@ public class WeaponController : Photon.MonoBehaviour
     protected float reloadTime;   //再装填時間
     protected float leftReloadTime = 0;
 
+    [SerializeField]
+    protected bool isStopInAttack = false;
+    private float _atkMotionTime = -1;
+    [HideInInspector]
+    public float atkMotionTime
+    {
+        get { return _atkMotionTime >= 0 ? _atkMotionTime : _atkMotionTime = GetAtkMotionTime(); }
+        set { _atkMotionTime = value; }
+    }
+
+    protected StatusChangeController statusChangeCtrl;
+
     protected Transform targetTran;
     protected AudioController audioCtrl;
     protected Animator charaAnimator;
@@ -74,6 +86,7 @@ public class WeaponController : Photon.MonoBehaviour
         }
 
         audioCtrl = myTran.GetComponent<AudioController>();
+        statusChangeCtrl = myTran.GetComponentInChildren<StatusChangeController>();
 
         //名前変更
         name = name.Replace("(Clone)", "");
@@ -197,11 +210,24 @@ public class WeaponController : Photon.MonoBehaviour
         //BitOn
         BitOn();
 
+        //移動制限
+        if (isStopInAttack && atkMotionTime > 0)
+        {
+            playerStatus.InterfareMove(atkMotionTime, null, false);
+        }
+
         //モーション開始
         StartMotion();
 
         //ボイス
         PlayVoice();
+
+        //ステータスUP
+        if (playerStatus != null && statusChangeCtrl != null)
+        {
+            if (statusChangeCtrl.GetEffectTime() <= 0) statusChangeCtrl.AddEffectTime(atkMotionTime);
+            statusChangeCtrl.Action(playerStatus);
+        }
     }
     protected virtual void EndAction()
     {
@@ -589,6 +615,10 @@ public class WeaponController : Photon.MonoBehaviour
         reloadTime = 1;
     }
 
+    protected virtual float GetAtkMotionTime()
+    {
+        return 0;
+    }
 
     //##### CUSTOM #####
 
@@ -614,5 +644,54 @@ public class WeaponController : Photon.MonoBehaviour
     {
         if (value < 0) return;
         noReloadRate = value;
+    }
+
+    //StatusChangeController追加
+    private void AddStatusChangeCtrl()
+    {
+        if (statusChangeCtrl != null) return;
+        statusChangeCtrl = gameObject.AddComponent<StatusChangeController>();
+    }
+
+    //バフ時間
+    public void CustomBuffTime(float value)
+    {
+        AddStatusChangeCtrl();
+        statusChangeCtrl.AddEffectTime(value);
+    }
+
+    //バフ:ATTACK
+    public void CustomBuffAttack(float value)
+    {
+        AddStatusChangeCtrl();
+        statusChangeCtrl.AddStatusChange(StatusChangeController.EFFECT_ATTACK, value);
+    }
+
+    //バフ:SP
+    public void CustomBuffSp(float value)
+    {
+        AddStatusChangeCtrl();
+        statusChangeCtrl.AddStatusChange(StatusChangeController.EFFECT_RECOVER_SP, value);
+    }
+
+    //バフ:AVOID
+    public void CustomBuffAvoid(float value)
+    {
+        AddStatusChangeCtrl();
+        statusChangeCtrl.AddStatusChange(StatusChangeController.EFFECT_AVOID, value);
+    }
+
+    //バフ:SPEED
+    public void CustomBuffSpeed(float value)
+    {
+        AddStatusChangeCtrl();
+        statusChangeCtrl.AddStatusChange(StatusChangeController.EFFECT_SPEED, value);
+    }
+
+    //バフ:DEF
+    public void CustomBuffDefence(float value)
+    {
+        AddStatusChangeCtrl();
+        statusChangeCtrl.AddStatusChange(StatusChangeController.EFFECT_DEFENCE, value);
     }
 }

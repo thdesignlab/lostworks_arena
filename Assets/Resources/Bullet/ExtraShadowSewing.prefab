@@ -266,7 +266,7 @@ MonoBehaviour:
   isLockOn: 0
   UseGravity: 0
   hitEffect: {fileID: 135988, guid: d7cd433d10510fe46a35c39bac480fe1, type: 2}
-  speed: 150
+  speed: 130
   damage: 10
   damagePerSecond: 30
   stuckTime: 3
@@ -281,8 +281,11 @@ MonoBehaviour:
   fixedRollVector: {x: 0, y: 0, z: 0}
   fixedSpeed: 600
   fixedTurnSpeed: 0
+  searchTurnSpeed: 0
   isNeedLock: 1
   isStickable: 1
+  autoFireTime: 0
+  autoFireDiff: 0
 --- !u!114 &11401882
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -345,6 +348,7 @@ MonoBehaviour:
   effectSpawn: {fileID: 0}
   activeLimitTime: 8
   activeLimitDistance: 0
+  isNotAutoBreak: 0
 --- !u!114 &11468188
 MonoBehaviour:
   m_ObjectHideFlags: 1

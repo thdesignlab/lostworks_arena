@@ -369,7 +369,7 @@ public class BulletController : MoveOfCharacter
         if (ownerTran != null)
         {
             ownerStatus = ownerTran.GetComponent<PlayerStatus>();
-            PhotonView pv = PhotonView.Get(ownerTran.gameObject);
+            //PhotonView pv = PhotonView.Get(ownerTran.gameObject);
             //if (pv != null) ownerId = pv.ownerId;
         }
 

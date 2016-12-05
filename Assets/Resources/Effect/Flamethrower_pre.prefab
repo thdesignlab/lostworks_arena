@@ -33,7 +33,7 @@ GameObject:
   - 114: {fileID: 11479192}
   m_Layer: 0
   m_Name: Flamethrower_pre
-  m_TagString: Untagged
+  m_TagString: Effect
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -80,7 +80,7 @@ MonoBehaviour:
   damage: 0
   damagePerSecond: 100
   isPhysicsBulletBreak: 1
-  isEnergyBulletBreak: 1
+  isEnergyBulletBreak: 0
   ownDamageRate: 0
   isFloorEffect: 0
 --- !u!114 &11453628

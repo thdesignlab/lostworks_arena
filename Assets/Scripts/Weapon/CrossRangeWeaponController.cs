@@ -20,7 +20,7 @@ public class CrossRangeWeaponController : WeaponController
     [SerializeField]
     protected int boostCost;
     [SerializeField]
-    protected bool isStopInAttack;
+    protected bool isStopInBlade;
 
     private EffectController _effectCtrl;
     protected EffectController effectCtrl
@@ -150,7 +150,7 @@ public class CrossRangeWeaponController : WeaponController
                     PlayAudio();
                     isBladeOn = true;
 
-                    if (isStopInAttack)
+                    if (isStopInBlade)
                     {
                         //停止
                         playerStatus.InterfareMove(attackTime, null, false);
@@ -249,6 +249,12 @@ public class CrossRangeWeaponController : WeaponController
     {
         base.SetTarget(target);
         if (effectCtrl != null) effectCtrl.SetTarget(target);
+    }
+
+    protected override float GetAtkMotionTime()
+    {
+        float time = attackWaitTime + attackTime + bitMoveTime;
+        return (time >= 0) ? time : 0;
     }
 
 

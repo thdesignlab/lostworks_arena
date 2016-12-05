@@ -400,12 +400,14 @@ public class NpcController : MoveOfCharacter
 
     private void Run(float x, float y)
     {
+        if (extraCtrl != null && extraCtrl.IsShooting()) return;
         Vector3 moveDirection = new Vector3(x, 0, y);
-        base.MoveWorld(moveDirection, status.runSpeed);
+        MoveWorld(moveDirection, status.runSpeed);
     }
 
     private void Jump(float x, float y)
     {
+        if (extraCtrl != null && extraCtrl.IsShooting()) return;
         if (!status.CheckSp(status.boostCost))
         {
             return;

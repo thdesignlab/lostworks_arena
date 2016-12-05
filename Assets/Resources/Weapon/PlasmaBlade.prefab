@@ -1661,7 +1661,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   powerCustomSystemList: 13020000
   powerEffectValueDiffList:
-  - 80
+  - 50
   powerObject: {fileID: 0}
   technicCustomSystemList: f8010000f90100001402000015020000
   technicEffectValueDiffList:
@@ -1673,7 +1673,7 @@ MonoBehaviour:
   uniqueCustomSystemList: 17020000
   uniqueEffectValueDiffList:
   - 0
-  uniqueObject: {fileID: 0}
+  uniqueObject: {fileID: 169108, guid: b179ae0813fb46c48b11ba4dc0dc271f, type: 2}
 --- !u!114 &11436126
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1860,6 +1860,7 @@ MonoBehaviour:
   bitMoveTime: 0
   isBitFixed: 0
   reloadTime: 2
+  isStopInAttack: 1
   isNpc: 0
   blade: {fileID: 179394}
   attackTime: 1
@@ -1868,7 +1869,7 @@ MonoBehaviour:
   boostTime: 0.5
   boostWaitTime: 0.2
   boostCost: 50
-  isStopInAttack: 1
+  isStopInBlade: 0
 --- !u!114 &11493014
 MonoBehaviour:
   m_ObjectHideFlags: 1

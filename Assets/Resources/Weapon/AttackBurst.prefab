@@ -43,7 +43,7 @@ GameObject:
   - 4: {fileID: 452350}
   - 114: {fileID: 11414496}
   - 114: {fileID: 11420952}
-  - 114: {fileID: 11490238}
+  - 114: {fileID: 11456446}
   m_Layer: 0
   m_Name: AttackBurst
   m_TagString: Weapon
@@ -187,7 +187,7 @@ MonoBehaviour:
   effectRateList:
   - 1.1
   effect: {fileID: 105430}
---- !u!114 &11490238
+--- !u!114 &11456446
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -202,6 +202,8 @@ MonoBehaviour:
   bitMoveTime: 0
   isBitFixed: 0
   reloadTime: 30
+  isStopInAttack: 0
+  isNpc: 0
 --- !u!198 &19890338
 ParticleSystem:
   m_ObjectHideFlags: 1

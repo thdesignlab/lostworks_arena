@@ -895,7 +895,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
             {
                 //残り時間上書き
                 interfareMoveTime = limit;
-                photonView.RPC("AddInterfareMoveRPC", PhotonTargets.Others, limit);
+                if (isSendRpc) photonView.RPC("AddInterfareMoveRPC", PhotonTargets.Others, limit);
             }
             return;
         }
@@ -979,14 +979,30 @@ public class PlayerStatus : Photon.MonoBehaviour {
     //Ex武器用
     public void SetForceInvincible(bool flg, bool isSendRPC = true)
     {
-        isForceInvincible = flg;
-        float limit = 0;
-        if (flg) limit = 10;
-        InterfareMove(limit, null, false);
+        if (flg)
+        {
+            isForceInvincible = flg;
+        }
+        else
+        {
+            StartCoroutine(ForceInvincibleCancel(1.5f));
+        }
+        //InterfareMove(limit, null, false);
+        
         if (isSendRPC)
         {
             photonView.RPC("SetForceInvincibleRPC", PhotonTargets.Others, flg);
         }
+    }
+    IEnumerator ForceInvincibleCancel(float limit)
+    {
+        for (;;)
+        {
+            limit -= Time.deltaTime;
+            if (limit <= 0) break;
+            yield return null;
+        }
+        isForceInvincible = false;
     }
     [PunRPC]
     private void SetForceInvincibleRPC(bool flg)

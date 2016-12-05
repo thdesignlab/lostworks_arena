@@ -256,6 +256,12 @@ public class BulletWeaponController : WeaponController
         if (bulletCtrl != null) bulletCtrl.BulletSetting(playerTran, targetTran, myTran);
     }
 
+    protected override float GetAtkMotionTime()
+    {
+        float time = bitMoveTime + ((rapidCount - 1) * rapidInterval);
+        return (time >= 0) ? time : 0;
+    }
+
 
     //##### CUSTOM #####
 
@@ -264,6 +270,7 @@ public class BulletWeaponController : WeaponController
     {
         rapidCount += value;
         if (rapidCount < 1) rapidCount = 1;
+        atkMotionTime = -1;
     }
 
     //RapidInterval
@@ -271,6 +278,7 @@ public class BulletWeaponController : WeaponController
     {
         rapidInterval += value;
         if (rapidInterval < 0) rapidInterval = 0;
+        atkMotionTime = -1;
     }
 
     //SpreadCount

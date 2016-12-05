@@ -476,6 +476,8 @@ MonoBehaviour:
   bitMoveTime: 0
   isBitFixed: 0
   reloadTime: 20
+  isStopInAttack: 1
+  isNpc: 0
   fireEffect: {fileID: 128990, guid: 26eff61a30ffb3040a1cf5904f260089, type: 2}
   bullet: {fileID: 134950, guid: 49afd1ac7fb81154587a14cf01c75c7d, type: 2}
   rapidCount: 100
@@ -590,6 +592,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   extraCam: {fileID: 0}
   extraEffect: {fileID: 101060}
+  extraAddWeapon: {fileID: 0}
   fireTimeInAnim: 1
   useHpPerCondition: 20
 --- !u!114 &11474288

@@ -378,14 +378,14 @@ public class PlayerController : MoveOfCharacter
 
     private void Run(float x = 0, float y = 0)
     {
+        if (extraCtrl != null && extraCtrl.IsShooting()) return;
         Vector3 moveDirection = new Vector3(x, 0, y).normalized;
-        base.Move(moveDirection, status.runSpeed);
-        //motionCtrl.SetRunMotion(x, y);
+        Move(moveDirection, status.runSpeed);
     }
 
     private void Jump(float x = 0, float y = 0)
     {
-        //Debug.Log("Jump :" + x.ToString() + " : " + y.ToString());
+        if (extraCtrl != null && extraCtrl.IsShooting()) return;
         if (!status.CheckSp(status.boostCost)) return;
 
         bool isSetAngle = false;

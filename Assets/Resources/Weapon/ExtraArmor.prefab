@@ -46,26 +46,9 @@ GameObject:
   - 114: {fileID: 11432620}
   - 114: {fileID: 11409314}
   - 114: {fileID: 11484186}
+  - 114: {fileID: 11457658}
   m_Layer: 0
   m_Name: ExtraArmor
-  m_TagString: Weapon
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!1 &124330
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 410378}
-  - 114: {fileID: 11425472}
-  - 114: {fileID: 11459004}
-  - 114: {fileID: 11465596}
-  m_Layer: 0
-  m_Name: Unlimited
   m_TagString: Weapon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -213,7 +196,7 @@ GameObject:
   m_IsActive: 1
 --- !u!1 &162938
 GameObject:
-  m_ObjectHideFlags: 1
+  m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 4
@@ -308,20 +291,6 @@ Transform:
   - {fileID: 443202}
   m_Father: {fileID: 456770}
   m_RootOrder: 0
---- !u!4 &410378
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 124330}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_Children:
-  - {fileID: 425160}
-  m_Father: {fileID: 447906}
-  m_RootOrder: 4
 --- !u!4 &413148
 Transform:
   m_ObjectHideFlags: 1
@@ -378,8 +347,8 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 415408}
-  m_Father: {fileID: 410378}
-  m_RootOrder: 0
+  m_Father: {fileID: 447906}
+  m_RootOrder: 4
 --- !u!4 &429876
 Transform:
   m_ObjectHideFlags: 1
@@ -413,7 +382,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 117008}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 100.309845, y: 54.70774, z: 39.24883}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -421,7 +390,7 @@ Transform:
   - {fileID: 429876}
   - {fileID: 480950}
   - {fileID: 456770}
-  - {fileID: 410378}
+  - {fileID: 425160}
   m_Father: {fileID: 0}
   m_RootOrder: 0
 --- !u!4 &456770
@@ -875,31 +844,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scrollSpeedX: 1
   scrollSpeedY: 0
---- !u!114 &11425472
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 124330}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ownerId: 0
-  group: 0
-  prefixBackup: -1
-  observed: {fileID: 0}
-  synchronization: 0
-  onSerializeTransformOption: 3
-  onSerializeRigidBodyOption: 2
-  ownershipTransfer: 0
-  ObservedComponents:
-  - {fileID: 0}
-  ObservedComponentsFoldoutOpen: 1
-  viewIdField: 0
-  instantiationId: -1
-  isRuntimeInstantiated: 0
 --- !u!114 &11425938
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -972,6 +916,26 @@ MonoBehaviour:
   scaleTime: 1
   scaleLateTime: 1.4
   isParticle: 1
+--- !u!114 &11457658
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 117008}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 125673325fb8d414bbba101f7366ea31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectTime: 15
+  effectTypeList: 0100000002000000030000000400000005000000
+  effectRateList:
+  - 1.2
+  - 1.2
+  - 1.5
+  - 1.5
+  - 1.2
+  effect: {fileID: 162938}
 --- !u!114 &11458530
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -997,26 +961,6 @@ MonoBehaviour:
   viewIdField: 0
   instantiationId: -1
   isRuntimeInstantiated: 0
---- !u!114 &11459004
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 124330}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 125673325fb8d414bbba101f7366ea31, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  effectTime: 15
-  effectTypeList: 0100000002000000030000000400000005000000
-  effectRateList:
-  - 1.2
-  - 1.2
-  - 1.5
-  - 1.5
-  - 1.2
-  effect: {fileID: 162938}
 --- !u!114 &11460784
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1042,22 +986,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   basePrefab: {fileID: 110970, guid: a433cf8b5cf9f4c498d2e9eff3a697d7, type: 2}
---- !u!114 &11465596
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 124330}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 425c062d8185cac43bce805e5293a1ac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bitMotionType: 0
-  bitMoveTime: 3
-  isBitFixed: 0
-  reloadTime: 0
-  isNpc: 0
 --- !u!114 &11467246
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1084,7 +1012,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   extraCam: {fileID: 142258}
   extraEffect: {fileID: 0}
-  extraAddWeapon: {fileID: 124330}
+  extraAddWeapon: {fileID: 0}
   fireTimeInAnim: 0
   useHpPerCondition: 25
 --- !u!114 &11484186
@@ -1102,6 +1030,7 @@ MonoBehaviour:
   bitMoveTime: 0
   isBitFixed: 0
   reloadTime: 25
+  isStopInAttack: 0
   isNpc: 0
   blade: {fileID: 133464}
   attackTime: 4
@@ -1110,7 +1039,7 @@ MonoBehaviour:
   boostTime: 0
   boostWaitTime: 0
   boostCost: 0
-  isStopInAttack: 0
+  isStopInBlade: 0
 --- !u!114 &11488196
 MonoBehaviour:
   m_ObjectHideFlags: 1

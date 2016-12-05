@@ -1574,6 +1574,7 @@ MonoBehaviour:
   bitMoveTime: 0
   isBitFixed: 0
   reloadTime: 3
+  isStopInAttack: 0
   isNpc: 0
   fireEffect: {fileID: 128990, guid: 26eff61a30ffb3040a1cf5904f260089, type: 2}
   bullet: {fileID: 133600, guid: a84bfc7094a8fec4c876ebc0545bded6, type: 2}
@@ -1648,7 +1649,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   powerCustomSystemList: 6500000066000000
   powerEffectValueDiffList:
-  - 3
+  - 2
   - -0.2
   powerObject: {fileID: 0}
   technicCustomSystemList: 2f01000030010000

@@ -222,8 +222,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effectSpawn: {fileID: 0}
-  activeLimitTime: 3
-  activeLimitDistance: 0
+  activeLimitTime: 0
+  activeLimitDistance: 400
   isNotAutoBreak: 0
 --- !u!136 &13639426
 CapsuleCollider:

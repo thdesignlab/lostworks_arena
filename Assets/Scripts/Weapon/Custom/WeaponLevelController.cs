@@ -13,6 +13,19 @@ public abstract class WeaponLevelController : Photon.MonoBehaviour
     //一定確率でリロードなし
     const int CUSTOM_SYSTEM_NO_RELOAD = 1;
 
+    //ステータスUP：ATK
+    const int CUSTOM_SYSTEM_BUFF_ATTACK = 11;
+    //ステータスUP：SP
+    const int CUSTOM_SYSTEM_BUFF_SP = 12;
+    //ステータスUP：AVD
+    const int CUSTOM_SYSTEM_BUFF_AVOID = 13;
+    //ステータスUP：SPD
+    const int CUSTOM_SYSTEM_BUFF_SPEED = 14;
+    //ステータスUP：DEF
+    const int CUSTOM_SYSTEM_BUFF_DEFENCE = 15;
+    //ステータスUP：TIME
+    const int CUSTOM_SYSTEM_BUFF_TIME = 16;
+
 
     [SerializeField]
     protected List<int> powerCustomSystemList;
@@ -187,25 +200,37 @@ public abstract class WeaponLevelController : Photon.MonoBehaviour
         {
             case CUSTOM_SYSTEM_RELOAD_REDUCTION:
                 //リロード短縮
-                CustomReloadReduction(effectValue);
+                weaponCtrl.CustomReloadTime(effectValue);
                 break;
 
             case CUSTOM_SYSTEM_NO_RELOAD:
                 //NOリロード
-                CustomNoReload((int)effectValue);
+                weaponCtrl.CustomNoReload((int)effectValue);
+                break;
+
+            case CUSTOM_SYSTEM_BUFF_ATTACK:
+                weaponCtrl.CustomBuffAttack(effectValue);
+                break;
+
+            case CUSTOM_SYSTEM_BUFF_SP:
+                weaponCtrl.CustomBuffSp(effectValue);
+                break;
+
+            case CUSTOM_SYSTEM_BUFF_AVOID:
+                weaponCtrl.CustomBuffAvoid(effectValue);
+                break;
+
+            case CUSTOM_SYSTEM_BUFF_SPEED:
+                weaponCtrl.CustomBuffSpeed(effectValue);
+                break;
+
+            case CUSTOM_SYSTEM_BUFF_DEFENCE:
+                weaponCtrl.CustomBuffDefence(effectValue);
+                break;
+
+            case CUSTOM_SYSTEM_BUFF_TIME:
+                weaponCtrl.CustomBuffTime(effectValue);
                 break;
         }
-    }
-
-    //リロード
-    protected void CustomReloadReduction(float value)
-    {
-        weaponCtrl.CustomReloadTime(value);
-    }
-
-    //一定確率でリロード無効
-    protected void CustomNoReload(int value)
-    {
-        weaponCtrl.CustomNoReload(value);
     }
 }
