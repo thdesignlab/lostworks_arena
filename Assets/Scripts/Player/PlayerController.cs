@@ -275,11 +275,11 @@ public class PlayerController : MoveOfCharacter
         return true;
     }
 
-    public void QuickTarget(Transform target, bool isSetBodyAngle = false)
+    public void QuickTarget(Transform target, bool isSetBodyAngle = false, float turnSpeedRate = 1.0f)
     {
         //Debug.Log("QuickTarget");
         if (target == null) return;
-        base.LookAtTarget(target, status.boostTurnSpeed, setAngleVector);
+        base.LookAtTarget(target, status.boostTurnSpeed * turnSpeedRate, setAngleVector);
         if (isSetBodyAngle) motionCtrl.SetBodyAngle();
     }
 

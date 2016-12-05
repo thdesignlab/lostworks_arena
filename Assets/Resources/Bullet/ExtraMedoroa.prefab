@@ -329,11 +329,11 @@ Rigidbody:
   m_Mass: 50
   m_Drag: 1
   m_AngularDrag: 10
-  m_UseGravity: 1
-  m_IsKinematic: 0
+  m_UseGravity: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 2
+  m_CollisionDetection: 0
 --- !u!95 &9573848
 Animator:
   serializedVersion: 3
@@ -455,7 +455,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isCheckGrounded: 0
   glideGravityRate: 0.01
-  isLockOn: 1
+  isLockOn: 0
   UseGravity: 0
   hitEffect: {fileID: 0}
   speed: 170

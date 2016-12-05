@@ -180,7 +180,7 @@ MonoBehaviour:
   damage: 100
   damagePerSecond: 0
   stuckTime: 1.5
-  knockBackRate: 30
+  knockBackRate: 15
   isPhysicsBulletBreak: 0
   isEnergyBulletBreak: 0
   isHitBreak: 1
@@ -224,6 +224,7 @@ MonoBehaviour:
   effectSpawn: {fileID: 0}
   activeLimitTime: 0
   activeLimitDistance: 500
+  isNotAutoBreak: 0
 --- !u!136 &13679752
 CapsuleCollider:
   m_ObjectHideFlags: 1

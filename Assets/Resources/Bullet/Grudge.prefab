@@ -30,7 +30,7 @@ GameObject:
   - 114: {fileID: 11412184}
   - 114: {fileID: 11426338}
   - 208: {fileID: 20861074}
-  - 54: {fileID: 5430138}
+  - 54: {fileID: 5412546}
   m_Layer: 0
   m_Name: Grudge
   m_TagString: EnergyBullet
@@ -94,7 +94,7 @@ Transform:
   - {fileID: 410876}
   m_Father: {fileID: 0}
   m_RootOrder: 0
---- !u!54 &5430138
+--- !u!54 &5412546
 Rigidbody:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -108,7 +108,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 1
+  m_CollisionDetection: 0
 --- !u!114 &11412184
 MonoBehaviour:
   m_ObjectHideFlags: 1

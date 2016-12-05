@@ -1657,19 +1657,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5ae7eb6027f9cc41bd60d7a75a7c396, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  powerCustomSystemList: 83000000
+  powerCustomSystemList: 8300000087000000
   powerEffectValueDiffList:
   - 20
+  - 50
   powerObject: {fileID: 0}
   technicCustomSystemList: 0000000065000000
   technicEffectValueDiffList:
-  - -1
+  - -1.5
   - 1
   technicObject: {fileID: 0}
-  uniqueCustomSystemList: 8900000067000000
+  uniqueCustomSystemList: 92000000
   uniqueEffectValueDiffList:
-  - 50
-  - 2
+  - 1
   uniqueObject: {fileID: 0}
 --- !u!1001 &100100000
 Prefab:

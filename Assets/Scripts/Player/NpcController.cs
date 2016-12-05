@@ -490,10 +490,10 @@ public class NpcController : MoveOfCharacter
         }
     }
 
-    public void QuickTarget(Transform target)
+    public void QuickTarget(Transform target, float turnSpeedRate = 1.0f)
     {
         if (target == null) return;
-        LookAtTarget(target, status.boostTurnSpeed, new Vector3(1, 0, 1));
+        LookAtTarget(target, status.boostTurnSpeed * turnSpeedRate, new Vector3(1, 0, 1));
     }
     
     void OnTriggerStay(Collider other)

@@ -48,6 +48,10 @@ public class BulletLevelController : EffectLevelController
     const int CUSTOM_SYSTEM_LOCKED_SPEED_RATE = 143;
     //LockedTurnSpeedRate
     const int CUSTOM_SYSTEM_LOCKED_TURN_RATE = 144;
+    //IsPhysicsBulletBreak
+    const int CUSTOM_SYSTEM_PHYSICS_BREAK = 145;
+    //IsEnergyBulletBreak
+    const int CUSTOM_SYSTEM_ENERGY_BREAK = 146;
 
 
     //状態異常：ATK
@@ -200,6 +204,14 @@ public class BulletLevelController : EffectLevelController
             case CUSTOM_SYSTEM_LOCKED_TURN_RATE:
                 //Scale
                 bulletCtrl.CustomLockedTurnRate(effectValue);
+                break;
+
+            case CUSTOM_SYSTEM_PHYSICS_BREAK:
+                bulletCtrl.CustomPhysicsBreak(effectValue == 1);
+                break;
+
+            case CUSTOM_SYSTEM_ENERGY_BREAK:
+                bulletCtrl.CustomEnergyBreak(effectValue == 1);
                 break;
 
             case CUSTOM_SYSTEM_DEBUFF_ATTACK:

@@ -180,13 +180,14 @@ public class CrossRangeWeaponController : WeaponController
     {
         if (targetTran != null)
         {
+            float turnSpeedRate = 3.0f;
             if (isNpc)
             {
-                npcCtrl.QuickTarget(targetTran);
+                npcCtrl.QuickTarget(targetTran, turnSpeedRate);
             }
             else
             {
-                playerCtrl.QuickTarget(targetTran, true);
+                playerCtrl.QuickTarget(targetTran, true, turnSpeedRate);
             }
             yield return new WaitForSeconds(0.2f);
         }

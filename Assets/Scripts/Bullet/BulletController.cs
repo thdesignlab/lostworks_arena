@@ -650,4 +650,13 @@ public class BulletController : MoveOfCharacter
         statusChangeCtrl.AddStatusChange(StatusChangeController.EFFECT_DEFENCE, value);
     }
 
+    public void CustomPhysicsBreak(bool flg)
+    {
+        isPhysicsBulletBreak = flg;
+    }
+
+    public void CustomEnergyBreak(bool flg)
+    {
+        isEnergyBulletBreak = flg;
+    }
 }

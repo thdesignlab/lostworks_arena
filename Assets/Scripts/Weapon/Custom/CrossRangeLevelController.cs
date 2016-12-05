@@ -34,7 +34,7 @@ public class CrossRangeLevelController : EffectLevelController
     const int CUSTOM_SYSTEM_BLADE_END_SCALE = 534;
     //BladeHitEffect
     const int CUSTOM_SYSTEM_BLADE_HIT_EFFECT = 535;
-    //BladeHitEffect
+    //DPS
     const int CUSTOM_SYSTEM_BLADE_DPS = 536;
 
 
