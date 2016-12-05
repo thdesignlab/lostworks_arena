@@ -1584,14 +1584,15 @@ MonoBehaviour:
   powerCustomSystemList: 87000000
   powerEffectValueDiffList:
   - 50
-  technicCustomSystemList: 6900000085000000
+  powerObject: {fileID: 0}
+  technicCustomSystemList: 92000000
   technicEffectValueDiffList:
-  - -2
-  - 1.2
+  - 1
+  technicObject: {fileID: 0}
   uniqueCustomSystemList: 88000000
   uniqueEffectValueDiffList:
   - 0.03
-  AddObject: {fileID: 0}
+  uniqueObject: {fileID: 0}
 --- !u!114 &11431380
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1607,6 +1608,7 @@ MonoBehaviour:
   bitMoveTime: 0
   isBitFixed: 0
   reloadTime: 3
+  isStopInAttack: 0
   isNpc: 0
   fireEffect: {fileID: 128990, guid: 26eff61a30ffb3040a1cf5904f260089, type: 2}
   bullet: {fileID: 162386, guid: 71549f6141740924a81f64ecd7184db9, type: 2}
@@ -1667,7 +1669,7 @@ MonoBehaviour:
   isCheckGrounded: 0
   glideGravityRate: 1
   isLockOn: 1
-  aimSpeed: 60
+  aimSpeed: 20
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

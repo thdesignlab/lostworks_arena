@@ -100,7 +100,8 @@ public class StatusChangeController : Photon.MonoBehaviour
     //ステータス変化追加
     public void AddStatusChange(int type, float value)
     {
-        if (effectTypeList.IndexOf(type) < 0)
+        int index = effectTypeList.IndexOf(type);
+        if (index < 0)
         {
             //新規追加
             effectTypeList.Add(type);
@@ -109,7 +110,7 @@ public class StatusChangeController : Photon.MonoBehaviour
         else
         {
             //既存効果変化
-            effectRateList[type] += value;
+            effectRateList[index] += value;
         }
     }
 }

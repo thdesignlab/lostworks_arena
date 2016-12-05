@@ -94,6 +94,7 @@ public class BulletController : MoveOfCharacter
     void OnTriggerEnter(Collider other)
     {
         if (other.GetType().Name == "CharacterController") return;
+        if (!Common.Func.IsColliderHitTag(other.tag)) return;
         GameObject otherObj = other.gameObject;
         OnHit(otherObj);
     }
@@ -102,6 +103,7 @@ public class BulletController : MoveOfCharacter
     void OnTriggerStay(Collider other)
     {
         if (other.GetType().Name == "CharacterController") return;
+        if (!Common.Func.IsColliderHitTag(other.tag)) return;
         GameObject otherObj = other.gameObject;
         OnStay(otherObj);
     }
@@ -164,6 +166,8 @@ public class BulletController : MoveOfCharacter
 
             if (hitObj.CompareTag("Player") || hitObj.tag == "Target")
             {
+                isHit = true;
+
                 if (dmg > 0 || statusChangeCtrl != null)
                 {
                     //プレイヤーステータス
@@ -190,10 +194,16 @@ public class BulletController : MoveOfCharacter
             }
             else if (hitObj.CompareTag(Common.CO.TAG_STRUCTURE))
             {
+                isHit = true;
+
                 //ダメージ倍率計算
                 if (myTran.tag == Common.CO.TAG_BULLET_EXTRA) dmg *= Common.CO.EXTRA_BULLET_BREAK_RATE;
                 StructureController structCtrl = hitObj.GetComponent<StructureController>();
                 if (structCtrl != null) structCtrl.AddDamage((int)dmg);
+            }
+            else if (hitObj.CompareTag(Common.CO.TAG_FLOOR))
+            {
+                isHit = true;
             }
         }
     }
@@ -270,6 +280,7 @@ public class BulletController : MoveOfCharacter
         if ((isEnergyBulletBreak && Common.Func.IsEnergyBullet(hitObj.tag))
             || (isPhysicsBulletBreak && Common.Func.IsPhysicsBullet(hitObj.tag)))
         {
+            isHit = true;
             hitObj.GetComponent<ObjectController>().DestoryObject(true);
             return true;
         }
@@ -282,10 +293,6 @@ public class BulletController : MoveOfCharacter
     {
         //一度衝突しているものは無視
         if (isHit && isHitCheck) return true;
-
-        //エフェクトは無視
-        //HIT判定はエフェクト側で行う
-        if (hitObj.CompareTag(Common.CO.TAG_EFFECT)) return true;
 
         //ターゲット,障害物は有効
         if (hitObj.transform != targetTran && !hitObj.CompareTag(Common.CO.TAG_STRUCTURE))
@@ -302,7 +309,7 @@ public class BulletController : MoveOfCharacter
             }
         }
 
-        if (isHitCheck) isHit = true;
+        //if (isHitCheck) isHit = true;
 
         return false;
     }

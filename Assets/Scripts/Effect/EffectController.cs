@@ -50,6 +50,7 @@ public class EffectController : Photon.MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
         if (other.GetType().Name == "CharacterController") return;
+        if (!Common.Func.IsColliderHitTag(other.tag)) return;
         GameObject otherObj = other.gameObject;
         OnHit(otherObj);
     }
@@ -91,6 +92,7 @@ public class EffectController : Photon.MonoBehaviour
     void OnTriggerStay(Collider other)
     {
         if (other.GetType().Name == "CharacterController") return;
+        if (!Common.Func.IsColliderHitTag(other.tag)) return;
         GameObject otherObj = other.gameObject;
         OnStay(otherObj);
     }

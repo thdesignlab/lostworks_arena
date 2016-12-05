@@ -4,7 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-public abstract class WeaponLevelController : Photon.MonoBehaviour
+public class WeaponLevelController : Photon.MonoBehaviour
 {
     //##### 強化System #####
 

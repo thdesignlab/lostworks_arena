@@ -8,7 +8,7 @@ public class AimingController: BaseMoveController
     private PlayerStatus myStatus;
 
     [SerializeField]
-    private float aimSpeed = 60;
+    private float aimSpeed = 20;
     private float defaultAimSpeed;
 
     protected override void Awake()

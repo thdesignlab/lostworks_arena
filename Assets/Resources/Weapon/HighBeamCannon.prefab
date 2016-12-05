@@ -345,6 +345,7 @@ GameObject:
   - 114: {fileID: 11495196}
   - 114: {fileID: 11405916}
   - 114: {fileID: 11466866}
+  - 114: {fileID: 11423362}
   m_Layer: 0
   m_Name: HighBeamCannon
   m_TagString: Weapon
@@ -1577,11 +1578,34 @@ MonoBehaviour:
   laserPrefab: {fileID: 158906, guid: d881aff9fa00887498abc33fb013a3d2, type: 2}
   effectiveLength: 400
   effectiveWidth: 2.5
-  effectiveTime: 1
+  effectiveTime: 1.2
   effectiveLengthTime: 1.2
   effectiveWidthTime: 0.2
   turnSpeedRate: 0
   laserMazzleMaxScale: 0
+--- !u!114 &11423362
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 165828}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 111ac858e9019c4448e4590f0b30a00f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  powerCustomSystemList: 89030000
+  powerEffectValueDiffList:
+  - -0.2
+  powerObject: {fileID: 0}
+  technicCustomSystemList: 00000000
+  technicEffectValueDiffList:
+  - -2
+  technicObject: {fileID: 0}
+  uniqueCustomSystemList: 85030000
+  uniqueEffectValueDiffList:
+  - 0
+  uniqueObject: {fileID: 124488, guid: c88b3bbd4bd5c4e4f958b3446e662d96, type: 2}
 --- !u!114 &11466866
 MonoBehaviour:
   m_ObjectHideFlags: 1

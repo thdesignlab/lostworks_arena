@@ -263,4 +263,9 @@ public class LaserWeaponController : WeaponController
     {
         effectiveWidthTime += value;
     }
+    public void CustomTurnSpeedRate(float value)
+    {
+        turnSpeedRate += value;
+        if (turnSpeedRate < 0) turnSpeedRate = 0;
+    }
 }

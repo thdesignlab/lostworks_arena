@@ -7,13 +7,20 @@ public class LaserLevelController : BulletLevelController
 {
     //##### 強化System #####
 
-    //BeamObject変更
+    //LaserObject変更
     const int CUSTOM_SYSTEM_CHANGE_LASER_OBJECT = 901;
+    //射程
     const int CUSTOM_SYSTEM_EFFECTIVE_LENGTH = 902;
+    //幅
     const int CUSTOM_SYSTEM_EFFECTIVE_WIDTH = 903;
+    //照射時間
     const int CUSTOM_SYSTEM_EFFECTIVE_TIME = 904;
+    //最大射程までの時間
     const int CUSTOM_SYSTEM_EFFECTIVE_LENGTH_TIME = 905;
+    //最大幅までの時間
     const int CUSTOM_SYSTEM_EFFECTIVE_WIDTH_TIME = 906;
+    //回転速度
+    const int CUSTOM_SYSTEM_TURN_SPEED_RATE = 907;
 
     protected override void WeaponCustomExe(int customSystem, float effectValue)
     {
@@ -42,6 +49,10 @@ public class LaserLevelController : BulletLevelController
 
             case CUSTOM_SYSTEM_EFFECTIVE_WIDTH_TIME:
                 laserWeaponCtrl.CustomEffectiveWidthTime(effectValue);
+                break;
+
+            case CUSTOM_SYSTEM_TURN_SPEED_RATE:
+                laserWeaponCtrl.CustomTurnSpeedRate(effectValue);
                 break;
 
             default:

@@ -203,11 +203,24 @@ namespace Common
         };
 
         //オブジェ
+        public static string TAG_FLOOR = "Floor";
         public static string TAG_STRUCTURE = "Structure";
 
         //レイヤー
         public static string LAYER_FLOOR = "Floor";
         public static string LAYER_STRUCTURE = "Structure";
+
+        //衝突判定するタグ
+        public static string[] ColliderHitTagArray = new string[]
+        {
+            "Player",
+            "Target",
+            TAG_BULLET_PHYSICS,
+            TAG_BULLET_MISSILE,
+            TAG_BULLET_ENERGY,
+            TAG_FLOOR,
+            TAG_STRUCTURE,
+        };
     }
 
     //### API用定数 ###
@@ -371,6 +384,12 @@ namespace Common
                 }
             }
             return flg;
+        }
+
+        //衝突判定タグ
+        public static bool IsColliderHitTag(string tag)
+        {
+            return InArrayString(CO.ColliderHitTagArray, tag);
         }
 
         //物理弾判定
