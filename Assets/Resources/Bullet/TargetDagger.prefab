@@ -262,7 +262,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effectSpawn: {fileID: 0}
-  activeLimitTime: 8
+  activeLimitTime: 10
   activeLimitDistance: 250
   isNotAutoBreak: 0
 --- !u!114 &11412470
@@ -413,7 +413,7 @@ CapsuleCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   m_Radius: 0.4
-  m_Height: 3
+  m_Height: 2
   m_Direction: 2
   m_Center: {x: 0, y: 0, z: -0.5}
 --- !u!1001 &100100000

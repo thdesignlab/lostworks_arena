@@ -193,4 +193,29 @@ public class FixedTrackingBulletController : BulletController
         fixedTurnSpeed = 0;
         if (pointCtrl != null) pointCtrl.SetOff();
     }
+
+
+    //##### CUSTOM #####
+
+    public void CustomFixTime(float value)
+    {
+        fixTime += value;
+        if (fixTime < 0) fixTime = 0;
+    }
+    public void CustomFixSpeed(float value)
+    {
+        fixedSpeed += value;
+    }
+    public void CustomFixTurnSpeed(float value)
+    {
+        fixedTurnSpeed += value;
+    }
+    public void CustomAutoFireTime(float value)
+    {
+        autoFireTime += value;
+    }
+    public void CustomAutoFireDiff(float value)
+    {
+        autoFireDiff += value;
+    }
 }

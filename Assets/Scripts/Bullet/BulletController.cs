@@ -666,4 +666,9 @@ public class BulletController : MoveOfCharacter
     {
         isEnergyBulletBreak = flg;
     }
+
+    public void CustomHitBreak(bool flg)
+    {
+        isHitBreak = flg;
+    }
 }

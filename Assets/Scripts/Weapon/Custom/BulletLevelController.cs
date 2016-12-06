@@ -52,6 +52,8 @@ public class BulletLevelController : EffectLevelController
     const int CUSTOM_SYSTEM_PHYSICS_BREAK = 145;
     //IsEnergyBulletBreak
     const int CUSTOM_SYSTEM_ENERGY_BREAK = 146;
+    //IsHitBreak
+    const int CUSTOM_SYSTEM_HIT_BREAK = 147;
 
 
     //状態異常：ATK
@@ -73,7 +75,6 @@ public class BulletLevelController : EffectLevelController
     {
         get { return _bulletWeaponCtrl ? _bulletWeaponCtrl : _bulletWeaponCtrl = GetComponent<BulletWeaponController>(); }
     }
-
 
     //武器強化実行
     protected override void WeaponCustomExe(int customSystem, float effectValue)
@@ -214,6 +215,10 @@ public class BulletLevelController : EffectLevelController
                 bulletCtrl.CustomEnergyBreak(effectValue == 1);
                 break;
 
+            case CUSTOM_SYSTEM_HIT_BREAK:
+                bulletCtrl.CustomHitBreak(effectValue == 1);
+                break;
+                
             case CUSTOM_SYSTEM_DEBUFF_ATTACK:
                 //debuff:attack
                 bulletCtrl.CustomDebuffAttack(effectValue);

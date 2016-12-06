@@ -11,6 +11,7 @@ GameObject:
   - 114: {fileID: 11467044}
   - 114: {fileID: 11411850}
   - 114: {fileID: 11412058}
+  - 114: {fileID: 11410002}
   m_Layer: 0
   m_Name: SpeedBurst
   m_TagString: Weapon
@@ -92,6 +93,29 @@ Transform:
   m_Children: []
   m_Father: {fileID: 415712}
   m_RootOrder: 0
+--- !u!114 &11410002
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 101286}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1aa7ab9b2b1ca0b40a8c0fbe8c8bd350, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  powerCustomSystemList: 0e000000
+  powerEffectValueDiffList:
+  - 0.15
+  powerObject: {fileID: 0}
+  technicCustomSystemList: 00000000
+  technicEffectValueDiffList:
+  - -10
+  technicObject: {fileID: 0}
+  uniqueCustomSystemList: 0b000000
+  uniqueEffectValueDiffList:
+  - 0.05
+  uniqueObject: {fileID: 0}
 --- !u!114 &11411850
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -106,7 +130,7 @@ MonoBehaviour:
   effectTime: 15
   effectTypeList: 04000000
   effectRateList:
-  - 1.2
+  - 1.3
   effect: {fileID: 146696}
 --- !u!114 &11412058
 MonoBehaviour:
@@ -123,6 +147,8 @@ MonoBehaviour:
   bitMoveTime: 0
   isBitFixed: 0
   reloadTime: 30
+  isStopInAttack: 0
+  isNpc: 0
 --- !u!114 &11414950
 MonoBehaviour:
   m_ObjectHideFlags: 1

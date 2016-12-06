@@ -44,6 +44,7 @@ GameObject:
   - 114: {fileID: 11485404}
   - 114: {fileID: 11449352}
   - 114: {fileID: 11415126}
+  - 114: {fileID: 11483820}
   m_Layer: 0
   m_Name: BoostRecoverSp
   m_TagString: Weapon
@@ -107,6 +108,8 @@ MonoBehaviour:
   bitMoveTime: 0
   isBitFixed: 0
   reloadTime: 30
+  isStopInAttack: 0
+  isNpc: 0
 --- !u!114 &11440940
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -148,6 +151,29 @@ MonoBehaviour:
   effectRateList:
   - 1.5
   effect: {fileID: 131184}
+--- !u!114 &11483820
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 137690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1aa7ab9b2b1ca0b40a8c0fbe8c8bd350, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  powerCustomSystemList: 0c000000
+  powerEffectValueDiffList:
+  - 0.25
+  powerObject: {fileID: 0}
+  technicCustomSystemList: 00000000
+  technicEffectValueDiffList:
+  - -10
+  technicObject: {fileID: 0}
+  uniqueCustomSystemList: 0e000000
+  uniqueEffectValueDiffList:
+  - 0.15
+  uniqueObject: {fileID: 0}
 --- !u!114 &11485404
 MonoBehaviour:
   m_ObjectHideFlags: 1

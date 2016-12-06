@@ -1585,6 +1585,7 @@ MonoBehaviour:
   bitMoveTime: 0
   isBitFixed: 0
   reloadTime: 3
+  isStopInAttack: 0
   isNpc: 0
   fireEffect: {fileID: 128990, guid: 26eff61a30ffb3040a1cf5904f260089, type: 2}
   bullet: {fileID: 129546, guid: 723b7d3d9dfe01848a4067f9f6793966, type: 2}
@@ -1608,7 +1609,7 @@ MonoBehaviour:
   isCheckGrounded: 0
   glideGravityRate: 1
   isLockOn: 1
-  aimSpeed: 60
+  aimSpeed: 20
 --- !u!114 &11476052
 MonoBehaviour:
   m_ObjectHideFlags: 1

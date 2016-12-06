@@ -618,6 +618,7 @@ GameObject:
   - 114: {fileID: 11442998}
   - 114: {fileID: 11486594}
   - 114: {fileID: 11423394}
+  - 114: {fileID: 11406232}
   m_Layer: 0
   m_Name: ChargeArrow
   m_TagString: Weapon
@@ -1866,6 +1867,30 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &11406232
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 190128}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76fb79cbbfdcc744fbaa521fd671b88e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  powerCustomSystemList: 65000000
+  powerEffectValueDiffList:
+  - 2
+  powerObject: {fileID: 0}
+  technicCustomSystemList: 66000000e9030000
+  technicEffectValueDiffList:
+  - -0.05
+  - -0.3
+  technicObject: {fileID: 0}
+  uniqueCustomSystemList: 0f000000
+  uniqueEffectValueDiffList:
+  - 1.5
+  uniqueObject: {fileID: 0}
 --- !u!114 &11419716
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1941,6 +1966,8 @@ MonoBehaviour:
   bitMoveTime: 0
   isBitFixed: 0
   reloadTime: 8
+  isStopInAttack: 0
+  isNpc: 0
   fireEffect: {fileID: 0}
   bullet: {fileID: 142638, guid: b61082b09ecec694cadc13410958c78c, type: 2}
   rapidCount: 6

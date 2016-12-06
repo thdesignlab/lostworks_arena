@@ -93,4 +93,28 @@ public class ChargeBulletController : TrackingBulletController
     {
         return maxChargeTime;
     }
+
+
+    //##### CUSTOM #####
+
+    public void CustomChargeTime(float value)
+    {
+        maxChargeTime += value;
+    }
+    public void CustomSpeedRate(float value)
+    {
+        maxSpeedRate += value;
+    }
+    public void CustomDamageRate(float value)
+    {
+        maxDamageRate += value;
+    }
+    public void CustomSizeRate(float value)
+    {
+        maxSizeRate += value;
+    }
+    public void CustomLimitTime(float value)
+    {
+        limitTime += value;
+    }
 }

@@ -1789,6 +1789,7 @@ MonoBehaviour:
   bitMoveTime: 1
   isBitFixed: 1
   reloadTime: 6
+  isStopInAttack: 0
   isNpc: 0
   fireEffect: {fileID: 128990, guid: 26eff61a30ffb3040a1cf5904f260089, type: 2}
   bullet: {fileID: 113868, guid: ba43121d744c79a4b9076c4cf537a212, type: 2}
@@ -1837,7 +1838,7 @@ MonoBehaviour:
   isCheckGrounded: 0
   glideGravityRate: 1
   isLockOn: 1
-  aimSpeed: 360
+  aimSpeed: 120
 --- !u!114 &11454678
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1889,14 +1890,16 @@ MonoBehaviour:
   powerEffectValueDiffList:
   - 50
   - 1.5
+  powerObject: {fileID: 0}
   technicCustomSystemList: 6900000087000000
   technicEffectValueDiffList:
   - -3
   - 50
+  technicObject: {fileID: 0}
   uniqueCustomSystemList: 66000000
   uniqueEffectValueDiffList:
   - -0.03
-  AddObject: {fileID: 0}
+  uniqueObject: {fileID: 0}
 --- !u!114 &11496168
 MonoBehaviour:
   m_ObjectHideFlags: 1

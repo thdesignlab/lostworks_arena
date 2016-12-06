@@ -142,6 +142,7 @@ GameObject:
   - 114: {fileID: 11455446}
   - 114: {fileID: 11426066}
   - 114: {fileID: 11406608}
+  - 114: {fileID: 11421116}
   m_Layer: 0
   m_Name: BeamCannon
   m_TagString: Weapon
@@ -1598,6 +1599,29 @@ MonoBehaviour:
   viewIdField: 0
   instantiationId: -1
   isRuntimeInstantiated: 0
+--- !u!114 &11421116
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 130136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 111ac858e9019c4448e4590f0b30a00f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  powerCustomSystemList: 83000000
+  powerEffectValueDiffList:
+  - 25
+  powerObject: {fileID: 0}
+  technicCustomSystemList: 91000000
+  technicEffectValueDiffList:
+  - 1
+  technicObject: {fileID: 0}
+  uniqueCustomSystemList: 92000000
+  uniqueEffectValueDiffList:
+  - 1
+  uniqueObject: {fileID: 0}
 --- !u!114 &11426066
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -44,7 +44,6 @@ public class CrossRangeLevelController : EffectLevelController
         get { return _crossRangeWeaponCtrl ? _crossRangeWeaponCtrl : _crossRangeWeaponCtrl = GetComponent<CrossRangeWeaponController>(); }
     }
 
-
     //武器強化実行
     protected override void WeaponCustomExe(int customSystem, float effectValue)
     {

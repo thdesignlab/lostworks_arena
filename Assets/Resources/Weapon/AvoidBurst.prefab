@@ -11,6 +11,7 @@ GameObject:
   - 114: {fileID: 11487280}
   - 114: {fileID: 11469510}
   - 114: {fileID: 11440522}
+  - 114: {fileID: 11424666}
   m_Layer: 0
   m_Name: AvoidBurst
   m_TagString: Weapon
@@ -92,6 +93,29 @@ Transform:
   m_Children: []
   m_Father: {fileID: 467946}
   m_RootOrder: 0
+--- !u!114 &11424666
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 112988}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1aa7ab9b2b1ca0b40a8c0fbe8c8bd350, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  powerCustomSystemList: 0d000000
+  powerEffectValueDiffList:
+  - 0.15
+  powerObject: {fileID: 0}
+  technicCustomSystemList: 00000000
+  technicEffectValueDiffList:
+  - -10
+  technicObject: {fileID: 0}
+  uniqueCustomSystemList: 0c000000
+  uniqueEffectValueDiffList:
+  - 0.25
+  uniqueObject: {fileID: 0}
 --- !u!114 &11440522
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -107,6 +131,8 @@ MonoBehaviour:
   bitMoveTime: 0
   isBitFixed: 0
   reloadTime: 30
+  isStopInAttack: 0
+  isNpc: 0
 --- !u!114 &11465658
 MonoBehaviour:
   m_ObjectHideFlags: 1

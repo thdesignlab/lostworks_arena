@@ -60,8 +60,8 @@ public class ChargeWeaponController : BulletWeaponController
                     PlayVoice();
                     isCharge = false;
                     base.EndAction();
-                    base.StopAudio(0);
-                    base.PlayAudio(1);
+                    StopAudio(0);
+                    PlayAudio(1);
                     foreach (ChargeBulletController bulletCtrl in bulletCtrls)
                     {
                         bulletCtrl.Fire(chargeTime);
@@ -85,6 +85,7 @@ public class ChargeWeaponController : BulletWeaponController
         bulletTrans = new List<Transform>();
         bulletCtrls = new List<ChargeBulletController>();
 
+        //Bit表示
         BitOn();
 
         //モーション開始
@@ -97,9 +98,16 @@ public class ChargeWeaponController : BulletWeaponController
         isCharge = true;
 
         chargeTime = 0;
-        base.PlayAudio(0);
+        PlayAudio(0);
 
-        if (base.isNpc)
+        //ステータスUP
+        if (playerStatus != null && statusChangeCtrl != null)
+        {
+            if (statusChangeCtrl.GetEffectTime() <= 0) statusChangeCtrl.AddEffectTime(atkMotionTime);
+            statusChangeCtrl.Action(playerStatus);
+        }
+
+        if (isNpc)
         {
             float maxChargeTime = bulletCtrls[0].GetMaxChargeTime();
             npcChargeTime = Random.Range(maxChargeTime * 0.5f, maxChargeTime * 1.5f);

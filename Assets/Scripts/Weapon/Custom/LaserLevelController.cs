@@ -22,9 +22,15 @@ public class LaserLevelController : BulletLevelController
     //回転速度
     const int CUSTOM_SYSTEM_TURN_SPEED_RATE = 907;
 
+
+    private LaserWeaponController _laserWeaponCtrl;
+    protected LaserWeaponController laserWeaponCtrl
+    {
+        get { return _laserWeaponCtrl ? _laserWeaponCtrl : _laserWeaponCtrl = GetComponent<LaserWeaponController>(); }
+    }
+
     protected override void WeaponCustomExe(int customSystem, float effectValue)
     {
-        LaserWeaponController laserWeaponCtrl = GetComponent<LaserWeaponController>();
         switch (customSystem)
         {
             case CUSTOM_SYSTEM_CHANGE_LASER_OBJECT:

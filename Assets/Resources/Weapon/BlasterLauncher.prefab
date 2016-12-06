@@ -28,6 +28,7 @@ GameObject:
   - 114: {fileID: 11469848}
   - 114: {fileID: 11404602}
   - 114: {fileID: 11415188}
+  - 114: {fileID: 11489682}
   m_Layer: 0
   m_Name: BlasterLauncher
   m_TagString: Weapon
@@ -1677,7 +1678,9 @@ MonoBehaviour:
   bitMotionType: 3
   bitMoveTime: 0
   isBitFixed: 0
-  reloadTime: 3
+  reloadTime: 4
+  isStopInAttack: 0
+  isNpc: 0
   fireEffect: {fileID: 0}
   bullet: {fileID: 122430, guid: b5924329171164744bc91770a18f9a63, type: 2}
   rapidCount: 1
@@ -1734,6 +1737,32 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   basePrefab: {fileID: 110970, guid: a433cf8b5cf9f4c498d2e9eff3a697d7, type: 2}
+--- !u!114 &11489682
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 115110}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76fb79cbbfdcc744fbaa521fd671b88e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  powerCustomSystemList: e9030000eb030000ec030000
+  powerEffectValueDiffList:
+  - 2
+  - 60
+  - 2
+  powerObject: {fileID: 0}
+  technicCustomSystemList: 0000000084000000
+  technicEffectValueDiffList:
+  - -1
+  - 20
+  technicObject: {fileID: 0}
+  uniqueCustomSystemList: 93000000
+  uniqueEffectValueDiffList:
+  - 0
+  uniqueObject: {fileID: 0}
 --- !u!114 &11498336
 MonoBehaviour:
   m_ObjectHideFlags: 1
