@@ -615,7 +615,7 @@ GameObject:
   - 222: {fileID: 22294298}
   - 114: {fileID: 11465900}
   m_Layer: 5
-  m_Name: Text
+  m_Name: BonusText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1199,7 +1199,7 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 4
+  m_ChildAlignment: 5
   m_Spacing: 0
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
@@ -1538,10 +1538,10 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: cc50cb967c8339a49b4f3174ae31c592, type: 3}
-    m_FontSize: 40
+    m_FontSize: 45
     m_FontStyle: 0
-    m_BestFit: 1
-    m_MinSize: 40
+    m_BestFit: 0
+    m_MinSize: 4
     m_MaxSize: 50
     m_Alignment: 3
     m_AlignByGeometry: 0
@@ -3194,10 +3194,10 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: cc50cb967c8339a49b4f3174ae31c592, type: 3}
-    m_FontSize: 40
+    m_FontSize: 45
     m_FontStyle: 0
-    m_BestFit: 1
-    m_MinSize: 40
+    m_BestFit: 0
+    m_MinSize: 3
     m_MaxSize: 50
     m_Alignment: 5
     m_AlignByGeometry: 0
@@ -4303,7 +4303,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 800, y: 60}
+  m_SizeDelta: {x: 500, y: 60}
   m_Pivot: {x: 0, y: 1}
 --- !u!224 &22408020
 RectTransform:
@@ -4361,8 +4361,8 @@ RectTransform:
   m_RootOrder: 7
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -20}
-  m_SizeDelta: {x: 400, y: 100}
+  m_AnchoredPosition: {x: -10, y: -20}
+  m_SizeDelta: {x: 310, y: 60}
   m_Pivot: {x: 1, y: 1}
 --- !u!224 &22412766
 RectTransform:
@@ -4656,8 +4656,8 @@ RectTransform:
   m_RootOrder: 2
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 10, y: -320}
-  m_SizeDelta: {x: -20, y: 1000}
+  m_AnchoredPosition: {x: 10, y: -290}
+  m_SizeDelta: {x: -20, y: 980}
   m_Pivot: {x: 0, y: 1}
 --- !u!224 &22440530
 RectTransform:
@@ -4818,7 +4818,7 @@ RectTransform:
   m_RootOrder: 1
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -50}
+  m_AnchoredPosition: {x: 0, y: -20}
   m_SizeDelta: {x: -100, y: 260}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!224 &22447804
@@ -5171,7 +5171,7 @@ RectTransform:
   m_RootOrder: 4
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -310}
+  m_AnchoredPosition: {x: 0, y: -280}
   m_SizeDelta: {x: 140, y: 100}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!224 &22481096

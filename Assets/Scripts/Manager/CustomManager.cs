@@ -126,7 +126,8 @@ public class CustomManager : CustomCommonManager
         Point.Get pointGet = new Point.Get();
         pointGet.SetApiErrorIngnore();
         pointGet.SetApiFinishCallback(SetCustom);
-        pointGet.SetApiFinishErrorCallback((errCode) => SetNoCustom(errCode));
+        pointGet.SetApiFinishErrorCallback(SetNoCustom);
+        pointGet.SetConnectErrorCallback(SetNoCustom);
         pointGet.Exe();
 
         //武器リストエリア取得
@@ -141,8 +142,7 @@ public class CustomManager : CustomCommonManager
         weaponSelectArea.gameObject.SetActive(false);
 
         playMovieObj = GameObject.Find("PointGetArea");
-        SwitchBonusText();
-        playMovieObj.SetActive(false);
+        SwitchPointGetArea(false);
 
         partsNameText.text = "";
     }
@@ -197,14 +197,23 @@ public class CustomManager : CustomCommonManager
     }
 
     //ネットワーク接続なし
-    private void SetNoCustom(string errCode = "")
+    private void SetNoCustom()
     {
+        isConnectedNetwork = false;
+        if (!UserManager.isCheckCustomSceneNetwork)
+        {
+            UserManager.isCheckCustomSceneNetwork = true;
+            string message = "Network接続に失敗したため\n";
+            message += "武器の強化は行えません。";
+            DialogController.OpenDialog(message);
+        }
         DialogController.CloseMessage();
     }
 
     //ネットワーク接続あり
     private void SetCustom()
     {
+        isConnectedNetwork = true;
         textPoint.text = UserManager.userPoint.ToString();
         DialogController.CloseMessage();
     }
@@ -622,7 +631,7 @@ public class CustomManager : CustomCommonManager
     private void OpenWeaponList()
     {
         weaponSelectArea.gameObject.SetActive(true);
-        playMovieObj.SetActive(true);
+        SwitchPointGetArea(true);
 
         //武器リスト初期化
         initWeaponList();
@@ -672,7 +681,7 @@ public class CustomManager : CustomCommonManager
             descriptionTran.FindChild("Description").GetComponent<Text>().text = weaponInfo[Common.Weapon.DETAIL_DESCRIPTION_NO];
             //強化可能チェック
             Transform customInfoTran = descriptionTran.FindChild("CustomInfo");
-            if (IsEnabledCustom(paramWeaponNo))
+            if (isConnectedNetwork && IsEnabledCustom(paramWeaponNo))
             {
                 customInfoTran.gameObject.SetActive(true);
                 customInfoTran.FindChild("Point").GetComponent<Text>().text = needWeaopnCustomPoint.ToString();
@@ -900,14 +909,12 @@ public class CustomManager : CustomCommonManager
     private void CloseWeaponList()
     {
         weaponSelectArea.gameObject.SetActive(false);
-        playMovieObj.SetActive(false);
+        SwitchPointGetArea(false);
     }
 
     //キャラ切り替え
     public void CharaSelect(bool isRight = true)
     {
-        //Debug.Log("CharaSelect");
-
         int factor = 1;
         if (isRight) factor *= -1;
 
@@ -950,48 +957,6 @@ public class CustomManager : CustomCommonManager
         }
         SpawnCharacter();
     }
-
-    //private bool isMoveWeaponArea = false;
-    //IEnumerator MoveWeaponArea(bool isOpen)
-    //{
-    //    if (isMoveWeaponArea) yield break;
-    //    isMoveWeaponArea = true;
-
-    //    Vector3 weaponMoveDirection = isOpen ? Vector3.right : Vector3.left;
-    //    Vector3 descriptionMoveDirection = isOpen ? Vector3.left : Vector3.right;
-    //    Coroutine weapon = StartCoroutine(MoveObject(weaponSelectArea, weaponSelectArea.rect.width * weaponMoveDirection, selectModeTime));
-    //    Coroutine description = StartCoroutine(MoveObject(weaponDetailArea, weaponDetailArea.rect.width * descriptionMoveDirection, selectModeTime));
-
-    //    yield return weapon;
-    //    yield return description;
-
-    //    isOpenWeaponCanvas = isOpen;
-    //    isMoveWeaponArea = false;
-    //}
-
-    ////UI移動制御
-    //IEnumerator MoveObject(RectTransform rectTran, Vector3 diffVector, float time)
-    //{
-    //    for (;;)
-    //    {
-    //        if (!isTurnTable) break;
-    //        yield return null;
-    //    }
-
-    //    Vector3 startVector = rectTran.localPosition;
-    //    Vector3 lastVector = rectTran.localPosition + diffVector;
-
-    //    float totalTime = 0;
-    //    for (;;)
-    //    {
-    //        totalTime += Time.deltaTime;
-    //        if (totalTime > time) totalTime = time;
-    //        rectTran.localPosition = Vector3.Lerp(startVector, lastVector, totalTime / time);
-    //        if (totalTime >= time) break;
-    //        yield return null;
-    //    }
-    //    rectTran.localPosition = lastVector;
-    //}
 
     //キャラテーブル移動制御
     IEnumerator TurnCharaTable(float angle, float time, bool isArrowActive)
@@ -1119,5 +1084,13 @@ public class CustomManager : CustomCommonManager
     public void PlayMovie()
     {
         PlayGacha();
+    }
+
+    //ポイントGETエリア表示切替
+    protected void SwitchPointGetArea(bool flg)
+    {
+        if (!isConnectedNetwork) flg = false;
+        SwitchBonusText();
+        playMovieObj.SetActive(flg);
     }
 }

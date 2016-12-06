@@ -21,8 +21,10 @@ public class CustomCommonManager : SingletonMonoBehaviour<CustomCommonManager>
 
     protected GameObject playMovieObj;
 
-    protected int needWeaponBuyPoint = 500;
-    protected int needWeaopnCustomPoint = 1000;
+    protected int needWeaponBuyPoint = 300;
+    protected int needWeaopnCustomPoint = 500;
+
+    protected bool isConnectedNetwork = false;
 
     //point >> rate
     protected Dictionary<int, int> pointTable = new Dictionary<int, int>()

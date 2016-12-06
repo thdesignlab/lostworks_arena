@@ -40,7 +40,7 @@ public class PhotonManager : MonoBehaviour
     const int SELECTABLE_MODE_BOTH = 3;
     private int selectableMode = SELECTABLE_MODE_BOTH;
 
-    const int MAX_ROOM_COUNT = 10;
+    private int maxRoomCount = 10;
     const int MAX_ROOM_PLAYER_COUNT = 2;
     const string ROOM_NAME_PREFIX = "Room";
 
@@ -48,6 +48,7 @@ public class PhotonManager : MonoBehaviour
     private bool isConnectFailed = false;
     private bool isDialogOpen = false;
     private bool isNetworkMode = false;
+    private bool preConnectedAndReady = false;
 
     private float processTime = 0;
 
@@ -155,8 +156,15 @@ public class PhotonManager : MonoBehaviour
                 // *** 接続成功 ***
                 if (!PhotonNetwork.connectedAndReady)
                 {
+                    //準備中
                     DialogController.OpenMessage(DialogController.MESSAGE_CONNECT, DialogController.MESSAGE_POSITION_RIGHT);
                     return;
+                }
+                if (!preConnectedAndReady)
+                {
+                    //準備完了
+                    preConnectedAndReady = true;
+                    DialogController.CloseMessage();
                 }
 
                 if (networkArea.GetActive())
@@ -172,7 +180,6 @@ public class PhotonManager : MonoBehaviour
                     //初期値設定
                     PlayerPrefs.SetString("playerName", PhotonNetwork.playerName);
                 }
-                DialogController.CloseMessage();
             }
             else
             {
@@ -449,7 +456,6 @@ public class PhotonManager : MonoBehaviour
         Action callback = () =>
         {
             ScreenManager.Instance.Load(Common.CO.SCENE_STORE, DialogController.MESSAGE_LOADING);
-            DialogController.CloseMessage();
         };
 
         //ポイント情報取得
@@ -499,9 +505,8 @@ public class PhotonManager : MonoBehaviour
 
         Action createRoomCallback = () =>
         {
-            if (PhotonNetwork.countOfRooms >= MAX_ROOM_COUNT)
+            if (PhotonNetwork.countOfRooms >= maxRoomCount)
             {
-                DialogController.CloseMessage();
                 DialogController.OpenDialog(MESSAGE_ROOM_LIMIT_FAILED);
                 return;
             }
@@ -582,7 +587,6 @@ public class PhotonManager : MonoBehaviour
 
     public void OnPhotonCreateRoomFailed()
     {
-        DialogController.CloseMessage();
         DialogController.OpenDialog(MESSAGE_CREATE_ROOM_FAILED);
         //ErrorDialog = "Error: Can't create room (room name maybe already used).";
         Debug.Log("OnPhotonCreateRoomFailed got called. This can happen if the room exists (even if not visible). Try another room name.");
@@ -590,7 +594,6 @@ public class PhotonManager : MonoBehaviour
 
     public void OnPhotonJoinRoomFailed(object[] cause)
     {
-        DialogController.CloseMessage();
         DialogController.OpenDialog(MESSAGE_JOIN_ROOM_FAILED);
         //ErrorDialog = "Error: Can't join room (full or unknown room name). " + cause[1];
         Debug.Log("OnPhotonJoinRoomFailed got called. This can happen if the room is not existing or full or closed.");
@@ -598,7 +601,6 @@ public class PhotonManager : MonoBehaviour
 
     public void OnPhotonRandomJoinFailed()
     {
-        DialogController.CloseMessage();
         DialogController.OpenDialog(MESSAGE_JOIN_ROOM_FAILED);
         //ErrorDialog = "Error: Can't join random room (none found).";
         Debug.Log("OnPhotonRandomJoinFailed got called. Happens if no room is available (or all full or invisible or closed). JoinrRandom filter-options can limit available rooms.");

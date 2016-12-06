@@ -428,21 +428,45 @@ public class GameController : SingletonMonoBehaviour<GameController>
                                     int missionPoint = 0; 
                                     if (UserManager.userOpenMissions[Common.PP.MISSION_LEVEL] > preMissionLevel)
                                     {
-                                        //point付与
                                         missionPoint = preMissionLevel * MISSION_POINT_PER;
+                                    }
+
+                                    //Nextダイアログ
+                                    Action nextDialogExe = () =>
+                                    {
+                                        string text = "Next level\n「" + Common.Mission.GetLevelName(stageLevel + 1) + "」";
+                                        List<string> buttons = new List<string>() { "Next", "Title" };
+                                        List<UnityAction> actions = new List<UnityAction>() {
+                                            () => OnNextLevel(), () => GoToTitle()
+                                        };
+                                        DialogController.OpenDialog(text, buttons, actions);
+                                    };
+
+                                    if (missionPoint > 0)
+                                    {
+                                        //ポイントダイアログ
+                                        Action pointDialogExe = () =>
+                                        {
+                                            string pointText = "初回クリアボーナス!!\n";
+                                            pointText += missionPoint.ToString() + "pt獲得!!";
+                                            UnityAction pointGetAction = () => nextDialogExe();
+                                            DialogController.OpenDialog(pointText, pointGetAction);
+                                        };
+
+                                        //ポイント付与
                                         Point.Add pointAdd = new Point.Add();
                                         pointAdd.SetApiErrorIngnore();
+                                        pointAdd.SetApiFinishCallback(pointDialogExe);
+                                        pointAdd.SetApiFinishErrorCallback(nextDialogExe);
+                                        pointAdd.SetConnectErrorCallback(nextDialogExe);
                                         pointAdd.Exe(missionPoint, Common.API.POINT_LOG_KIND_MISSION, stageLevel);
-                                    } 
+                                    }
+                                    else
+                                    {
+                                        //Nextダイアログ表示
+                                        nextDialogExe.Invoke();
+                                    }
 
-                                    //ダイアログ
-                                    string text = "Next level\n「"+Common.Mission.GetLevelName(stageLevel+1) +"」";
-                                    if (missionPoint > 0) text += "\n"+ missionPoint.ToString()+"pt獲得!!";
-                                    List<string> buttons = new List<string>() { "Next", "Title" };
-                                    List<UnityAction> actions = new List<UnityAction>() {
-                                        () => OnNextLevel(), () => GoToTitle()
-                                    };
-                                    DialogController.OpenDialog(text, buttons, actions);
                                     for (;;)
                                     {
                                         if (isContinue) break;

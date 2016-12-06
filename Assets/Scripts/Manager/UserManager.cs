@@ -19,6 +19,8 @@ public class UserManager
     public static bool isGachaFree = false;         //ガチャFreeFlg
     public static string apiToken;                  //API接続用Token
 
+    public static bool isCheckCustomSceneNetwork = false;      //ネットワーク接続チェックFLG
+
     //ユーザー情報初期値設定
     private static void InitPlayerPrefs()
     {

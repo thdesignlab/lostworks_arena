@@ -25,11 +25,16 @@ public abstract class BaseApi
     }
 
     //API完了時エラーコールバック
+    public void SetApiFinishErrorCallback(Action errorAction)
+    {
+        Action<string> errorCallbackAction = (errCode) => errorAction();
+        SetApiFinishErrorCallback(errorCallbackAction);
+    }
     public void SetApiFinishErrorCallback(Action<string> errorAction)
     {
         apiFinishErrorCallback = errorAction;
     }
-
+    
     //接続エラー時コールバック設定
     public void SetConnectErrorCallback(Action errorAction)
     {
@@ -71,7 +76,8 @@ public abstract class BaseApi
                 //ユーザー新規作成
                 User.Create userCreate = new User.Create();
                 userCreate.SetApiFinishCallback(action);
-                userCreate.SetApiErrorIngnore();
+                if (isIgnoreError) userCreate.SetApiErrorIngnore();
+                if (apiConnectErrorCallback != null) userCreate.SetConnectErrorCallback(apiConnectErrorCallback);
                 userCreate.Exe();
                 return;
             }
@@ -80,7 +86,8 @@ public abstract class BaseApi
                 //ログイン
                 Auth.Login authLogin = new Auth.Login();
                 authLogin.SetApiFinishCallback(action);
-                authLogin.SetApiErrorIngnore();
+                if (isIgnoreError) authLogin.SetApiErrorIngnore();
+                if (apiConnectErrorCallback != null) authLogin.SetConnectErrorCallback(apiConnectErrorCallback);
                 authLogin.Exe();
                 return;
             }
@@ -159,6 +166,8 @@ public abstract class BaseApi
     //接続エラー
     protected void ConnectError()
     {
+        Debug.Log("ConnectError >> "+ isIgnoreError +" : "+apiConnectErrorCallback);
+
         if (apiConnectErrorCallback != null)
         {
             apiConnectErrorCallback.Invoke();
@@ -188,7 +197,9 @@ public abstract class BaseApi
     public void GoToTitle()
     {
         //タイトルへ
-        DialogController.OpenDialog("接続エラー", GoToTtileExe);
+        string text = "Network接続に失敗しました。\n";
+        text += "電波状況をご確認の上、\n再度お試しください。";
+        DialogController.OpenDialog(text, GoToTtileExe);
     }
     public void GoToTtileExe()
     {

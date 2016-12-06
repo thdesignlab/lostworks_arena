@@ -21,7 +21,7 @@ Material:
         second:
           m_Texture: {fileID: 2800000, guid: 48901ad6221ae26439df57a18afb3ae3, type: 3}
           m_Scale: {x: -0.5, y: 1}
-          m_Offset: {x: 0.3704834, y: 0.14819336}
+          m_Offset: {x: 0.5503845, y: 0.02015686}
       data:
         first:
           name: _BumpMap
@@ -93,6 +93,10 @@ Material:
         second: 0.5
       data:
         first:
+          name: _InvFade
+        second: 1
+      data:
+        first:
           name: _Parallax
         second: 0.02
       data:
@@ -127,10 +131,6 @@ Material:
         first:
           name: _Metallic
         second: 0
-      data:
-        first:
-          name: _InvFade
-        second: 1
     m_Colors:
       data:
         first:

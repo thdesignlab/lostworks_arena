@@ -313,7 +313,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageEffect: {fileID: 133516, guid: e2d7ae54e3828d840bad804c87cfcfe4, type: 2}
-  damage: 200
+  damage: 180
   damagePerSecond: 0
   isPhysicsBulletBreak: 0
   isEnergyBulletBreak: 0
@@ -358,6 +358,7 @@ MonoBehaviour:
   bitMoveTime: 0
   isBitFixed: 0
   reloadTime: 5
+  isStopInAttack: 0
   isNpc: 0
   blade: {fileID: 145072}
   attackTime: 0.5
@@ -366,7 +367,7 @@ MonoBehaviour:
   boostTime: 0.5
   boostWaitTime: 0
   boostCost: 100
-  isStopInAttack: 0
+  isStopInBlade: 0
 --- !u!114 &11424164
 MonoBehaviour:
   m_ObjectHideFlags: 1
