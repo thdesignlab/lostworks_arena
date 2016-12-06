@@ -33,4 +33,19 @@ public class FixedBulletWeaponController : BulletWeaponController
         }
         yield break;
     }
+
+
+    //##### CUSTOM #####
+
+    public void CustomFixedTime(float value)
+    {
+        fixedTime += value;
+        if (fixedTime < 0) fixedTime = 0;
+    }
+
+    public void CustomFixedDiffTime(float value)
+    {
+        fixedDiffTime += value;
+        if (fixedDiffTime < 0) fixedDiffTime = 0;
+    }
 }
