@@ -452,7 +452,7 @@ public class CustomManager : CustomCommonManager
         prePosX = e.Input.ScreenPosition.x;
         prePosY = e.Input.ScreenPosition.y;
 
-        float minSwitpeDiff = 1;
+        float minSwitpeDiff = 5;
         if (Mathf.Abs(preDiffX) < minSwitpeDiff && Mathf.Abs(preDiffY) < minSwitpeDiff) return;
         isSwipe = true;
 
@@ -697,7 +697,8 @@ public class CustomManager : CustomCommonManager
 
         //エリアサイズ変更
         float dispWeaponCount = weaponNoList.Count;
-        weaponScrollViewLayout.preferredHeight = dispWeaponCount * buttonHeight + descriptionHeight;
+        weaponScrollViewLayout.preferredHeight = dispWeaponCount * buttonHeight;
+        if (isConnectedNetwork) weaponScrollViewLayout.preferredHeight += descriptionHeight;
         weaponButtonAreaRectTran.sizeDelta = new Vector2(weaponButtonAreaRectTran.rect.width, weaponScrollViewLayout.preferredHeight);
         if (weaponScrollViewLayout.preferredHeight > weaponListHeight) weaponScrollViewLayout.preferredHeight = weaponListHeight;
 
@@ -807,6 +808,8 @@ public class CustomManager : CustomCommonManager
     float descriptionOpenTime = 0.15f;
     IEnumerator WeaponDescriptionAnimation(Transform targetRowTran, bool isOpen = true)
     {
+        if (!isConnectedNetwork) yield break;
+
         float procTime = 0;
         //詳細エリアスケール
         Vector3 closeScale = new Vector3(1, 0, 1);
