@@ -15,6 +15,7 @@ public class NpcController : MoveOfCharacter
     private float atackIntervalTime = 3;
     private float boostIntervalTime = 3;
     private float searchIntervalTime = 3;
+    //private int navMeshPlayer = 1;
 
     //private WeaponController[] weapons;
     private List<WeaponController> weapons = new List<WeaponController>();
@@ -202,7 +203,15 @@ public class NpcController : MoveOfCharacter
 
         //ターゲットタイプ
         targetType = npcStatusArray[Common.Character.STATUS_TARGET_TYPE];
-        walkRadius = npcStatusArray[Common.Character.STATUS_TARGET_DISTANCE];
+        walkRadius = npcStatusArray[Common.Character.STATUS_TARGET_DISTANCE_MAX];
+
+        ////プレイヤー周辺の不可侵領域設定
+        //Transform playerTran = GameController.Instance.GetMyTran();
+        //NavMeshObstacle playerNav = playerTran.GetComponent<NavMeshObstacle>();
+        //playerNav.radius = npcStatusArray[Common.Character.STATUS_TARGET_DISTANCE_MIN];
+        //playerNav.enabled = true;
+        //navMeshPlayer = 1 << NavMesh.GetAreaFromName("Player");
+        //Debug.Log("radius >> "+ walkRadius + " > " +playerNav.radius+" : navMesh="+ navMeshPlayer);
 
         //装備強化
         StartCoroutine(SetWeaponCustom());
