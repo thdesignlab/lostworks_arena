@@ -385,10 +385,10 @@ public class GameController : SingletonMonoBehaviour<GameController>
     {
         for (;;)
         {
-            if (isGameEnd)
+            if (isGameEnd && !isContinue)
             {
-                yield return new WaitForSeconds(3.0f);
-                if (isContinue) continue;
+                yield return new WaitForSeconds(1.5f);
+                //if (isContinue) continue;
 
                 //結果表示
                 bool isPassResult = OpenResult();
@@ -493,7 +493,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
                                 yield return new WaitForSeconds(1.0f);
 
                                 //ダイアログ
-                                string text = "コンティニューしますか？\n※動画が再生されます\n※復活時に能力が少しUPします";
+                                string text = "コンティニューしますか？\n※動画が再生されます\n※復活する度に能力がUPします";
                                 List<string> buttons = new List<string>() { "Continue", "Titleへ" };
                                 List<UnityAction> actions = new List<UnityAction>() {
                                     () => ContinueMission(true), () => GoToTitle()
@@ -591,7 +591,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
                                 for (;;)
                                 {
                                     //負けプレイヤーが退出するのを待つ
-                                    if (CheckPlayer()) yield return new WaitForSeconds(0.5f);
+                                    if (CheckPlayer()) yield return null;
                                     break;
                                 }
                                 ResetVs();
@@ -637,7 +637,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
                 continue;
             }
 
-            if (isGameStart)
+            if (isGameStart && !isGameEnd)
             {
                 //対戦中
                 foreach (PlayerStatus playerStatus in playerStatuses)
@@ -651,10 +651,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
             }
             else
             {
-                ////待機中
-                //if (playerSetting.IsCustomEnd())
-                //{
-                //装備設定終了
+                //待機中
                 GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
                 if (players.Length == needPlayerCount)
                 {
@@ -668,11 +665,6 @@ public class GameController : SingletonMonoBehaviour<GameController>
                             DestroyPlayer(player);
                             continue;
                         }
-                        //if (!setting.IsCustomEnd())
-                        //{
-                        //    SetTextUp(MESSAGE_CUSTOMIZE + setting.GetLeftCustomTime().ToString(), colorWait);
-                        //    break;
-                        //}
                         PlayerStatus ps = player.GetComponent<PlayerStatus>();
                         if (ps == null)
                         {
@@ -694,7 +686,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
                         if (gameMode == GAME_MODE_MISSION || gameMode == GAME_MODE_VS)
                         {
                             int round = winCount + loseCount + 1;
-                            if (round == 1)
+                            if (gameMode == GAME_MODE_MISSION && round == 1)
                             {
                                 //ステージ文字
                                 string stageText = MESSAGE_STAGE_READY + stageNo.ToString();
@@ -747,16 +739,9 @@ public class GameController : SingletonMonoBehaviour<GameController>
                         }
                     }
                 }
-                //}
-                //else
-                //{
-                //    //装備設定中
-                //    //SetWaitMessage(MESSAGE_CUSTOMIZE + playerSetting.GetLeftCustomTime().ToString());
-                //    SetTextUp(MESSAGE_CUSTOMIZE + playerSetting.GetLeftCustomTime().ToString(), colorWait);
-                //}
             }
 
-            yield return new WaitForSeconds(0.1f);
+            yield return null;
         }
     }
 
@@ -963,6 +948,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
         isGameStart = true;
         battleTime = 0;
         isVsStart = true;
+        SwitchRoomOpen(false);
     }
     private void BattleStartCallback()
     {
@@ -982,7 +968,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
             //勝利
             winCount++;
             isWin = true;
-            SetTextCenter(spriteStudioCtrl.ANIMATION_TEXT_WIN, colorWin);
+            SetTextCenter(spriteStudioCtrl.ANIMATION_TEXT_WIN, colorWin, 10);
             if (myStatus.voiceManager != null) myStatus.voiceManager.Win();
         }
         else
@@ -1215,6 +1201,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
     {
         isContinue = true;
         ResetDamageSource();
+        SwitchRoomOpen(true);
     }
 
     //結果ダイアログ表示
@@ -1455,6 +1442,11 @@ public class GameController : SingletonMonoBehaviour<GameController>
         SoundManager.Instance.PlayBattleBgm(bgmNo);
     }
 
+    private void SwitchRoomOpen(bool flg)
+    {
+        if (!PhotonNetwork.isMasterClient) return;
+        PhotonNetwork.room.open = flg;
+    }
 
     //##### Photon Callback #####
 
@@ -1464,5 +1456,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
         RoomApi.ChangeMaster roomApiChangeMaster = new RoomApi.ChangeMaster();
         roomApiChangeMaster.SetApiErrorIngnore();
         roomApiChangeMaster.Exe();
+        if (!isGameStart) SwitchRoomOpen(true);
     }
+
 }

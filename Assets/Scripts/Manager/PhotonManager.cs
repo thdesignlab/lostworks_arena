@@ -276,6 +276,7 @@ public class PhotonManager : MonoBehaviour
     //Room一覧ダイアログ切り替え
     public void OnSwitchRoomListAreaButton(bool flg)
     {
+        SearchRoomList();
         SwitchRoomListArea(flg, true);
     }
     private void SwitchRoomListArea(bool flg, bool isFade = false)
