@@ -570,6 +570,7 @@ namespace Common
             {500, new string[]{ "Hero5", "Unknown", "0", OBTAIN_TYPE_INIT, "10007"}},
             {501, new string[]{ "Hero5", "Unknown", "1", OBTAIN_TYPE_MISSION, "10007"}},
             {600, new string[]{ "Hero6", "Vaio", "0", OBTAIN_TYPE_INIT, "10010"}},
+            {601, new string[]{ "Hero6", "Vaio", "0", OBTAIN_TYPE_INIT, "10010"}},
             {10000, new string[]{ "Npc1", "Bit", "0", OBTAIN_TYPE_NONE, "10002"}},
             {10001, new string[]{ "Npc2", "BitBrack", "0", OBTAIN_TYPE_NONE, "10003"}},
             {10002, new string[]{ "Npc3", "BitYellow", "0", OBTAIN_TYPE_NONE, "10004"}},
@@ -704,6 +705,7 @@ namespace Common
             { 5003, new string[]{ "SpeedBurst", "", "", OBTAIN_TYPE_INIT, ""}},
             { 5004, new string[]{ "AttackBurst", "", "", OBTAIN_TYPE_INIT, ""}},
             { 5005, new string[]{ "DefenceBurst", "", "", OBTAIN_TYPE_INIT, ""}},
+            { 5006, new string[]{ "CounterShield", "", "", OBTAIN_TYPE_NONE, ""}},
         };
         //スペシャル武器リスト
         public static Dictionary<int, string[]> extraWeaponLineUp = new Dictionary<int, string[]>()
@@ -718,7 +720,9 @@ namespace Common
             { 10007, new string[]{ "ExtraScythe", "ExScythe", "", OBTAIN_TYPE_INIT, ""}},
             { 10008, new string[]{ "ExtraMissileLauncher", "ExMissileLauncher", "", OBTAIN_TYPE_INIT, ""}},
             { 10009, new string[]{ "ExtraGatling", "ExGatling", "", OBTAIN_TYPE_INIT, ""}},
-            { 10010, new string[]{ "ExtraMedoroa", "Medoroa", "", OBTAIN_TYPE_INIT, ""}},
+            { 10010, new string[]{ "ExtraMedoroa", "ExMedoroa", "", OBTAIN_TYPE_INIT, ""}},
+            { 10011, new string[]{ "ExtraCrystalCage", "ExCrystalCage", "", OBTAIN_TYPE_INIT, ""}},
+            { 10012, new string[]{ "ExtraGhost", "ExGhost", "", OBTAIN_TYPE_INIT, ""}},
         };
 
         //部位ごとの武器リスト取得
@@ -994,11 +998,11 @@ namespace Common
         {
             { 1, new int[] { 10000, 0 } },
             { 2, new int[] { 300, 2 } },
-            { 3, new int[] { 10002, 2 } },
+            { 3, new int[] { 10001, 2 } },
             { 4, new int[] { 200, 1 } },
-            { 5, new int[] { 10003, 1 } },
+            { 5, new int[] { 10002, 1 } },
             { 6, new int[] { 100, 5 } },
-            { 7, new int[] { 10004, 5 } },
+            { 7, new int[] { 10003, 5 } },
             { 9, new int[] { 600, 4 } },
             { 8, new int[] { 400, 3 } },
             { 10, new int[] { 500, 6 } },
@@ -1084,7 +1088,7 @@ namespace Common
         public static Dictionary<int, int[]> npcWeaponDic = new Dictionary<int, int[]>()
         {
             { -1, new int[]{ 0, 0, 0, 0, 0, 0, 0} },
-            {100, new int[]{ 2001, 2005, 2002, 2010, 3004, 4005, 5003 } },            {101, new int[]{ 2001, 2005, 2002, 2010, 3004, 4005, 10009 } },            {200, new int[]{ 1011, 2000, 1000, 1002, 3008, 4000, 5001 } },            {201, new int[]{ 1011, 2000, 1000, 1002, 3008, 4000, 10003 } },            {300, new int[]{ 1009, 2009, 2004, 2008, 4003, 4002, 5002 } },            {301, new int[]{ 1009, 2009, 2004, 2008, 4003, 4002, 5002 } },            {400, new int[]{ 1001, 2003, 1005, 2006, 3001, 4004, 5005 } },            {401, new int[]{ 1001, 2003, 1005, 2006, 3001, 4004, 10004 } },            {500, new int[]{ 1000, 1003, 4009, 3005, 4001, 4000, 5004 } },            {501, new int[]{ 1000, 1003, 4009, 3005, 4001, 10008, 5000 } },            {600, new int[]{ 1008, 1010, 2007, 3009, 4008, 3007, 5005 } },            {601, new int[]{ 1008, 1010, 2007, 3009, 4008, 3007, 5005 } },            {10000, new int[]{ 0, 0, 0, 0, 0, 0, 0 } },            {10001, new int[]{ 1005, 2001, 1007, 2002, 3010, 4005, 5003 } },            {10002, new int[]{ 1006, 2003, 1002, 2006, 3002, 4006, 5001 } },            {10003, new int[]{ 1000, 2008, 1004, 2000, 3000, 3003, 5005 } },            {10004, new int[]{ -1, -1, -1, -1, -1, -1, -1 } },
+            {100, new int[]{ 2001, 2005, 2002, 2010, 3004, 4005, 5003 } },            {101, new int[]{ 2001, 2005, 2002, 2010, 3004, 4005, 10009 } },            {200, new int[]{ 1011, 2000, 1000, 1002, 3008, 4000, 5001 } },            {201, new int[]{ 1011, 2000, 1000, 1002, 3008, 4000, 10003 } },            {300, new int[]{ 1009, 2009, 2004, 2008, 4003, 4002, 5002 } },            {301, new int[]{ 1009, 2009, 2004, 2008, 4003, 4002, 10004 } },            {400, new int[]{ 1001, 2003, 1005, 2006, 3001, 4004, 5004 } },            {401, new int[]{ 1001, 2003, 1005, 2006, 3001, 4004, 10011 } },            {500, new int[]{ 1000, 1003, 4009, 3005, 4001, 4000, 5000 } },            {501, new int[]{ 1000, 1003, 4009, 3005, 4001, 10008, 5006 } },            {600, new int[]{ 1008, 1010, 2007, 3009, 4008, 3007, 5005 } },            {601, new int[]{ 1008, 1010, 2007, 3009, 4008, 3007, 10012 } },            {10000, new int[]{ 0, 0, 0, 0, 0, 0, 5003 } },            {10001, new int[]{ 1005, 2001, 1007, 2002, 3010, 4005, 5003 } },            {10002, new int[]{ 1006, 2003, 1002, 2006, 3002, 4006, 5001 } },            {10003, new int[]{ 1000, 2008, 1004, 2000, 3000, 3003, 5005 } },            {10004, new int[]{ -1, -1, -1, -1, -1, -1, -1 } },
         };
     }
 }

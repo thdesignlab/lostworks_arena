@@ -5,13 +5,15 @@ public class InvincibleShieldController : WeaponController
 {
     [SerializeField]
     private float effectTime;
+    [SerializeField]
+    private bool isReflection = false;
 
     protected override void Action()
     {
         if (effectTime <= 0) return;
-        if (base.playerStatus == null) return;
+        if (playerStatus == null) return;
 
-        base.playerStatus.SetInvincible(true, effectTime, true);
+        playerStatus.SetInvincible(true, effectTime, true, isReflection);
 
         base.StartReload(effectTime);
     }

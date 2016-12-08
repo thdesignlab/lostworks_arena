@@ -43,6 +43,9 @@ public class PlayerStatus : Photon.MonoBehaviour {
     //private Transform statusCanvas;
     //private Text hpText;
 
+    //反射判定
+    private float leftReflectionTime = 0;
+
     //無敵判定
     private float leftInvincibleTime = 0;
     public float invincibleTime = 0;
@@ -98,6 +101,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
     //デバフエフェクト
     [SerializeField]
     private GameObject debuffEffect;
+    private int effectiveDebuffCount = 0;
 
     //勝数マーク
     private const string TAG_WIN_MARK_MINE = "WinMarkMine";
@@ -637,7 +641,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
         }
     }
 
-    public void SetInvincible(bool flg = true, float time = 0, bool isShieldVisible = false)
+    public void SetInvincible(bool flg = true, float time = 0, bool isShieldVisible = false, bool isReflection = false)
     {
         float setTime = time;
         if (flg)
@@ -646,18 +650,48 @@ public class PlayerStatus : Photon.MonoBehaviour {
             if (leftInvincibleTime >= setTime) return;
         }
 
-        object[] args = new object[] { setTime , isShieldVisible };
+        object[] args = new object[] { setTime , isShieldVisible, isReflection };
         photonView.RPC("SetInvincibleRPC", PhotonTargets.All, args);
     }
 
     [PunRPC]
-    private void SetInvincibleRPC(float time, bool isShieldVisible)
+    private void SetInvincibleRPC(float time, bool isShieldVisible, bool isReflection = false)
     {
         leftInvincibleTime = time;
         if (time > 0 && isShieldVisible)
         {
             StartCoroutine(OpenShieldProc(time));
         }
+        if (isReflection) SetReflectionTime(time, false);
+    }
+
+    //反射設定
+    public void SetReflectionTime(float time, bool isSendRPC = true)
+    {
+        StartCoroutine(SetReflectionTimeProc(time));
+        if (isSendRPC)
+        {
+            photonView.RPC("SetInvincibleRPC", PhotonTargets.Others, time);
+        }
+    }
+    [PunRPC]
+    public void SetReflectionTimeRPC(float time)
+    {
+        SetReflectionTime(time, false);
+    }
+    IEnumerator SetReflectionTimeProc(float time)
+    {
+        leftReflectionTime = time;
+        for (;;)
+        {
+            leftReflectionTime -= Time.deltaTime;
+            if (leftReflectionTime <= 0) break;
+            yield return null;
+        }
+    }
+    public bool IsReflection()
+    {
+        return (leftReflectionTime > 0);
     }
 
     //ロックされているかFLG
@@ -1041,7 +1075,18 @@ public class PlayerStatus : Photon.MonoBehaviour {
     private void SwitchEffect(GameObject effect, bool flg, bool isSendRPC = false)
     {
         if (effect == null) return;
-        effect.SetActive(flg);
+        if (effect == debuffEffect)
+        {
+            //デバフカウント
+            effectiveDebuffCount += (flg) ? 1 : -1;
+            if (effectiveDebuffCount < 0) effectiveDebuffCount = 0;
+            bool debuffFlg = (effectiveDebuffCount > 0);
+            effect.SetActive(debuffFlg);
+        }
+        else
+        {
+            effect.SetActive(flg);
+        }
 
         if (isSendRPC)
         {

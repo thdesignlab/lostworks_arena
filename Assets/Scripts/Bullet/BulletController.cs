@@ -126,7 +126,6 @@ public class BulletController : MoveOfCharacter
             if (IsReflection(otherObj))
             {
                 Reflection();
-                isHit = false;
             }
 
             //破壊チェック
@@ -172,6 +171,12 @@ public class BulletController : MoveOfCharacter
                 {
                     //プレイヤーステータス
                     PlayerStatus status = GetHitObjStatus(hitObj);
+
+                    if (status.IsReflection())
+                    {
+                        Reflection();
+                        return;
+                    }
 
                     //ダメージ
                     AddDamageProccess(status, dmg);
@@ -473,6 +478,7 @@ public class BulletController : MoveOfCharacter
 
         //方向を変える
         myTran.LookAt(preOwnerTran);
+        isHit = false;
 
         if (isSendRPC)
         {
