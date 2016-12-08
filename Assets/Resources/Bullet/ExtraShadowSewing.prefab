@@ -268,7 +268,7 @@ MonoBehaviour:
   hitEffect: {fileID: 135988, guid: d7cd433d10510fe46a35c39bac480fe1, type: 2}
   speed: 130
   damage: 10
-  damagePerSecond: 30
+  damagePerSecond: 15
   stuckTime: 3
   knockBackRate: 0
   isPhysicsBulletBreak: 0
@@ -279,7 +279,7 @@ MonoBehaviour:
   rollBody: {fileID: 498852}
   fixedRollSpeed: 3600
   fixedRollVector: {x: 0, y: 0, z: 0}
-  fixedSpeed: 600
+  fixedSpeed: 250
   fixedTurnSpeed: 0
   searchTurnSpeed: 0
   isNeedLock: 1
@@ -363,7 +363,7 @@ MonoBehaviour:
   pointer: {fileID: 0}
   impactPoint: {fileID: 169900, guid: c63314ceed9215d4da6af309a2d2b891, type: 2}
   maxLength: 300
-  pointSize: 0.5
+  pointSize: 1
 --- !u!120 &12049600
 LineRenderer:
   m_ObjectHideFlags: 1

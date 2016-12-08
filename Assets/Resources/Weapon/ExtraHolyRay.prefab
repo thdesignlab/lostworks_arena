@@ -440,7 +440,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 111120}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 170.87161, y: 974.3903, z: 153.88835}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -552,7 +552,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 1000
+  far clip plane: 300
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -619,7 +619,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 24301600, guid: 4817c32da9beaeb43b7c44b180d41730,
     type: 2}
-  m_audioClip: {fileID: 8300000, guid: 9159e5f07bbf5aa43bc2a29981528f06, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 0256e2930b02564468ba196e85012858, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -765,6 +765,8 @@ MonoBehaviour:
   bitMoveTime: 0
   isBitFixed: 0
   reloadTime: 25
+  isStopInAttack: 0
+  isNpc: 0
   fireEffect: {fileID: 0}
   bullet: {fileID: 150352, guid: ca9d4b046653026469489b019832842d, type: 2}
   rapidCount: 8
@@ -809,6 +811,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   extraCam: {fileID: 117272}
   extraEffect: {fileID: 137608}
+  extraAddWeapon: {fileID: 0}
   fireTimeInAnim: 0
   useHpPerCondition: 25
 --- !u!124 &12437762

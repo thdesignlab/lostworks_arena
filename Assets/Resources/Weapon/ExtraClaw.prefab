@@ -554,7 +554,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 193282}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 169.82109, y: 974.1498, z: 154.16736}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -595,7 +595,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.01
-  far clip plane: 1000
+  far clip plane: 300
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -862,7 +862,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 24301600, guid: 4817c32da9beaeb43b7c44b180d41730,
     type: 2}
-  m_audioClip: {fileID: 8300000, guid: 9159e5f07bbf5aa43bc2a29981528f06, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 0256e2930b02564468ba196e85012858, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -1022,6 +1022,7 @@ MonoBehaviour:
   bitMoveTime: 0
   isBitFixed: 0
   reloadTime: 25
+  isStopInAttack: 0
   isNpc: 0
   fireEffect: {fileID: 0}
   bullet: {fileID: 113640, guid: 36f01397b9072204ab98aa80d30aa858, type: 2}
