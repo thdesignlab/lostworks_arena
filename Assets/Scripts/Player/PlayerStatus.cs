@@ -263,6 +263,8 @@ public class PlayerStatus : Photon.MonoBehaviour {
             StartCoroutine(SetHpSlider(hpBarEnemy, hpBarEnemyImage));
         }
 
+        battleLogArea[BATTLE_LOG_ATTACK].text = "";
+        battleLogArea[BATTLE_LOG_DAMAGE].text = "";
         logBattleQueue[BATTLE_LOG_ATTACK] = new Queue();
         logBattleQueue[BATTLE_LOG_DAMAGE] = new Queue();
         preSlipDmgName[BATTLE_LOG_ATTACK] = "";
@@ -602,7 +604,6 @@ public class PlayerStatus : Photon.MonoBehaviour {
                 }
 
                 //戦闘不能
-                //transform.DetachChildren();
                 if (!isNpc)
                 {
                     Camera.main.transform.parent = null;

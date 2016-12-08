@@ -200,7 +200,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.2, y: 3, z: 1.2}
+  m_Size: {x: 1.2, y: 4, z: 1.2}
   m_Center: {x: 0, y: 1.5, z: 0}
 --- !u!95 &9513852
 Animator:
@@ -231,8 +231,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageEffect: {fileID: 0}
-  damage: 15
-  damagePerSecond: 30
+  damage: 25
+  damagePerSecond: 0
   isPhysicsBulletBreak: 1
   isEnergyBulletBreak: 1
   ownDamageRate: 0

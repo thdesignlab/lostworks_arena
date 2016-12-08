@@ -348,7 +348,7 @@ MonoBehaviour:
   isCheckGrounded: 0
   glideGravityRate: 0.01
   isLockOn: 0
-  UseGravity: 1
+  UseGravity: 0
   hitEffect: {fileID: 0}
   speed: 100
   damage: 50
@@ -363,7 +363,7 @@ MonoBehaviour:
   lockStartTime: 0.3
   lockedSpeedRate: 1.2
   lockedTurnSpeedRate: 0
-  isNeedLock: 1
+  isNeedLock: 0
   isLockFlat: 0
 --- !u!114 &11447832
 MonoBehaviour:
@@ -402,7 +402,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effectSpawn: {fileID: 172714, guid: 3a4eb6b2c5659e740be84302247c4ec4, type: 2}
-  activeLimitTime: 3
+  activeLimitTime: 4
   activeLimitDistance: 0
   isNotAutoBreak: 0
 --- !u!114 &11462634

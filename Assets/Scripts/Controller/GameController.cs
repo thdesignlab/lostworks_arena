@@ -113,6 +113,10 @@ public class GameController : SingletonMonoBehaviour<GameController>
     //ミッションレベル更新pt係数
     const int MISSION_POINT_PER = 100;
 
+    ////VS時キック
+    //const double WAIT_KICK_TIME = 10;
+    //private double inActiveTime = 0;
+
     private bool isAdminPlay = false;
 
     protected override void Awake()
@@ -1347,6 +1351,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
         npcStatus.Init();
     }
 
+    //ダメージソース追加
     public void SetDamageSource(int logType, string name, float damage)
     {
         Dictionary<string, float> damageSource;
@@ -1362,6 +1367,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
         damageSource[name] += damage;
     }
 
+    //結果ダイアログ用テキスト
     private string CreateDamageSourceText(int type)
     {
         Dictionary<string, float> damageSource;
@@ -1414,7 +1420,13 @@ public class GameController : SingletonMonoBehaviour<GameController>
     }
     public void Pause()
     {
-        if (gameMode == GAME_MODE_VS || !isGameStart || isGameEnd)
+        if (gameMode == GAME_MODE_VS)
+        {
+            //ルームから出す
+            GoToTitle();
+            return;
+        }
+        else if (!isGameStart || isGameEnd)
         {
             //一時停止禁止
             return;

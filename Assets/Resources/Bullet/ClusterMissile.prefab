@@ -419,7 +419,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effectSpawn: {fileID: 109874, guid: 45752b7016b587141a9cc7a60c12fe4b, type: 2}
-  activeLimitTime: 3
+  activeLimitTime: 4
   activeLimitDistance: 0
   isNotAutoBreak: 0
 --- !u!114 &11470316
@@ -438,7 +438,7 @@ MonoBehaviour:
   isLockOn: 0
   UseGravity: 0
   hitEffect: {fileID: 0}
-  speed: 120
+  speed: 100
   damage: 30
   damagePerSecond: 0
   stuckTime: 0
@@ -446,8 +446,8 @@ MonoBehaviour:
   isPhysicsBulletBreak: 0
   isEnergyBulletBreak: 0
   isHitBreak: 1
-  safetyTime: 0.5
-  turnSpeed: 150
+  safetyTime: 1
+  turnSpeed: 180
   lockStartTime: 0.3
   lockedSpeedRate: 1
   lockedTurnSpeedRate: 1

@@ -82,8 +82,8 @@ public class PhotonManager : MonoBehaviour
             Camera.main.transform.localRotation = topCameraQuat;
 
             //Androidステータスバー
-            //ApplicationChrome.statusBarState = ApplicationChrome.States.TranslucentOverContent;
-            ApplicationChrome.statusBarState = ApplicationChrome.States.Visible;
+            ApplicationChrome.statusBarState = ApplicationChrome.States.TranslucentOverContent;
+            //ApplicationChrome.statusBarState = ApplicationChrome.States.Visible;
             ApplicationChrome.navigationBarState = ApplicationChrome.States.Hidden;
 
             //ユーザー情報取得
@@ -513,7 +513,7 @@ public class PhotonManager : MonoBehaviour
             }
 
             string roomKey = ModelManager.roomData.room_key;
-            PhotonNetwork.CreateRoom(roomKey, new RoomOptions() { maxPlayers = 2 }, null);
+            PhotonNetwork.CreateRoom(roomKey, new RoomOptions() { maxPlayers = 2, PlayerTtl = 1000 }, null);
         };
 
         RoomApi.Create roomApiCreate = new RoomApi.Create();
