@@ -695,6 +695,7 @@ namespace Common
             { 4007, new string[]{ "BlasterBomer", "", "", OBTAIN_TYPE_STORE, ""}},
             { 4008, new string[]{ "HeatCannon", "", "", OBTAIN_TYPE_STORE, ""}},
             { 4009, new string[]{ "SorwdGeyser", "", "", OBTAIN_TYPE_STORE, ""}},
+            { 4010, new string[]{ "AMRifle", "", "", OBTAIN_TYPE_STORE, ""}},
         };
         //サブ武器リスト
         public static Dictionary<int, string[]> subWeaponLineUp = new Dictionary<int, string[]>()
