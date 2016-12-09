@@ -135,6 +135,23 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &193660
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 420234}
+  - 120: {fileID: 12091806}
+  - 114: {fileID: 11417606}
+  m_Layer: 0
+  m_Name: LaserPointer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!4 &406242
 Transform:
   m_ObjectHideFlags: 1
@@ -152,6 +169,19 @@ Transform:
   - {fileID: 497314}
   m_Father: {fileID: 427122}
   m_RootOrder: 1
+--- !u!4 &420234
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 193660}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 427122}
+  m_RootOrder: 2
 --- !u!4 &427122
 Transform:
   m_ObjectHideFlags: 1
@@ -165,6 +195,7 @@ Transform:
   m_Children:
   - {fileID: 447726}
   - {fileID: 406242}
+  - {fileID: 420234}
   m_Father: {fileID: 0}
   m_RootOrder: 0
 --- !u!4 &444524
@@ -203,7 +234,7 @@ Transform:
   m_LocalRotation: {x: 0.25881907, y: 0, z: 0, w: 0.9659258}
   m_LocalPosition: {x: 0, y: 0, z: 1}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
-  m_LocalEulerAnglesHint: {x: 20, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 30, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 427122}
   m_RootOrder: 0
@@ -407,6 +438,21 @@ TrailRenderer:
       rgba: 16777215
   m_MinVertexDistance: 0.1
   m_Autodestruct: 0
+--- !u!114 &11417606
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 193660}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50109fa70c4f9e0429ec3eb57d72f11d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pointer: {fileID: 12091806}
+  impactPoint: {fileID: 0}
+  maxLength: 300
+  pointSize: 0.3
 --- !u!114 &11436682
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -418,7 +464,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f086994b8c47ea443baf4face217f973, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effectSpawn: {fileID: 109874, guid: 45752b7016b587141a9cc7a60c12fe4b, type: 2}
+  effectSpawn: {fileID: 152264, guid: 71ae5fab8e0c38e49b9113bacaa1c171, type: 2}
   activeLimitTime: 4
   activeLimitDistance: 0
   isNotAutoBreak: 0
@@ -438,7 +484,7 @@ MonoBehaviour:
   isLockOn: 0
   UseGravity: 0
   hitEffect: {fileID: 0}
-  speed: 100
+  speed: 130
   damage: 30
   damagePerSecond: 0
   stuckTime: 0
@@ -446,9 +492,9 @@ MonoBehaviour:
   isPhysicsBulletBreak: 0
   isEnergyBulletBreak: 0
   isHitBreak: 1
-  safetyTime: 1
+  safetyTime: 0.2
   turnSpeed: 180
-  lockStartTime: 0.3
+  lockStartTime: 0.2
   lockedSpeedRate: 1
   lockedTurnSpeedRate: 1
   isNeedLock: 1
@@ -497,6 +543,45 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scrollSpeedX: 5
   scrollSpeedY: 0
+--- !u!120 &12091806
+LineRenderer:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 193660}
+  m_Enabled: 0
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 4c69cd7d27d3b12468e41af47b469c23, type: 2}
+  m_SubsetIndices: 
+  m_StaticBatchRoot: {fileID: 0}
+  m_UseLightProbes: 1
+  m_ReflectionProbeUsage: 1
+  m_ProbeAnchor: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_Positions:
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 100}
+  m_Parameters:
+    startWidth: 0.1
+    endWidth: 0.1
+    m_StartColor:
+      serializedVersion: 2
+      rgba: 4294967295
+    m_EndColor:
+      serializedVersion: 2
+      rgba: 4294967295
+  m_UseWorldSpace: 0
 --- !u!135 &13508718
 SphereCollider:
   m_ObjectHideFlags: 1

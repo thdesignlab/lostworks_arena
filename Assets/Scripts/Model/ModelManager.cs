@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 public static class ModelManager
 {
+    //ゲームコンフィグ
+    public static Dictionary<string, string> gameConfigList = null;
+
     //ミッション記録
     public static MissionRecord missionRecord = new MissionRecord();
     //ミッションランキング
@@ -24,7 +27,7 @@ public static class ModelManager
     public static TipsInfo tipsInfo = null;
 
     //ポイント取得テーブル
-    public static List<MasterPoint> mstPointList = new List<MasterPoint>();
+    public static List<MasterPoint> mstPointList = null;
     //武器データ
     public static List<MasterWeapon> mstWeaponList = null;
 }

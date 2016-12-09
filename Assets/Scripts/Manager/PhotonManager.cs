@@ -103,14 +103,13 @@ public class PhotonManager : MonoBehaviour
     {
         if (isReadyGame) yield break;
         DialogController.OpenMessage(DialogController.MESSAGE_LOADING, DialogController.MESSAGE_POSITION_RIGHT);
-        GetWeaponData();
-        yield return new WaitForSeconds(1.0f);
+        Coroutine initApi = StartCoroutine(InitApi());
+        yield return initApi;
         for (;;)
         {
             if (!Application.isShowingSplashScreen)
             {
                 isReadyGame = true;
-                GetUserData();
                 yield break;
             }
             yield return null;
@@ -634,48 +633,117 @@ public class PhotonManager : MonoBehaviour
 
     //##### 登録情報取得 #####
 
+    bool isFinishInitApi = false;
+    IEnumerator InitApi()
+    {
+        Action weaponDataCallback = () => GetUserData(FinishInitApi, true);
+        Action gameConfigCallback = () => GetWeaponData(weaponDataCallback);
+        GetGameConfig(gameConfigCallback);        
+
+        for (;;)
+        {
+            if (isFinishInitApi) break;
+            yield return null;
+        }
+    }
+    private void FinishInitApi()
+    {
+        isFinishInitApi = true;
+    }
+
     //ユーザー情報取得
-    private void GetUserData(Action callback = null)
+    private void GetUserData(Action callback = null, bool isIgnoreError = false)
     {
         //ユーザー情報
         User.Get userGet = new User.Get();
-        if (callback != null)
+        if (isIgnoreError)
         {
-            userGet.SetApiFinishCallback(() => GetBattleResult(callback));
+            userGet.SetNextAction(callback);
+            userGet.SetApiErrorIngnore();
         }
         else
         {
-            userGet.SetApiErrorIngnore();
+            userGet.SetApiFinishCallback(callback);
         }
         userGet.Exe();
     }
 
     //戦績取得
-    private void GetBattleResult(Action callback = null)
+    private void GetBattleResult(Action callback = null, bool isIgnoreError = false)
     {
         Battle.Record battleRecord = new Battle.Record();
-        battleRecord.SetApiFinishCallback(callback);
+        if (isIgnoreError)
+        {
+            battleRecord.SetNextAction(callback);
+            battleRecord.SetApiErrorIngnore();
+        }
+        else
+        {
+            battleRecord.SetApiFinishCallback(callback);
+        }
         battleRecord.CheckVersion(false);
         battleRecord.Exe();
     }
 
     //ポイント情報取得
-    private void GetUserPoint(Action callback = null)
+    private void GetUserPoint(Action callback = null, bool isIgnoreError = false)
     {
         //所持ポイント取得
         Point.Get pointGet = new Point.Get();
-        pointGet.SetApiFinishCallback(callback);
+        if (isIgnoreError)
+        {
+            pointGet.SetNextAction(callback);
+            pointGet.SetApiErrorIngnore();
+        }
+        else
+        {
+            pointGet.SetApiFinishCallback(callback);
+        }
         pointGet.Exe();
     }
 
     //武器情報取得
-    private void GetWeaponData()
+    private void GetWeaponData(Action callback = null)
     {
-        Weapon.Get weaponGet = new Weapon.Get();
-        if (ModelManager.mstWeaponList != null) return;
+        if (ModelManager.mstWeaponList != null)
+        {
+            if (callback != null) callback.Invoke();
+            return;
+        }
 
+        Weapon.Get weaponGet = new Weapon.Get();
+        weaponGet.SetApiFinishCallback(callback);
+        weaponGet.SetApiFinishErrorCallback(FinishInitApi);
+        weaponGet.SetConnectErrorCallback(FinishInitApi);
         weaponGet.SetApiErrorIngnore();
-        weaponGet.CheckVersion(true);
+        weaponGet.SetRetryCount(1);
         weaponGet.Exe();
+    }
+
+    //ゲーム設定読み込み
+    private void GetGameConfig(Action callback = null)
+    {
+        if (ModelManager.gameConfigList != null)
+        {
+            if (callback != null) callback.Invoke();
+            return;
+        }
+        Action finishCallback = () => {
+            GameConfigCallback();
+            if (callback != null) callback.Invoke();
+        };
+
+        Game.Config gameConfig = new Game.Config();
+        gameConfig.SetApiFinishCallback(finishCallback);
+        gameConfig.SetApiFinishErrorCallback(FinishInitApi);
+        gameConfig.SetConnectErrorCallback(FinishInitApi);
+        gameConfig.SetApiErrorIngnore();
+        gameConfig.SetRetryCount(1);
+        gameConfig.CheckVersion(true);
+        gameConfig.Exe();
+    }
+    private void GameConfigCallback()
+    {
+        maxRoomCount = GameConfigManager.getMaxRoomCount(maxRoomCount);
     }
 }

@@ -9,6 +9,8 @@ using System;
 public class CustomManager : CustomCommonManager
 {
     [SerializeField]
+    private Transform statusBar;
+    [SerializeField]
     private Transform charaTable;
     [SerializeField]
     private List<Transform> spawnPoints;
@@ -145,6 +147,21 @@ public class CustomManager : CustomCommonManager
         SwitchPointGetArea(false);
 
         partsNameText.text = "";
+
+        //ステータスバー対策
+        switch (Application.platform)
+        {
+            case RuntimePlatform.Android:
+            case RuntimePlatform.IPhonePlayer:
+                statusBar.GetComponent<LayoutElement>().preferredHeight = 60;
+                statusBar.GetComponent<Image>().color = new Color(0, 0, 0, 1);
+                break;
+
+            default:
+                statusBar.GetComponent<LayoutElement>().preferredHeight = 30;
+                statusBar.GetComponent<Image>().color = new Color(0, 0, 0, 0);
+                break;
+        }
     }
 
     protected override void Start()

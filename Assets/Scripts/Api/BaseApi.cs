@@ -11,12 +11,19 @@ public abstract class BaseApi
     protected virtual bool isNeedToken { get { return true; } } //要TokenFLG
 
     protected bool isIgnoreError = false;                   //APIエラー無視FLG
-    protected Action apiFinishCallback = null;              //API完了後処理
-    protected Action<string> apiFinishErrorCallback = null; //API結果エラー後処理(errorCode)
-    protected Action apiConnectErrorCallback = null;        //API接続エラー時処理
+    protected Action nextAction = null;                     //処理完了後実行するAPI(正常時,エラー無視時)
+    protected Action apiFinishCallback = null;              //API完了後処理(正常時)
+    protected Action<string> apiFinishErrorCallback = null; //API結果エラー後処理(errorCode)(異常時)
+    protected Action apiConnectErrorCallback = null;        //API接続エラー時処理(異常時)
     protected int retry = 3;                        //リトライ回数
     protected bool isCheckVersion = false;          //Version差異チェックFLG
     protected bool isIgnoreVersionDiff = false;     //Version差異無視FLG
+
+    //API完了後実行するAction
+    public void SetNextAction(Action action)
+    {
+        nextAction = action;
+    }
 
     //API完了時コールバック
     public void SetApiFinishCallback(Action action)
@@ -128,6 +135,7 @@ public abstract class BaseApi
                 //正常
                 FinishCallback(json);
                 if (apiFinishCallback != null) apiFinishCallback.Invoke();
+                if (nextAction != null) nextAction.Invoke();
                 return;
             }
         }
@@ -138,29 +146,29 @@ public abstract class BaseApi
 
         //エラー処理
         MyDebug.Instance.AdminLog("[Exception]" + errorCode, errorMessage);
-        if (apiFinishErrorCallback != null)
-        {
-            apiFinishErrorCallback.Invoke(errorCode);
-        }
-        else if (!isIgnoreError)
-        {
-            GoToTitle();
-        }
+        FinishErrorCallback(errorCode);
     }
+    //正常時コールバック
     protected virtual void FinishCallback(string json)
     {
         return;
     }
+    //異常時コールバック
     protected virtual void FinishErrorCallback(string errorCode)
     {
         if (apiFinishErrorCallback != null)
         {
             apiFinishErrorCallback.Invoke(errorCode);
         }
-        else if (!isIgnoreError)
+        else
         {
-            GoToTitle();
+            if (!isIgnoreError)
+            {
+                GoToTitle();
+                return;
+            }
         }
+        if (isIgnoreError && nextAction != null) nextAction.Invoke();        
     }
 
     //接続エラー
@@ -174,8 +182,13 @@ public abstract class BaseApi
         }
         else
         {
-            if (!isIgnoreError) GoToTitle();
+            if (!isIgnoreError)
+            {
+                GoToTitle();
+                return;
+            }
         }
+        if (isIgnoreError && nextAction != null) nextAction.Invoke();
     }
 
     //JSONよりResponseData取得

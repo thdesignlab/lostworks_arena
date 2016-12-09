@@ -40,6 +40,8 @@ public class BulletWeaponController : WeaponController
     protected void SetMuzzle()
     {
         //発射口取得
+        muzzles = new List<Transform>();
+        defaultMuzzleQuaternions = new List<Quaternion>();
         Transform bitPoint = null;
         foreach (Transform child in myTran)
         {
@@ -307,5 +309,16 @@ public class BulletWeaponController : WeaponController
     public void CustomChangeBullet(GameObject obj)
     {
         bullet = obj;
+    }
+
+    //Muzzle角度
+    public void CustomMuzzleAngle(float value)
+    {
+        if (muzzles.Count <= 0) return;
+        foreach (Transform mzl in muzzles)
+        {
+            mzl.Rotate(Vector3.right, value);
+        }
+        SetMuzzle();
     }
 }

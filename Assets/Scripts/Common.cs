@@ -644,13 +644,13 @@ namespace Common
             { 1002, new string[]{ "BeamCannon", "", "", OBTAIN_TYPE_INIT, ""}},
             { 1003, new string[]{ "PlasmaGun", "", "", OBTAIN_TYPE_INIT, ""}},
             { 1004, new string[]{ "BlazePillar", "", "", OBTAIN_TYPE_INIT, ""}},
-            { 1005, new string[]{ "CERifle", "", "", OBTAIN_TYPE_INIT, ""}},
+            { 1005, new string[]{ "CERifle", "", "", OBTAIN_TYPE_STORE, ""}},
             { 1006, new string[]{ "Stinger", "", "", OBTAIN_TYPE_INIT, ""}},
-            { 1007, new string[]{ "TridentPillar", "", "", OBTAIN_TYPE_INIT, ""}},
+            { 1007, new string[]{ "TridentPillar", "", "", OBTAIN_TYPE_STORE, ""}},
             { 1008, new string[]{ "FlameRadiation", "", "", OBTAIN_TYPE_STORE, ""}},
-            { 1009, new string[]{ "HeartGun", "", "", OBTAIN_TYPE_INIT, ""}},
-            { 1010, new string[]{ "Human", "", "", OBTAIN_TYPE_INIT, ""}},
-            { 1011, new string[]{ "Whirlwind", "", "", OBTAIN_TYPE_INIT, ""}},
+            { 1009, new string[]{ "HeartGun", "", "", OBTAIN_TYPE_STORE, ""}},
+            { 1010, new string[]{ "Human", "", "", OBTAIN_TYPE_STORE, ""}},
+            { 1011, new string[]{ "Whirlwind", "", "", OBTAIN_TYPE_STORE, ""}},
         };
         //ハンド武器(ダッシュ)リスト
         public static Dictionary<int, string[]> handDashWeaponLineUp = new Dictionary<int, string[]>()
@@ -660,27 +660,27 @@ namespace Common
             { 2002, new string[]{ "PulseGun", "", "", OBTAIN_TYPE_INIT, ""}},
             { 2003, new string[]{ "ThrowingDagger", "", "", OBTAIN_TYPE_INIT, ""}},
             { 2004, new string[]{ "PenetrateDagger", "", "", OBTAIN_TYPE_INIT, ""}},
-            { 2005, new string[]{ "LaserBlade", "", "", OBTAIN_TYPE_INIT, ""}},
+            { 2005, new string[]{ "LaserBlade", "", "", OBTAIN_TYPE_STORE, ""}},
             { 2006, new string[]{ "BulletBomb", "", "", OBTAIN_TYPE_INIT, ""}},
-            { 2007, new string[]{ "Grudge", "", "", OBTAIN_TYPE_INIT, ""}},
-            { 2008, new string[]{ "MachinegunBit", "", "", OBTAIN_TYPE_INIT, ""}},
+            { 2007, new string[]{ "Grudge", "", "", OBTAIN_TYPE_STORE, ""}},
+            { 2008, new string[]{ "MachinegunBit", "", "", OBTAIN_TYPE_STORE, ""}},
             { 2009, new string[]{ "GatlingClaw", "", "", OBTAIN_TYPE_STORE, ""}},
-            { 2010, new string[]{ "PlasmaBlade", "", "", OBTAIN_TYPE_INIT, ""}},
+            { 2010, new string[]{ "PlasmaBlade", "", "", OBTAIN_TYPE_STORE, ""}},
         };
         //背中武器リスト
         public static Dictionary<int, string[]> shoulderWeaponLineUp = new Dictionary<int, string[]>()
         {
             { 3000, new string[]{ "Bioparachute", "", "", OBTAIN_TYPE_INIT, ""}},
-            { 3001, new string[]{ "HugeLaser", "", "", OBTAIN_TYPE_INIT, ""}},
+            { 3001, new string[]{ "HugeLaser", "", "", OBTAIN_TYPE_STORE, ""}},
             { 3002, new string[]{ "SatelliteMissile", "", "", OBTAIN_TYPE_INIT, ""}},
-            { 3003, new string[]{ "Cyclone", "", "", OBTAIN_TYPE_INIT, ""}},
+            { 3003, new string[]{ "Cyclone", "", "", OBTAIN_TYPE_STORE, ""}},
             { 3004, new string[]{ "EnergyShield", "", "", OBTAIN_TYPE_INIT, ""}},
-            { 3005, new string[]{ "ChargeArrow", "", "", OBTAIN_TYPE_INIT, ""}},
+            { 3005, new string[]{ "ChargeArrow", "", "", OBTAIN_TYPE_STORE, ""}},
             { 3006, new string[]{ "SearchRay", "", "", OBTAIN_TYPE_STORE, ""}},
             { 3007, new string[]{ "EnergyLauncher", "", "", OBTAIN_TYPE_INIT, "" }},
             { 3008, new string[]{ "HighBeamCannon", "", "", OBTAIN_TYPE_INIT, "" }},
-            { 3009, new string[]{ "ChemicalCannon", "", "", OBTAIN_TYPE_INIT, "" }},
-            { 3010, new string[]{ "ReflectionWall", "", "", OBTAIN_TYPE_INIT, ""}},
+            { 3009, new string[]{ "ChemicalCannon", "", "", OBTAIN_TYPE_STORE, "" }},
+            { 3010, new string[]{ "ReflectionWall", "", "", OBTAIN_TYPE_STORE, ""}},
         };
         //背中武器(ダッシュ)リスト
         public static Dictionary<int, string[]> shoulderDashWeaponLineUp = new Dictionary<int, string[]>()
@@ -689,12 +689,12 @@ namespace Common
             { 4001, new string[]{ "ClusterLaser", "", "", OBTAIN_TYPE_INIT, ""}},
             { 4002, new string[]{ "GatlingBit", "", "", OBTAIN_TYPE_INIT, ""}},
             { 4003, new string[]{ "Shotgun", "", "", OBTAIN_TYPE_INIT, ""}},
-            { 4004, new string[]{ "RoundMissile", "", "", OBTAIN_TYPE_INIT, ""}},
-            { 4005, new string[]{ "AssaultCharge", "", "", OBTAIN_TYPE_INIT, ""}},
+            { 4004, new string[]{ "RoundMissile", "", "", OBTAIN_TYPE_STORE, ""}},
+            { 4005, new string[]{ "AssaultCharge", "", "", OBTAIN_TYPE_STORE, ""}},
             { 4006, new string[]{ "ClusterMissile", "", "", OBTAIN_TYPE_STORE, ""}},
-            { 4007, new string[]{ "BlasterBomer", "", "", OBTAIN_TYPE_INIT, ""}},
-            { 4008, new string[]{ "HeatCannon", "", "", OBTAIN_TYPE_INIT, ""}},
-            { 4009, new string[]{ "SorwdGeyser", "", "", OBTAIN_TYPE_INIT, ""}},
+            { 4007, new string[]{ "BlasterBomer", "", "", OBTAIN_TYPE_STORE, ""}},
+            { 4008, new string[]{ "HeatCannon", "", "", OBTAIN_TYPE_STORE, ""}},
+            { 4009, new string[]{ "SorwdGeyser", "", "", OBTAIN_TYPE_STORE, ""}},
         };
         //サブ武器リスト
         public static Dictionary<int, string[]> subWeaponLineUp = new Dictionary<int, string[]>()
@@ -703,8 +703,8 @@ namespace Common
             { 5000, new string[]{ "InvincibleShield", "", "", OBTAIN_TYPE_NONE, ""}},
             { 5002, new string[]{ "BoostRecoverSp", "", "", OBTAIN_TYPE_INIT, ""}},
             { 5003, new string[]{ "SpeedBurst", "", "", OBTAIN_TYPE_INIT, ""}},
-            { 5004, new string[]{ "AttackBurst", "", "", OBTAIN_TYPE_INIT, ""}},
-            { 5005, new string[]{ "DefenceBurst", "", "", OBTAIN_TYPE_INIT, ""}},
+            { 5004, new string[]{ "AttackBurst", "", "", OBTAIN_TYPE_STORE, ""}},
+            { 5005, new string[]{ "DefenceBurst", "", "", OBTAIN_TYPE_STORE, ""}},
             { 5006, new string[]{ "CounterShield", "", "", OBTAIN_TYPE_NONE, ""}},
         };
         //スペシャル武器リスト
@@ -1003,8 +1003,8 @@ namespace Common
             { 5, new int[] { 10002, 1 } },
             { 6, new int[] { 100, 5 } },
             { 7, new int[] { 10003, 5 } },
-            { 9, new int[] { 600, 4 } },
-            { 8, new int[] { 400, 3 } },
+            { 8, new int[] { 600, 4 } },
+            { 9, new int[] { 400, 3 } },
             { 10, new int[] { 500, 6 } },
         };
 
@@ -1021,11 +1021,15 @@ namespace Common
             { 8, "Challenge" },
             { 9, "Advanced" },
             { 10, "Extra" },
-            { 11, "Nightmare" },
-            { 12, "Inferno" },
-            { 13, "Ultimate" },
-            { 14, "Impossible" },
-            { 15, "Infinity" },
+            { 11, "Violent" },
+            { 12, "Absolute" },
+            { 13, "Heroic" },
+            { 14, "Nightmare" },
+            { 15, "Inferno" },
+            { 16, "Eternal" },
+            { 17, "Ultimate" },
+            { 18, "Impossible" },
+            { 19, "Infinity" },
         };
         public static string GetLevelName(int level)
         {
@@ -1039,8 +1043,8 @@ namespace Common
                 else
                 {
                     name = levelNameDic[levelNameDic.Count];
-                    int over = levelNameDic.Count - level + 1;
-                    name += over.ToString();
+                    int over = level - levelNameDic.Count + 1;
+                    name += " Lv"+over.ToString();
                 }
             }
             return name;

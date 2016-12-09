@@ -171,11 +171,18 @@ public class GameController : SingletonMonoBehaviour<GameController>
         SetTextCenter();
 
         //ステータスバー対策
+        Transform statusBar = screenTran.FindChild("Status/HiddenLine");
         switch (Application.platform)
         {
-            //case RuntimePlatform.Android:
+            case RuntimePlatform.Android:
             case RuntimePlatform.IPhonePlayer:
-                screenTran.FindChild("Status/HiddenLine").GetComponent<LayoutElement>().preferredHeight = 50;
+                statusBar.GetComponent<LayoutElement>().preferredHeight = 60;
+                statusBar.GetComponent<Image>().color = new Color(0, 0, 0, 1);
+                break;
+
+            default:
+                statusBar.GetComponent<LayoutElement>().preferredHeight = 30;
+                statusBar.GetComponent<Image>().color = new Color(0, 0, 0, 0);
                 break;
         }
     }
@@ -1092,6 +1099,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
         stageLevel++;
         stageNo = 1;
         totalContinueCount = 0;
+        continueCount = 0;
         ContinueMission();
     }
 
@@ -1153,7 +1161,8 @@ public class GameController : SingletonMonoBehaviour<GameController>
         stageNo++;
         //ResetWinMark();
         ResetVs();
-        continueCount = 0;
+        continueCount /= 2;
+        Debug.Log(continueCount);
         SetStatus();
 
         return true;

@@ -19,6 +19,8 @@ public class BulletLevelController : EffectLevelController
     const int CUSTOM_SYSTEM_FOCUS_DIFF = 105;
     //弾交換(AddObject使用)
     const int CUSTOM_SYSTEM_CHANGE_BULLET = 106;
+    //Muzzle角度
+    const int CUSTOM_SYSTEM_MUZZLE_ANGLE = 107;
 
     //ダメージアップ
     const int CUSTOM_SYSTEM_DAMAGE = 131;
@@ -54,6 +56,8 @@ public class BulletLevelController : EffectLevelController
     const int CUSTOM_SYSTEM_ENERGY_BREAK = 146;
     //IsHitBreak
     const int CUSTOM_SYSTEM_HIT_BREAK = 147;
+    //SafetyTime
+    const int CUSTOM_SYSTEM_SAFETY_TIME = 148;
 
 
     //状態異常：ATK
@@ -109,6 +113,11 @@ public class BulletLevelController : EffectLevelController
             case CUSTOM_SYSTEM_CHANGE_BULLET:
                 //弾変更
                 bulletWeaponCtrl.CustomChangeBullet(addObject);
+                break;
+
+            case CUSTOM_SYSTEM_MUZZLE_ANGLE:
+                //Muzzle角度
+                bulletWeaponCtrl.CustomMuzzleAngle(effectValue);
                 break;
 
             default:
@@ -218,7 +227,11 @@ public class BulletLevelController : EffectLevelController
             case CUSTOM_SYSTEM_HIT_BREAK:
                 bulletCtrl.CustomHitBreak(effectValue == 1);
                 break;
-                
+
+            case CUSTOM_SYSTEM_SAFETY_TIME:
+                bulletCtrl.CustomSafetyTime(effectValue);
+                break;
+
             case CUSTOM_SYSTEM_DEBUFF_ATTACK:
                 //debuff:attack
                 bulletCtrl.CustomDebuffAttack(effectValue);

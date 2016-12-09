@@ -115,7 +115,7 @@ GameObject:
   - 54: {fileID: 5454786}
   m_Layer: 0
   m_Name: ClusterMissileChild
-  m_TagString: EnergyBullet
+  m_TagString: Missile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -427,8 +427,8 @@ MonoBehaviour:
   isPhysicsBulletBreak: 0
   isEnergyBulletBreak: 0
   isHitBreak: 1
-  safetyTime: 0
-  turnSpeed: 60
+  safetyTime: 0.1
+  turnSpeed: 90
   lockStartTime: 0
   lockedSpeedRate: 1
   lockedTurnSpeedRate: 1

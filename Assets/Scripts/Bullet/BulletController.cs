@@ -677,4 +677,10 @@ public class BulletController : MoveOfCharacter
     {
         isHitBreak = flg;
     }
+
+    public void CustomSafetyTime(float value)
+    {
+        safetyTime += value;
+        if (safetyTime < 0) safetyTime = 0;
+    }
 }

@@ -635,15 +635,15 @@ public class WeaponController : Photon.MonoBehaviour
     //リロード時間
     public void CustomReloadTime(float value)
     {
-        reloadTime *= 1 + (value / 100);
-        if (reloadTime < 0) reloadTime = 0;
+        reloadTime += value;
+        if (reloadTime < 0.5f) reloadTime = 0.5f;
     }
 
     //リロード発生しない確率
     public void CustomNoReload(int value)
     {
-        if (value < 0) return;
         noReloadRate = value;
+        if (value < 0) noReloadRate = 0;
     }
 
     //StatusChangeController追加

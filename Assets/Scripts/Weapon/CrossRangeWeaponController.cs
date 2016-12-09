@@ -189,7 +189,8 @@ public class CrossRangeWeaponController : WeaponController
             {
                 playerCtrl.QuickTarget(targetTran, true, turnSpeedRate);
             }
-            yield return new WaitForSeconds(0.2f);
+            //yield return new WaitForSeconds(0.2f);
+            yield return null;
         }
 
         //斬戟モーション開始
