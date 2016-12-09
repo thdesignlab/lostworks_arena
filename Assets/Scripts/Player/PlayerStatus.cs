@@ -101,7 +101,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
     //デバフエフェクト
     [SerializeField]
     private GameObject debuffEffect;
-    private int effectiveDebuffCount = 0;
+    private Dictionary<int, float> debuffDic = new Dictionary<int, float>();
 
     //勝数マーク
     private const string TAG_WIN_MARK_MINE = "WinMarkMine";
@@ -561,6 +561,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
         if (!isActiveSceane) return;
         //statusCanvas.rotation = Camera.main.transform.rotation;
 
+        float deltaTime = Time.deltaTime;
         if (photonView.isMine)
         {
             if (!isNpc && isDispBattleLog)
@@ -629,17 +630,29 @@ public class PlayerStatus : Photon.MonoBehaviour {
             //ヒット時ノイズ
             if (hitEffect != null && (leftHitEffectTime > 0 || hitEffect.color.a > 0))
             {
-                leftHitEffectTime -= Time.deltaTime;
+                leftHitEffectTime -= deltaTime;
                 float rate = 1 - leftHitEffectTime / HIT_EFFECT_TIME;
                 if (rate > 1) rate = 1;
                 hitEffect.color = Color.Lerp(hitNoiseStart, hitNoiseEnd, rate);
             }
         }
 
-        if (leftInvincibleTime > 0)
+        //デバフリスト
+        if (debuffDic.Count > 0)
         {
-            leftInvincibleTime -= Time.deltaTime;
+            bool isDebuff = false;
+            List<int> keys = new List<int>(debuffDic.Keys);
+            foreach (int key in keys)
+            {
+                if (debuffDic[key] <= 0) continue;
+                debuffDic[key] -= deltaTime;
+                if (debuffDic[key] > 0) isDebuff = true;
+            }
+            debuffEffect.SetActive(isDebuff);
         }
+
+        //残り無敵時間
+        if (leftInvincibleTime > 0) leftInvincibleTime -= deltaTime;
     }
 
     public void SetInvincible(bool flg = true, float time = 0, bool isShieldVisible = false, bool isReflection = false)
@@ -979,7 +992,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
         boostSpeed = defaultBoostSpeed * nowSpeedRate;
     }
 
-    //回転制限
+    //回転制限(自分専用)
     public void InterfareTurn(float rate, float limit)
     {
         StartCoroutine(CheckInterfareTurn(rate, limit));
@@ -996,10 +1009,23 @@ public class PlayerStatus : Photon.MonoBehaviour {
         turnSpeed -= turnChangeValue;
     }
 
-    //無敵時間延長(自分専用)
-    public void AvoidBurst(float rate, float limit, GameObject effect = null)
+    //無敵時間延長
+    public void AvoidBurst(float rate, float limit, GameObject effect = null, bool isSendRPC = true)
     {
         StartCoroutine(CheckAvoidBurst(rate, limit, effect));
+        if (isSendRPC)
+        {
+            int parentViewId = (effect != null) ? GetParentViewId(effect) : -1;
+            string effectName = (effect != null) ? effect.name : "";
+            object[] args = new object[] { rate, limit, parentViewId, effectName };
+            photonView.RPC("AvoidBurstRPC", PhotonTargets.Others, args);
+        }
+    }
+    [PunRPC]
+    private void AvoidBurstRPC(float rate, float limit, int parentViewId, string effectName)
+    {
+        GameObject effect = GetChildObject(parentViewId, effectName);
+        AvoidBurst(rate, limit, effect, false);
     }
     IEnumerator CheckAvoidBurst(float rate, float limit, GameObject effect = null)
     {
@@ -1011,7 +1037,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
         invincibleTime -= changeValue;
     }
 
-    //Ex武器用
+    //Ex武器用無敵処理
     public void SetForceInvincible(bool flg, bool isSendRPC = true)
     {
         if (flg)
@@ -1022,7 +1048,6 @@ public class PlayerStatus : Photon.MonoBehaviour {
         {
             StartCoroutine(ForceInvincibleCancel(1.5f));
         }
-        //InterfareMove(limit, null, false);
         
         if (isSendRPC)
         {
@@ -1079,15 +1104,9 @@ public class PlayerStatus : Photon.MonoBehaviour {
         if (effect == debuffEffect)
         {
             //デバフカウント
-            effectiveDebuffCount += (flg) ? 1 : -1;
-            if (effectiveDebuffCount < 0) effectiveDebuffCount = 0;
-            bool debuffFlg = (effectiveDebuffCount > 0);
-            effect.SetActive(debuffFlg);
+            if (!flg && debuffDic.Count > 0) return;
         }
-        else
-        {
-            effect.SetActive(flg);
-        }
+        effect.SetActive(flg);
 
         if (isSendRPC)
         {
@@ -1105,6 +1124,26 @@ public class PlayerStatus : Photon.MonoBehaviour {
     public GameObject GetDebuffEffect()
     {
         return debuffEffect;
+    }
+
+    //デバフストック
+    public bool SetDebuff(int type, float limit)
+    {
+        bool isSet = false;
+        if (debuffDic.ContainsKey(type))
+        {
+            if (debuffDic[type] <= 0)
+            {
+                debuffDic[type] = limit;
+                isSet = true;
+            }
+        }
+        else
+        {
+            debuffDic.Add(type, limit);
+            isSet = true;
+        }
+        return isSet;
     }
 
     public void ResetTargetNpcStatus()

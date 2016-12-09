@@ -12,9 +12,7 @@ public class StatusChangeController : Photon.MonoBehaviour
     private List<float> effectRateList = new List<float>();
     [SerializeField]
     private GameObject effect;
-
-    private float leftEffectTime = 0;
-
+    
     public const int EFFECT_ATTACK = 1;
     public const int EFFECT_RECOVER_SP = 2;
     public const int EFFECT_AVOID = 3;
@@ -26,35 +24,22 @@ public class StatusChangeController : Photon.MonoBehaviour
         if (effect != null) effect.SetActive(false);
     }
 
-    void Update()
-    {
-        if (leftEffectTime <= 0) return;
-        leftEffectTime -= Time.deltaTime;
-    }
-
     public void Action(PlayerStatus playerStatus)
     {
         if (playerStatus == null) return;
-        if (leftEffectTime > 0) return;
 
         for (int i = 0; i < effectTypeList.Count; i++)
         {
             int effectType = effectTypeList[i];
             float effectRate = effectRateList[i];
 
-            GameObject setEffect = effect;
-            if (i > 0)
-            {
-                setEffect = null;
-            }
-            else if (effectRate < 1)
+            if (effectRate < 1)
             {
                 if (playerStatus.IsForceInvincible()) continue;
-                setEffect = playerStatus.GetDebuffEffect();
+                if (!playerStatus.SetDebuff(effectType, effectTime)) continue;
             }
-
-            leftEffectTime = effectTime;
-
+            GameObject setEffect = (i == 0) ? effect : null;
+            
             switch (effectType)
             {
                 case EFFECT_ATTACK:

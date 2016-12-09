@@ -6,7 +6,6 @@ public class NpcController : MoveOfCharacter
 {
     private PlayerStatus status;
     private Transform targetTran;
-    private Vector3 randomDirection;
 
     private int targetType = 1;
     private float walkRadius = 200.0f;  //移動半径
@@ -15,7 +14,6 @@ public class NpcController : MoveOfCharacter
     private float atackIntervalTime = 3;
     private float boostIntervalTime = 3;
     private float searchIntervalTime = 3;
-    //private int navMeshPlayer = 1;
 
     //private WeaponController[] weapons;
     private List<WeaponController> weapons = new List<WeaponController>();
@@ -30,8 +28,8 @@ public class NpcController : MoveOfCharacter
     private bool isSetWeapon = false;
 
     private Vector3 randomMoveTarget = Vector3.zero;
+    private int walkRadiusMin = 0;
 
-    //private PlayerMotionController motionCtrl;
     private Animator animator;
     private ExtraWeaponController extraCtrl;
 
@@ -204,6 +202,7 @@ public class NpcController : MoveOfCharacter
         //ターゲットタイプ
         targetType = npcStatusArray[Common.Character.STATUS_TARGET_TYPE];
         walkRadius = npcStatusArray[Common.Character.STATUS_TARGET_DISTANCE_MAX];
+        walkRadiusMin = npcStatusArray[Common.Character.STATUS_TARGET_DISTANCE_MIN];
 
         ////プレイヤー周辺の不可侵領域設定
         //Transform playerTran = GameController.Instance.GetMyTran();
@@ -302,10 +301,12 @@ public class NpcController : MoveOfCharacter
 
     IEnumerator RandomMoveTarget()
     {
-        //GameObject[] spawnPoint = GameObject.FindGameObjectsWithTag("SpawnPoint");
-        //int targetNo = 0;
         leftTargetSearch = 0;
 
+        NavMeshHit hit;
+        Vector3 basePos;
+        Vector3 randomDirection;
+        Vector3 targetPos;
         for (;;)
         {
             leftTargetSearch -= Time.deltaTime;
@@ -315,22 +316,20 @@ public class NpcController : MoveOfCharacter
                 continue;
             }
 
-            Vector3 pos = myTran.position;
-            if (targetType == 1)
-            {
-                if (targetTran != null) pos = targetTran.position;
-            }
-            
-            randomDirection = Random.insideUnitSphere * walkRadius + pos;
-            NavMeshHit hit;
+            basePos = (targetType == 1 && targetTran != null) ? targetTran.position : myTran.position;            
+            randomDirection = Random.insideUnitSphere * walkRadius + basePos;
+            targetPos = (targetTran != null) ? targetTran.position : Vector3.zero;
             if (NavMesh.SamplePosition(randomDirection, out hit, walkRadius, 1))
             {
-                randomMoveTarget = hit.position;
+                targetPos = hit.position;
+                float diffDistance = Vector3.Distance(basePos, targetPos);
+                if (walkRadiusMin > 0 && diffDistance < walkRadiusMin)
+                {
+                    targetPos += (hit.position - basePos).normalized * Random.Range(walkRadiusMin - diffDistance, walkRadius - diffDistance);
+                }
+                randomMoveTarget = targetPos;
             }
-            else
-            {
-                if (targetTran != null) randomMoveTarget = targetTran.position;
-            }
+
             leftTargetSearch = searchIntervalTime;
         }
     }
@@ -540,7 +539,7 @@ public class NpcController : MoveOfCharacter
         Vector3 targetPos = randomMoveTarget;
 
         float distance = Vector3.Distance(targetPos, myTran.position);
-        if (distance < 10)
+        if (distance < 5)
         {
             leftTargetSearch = 0;
             return;

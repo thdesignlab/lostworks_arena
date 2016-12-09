@@ -1580,7 +1580,7 @@ MonoBehaviour:
   bullet: {fileID: 149156, guid: 52a730b4be60ce847828510f9eb6c82d, type: 2}
   rapidCount: 3
   rapidInterval: 0.1
-  spreadCount: 7
+  spreadCount: 5
   spreadDiffAngle: 3
   focusDiff: 0
   recoil: 0
@@ -1612,12 +1612,11 @@ MonoBehaviour:
   - 1
   - 8
   powerObject: {fileID: 0}
-  technicCustomSystemList: 6700000068000000980000009c000000
+  technicCustomSystemList: 670000009c00000098000000
   technicEffectValueDiffList:
   - 4
-  - -2
-  - -0.7
   - 1
+  - -0.7
   technicObject: {fileID: 0}
   uniqueCustomSystemList: 97000000990000009b0000009c000000
   uniqueEffectValueDiffList:
