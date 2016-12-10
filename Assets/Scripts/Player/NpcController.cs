@@ -78,9 +78,9 @@ public class NpcController : MoveOfCharacter
             if (hpPer <= 25 && preHpPer > 25)
             {
                 status.ResetTargetNpcStatus();
-                atackIntervalTime = 0.5f;
+                atackIntervalTime = 1.0f;
                 boostIntervalTime = 0.5f;
-                searchIntervalTime = 2.0f;
+                searchIntervalTime = 1.0f;
                 status.runSpeed = 40;
                 status.defenceRate = 20;
                 Transform super = myTran.FindChild("Effect/Super");
@@ -90,7 +90,7 @@ public class NpcController : MoveOfCharacter
             else if (hpPer <= 50 && preHpPer > 50)
             {
                 status.ResetTargetNpcStatus();
-                atackIntervalTime = 1.0f;
+                atackIntervalTime = 1.5f;
                 boostIntervalTime = 1.0f;
                 searchIntervalTime = 2.0f;
                 status.runSpeed = 35;
