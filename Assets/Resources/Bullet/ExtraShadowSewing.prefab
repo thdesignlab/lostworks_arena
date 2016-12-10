@@ -266,10 +266,10 @@ MonoBehaviour:
   isLockOn: 0
   UseGravity: 0
   hitEffect: {fileID: 135988, guid: d7cd433d10510fe46a35c39bac480fe1, type: 2}
-  speed: 130
-  damage: 10
+  speed: 150
+  damage: 5
   damagePerSecond: 15
-  stuckTime: 3
+  stuckTime: 2.5
   knockBackRate: 0
   isPhysicsBulletBreak: 0
   isEnergyBulletBreak: 0
@@ -279,7 +279,7 @@ MonoBehaviour:
   rollBody: {fileID: 498852}
   fixedRollSpeed: 3600
   fixedRollVector: {x: 0, y: 0, z: 0}
-  fixedSpeed: 400
+  fixedSpeed: 380
   fixedTurnSpeed: 0
   searchTurnSpeed: 0
   isNeedLock: 1

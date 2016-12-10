@@ -317,19 +317,19 @@ public class NpcController : MoveOfCharacter
             }
 
             basePos = (targetType == 1 && targetTran != null) ? targetTran.position : myTran.position;            
-            randomDirection = Random.insideUnitSphere * walkRadius + basePos;
             targetPos = (targetTran != null) ? targetTran.position : Vector3.zero;
-            if (NavMesh.SamplePosition(randomDirection, out hit, walkRadius, 1))
+            for (int i = 0; i < 3; i++)
             {
-                targetPos = hit.position;
-                float diffDistance = Vector3.Distance(basePos, targetPos);
-                if (walkRadiusMin > 0 && diffDistance < walkRadiusMin)
+                randomDirection = Random.insideUnitSphere * walkRadius + basePos;
+                if (NavMesh.SamplePosition(randomDirection, out hit, walkRadius, 1))
                 {
-                    targetPos += (hit.position - basePos).normalized * Random.Range(walkRadiusMin - diffDistance, walkRadius - diffDistance);
+                    targetPos = hit.position;
+                    float diffDistance = Vector3.Distance(basePos, targetPos);
+                    if (walkRadiusMin > 0 && diffDistance < walkRadiusMin) continue;
+                    break;
                 }
-                randomMoveTarget = targetPos;
             }
-
+            randomMoveTarget = targetPos;
             leftTargetSearch = searchIntervalTime;
         }
     }
