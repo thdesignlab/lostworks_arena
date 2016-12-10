@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Events;
@@ -11,13 +12,13 @@ public class CustomCommonManager : SingletonMonoBehaviour<CustomCommonManager>
 
     //カスタムボタン
     [SerializeField]
-    protected Object powerCustomBtn;
+    protected GameObject powerCustomBtn;
     [SerializeField]
-    protected Object technicCustomBtn;
+    protected GameObject technicCustomBtn;
     [SerializeField]
-    protected Object uniqueCustomBtn;
+    protected GameObject uniqueCustomBtn;
     [SerializeField]
-    protected Object cancelCustomBtn;
+    protected GameObject cancelCustomBtn;
 
     protected GameObject playMovieObj;
 
@@ -29,7 +30,7 @@ public class CustomCommonManager : SingletonMonoBehaviour<CustomCommonManager>
     //point >> rate
     protected Dictionary<int, int> pointTable = new Dictionary<int, int>()
     {
-        { 200, 1 },
+        { 199, 1 },
     };
 
     protected override void Awake()
@@ -42,12 +43,6 @@ public class CustomCommonManager : SingletonMonoBehaviour<CustomCommonManager>
     {
         //所持ポイント表示
         textPoint.text = (UserManager.userPoint >= 0) ? UserManager.userPoint.ToString() : "-";
-
-        //ポイントテーブル取得
-        Point.Table pointTable = new Point.Table();
-        pointTable.SetApiFinishCallback(() => SetPointTable());
-        pointTable.SetApiErrorIngnore();
-        pointTable.Exe();
     }
 
     protected void SwitchBonusText()
@@ -57,12 +52,48 @@ public class CustomCommonManager : SingletonMonoBehaviour<CustomCommonManager>
         playMovieObj.transform.FindChild("BonusText").gameObject.SetActive(flg);
     }
 
+    //##### 武器情報取得 #####
+
+    protected void GetWeaponData(Action callback = null)
+    {
+        if (ModelManager.mstWeaponList != null)
+        {
+            if (callback != null) callback.Invoke();
+            return;
+        }
+
+        Weapon.Get weaponGet = new Weapon.Get();
+        weaponGet.SetApiFinishCallback(callback);
+        weaponGet.Exe();
+    }
+
     //##### Point処理 #####
+
+    //pointTable取得
+    protected void GetPointTable(Action callback = null)
+    {
+        if (ModelManager.mstPointList != null)
+        {
+            if (callback != null) callback.Invoke();
+            return;
+        }
+
+        Action pointTableCallback = () =>
+        {
+            SetPointTable();
+            callback.Invoke();
+        };
+        //ポイントテーブル取得
+        Point.Table pointTableApi = new Point.Table();
+        pointTableApi.SetNextAction(pointTableCallback);
+        pointTableApi.SetApiErrorIngnore();
+        pointTableApi.Exe();
+    }
 
     //pt抽選テーブル設定
     protected void SetPointTable()
     {
-        if (ModelManager.mstPointList.Count != 0)
+        if (ModelManager.mstPointList != null)
         {
             pointTable = new Dictionary<int, int>();
             foreach (MasterPoint mstPoint in ModelManager.mstPointList)
@@ -83,9 +114,9 @@ public class CustomCommonManager : SingletonMonoBehaviour<CustomCommonManager>
         }
         else
         {
-            System.Action onFinish = () => AddPoint();
-            System.Action onSkipped = () => AddPoint();
-            System.Action onFailed = () => GachaErrorAction();
+            Action onFinish = () => AddPoint();
+            Action onSkipped = () => AddPoint();
+            Action onFailed = () => GachaErrorAction();
             UnityAds.Instance.Play(null, null, onFinish, onFailed, onSkipped);
         }
     }
@@ -104,13 +135,24 @@ public class CustomCommonManager : SingletonMonoBehaviour<CustomCommonManager>
     //ポイント付与
     protected void AddPoint(float ptRate = 1)
     {
-        int pt = Common.Func.Draw<int>(pointTable);
-        pt = (int)(pt * ptRate);
+        Action gacha = () => 
+        {
+            int pt = Common.Func.Draw<int>(pointTable);
+            pt = (int)(pt * ptRate);
 
-        //ガチャAPI
-        Gacha.Play pointAdd = new Gacha.Play();
-        pointAdd.SetApiFinishCallback(() => PointGetDialog(pt));
-        pointAdd.Exe(pt);
+            //ガチャAPI
+            Gacha.Play pointAdd = new Gacha.Play();
+            pointAdd.SetApiFinishCallback(() => PointGetDialog(pt));
+            pointAdd.Exe(pt);
+        };
+        if (ModelManager.mstPointList == null)
+        {
+            GetPointTable(gacha);
+        }
+        else
+        {
+            gacha.Invoke();
+        }
     }
 
     //獲得ポイントダイアログ
@@ -128,7 +170,7 @@ public class CustomCommonManager : SingletonMonoBehaviour<CustomCommonManager>
         if (!string.IsNullOrEmpty(ModelManager.tipsInfo.text))
         {
             //Tipsあり
-            text = "## " + ModelManager.tipsInfo.title + " ##\n";
+            text = "# " + ModelManager.tipsInfo.title + " #\n";
             text += ModelManager.tipsInfo.text;
             imgName = ModelManager.tipsInfo.image;
 
@@ -179,14 +221,14 @@ public class CustomCommonManager : SingletonMonoBehaviour<CustomCommonManager>
         text += pt + "pt消費";
         Dictionary<string, UnityAction> btnList = new Dictionary<string, UnityAction>();
         //List<Color> btnColors = new List<Color>();
-        List<Object> customBtns = new List<Object>();
+        List<GameObject> customBtns = new List<GameObject>();
         foreach (int type in Common.Weapon.customTypeNameDic.Keys)
         {
             int customType = type;
             string btnText = Common.Weapon.customTypeNameDic[customType];
             UnityAction action = () => WeaponCustomExe(pt, weaponNo, customType, callback);
             //Color btnColor = DialogController.blueColor;
-            Object btnObj = null;
+            GameObject btnObj = null;
             if (customType == nowCustomType)
             {
                 //解除

@@ -78,7 +78,7 @@ public class DialogController : MonoBehaviour
     {
         return OpenSelectDialog("", text, "", btnInfoDic, isCancel);
     }
-    public static GameObject OpenSelectDialog(string text, Dictionary<string, UnityAction> btnInfoDic, bool isCancel, List<Object> btnObjects)
+    public static GameObject OpenSelectDialog(string text, Dictionary<string, UnityAction> btnInfoDic, bool isCancel, List<GameObject> btnObjects)
     {
         return OpenSelectDialog("", text, "", btnInfoDic, isCancel, btnObjects);
     }
@@ -90,7 +90,7 @@ public class DialogController : MonoBehaviour
     {
         return OpenSelectDialog(title, text, imageName, btnInfoDic, isCancel, null, btnColors);
     }
-    public static GameObject OpenSelectDialog(string title, string text, string imageName, Dictionary<string, UnityAction> btnInfoDic, bool isCancel, List<Object> btnObjects = null, List<Color> btnColors = null)
+    public static GameObject OpenSelectDialog(string title, string text, string imageName, Dictionary<string, UnityAction> btnInfoDic, bool isCancel, List<GameObject> btnObjects = null, List<Color> btnColors = null)
     {
         CloseMessage();
         if (dialog != null) CloseDialog();

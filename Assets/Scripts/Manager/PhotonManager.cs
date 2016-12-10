@@ -636,9 +636,10 @@ public class PhotonManager : MonoBehaviour
     bool isFinishInitApi = false;
     IEnumerator InitApi()
     {
-        Action weaponDataCallback = () => GetUserData(FinishInitApi, true);
-        Action gameConfigCallback = () => GetWeaponData(weaponDataCallback);
-        GetGameConfig(gameConfigCallback);        
+        //Action weaponDataCallback = () => GetUserData(FinishInitApi, true);
+        //Action gameConfigCallback = () => GetWeaponData(weaponDataCallback);
+        Action gameConfigCallback = () => GetUserData(FinishInitApi, true);
+        GetGameConfig(gameConfigCallback);
 
         for (;;)
         {
@@ -700,24 +701,6 @@ public class PhotonManager : MonoBehaviour
             pointGet.SetApiFinishCallback(callback);
         }
         pointGet.Exe();
-    }
-
-    //武器情報取得
-    private void GetWeaponData(Action callback = null)
-    {
-        if (ModelManager.mstWeaponList != null)
-        {
-            if (callback != null) callback.Invoke();
-            return;
-        }
-
-        Weapon.Get weaponGet = new Weapon.Get();
-        weaponGet.SetApiFinishCallback(callback);
-        weaponGet.SetApiFinishErrorCallback(FinishInitApi);
-        weaponGet.SetConnectErrorCallback(FinishInitApi);
-        weaponGet.SetApiErrorIngnore();
-        weaponGet.SetRetryCount(1);
-        weaponGet.Exe();
     }
 
     //ゲーム設定読み込み

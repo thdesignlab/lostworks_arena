@@ -124,10 +124,10 @@ public class CustomManager : CustomCommonManager
 
         DialogController.OpenMessage(DialogController.MESSAGE_JOIN_ROOM, DialogController.MESSAGE_POSITION_RIGHT);
 
-        //所持ポイント取得
+        //所持ポイント取得 >> 武器情報取得
         Point.Get pointGet = new Point.Get();
         pointGet.SetApiErrorIngnore();
-        pointGet.SetApiFinishCallback(SetCustom);
+        pointGet.SetApiFinishCallback(() => GetWeaponData(SetCustom));
         pointGet.SetApiFinishErrorCallback(SetNoCustom);
         pointGet.SetConnectErrorCallback(SetNoCustom);
         pointGet.Exe();
@@ -441,11 +441,8 @@ public class CustomManager : CustomCommonManager
     {
         if (!isSwipe)
         {
-            //if (tapObj != null) Debug.Log(tapObj.name + " : " + tapObj.tag);
-
             if (tapObj != null)
             {
-                //Debug.Log(tapObj.name + " : " + tapObj.tag);
                 //if (tapObj.GetComponent<Button>() != null)
                 //{
                 //    //ボタン押下
@@ -527,7 +524,6 @@ public class CustomManager : CustomCommonManager
     //parts選択
     public void PartsSelectOn(int partsNo)
     {
-        //Debug.Log("PartsSelectOn");
         if (isTurnTable) return;
         if (isWeaponAreaAnimation) return;
         if (tapObj == null) return;
@@ -582,7 +578,6 @@ public class CustomManager : CustomCommonManager
     //武器選択
     private void WeaponSelect(int weaponNo)
     {
-        //Debug.Log("WeaponSelect:"+weaponNo);
         if (isWeaponSelecting) return;
         if (isTurnTable) return;
         if (isWeaponAreaAnimation) return;

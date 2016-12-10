@@ -195,7 +195,7 @@ public abstract class BaseApi
     protected ResponseData<T> GetResponseData<T>(string json)
     {
         ResponseData<T> res = JsonMapper.ToObject<ResponseData<T>>(json);
-        UserManager.isAdmin = res.admin;
+        if (!UserManager.isAdmin) UserManager.isAdmin = res.admin;
         return res;
     }
 

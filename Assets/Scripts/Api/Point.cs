@@ -76,6 +76,7 @@ namespace Point
     public class Table : BaseApi
     {
         protected override string uri { get { return "point/table"; } }
+        protected override bool isNeedToken { get { return false; } }
 
         public void Exe()
         {

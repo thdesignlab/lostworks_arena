@@ -77,8 +77,7 @@ GameObject:
   - 114: {fileID: 11403826}
   - 114: {fileID: 11492832}
   - 114: {fileID: 11460734}
-  - 114: {fileID: 11402850}
-  - 114: {fileID: 11465302}
+  - 114: {fileID: 11409956}
   m_Layer: 0
   m_Name: ExtraGatling
   m_TagString: Weapon
@@ -228,7 +227,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 147068}
-  m_LocalRotation: {x: 0, y: 0.08715575, z: 0, w: 0.9961947}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 2, y: 0, z: 4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 10, z: 0}
@@ -241,7 +240,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 161090}
-  m_LocalRotation: {x: 0, y: -0.08715575, z: 0, w: 0.9961947}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -2, y: 0, z: 4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: -10, z: 0}
@@ -433,22 +432,6 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
---- !u!114 &11402850
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 143896}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 125673325fb8d414bbba101f7366ea31, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  effectTime: 0
-  effectTypeList: 05000000
-  effectRateList:
-  - 1
-  effect: {fileID: 0}
 --- !u!114 &11403826
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -468,12 +451,27 @@ MonoBehaviour:
   isNpc: 0
   fireEffect: {fileID: 128990, guid: 26eff61a30ffb3040a1cf5904f260089, type: 2}
   bullet: {fileID: 134950, guid: 49afd1ac7fb81154587a14cf01c75c7d, type: 2}
-  rapidCount: 100
+  rapidCount: 120
   rapidInterval: 0.03
   spreadCount: 1
   spreadDiffAngle: 0
-  focusDiff: 2.5
+  focusDiff: 5
   recoil: 0
+--- !u!114 &11409956
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 143896}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2bf824a3d499c32439fa2f967ffd296c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isCheckGrounded: 0
+  glideGravityRate: 1
+  isLockOn: 0
+  aimSpeed: 20
 --- !u!114 &11415134
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -553,21 +551,6 @@ MonoBehaviour:
   extraAddWeapon: {fileID: 0}
   fireTimeInAnim: 1
   useHpPerCondition: 20
---- !u!114 &11465302
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 143896}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2bf824a3d499c32439fa2f967ffd296c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isCheckGrounded: 0
-  glideGravityRate: 1
-  isLockOn: 1
-  aimSpeed: 30
 --- !u!114 &11492832
 MonoBehaviour:
   m_ObjectHideFlags: 1

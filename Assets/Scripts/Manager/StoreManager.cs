@@ -56,7 +56,7 @@ public class StoreManager : CustomCommonManager
         base.Start();
 
         //初期表示
-        DispMenu();
+        GetWeaponData(DispMenu);
     }
 
     public void ModeSelect(int mode)
