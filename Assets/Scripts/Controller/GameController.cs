@@ -1162,7 +1162,6 @@ public class GameController : SingletonMonoBehaviour<GameController>
         //ResetWinMark();
         ResetVs();
         continueCount /= 2;
-        Debug.Log(continueCount);
         SetStatus();
 
         return true;

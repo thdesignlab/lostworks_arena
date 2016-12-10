@@ -1584,10 +1584,11 @@ MonoBehaviour:
   bitMoveTime: 0
   isBitFixed: 0
   reloadTime: 5
+  isStopInAttack: 0
   isNpc: 0
   fireEffect: {fileID: 0}
   bullet: {fileID: 176998, guid: ab2fc8dd1f3c7974599b9a7470f9cd21, type: 2}
-  rapidCount: 5
+  rapidCount: 4
   rapidInterval: 0.3
   spreadCount: 0
   spreadDiffAngle: 0
@@ -1604,9 +1605,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5ae7eb6027f9cc41bd60d7a75a7c396, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  powerCustomSystemList: 2d010000
+  powerCustomSystemList: 8c000000
   powerEffectValueDiffList:
-  - 15
+  - 5
   powerObject: {fileID: 0}
   technicCustomSystemList: 010000008d000000
   technicEffectValueDiffList:
