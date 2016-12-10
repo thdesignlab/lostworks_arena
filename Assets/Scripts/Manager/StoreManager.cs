@@ -514,4 +514,13 @@ public class StoreManager : CustomCommonManager
         }
         DialogController.OpenDialog(errorMessage);
     }
+
+    void OnApplicationPause(bool pauseStatus)
+    {
+        if (!pauseStatus)
+        {
+            //ステータスバー
+            Common.Func.SetStatusbar();
+        }
+    }
 }

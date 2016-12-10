@@ -1412,11 +1412,16 @@ public class GameController : SingletonMonoBehaviour<GameController>
         return text;
     }
 
+    bool isAdsPlay = false;
+    DateTime pauseDateTime;
     void OnApplicationPause(bool pauseStatus)
     {
         if (pauseStatus)
         {
             if (UnityAds.Instance.IsPlaying()) return;
+
+            //ポーズ開始時間保存
+            pauseDateTime = DateTime.UtcNow;
 
             //ホームボタンを押してアプリがバックグランドに移行した時
             Pause();
@@ -1424,17 +1429,25 @@ public class GameController : SingletonMonoBehaviour<GameController>
         else
         {
             //アプリを終了しないでホーム画面からアプリを起動して復帰した時
+            //ステータスバー
+            Common.Func.SetStatusbar();
+
+            if (gameMode == GAME_MODE_VS)
+            {
+                TimeSpan ts = DateTime.UtcNow.Subtract(pauseDateTime);
+                if (ts.TotalSeconds > 15)
+                {
+                    GoToTitle();
+                    return;
+                }
+            }
         }
     }
+
     public void Pause()
     {
+
         if (gameMode == GAME_MODE_VS)
-        {
-            //ルームから出す
-            GoToTitle();
-            return;
-        }
-        else if (!isGameStart || isGameEnd)
         {
             //一時停止禁止
             return;

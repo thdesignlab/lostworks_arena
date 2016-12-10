@@ -430,7 +430,6 @@ MonoBehaviour:
   damagePerSecond: 0
   isPhysicsBulletBreak: 0
   isEnergyBulletBreak: 0
-  ownDamageRate: 1
   isFloorEffect: 1
   startScale: {x: 1, y: 1, z: 1}
   endScale: {x: 20, y: 12, z: 20}
@@ -461,7 +460,7 @@ MonoBehaviour:
   isPhysicsBulletBreak: 1
   isEnergyBulletBreak: 1
   isHitBreak: 0
-  safetyTime: 0.05
+  safetyTime: 0
   turnSpeed: 120
   lockStartTime: 0
   lockedSpeedRate: 1

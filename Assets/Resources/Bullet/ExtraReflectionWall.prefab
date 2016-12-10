@@ -447,10 +447,9 @@ MonoBehaviour:
   damagePerSecond: 0
   isPhysicsBulletBreak: 0
   isEnergyBulletBreak: 0
-  ownDamageRate: 0
   isFloorEffect: 0
   startScale: {x: 20, y: 0, z: 1}
-  endScale: {x: 20, y: 15, z: 1}
+  endScale: {x: 20, y: 18, z: 1}
   scaleTime: 0.2
   scaleLateTime: 0
   isParticle: 0
@@ -460,7 +459,7 @@ NavMeshObstacle:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 178272}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Shape: 1
   m_Extents: {x: 0.5, y: 0.5, z: 0.5}

@@ -81,10 +81,8 @@ public class PhotonManager : MonoBehaviour
             isFirstScean = false;
             Camera.main.transform.localRotation = topCameraQuat;
 
-            //Androidステータスバー
-            ApplicationChrome.statusBarState = ApplicationChrome.States.TranslucentOverContent;
-            //ApplicationChrome.statusBarState = ApplicationChrome.States.Visible;
-            ApplicationChrome.navigationBarState = ApplicationChrome.States.Hidden;
+            //ステータスバー
+            Common.Func.SetStatusbar();
 
             //ユーザー情報取得
             UserManager.SetPlayerPrefs();
@@ -97,6 +95,15 @@ public class PhotonManager : MonoBehaviour
 
         //フレームレート
         Application.targetFrameRate = 30;
+    }
+
+    void OnApplicationPause(bool pauseStatus)
+    {
+        if (!pauseStatus)
+        {
+            //ステータスバー
+            Common.Func.SetStatusbar();
+        }
     }
 
     IEnumerator Start()

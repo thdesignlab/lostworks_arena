@@ -1108,4 +1108,13 @@ public class CustomManager : CustomCommonManager
         SwitchBonusText();
         playMovieObj.SetActive(flg);
     }
+
+    void OnApplicationPause(bool pauseStatus)
+    {
+        if (!pauseStatus)
+        {
+            //ステータスバー
+            Common.Func.SetStatusbar();
+        }
+    }
 }

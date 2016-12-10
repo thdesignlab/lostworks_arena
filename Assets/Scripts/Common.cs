@@ -538,6 +538,17 @@ namespace Common
         {
             return dic.ElementAt(Random.Range(0, dic.Count)).Key;
         }
+
+        //ステータスバー設定
+        public static void SetStatusbar()
+        {
+            Screen.fullScreen = true;
+
+            //Androidステータスバー
+            ApplicationChrome.statusBarState = ApplicationChrome.States.TranslucentOverContent;
+            //ApplicationChrome.statusBarState = ApplicationChrome.States.Visible;
+            ApplicationChrome.navigationBarState = ApplicationChrome.States.Hidden;
+        }
     }
 
     //### キャラクター詳細 ###
@@ -1046,10 +1057,10 @@ namespace Common
                 {
                     name = levelNameDic[levelNameDic.Count];
                     int over = level - levelNameDic.Count + 1;
-                    name += " Lv"+over.ToString();
+                    name += ""+over.ToString();
                 }
             }
-            return name;
+            return "Lv."+level.ToString()+" "+name;
         }
 
         //カラーチェンジするレベル

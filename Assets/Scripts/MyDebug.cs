@@ -27,17 +27,23 @@ public class MyDebug : SingletonMonoBehaviour<MyDebug>
         if (UserManager.isAdmin || isDebugMode) Debug.Log(log);
     }
 
-    void OnEnable()
+    public void StartLog()
     {
         if (!isDebugMode && !UserManager.isAdmin) return;
-        //Application.RegisterLogCallback(HandleLog);
         Application.logMessageReceived += HandleLog;
     }
+    public void StopLog()
+    {
+        Application.logMessageReceived -= HandleLog;
+    }
 
+    void OnEnable()
+    {
+        StartLog();
+    }
     void OnDisable()
     {
-        //Application.RegisterLogCallback(null);
-        Application.logMessageReceived -= HandleLog;
+        StopLog();
     }
 
     void HandleLog(string condition, string stackTrace, LogType type)

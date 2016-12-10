@@ -134,7 +134,12 @@ public class RankingManager : SingletonMonoBehaviour<RankingManager>
         rankTran.FindChild("Name").GetComponent<Text>().text = missionRanking.user_name;
         rankTran.FindChild("Character").GetComponent<Image>().sprite = GetCharaIcon(missionRanking.character_id);
         rankTran.FindChild("ResultArea/Result1").GetComponent<Text>().text = Common.Mission.levelNameDic[missionRanking.level];
-        rankTran.FindChild("ResultArea/Result2").GetComponent<Text>().text = "stage" + missionRanking.stage.ToString()+"(Con:"+missionRanking.continue_count.ToString() + ")";
+        //rankTran.FindChild("ResultArea/Result2").GetComponent<Text>().text = "stage" + missionRanking.stage.ToString()+"(Con:"+missionRanking.continue_count.ToString() + ")";
+
+        string resultText = "Lv" + missionRanking.level.ToString();
+        resultText += "-" + missionRanking.stage.ToString();
+        resultText += "(con:" + missionRanking.continue_count.ToString() + ")";
+        rankTran.FindChild("ResultArea/Result2").GetComponent<Text>().text = resultText;        
     }
 
     private Sprite GetCharaIcon(int characterId)

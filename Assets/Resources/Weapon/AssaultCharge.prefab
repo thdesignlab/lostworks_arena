@@ -317,7 +317,6 @@ MonoBehaviour:
   damagePerSecond: 0
   isPhysicsBulletBreak: 0
   isEnergyBulletBreak: 0
-  ownDamageRate: 0
   isFloorEffect: 0
 --- !u!114 &11404256
 MonoBehaviour:
@@ -448,7 +447,7 @@ MonoBehaviour:
   powerObject: {fileID: 0}
   technicCustomSystemList: 16020000
   technicEffectValueDiffList:
-  - 2
+  - 1.5
   technicObject: {fileID: 0}
   uniqueCustomSystemList: fb0100001402000015020000
   uniqueEffectValueDiffList:

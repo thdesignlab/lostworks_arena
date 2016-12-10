@@ -162,7 +162,7 @@ MonoBehaviour:
   isPhysicsBulletBreak: 0
   isEnergyBulletBreak: 0
   isHitBreak: 0
-  safetyTime: 0.05
+  safetyTime: 0
 --- !u!114 &11459178
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -179,7 +179,6 @@ MonoBehaviour:
   damagePerSecond: 20
   isPhysicsBulletBreak: 0
   isEnergyBulletBreak: 0
-  ownDamageRate: 0
   isFloorEffect: 1
   startScale: {x: 0, y: 0, z: 0}
   endScale: {x: 4, y: 4, z: 6}

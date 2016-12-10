@@ -197,7 +197,7 @@ MonoBehaviour:
   isPhysicsBulletBreak: 0
   isEnergyBulletBreak: 0
   isHitBreak: 0
-  safetyTime: 0.05
+  safetyTime: 0
   angleSpeed: 360
 --- !u!114 &11425378
 MonoBehaviour:
@@ -234,6 +234,7 @@ MonoBehaviour:
   childeBulletCount: 1
   purgeDistance: 0
   purgeTime: 1.8
+  purgeDiff: 0
   isPurgeDestroy: 0
 --- !u!114 &11437972
 MonoBehaviour:

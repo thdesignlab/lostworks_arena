@@ -2273,14 +2273,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 125673325fb8d414bbba101f7366ea31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effectTime: 10
+  effectTime: 8
   effectTypeList: 0100000002000000030000000400000005000000
   effectRateList:
-  - 0.5
+  - 0.8
+  - 0.8
   - 0.3
-  - 0.3
-  - 0.3
-  - 0.5
+  - 0.8
+  - 0.8
   effect: {fileID: 0}
 --- !u!114 &11451214
 MonoBehaviour:
@@ -2294,7 +2294,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   breakEffect: {fileID: 184720, guid: 82b912ace74f847418e0246912ccc7e9, type: 2}
-  maxHp: 500
+  maxHp: 300
   isReflaction: 0
 --- !u!114 &11455434
 MonoBehaviour:

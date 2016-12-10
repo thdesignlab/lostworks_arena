@@ -1621,7 +1621,7 @@ MonoBehaviour:
   isCheckGrounded: 0
   glideGravityRate: 1
   isLockOn: 1
-  aimSpeed: 20
+  aimSpeed: 10
 --- !u!114 &11487762
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1660,7 +1660,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   powerCustomSystemList: 65000000
   powerEffectValueDiffList:
-  - 2
+  - 1
   powerObject: {fileID: 0}
   technicCustomSystemList: 69000000
   technicEffectValueDiffList:

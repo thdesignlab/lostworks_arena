@@ -197,10 +197,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isCheckGrounded: 0
-  glideGravityRate: 0.05
+  glideGravityRate: 0.01
   isLockOn: 0
-  UseGravity: 0
-  GRAVITY_LIMIT_RATE: 1.5
+  UseGravity: 1
   hitEffect: {fileID: 0}
   speed: 250
   damage: 30
@@ -210,7 +209,7 @@ MonoBehaviour:
   isPhysicsBulletBreak: 0
   isEnergyBulletBreak: 0
   isHitBreak: 1
-  safetyTime: 0.01
+  safetyTime: 0
 --- !u!114 &11488036
 MonoBehaviour:
   m_ObjectHideFlags: 1

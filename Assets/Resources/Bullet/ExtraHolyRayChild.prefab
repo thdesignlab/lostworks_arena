@@ -303,7 +303,7 @@ MonoBehaviour:
   isPhysicsBulletBreak: 0
   isEnergyBulletBreak: 0
   isHitBreak: 0
-  safetyTime: 0.01
+  safetyTime: 0
   fixTime: 1.5
   rollBody: {fileID: 0}
   fixedRollSpeed: 0
@@ -404,8 +404,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 125673325fb8d414bbba101f7366ea31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effectTime: 10
-  effectTypeList: 0200000003000000
+  effectTime: 5
+  effectTypeList: 0100000003000000
   effectRateList:
   - 0.5
   - 0.5
