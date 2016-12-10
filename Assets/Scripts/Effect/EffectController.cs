@@ -13,8 +13,8 @@ public class EffectController : Photon.MonoBehaviour
     protected bool isPhysicsBulletBreak;
     [SerializeField]
     protected bool isEnergyBulletBreak;
-    [SerializeField]
-    protected float ownDamageRate = 0.0f;
+    //[SerializeField]
+    //protected float ownDamageRate = 0.0f;
     [SerializeField]
     protected bool isFloorEffect = false;
 
@@ -59,11 +59,12 @@ public class EffectController : Photon.MonoBehaviour
     {
         if (photonView.isMine)
         {
+            if (ownerTran == otherObj.transform) return;
+
             //ダメージ計算
             float dmg = damage;
             if (ownerStatus != null) dmg *= (ownerStatus.attackRate / 100);
-            if (ownerTran == otherObj.transform) dmg *= ownDamageRate;
-
+            
             if (otherObj.tag == "Player" || otherObj.tag == "Target")
             {
                 if (dmg > 0 || statusChangeCtrl != null)
@@ -101,11 +102,12 @@ public class EffectController : Photon.MonoBehaviour
     {
         if (photonView.isMine)
         {
+            if (ownerTran == otherObj.transform) return;
+
             if (otherObj.tag == "Player" || otherObj.tag == "Target")
             {
                 //ダメージ計算
                 float dmgPS = damagePerSecond;
-                if (ownerTran == otherObj.transform) dmgPS *= ownDamageRate;
                 if (ownerStatus != null) dmgPS *= (ownerStatus.attackRate / 100);
                 dmgPS *= Time.deltaTime;
 
