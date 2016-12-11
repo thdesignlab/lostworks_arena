@@ -132,7 +132,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
         CheckMode();
 
         //フレームレート
-        Application.targetFrameRate = -1;
+        Application.targetFrameRate = 60;
     }
 
     void Start()
@@ -1412,7 +1412,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
         return text;
     }
 
-    bool isAdsPlay = false;
+    //bool isAdsPlay = false;
     DateTime pauseDateTime;
     void OnApplicationPause(bool pauseStatus)
     {

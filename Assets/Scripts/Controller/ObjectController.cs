@@ -93,7 +93,8 @@ public class ObjectController : Photon.MonoBehaviour {
         if (effectSpawn != null)
         {
             GameObject effectObj = PhotonNetwork.Instantiate(Common.Func.GetResourceEffect(effectSpawn.name), myTran.position, effectSpawn.transform.rotation, effectSpawnGroupId);
-            effectObj.GetComponent<EffectController>().EffectSetting(ownerTran, targetTran, weaponTran, isEffectCustom);
+            EffectController efeCtrl = effectObj.GetComponent<EffectController>();
+            if (efeCtrl != null) efeCtrl.EffectSetting(ownerTran, targetTran, weaponTran, isEffectCustom);
         }
         PhotonNetwork.Destroy(gameObject);
     }

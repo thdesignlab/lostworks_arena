@@ -20,6 +20,7 @@ public class ConfigManager : SingletonMonoBehaviour<ConfigManager>
     private AudioSource voiceAudio;
 
     private InputField playerNameText;
+    private string defaultName;
 
     private Slider bgmSlider;
     private Slider seSlider;
@@ -70,6 +71,7 @@ public class ConfigManager : SingletonMonoBehaviour<ConfigManager>
     private void Setting()
     {
         playerNameText.text = UserManager.userInfo[Common.PP.INFO_USER_NAME];
+        defaultName = playerNameText.text;
 
         Dictionary<int, int> configDic = new Dictionary<int, int>(UserManager.userConfig);
         foreach (int kind in configDic.Keys)
@@ -202,6 +204,13 @@ public class ConfigManager : SingletonMonoBehaviour<ConfigManager>
     public void CheckName(string input)
     {
         //名前チェック
+        if (string.IsNullOrEmpty(input) || input.Length > 10)
+        {
+            playerNameText.text = defaultName;
+            return;
+        }
+        defaultName = input;
+
         //保存
         UserManager.SetUserName(input);
     }
