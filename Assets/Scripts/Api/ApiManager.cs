@@ -24,7 +24,7 @@ public class ApiManager : SingletonMonoBehaviour<ApiManager>
         Dictionary<string, string> header = new Dictionary<string, string>();
         header.Add("Content-Type", "application/json; charset=UTF-8");
         header.Add("Token", UserManager.apiToken);
-        header.Add("UserAgent", SystemInfo.operatingSystem);
+        header.Add("UserAgent", string.Format("Lostworks({0},{1})", SystemInfo.deviceType, SystemInfo.operatingSystem));
         header.Add("Lostworks", "api");
 
         //パラメータ

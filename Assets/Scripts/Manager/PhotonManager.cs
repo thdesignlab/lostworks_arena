@@ -280,9 +280,10 @@ public class PhotonManager : MonoBehaviour
     }
 
     //Room一覧ダイアログ切り替え
+    const float DISP_ROOM_LIST_LIMIT = 60;
+    Coroutine checkRoomList;
     public void OnSwitchRoomListAreaButton(bool flg)
     {
-        SearchRoomList();
         SwitchRoomListArea(flg, true);
     }
     private void SwitchRoomListArea(bool flg, bool isFade = false)
@@ -299,7 +300,23 @@ public class PhotonManager : MonoBehaviour
         if (flg)
         {
             SearchRoomList();
+            checkRoomList = StartCoroutine(CheckRoomListLimit());
         }
+        else
+        {
+            if (checkRoomList != null) StopCoroutine(checkRoomList);
+        }
+    }
+    IEnumerator CheckRoomListLimit()
+    {
+        float roomListTime = 0;
+        for (;;)
+        {
+            roomListTime += Time.deltaTime;
+            if (roomListTime >= DISP_ROOM_LIST_LIMIT) break;
+            yield return null;
+        }
+        SwitchRoomListArea(false);
     }
 
     //Room一覧更新
@@ -442,7 +459,8 @@ public class PhotonManager : MonoBehaviour
         };
 
         //ユーザー情報取得
-        GetUserData(callback);
+        Action getUserDataCallback = () => GetBattleResult(callback);
+        GetUserData(getUserDataCallback);
     }
 
     //カスタマイズ
@@ -528,14 +546,15 @@ public class PhotonManager : MonoBehaviour
     }
 
     //入室
-    public void JoinRoom(RoomInfo roomInfo = null)
+    private void JoinRoom(RoomInfo roomInfo = null)
     {
         if (!PhotonNetwork.connectedAndReady) return;
+
         string roomName = "";
         if (roomInfo != null) roomName = roomInfo.name;
         JoinRoom(roomName);
     }
-    public void JoinRoom(string roomName = "")
+    private void JoinRoom(string roomName = "")
     {
         if (!PhotonNetwork.connectedAndReady) return;
         if (roomName == "")
@@ -543,15 +562,31 @@ public class PhotonManager : MonoBehaviour
             RandomJoinRoom();
             return;
         }
+
         DialogController.OpenMessage(DialogController.MESSAGE_JOIN_ROOM, DialogController.MESSAGE_POSITION_RIGHT);
-        PhotonNetwork.JoinRoom(roomName);
+
+        Action callback = () =>
+        {
+            PhotonNetwork.JoinRoom(roomName);
+        };
+
+        RoomApi.Clear roomApiClear = new RoomApi.Clear();
+        roomApiClear.SetApiFinishCallback(callback);
+        roomApiClear.Exe();
     }
 
     //ランダム入室
     public void RandomJoinRoom()
     {
         DialogController.OpenMessage(DialogController.MESSAGE_SEARCH_ROOM, DialogController.MESSAGE_POSITION_RIGHT);
-        PhotonNetwork.JoinRandomRoom();
+        Action callback = () =>
+        {
+            PhotonNetwork.JoinRandomRoom();
+        };
+
+        RoomApi.Clear roomApiClear = new RoomApi.Clear();
+        roomApiClear.SetApiFinishCallback(callback);
+        roomApiClear.Exe();
     }
 
 

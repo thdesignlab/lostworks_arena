@@ -589,10 +589,15 @@ public class GameController : SingletonMonoBehaviour<GameController>
                                 DialogController.OpenDialog(dialogText, buttons, actions);
                                 if (isWin) ContinueVs();
                             };
+                            Action apiErrorCallback = () =>
+                            {
+                                //結果ダイアログ表示
+                                DialogController.OpenDialog("接続に失敗しました。", GoToTitle);
+                            };
                             Battle.Finish battleFinish = new Battle.Finish();
                             battleFinish.SetApiFinishCallback(apiCallback);
-                            battleFinish.SetRetryCount(10);
-                            battleFinish.SetApiErrorIngnore();
+                            battleFinish.SetApiFinishErrorCallback(apiErrorCallback);
+                            battleFinish.SetRetryCount(5);
                             battleFinish.Exe(isWin);
 
                             if (isWin)
@@ -601,6 +606,12 @@ public class GameController : SingletonMonoBehaviour<GameController>
                                 PhotonManager.isPlayAd = false;
                                 for (;;)
                                 {
+                                    //結果ダイアログ確認待ち
+                                    if (!isContinue)
+                                    {
+                                        yield return null;
+                                        continue;
+                                    }
                                     //負けプレイヤーが退出するのを待つ
                                     if (CheckPlayer()) yield return null;
                                     break;
@@ -1487,7 +1498,6 @@ public class GameController : SingletonMonoBehaviour<GameController>
     {
         //ルーム名変更
         RoomApi.ChangeMaster roomApiChangeMaster = new RoomApi.ChangeMaster();
-        roomApiChangeMaster.SetApiErrorIngnore();
         roomApiChangeMaster.Exe();
         if (!isGameStart) SwitchRoomOpen(true);
     }
