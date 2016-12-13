@@ -11,10 +11,10 @@ GameObject:
   - 198: {fileID: 19855154}
   - 199: {fileID: 19933246}
   - 114: {fileID: 11487068}
-  - 135: {fileID: 13512890}
   - 114: {fileID: 11462110}
   - 114: {fileID: 11489468}
   - 54: {fileID: 5467874}
+  - 136: {fileID: 13654992}
   m_Layer: 0
   m_Name: PulseBullet
   m_TagString: EnergyBullet
@@ -57,7 +57,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 133600}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.61, z: 1.48}
+  m_LocalPosition: {x: -147.80615, y: 48.899635, z: -148.96532}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -144,18 +144,19 @@ MonoBehaviour:
   isEnergyBulletBreak: 0
   isHitBreak: 1
   safetyTime: 0
---- !u!135 &13512890
-SphereCollider:
+--- !u!136 &13654992
+CapsuleCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 133600}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
   m_Radius: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Height: 3
+  m_Direction: 2
+  m_Center: {x: 0, y: 0, z: -0.5}
 --- !u!198 &19855154
 ParticleSystem:
   m_ObjectHideFlags: 1

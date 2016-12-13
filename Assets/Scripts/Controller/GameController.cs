@@ -132,7 +132,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
         CheckMode();
 
         //フレームレート
-        Application.targetFrameRate = 60;
+        Application.targetFrameRate = -1;
     }
 
     void Start()
