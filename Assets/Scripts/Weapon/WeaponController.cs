@@ -38,10 +38,16 @@ public class WeaponController : Photon.MonoBehaviour
         set { _atkMotionTime = value; }
     }
 
-    protected StatusChangeController statusChangeCtrl;
+    private StatusChangeController _statusChangeCtrl;
+    protected StatusChangeController statusChangeCtrl
+    {
+        get { return _statusChangeCtrl ? _statusChangeCtrl : _statusChangeCtrl = myTran.GetComponent<StatusChangeController>(); }
+        set { _statusChangeCtrl = value; }
+    }
 
     protected Transform targetTran;
-    protected AudioController audioCtrl;
+    private AudioController _audioCtrl;
+    protected AudioController audioCtrl { get { return _audioCtrl ? _audioCtrl : _audioCtrl = myTran.GetComponent<AudioController>(); } }
     protected Animator charaAnimator;
     protected string motionParam = "";
 
@@ -85,8 +91,8 @@ public class WeaponController : Photon.MonoBehaviour
             isActiveSceane = false;
         }
 
-        audioCtrl = myTran.GetComponent<AudioController>();
-        statusChangeCtrl = myTran.GetComponentInChildren<StatusChangeController>();
+        //audioCtrl = myTran.GetComponent<AudioController>();
+        //statusChangeCtrl = myTran.GetComponentInChildren<StatusChangeController>();
 
         //名前変更
         name = name.Replace("(Clone)", "");
@@ -408,17 +414,17 @@ public class WeaponController : Photon.MonoBehaviour
     }
 
     protected float prePlayAudio = 0;
-    protected void PlayAudio(int no = 0)
+    public void PlayAudio(int no = 0, bool isSendRPC = false)
     {
         if (audioCtrl == null) return;
         if (Time.time - prePlayAudio < 0.1f) return;
-        audioCtrl.Play(no);
+        audioCtrl.Play(no, isSendRPC);
         prePlayAudio = Time.time;
     }
-    protected void StopAudio(int no = 0)
+    public void StopAudio(int no = 0, bool isSendRPC = false)
     {
         if (audioCtrl == null) return;
-        audioCtrl.Stop(no);
+        audioCtrl.Stop(no, isSendRPC);
     }
 
 
@@ -596,18 +602,34 @@ public class WeaponController : Photon.MonoBehaviour
         }
     }
 
-    protected void PlayVoice()
+    public void PlayVoice(bool isSendRPC = true)
     {
         if (playerStatus == null || playerStatus.voiceManager == null) return;
 
         if (isExtra)
         {
             playerStatus.voiceManager.ExtraAttack();
+            if (isSendRPC) photonView.RPC("PlayExtraVoiceRPC", PhotonTargets.Others);
         }
         else
         {
             playerStatus.voiceManager.Attack();
         }
+    }
+    [PunRPC]
+    protected void PlayExtraVoiceRPC()
+    {
+        if (playerStatus == null)
+        {
+            playerStatus = myTran.root.GetComponent<PlayerStatus>();
+            if (playerStatus != null && playerStatus.voiceManager == null)
+            {
+                Transform charaTran = myTran.root.Find(Common.Func.GetBodyStructure());
+                if (charaTran) playerStatus.voiceManager = charaTran.GetComponent<VoiceManager>();
+            }
+        }
+        if (playerStatus == null || playerStatus.voiceManager == null) return;
+        playerStatus.voiceManager.ExtraAttack();
     }
 
     public void ReloadFree()

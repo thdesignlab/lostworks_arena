@@ -60,8 +60,8 @@ public class ChargeWeaponController : BulletWeaponController
                     PlayVoice();
                     isCharge = false;
                     base.EndAction();
-                    StopAudio(0);
-                    PlayAudio(1);
+                    //StopAudio(0);
+                    PlayAudio(1, true);
                     foreach (ChargeBulletController bulletCtrl in bulletCtrls)
                     {
                         bulletCtrl.Fire(chargeTime);
@@ -98,7 +98,7 @@ public class ChargeWeaponController : BulletWeaponController
         isCharge = true;
 
         chargeTime = 0;
-        PlayAudio(0);
+        //PlayAudio(0);
 
         //ステータスUP
         if (playerStatus != null && statusChangeCtrl != null)

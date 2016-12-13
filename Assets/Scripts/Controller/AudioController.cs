@@ -4,14 +4,19 @@ using System.Collections.Generic;
 
 public class AudioController : Photon.MonoBehaviour
 {
-    private Transform myTran;
-    private AudioSource[] audioSources;
+    //private Transform myTran;
+    private AudioSource[] _audioSources;
+    private AudioSource[] audioSources { get { return _audioSources != null ? _audioSources : _audioSources = transform.GetComponentsInChildren<AudioSource>(); } }
 
-    void Awake()
-    {
-        myTran = transform;
-        audioSources = myTran.GetComponentsInChildren<AudioSource>();
-    }
+    //void Start()
+    //{
+    //    myTran = transform;
+    //    audioSources = myTran.GetComponentsInChildren<AudioSource>();
+    //    foreach (AudioSource audioSource in audioSources)
+    //    {
+    //        Debug.Log(name+" >> "+ audioSource.clip);
+    //    }
+    //}
 
     public void Play(int no = 0, bool isSendRPC = true)
     {
@@ -25,7 +30,7 @@ public class AudioController : Photon.MonoBehaviour
     [PunRPC]
     private void PlayRPC(int no = 0)
     {
-        audioSources[no].Play();
+        Play(no, false);
     }
 
     public void Stop(int no = 0, bool isSendRPC = true)

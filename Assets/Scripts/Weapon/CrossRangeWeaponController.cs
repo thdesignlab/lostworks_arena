@@ -147,7 +147,7 @@ public class CrossRangeWeaponController : WeaponController
                 {
                     //ブレードON
                     SetBlade(true);
-                    PlayAudio();
+                    PlayAudio(0, true);
                     isBladeOn = true;
 
                     if (isStopInBlade)

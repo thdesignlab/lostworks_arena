@@ -352,6 +352,7 @@ public class BulletController : MoveOfCharacter
     //ターゲットを設定する
     public void SetTarget(Transform target, bool isSendRPC = true)
     {
+        if (targetTran == target) return;
         targetTran = target;
         if (obCtrl != null) obCtrl.SetTarget(targetTran);
 
@@ -375,6 +376,7 @@ public class BulletController : MoveOfCharacter
     //持ち主設定
     public void SetOwner(Transform owner, bool isSendRPC = true)
     {
+        if (ownerTran == owner) return;
         ownerTran = owner;
         if (obCtrl != null) obCtrl.SetOwner(ownerTran);
 
@@ -404,15 +406,21 @@ public class BulletController : MoveOfCharacter
     //武器設定
     public void SetWeapon(Transform weapon, bool isCustom = true, bool isSendRPC = true)
     {
+        if (weaponTran == weapon) return;
         weaponTran = weapon;
-
-        if (weaponTran != null && isCustom)
+        if (weaponTran != null)
         {
-            //カスタム処理
-            bulletLevelCtrl = weaponTran.GetComponent<BulletLevelController>();
-            if (bulletLevelCtrl != null)
+            WeaponController weaponCtrl = weaponTran.GetComponent<WeaponController>();
+            if (weaponCtrl != null) weaponCtrl.PlayAudio();
+
+            if (isCustom)
             {
-                bulletLevelCtrl.BulletCustom(this);
+                //カスタム処理
+                bulletLevelCtrl = weaponTran.GetComponent<BulletLevelController>();
+                if (bulletLevelCtrl != null)
+                {
+                    bulletLevelCtrl.BulletCustom(this);
+                }
             }
         }
 

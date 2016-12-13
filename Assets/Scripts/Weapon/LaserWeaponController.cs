@@ -93,7 +93,7 @@ public class LaserWeaponController : WeaponController
 
         //レーザー生成
         PlayVoice();
-        PlayAudio();
+        //PlayAudio();
         GameObject laser = PhotonNetwork.Instantiate(Common.Func.GetResourceBullet(laserPrefab.name), muzzle.position, muzzle.rotation, 0);
         BulletSetting(laser);
         Transform laserTran = laser.transform;

@@ -153,7 +153,7 @@ MonoBehaviour:
   isLockOn: 0
   UseGravity: 1
   hitEffect: {fileID: 0}
-  speed: 100
+  speed: 85
   damage: 30
   damagePerSecond: 0
   stuckTime: 0
@@ -174,7 +174,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effectSpawn: {fileID: 152264, guid: 71ae5fab8e0c38e49b9113bacaa1c171, type: 2}
-  activeLimitTime: 5
+  activeLimitTime: 8
   activeLimitDistance: 0
   isNotAutoBreak: 0
 --- !u!136 &13669252

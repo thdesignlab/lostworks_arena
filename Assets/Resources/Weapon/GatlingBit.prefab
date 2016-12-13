@@ -1569,7 +1569,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 24301600, guid: 4817c32da9beaeb43b7c44b180d41730,
     type: 2}
-  m_audioClip: {fileID: 8300000, guid: 6a3edb4904759a941bed918b9b00566a, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 80c6e35a1c9bab9459b2409e9f869453, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -1838,7 +1838,7 @@ MonoBehaviour:
   isCheckGrounded: 0
   glideGravityRate: 1
   isLockOn: 1
-  aimSpeed: 60
+  aimSpeed: 90
 --- !u!114 &11454678
 MonoBehaviour:
   m_ObjectHideFlags: 1

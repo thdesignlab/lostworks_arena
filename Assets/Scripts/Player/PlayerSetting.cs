@@ -189,7 +189,7 @@ public class PlayerSetting : Photon.MonoBehaviour
     {
         if (photonView.isMine)
         {
-            object[] args = new object[] { PhotonView.Get(gameObject).viewID, bodyViewId };
+            object[] args = new object[] { PhotonView.Get(gameObject).viewID, bodyViewId, Common.CO.PARTS_BODY };
             photonView.RPC("SetParentRPC", PhotonTargets.Others, args);
             if (charaColorName != "0")
             {
@@ -316,7 +316,7 @@ public class PlayerSetting : Photon.MonoBehaviour
         int partsViewId = PhotonView.Get(parts.gameObject).viewID;
         int weaponViewId = PhotonView.Get(ob).viewID;
         weaponMap[partsViewId] = weaponViewId;
-        object[] args = new object[] { partsViewId, weaponViewId };
+        object[] args = new object[] { partsViewId, weaponViewId, "" };
         photonView.RPC("SetParentRPC", PhotonTargets.Others, args);
         ob.transform.SetParent(parts.transform, true);
 
@@ -325,13 +325,14 @@ public class PlayerSetting : Photon.MonoBehaviour
     }
 
     [PunRPC]
-    private void SetParentRPC(int parentViewId, int childViewId)
+    private void SetParentRPC(int parentViewId, int childViewId, string childName = "")
     {
         PhotonView parent = PhotonView.Find(parentViewId);
         PhotonView child = PhotonView.Find(childViewId);
         if (parent == null || child == null) return;
-        child.gameObject.transform.SetParent(parent.gameObject.transform, false);
-        child.gameObject.transform.localPosition = Vector3.zero;
+        if (!string.IsNullOrEmpty(childName)) child.name = childName;
+        child.transform.SetParent(parent.gameObject.transform, false);
+        child.transform.localPosition = Vector3.zero;
     }
 
     IEnumerator SetWeapon(Transform parts)
@@ -366,7 +367,7 @@ public class PlayerSetting : Photon.MonoBehaviour
         {
             foreach (int key in weaponMap.Keys)
             {
-                object[] args = new object[] { key, weaponMap[key] };
+                object[] args = new object[] { key, weaponMap[key], "" };
                 photonView.RPC("SetParentRPC", PhotonTargets.Others, args);
             }
         }

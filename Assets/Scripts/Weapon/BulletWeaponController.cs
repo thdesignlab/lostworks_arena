@@ -220,7 +220,7 @@ public class BulletWeaponController : WeaponController
         bulletNo++;
         ob.name = ob.name + "_" + bulletNo.ToString();
         BulletSetting(ob);
-        PlayAudio();
+        //PlayAudio();
 
         if (recoil > 0 && playerStatus != null)
         {

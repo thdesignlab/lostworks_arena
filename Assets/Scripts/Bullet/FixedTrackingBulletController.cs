@@ -119,7 +119,7 @@ public class FixedTrackingBulletController : BulletController
         }
     }
 
-    public void Shoot()
+    public void Shoot(bool isPlayAudio = true)
     {
         if (isShoot) return;
 
@@ -133,11 +133,12 @@ public class FixedTrackingBulletController : BulletController
                 enableSetAngle = targetStatus.IsLocked();
             }
         }
-        photonView.RPC("ShootRPC", PhotonTargets.All, enableSetAngle);
+        object[] args = new object[] { enableSetAngle, isPlayAudio };
+        photonView.RPC("ShootRPC", PhotonTargets.All, args);
     }
 
     [PunRPC]
-    public void ShootRPC(bool isSetAngle)
+    public void ShootRPC(bool isSetAngle, bool isPlayAudio)
     {
         //向き調整
         if (isSetAngle)
@@ -157,8 +158,7 @@ public class FixedTrackingBulletController : BulletController
         }
 
         if (rollBody != myTran) rollBody.localRotation = defaultBodyRot;
-
-        PlayAudio();
+        if (isPlayAudio) PlayAudio();
         base.speed = fixedSpeed;
         isShoot = true;
         isFix = false;

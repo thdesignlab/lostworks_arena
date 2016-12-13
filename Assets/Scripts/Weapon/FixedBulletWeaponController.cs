@@ -21,13 +21,17 @@ public class FixedBulletWeaponController : BulletWeaponController
     {
         yield return new WaitForSeconds(fixedTime);
 
+        float procTime = 0;
+        bool isPlayAudio = true;
         foreach (GameObject bullet in shootBullets)
         {
             if (bullet == null) yield break;
             FixedTrackingBulletController ctrl = bullet.GetComponent<FixedTrackingBulletController>();
             if (ctrl != null)
             {
-                ctrl.Shoot();
+                isPlayAudio = (procTime == 0 || procTime - Time.time >= 0.1f);
+                ctrl.Shoot(isPlayAudio);
+                procTime = Time.time;
                 if (fixedDiffTime > 0) yield return new WaitForSeconds(fixedDiffTime);
             }
         }
