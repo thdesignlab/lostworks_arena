@@ -718,7 +718,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   effectSpawn: {fileID: 0}
   activeLimitTime: 0
-  activeLimitDistance: 130
+  activeLimitDistance: 100
   isNotAutoBreak: 0
 --- !u!114 &11467052
 MonoBehaviour:
@@ -737,7 +737,7 @@ MonoBehaviour:
   UseGravity: 0
   hitEffect: {fileID: 0}
   speed: 400
-  damage: 300
+  damage: 250
   damagePerSecond: 0
   stuckTime: 0
   knockBackRate: 0

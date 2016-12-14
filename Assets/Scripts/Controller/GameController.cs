@@ -175,9 +175,13 @@ public class GameController : SingletonMonoBehaviour<GameController>
         switch (Application.platform)
         {
             case RuntimePlatform.Android:
+                statusBar.GetComponent<LayoutElement>().preferredHeight = 60;
+                statusBar.GetComponent<Image>().color = new Color(0, 0, 0, 0.5f);
+                break;
+
             case RuntimePlatform.IPhonePlayer:
                 statusBar.GetComponent<LayoutElement>().preferredHeight = 60;
-                statusBar.GetComponent<Image>().color = new Color(0, 0, 0, 1);
+                statusBar.GetComponent<Image>().color = new Color(1, 1, 1, 0.5f);
                 break;
 
             default:
