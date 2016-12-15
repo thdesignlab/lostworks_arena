@@ -64,6 +64,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &148950
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 433562}
+  - 114: {fileID: 11411160}
+  m_Layer: 0
+  m_Name: BgmBattle9
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &149610
 GameObject:
   m_ObjectHideFlags: 0
@@ -124,7 +140,7 @@ GameObject:
   - 4: {fileID: 474348}
   - 114: {fileID: 11447158}
   m_Layer: 0
-  m_Name: BgmBattle9
+  m_Name: BgmBattle10
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -215,9 +231,23 @@ Transform:
   - {fileID: 463814}
   - {fileID: 472338}
   - {fileID: 464720}
+  - {fileID: 433562}
   - {fileID: 474348}
   m_Father: {fileID: 0}
   m_RootOrder: 0
+--- !u!4 &433562
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 148950}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -73.05953, y: -46.59007, z: -24.43925}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 415718}
+  m_RootOrder: 10
 --- !u!4 &435146
 Transform:
   m_ObjectHideFlags: 1
@@ -334,7 +364,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 415718}
-  m_RootOrder: 10
+  m_RootOrder: 11
 --- !u!4 &491724
 Transform:
   m_ObjectHideFlags: 1
@@ -466,6 +496,21 @@ MonoBehaviour:
   playStartTime: 0
   loopStartTime: 0.1
   loopEndTime: 63
+--- !u!114 &11411160
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 148950}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1537abaf576ea04cb2140bee386d45e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioClip: {fileID: 8300000, guid: bff47b42e9337ab498c0d640beea47bf, type: 3}
+  playStartTime: 0
+  loopStartTime: 0
+  loopEndTime: 0
 --- !u!114 &11422088
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -537,7 +582,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1537abaf576ea04cb2140bee386d45e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioClip: {fileID: 8300000, guid: bff47b42e9337ab498c0d640beea47bf, type: 3}
+  audioClip: {fileID: 8300000, guid: 9c350f03a7b833446a34dcc49dddecfd, type: 3}
   playStartTime: 0
   loopStartTime: 0
   loopEndTime: 0
@@ -565,6 +610,7 @@ MonoBehaviour:
   - {fileID: 11450298}
   - {fileID: 11474490}
   - {fileID: 11498844}
+  - {fileID: 11411160}
   - {fileID: 11447158}
 --- !u!114 &11450298
 MonoBehaviour:

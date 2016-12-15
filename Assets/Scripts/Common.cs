@@ -13,8 +13,8 @@ namespace Common
 
         //HomePage
         public const string WEBVIEW_KEY = "?webview";
-        public const string HP_URL = "http://lostworks.th-designlab.com/";
-        public const string HP_TUTORIAL_URL = HP_URL + "arena/howtoplay";
+        public static string HP_URL = "http://lostworks.th-designlab.com/";
+        public static string HP_TUTORIAL_URL = HP_URL + "arena/howtoplay";
 
         //シーン名
         public const string SCENE_TITLE = "Title";
@@ -1030,7 +1030,7 @@ namespace Common
             { 4, new int[] { 200, 1 } },
             { 5, new int[] { 10002, 8 } },
             { 6, new int[] { 100, 5 } },
-            { 7, new int[] { 10003, 5 } },
+            { 7, new int[] { 10003, 9 } },
             { 8, new int[] { 600, 4 } },
             { 9, new int[] { 400, 3 } },
             { 10, new int[] { 500, 6 } },
