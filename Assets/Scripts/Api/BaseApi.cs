@@ -214,8 +214,7 @@ public abstract class BaseApi
     public void GoToTitle()
     {
         //タイトルへ
-        string text = "Network接続に失敗しました。\n";
-        text += "電波状況をご確認の上、\n再度お試しください。";
+        string text = PhotonManager.MESSAGE_CONNECT_FAILED;
         DialogController.OpenDialog(text, GoToTtileExe);
     }
     public void GoToTtileExe()

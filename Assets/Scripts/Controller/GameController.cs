@@ -515,17 +515,17 @@ public class GameController : SingletonMonoBehaviour<GameController>
                                 };
                                 DialogController.OpenDialog(text, buttons, actions);
                                 //自動でタイトルへ遷移
-                                float waitTime = 60;
+                                float waitTime = 600;
                                 for (;;)
                                 {
                                     if (isContinue) break;
-                                    waitTime -= Time.deltaTime;
                                     if (waitTime < 0)
                                     {
                                         GoToTitle();
                                         yield break;
                                     }
-                                    yield return null;
+                                    waitTime -= 1.0f;
+                                    yield return new WaitForSeconds(1.0f);
                                 }
                             }
                             else
@@ -932,6 +932,9 @@ public class GameController : SingletonMonoBehaviour<GameController>
             PhotonManager.isPlayAd = true;
         }
 
+        //オブジェクト一掃
+        CleanObject();
+
         foreach (GameObject weapon in GameObject.FindGameObjectsWithTag(Common.CO.TAG_WEAPON))
         {
             WeaponController weponCtrl = weapon.GetComponent<WeaponController>();
@@ -1005,6 +1008,26 @@ public class GameController : SingletonMonoBehaviour<GameController>
         }
         isGameEnd = true;
         myStatus.SetWinMark(winCount, loseCount);
+    }
+
+    //自分の作成したObjectを削除
+    private void CleanObject()
+    {
+        foreach (string tag in Common.CO.DamageAffectTagArray)
+        {
+            GameObject[] objs = GameObject.FindGameObjectsWithTag(tag);
+            foreach (GameObject obj in objs)
+            {
+                //親がある場合はそのまま
+                if (obj.transform.parent != null) continue;
+
+                //ローカルのObjectは削除
+                if (obj.GetPhotonView() == null) Destroy(obj);
+
+                //自分のものなら削除
+                if (obj.GetPhotonView().isMine) PhotonNetwork.Destroy(obj);
+            }
+        }
     }
 
     public static string OnUGuiButton(Vector3 _scrPos)
@@ -1213,7 +1236,19 @@ public class GameController : SingletonMonoBehaviour<GameController>
     {
         if (isAdPlay)
         {
-            UnityAds.Instance.Play(() => ContinueMission());
+            Action onFinish = () => ContinueMission();
+            Action onSkipped = () => ContinueMission();
+            Action onFailed = () =>
+            {
+                string msg = PhotonManager.MESSAGE_CONNECT_FAILED;
+                List<string> btnTextList = new List<string>(){ "Retry", "Titleへ" };
+                List<UnityAction> okActionList = new List<UnityAction>() {
+                    () => ContinueMission(true),
+                    () => GoToTitle(),
+                };
+                DialogController.OpenDialog(msg, btnTextList, okActionList);
+            };
+            UnityAds.Instance.Play(null, null, onFinish, onFailed, onSkipped);
         }
         else
         {

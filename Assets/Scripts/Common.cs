@@ -1058,6 +1058,7 @@ namespace Common
             { 17, "Ultimate" },
             { 18, "Impossible" },
             { 19, "Infinity" },
+            { 20, "Lostworks" },
         };
         public static string GetLevelName(int level)
         {
@@ -1099,16 +1100,16 @@ namespace Common
         {
                              //hp,   sp,   run,  boost,turn, atk%, atkI, boostI, tagI
             { 0, new float[] { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f } },
-            { 1, new float[] { 0.5f, 0.6f, 0.7f, 0.7f, 0.7f, 0.5f, 1.5f, 2.0f, 2.0f } },
+            { 1, new float[] { 0.5f, 0.5f, 0.8f, 0.6f, 0.7f, 0.3f, 1.0f, 2.0f, 2.0f } },
             { 2, new float[] { 0.7f, 0.7f, 0.8f, 0.7f, 0.8f, 0.5f, 1.0f, 1.6f, 1.6f } },
             { 3, new float[] { 0.8f, 0.8f, 0.9f, 0.8f, 0.9f, 0.6f, 1.0f, 1.3f, 1.3f } },
             { 4, new float[] { 0.9f, 1.0f, 1.0f, 0.8f, 1.0f, 0.8f, 1.0f, 1.2f, 1.0f } },
             { 5, new float[] { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f } },
-            { 6, new float[] { 1.0f, 1.1f, 1.1f, 1.0f, 1.1f, 1.0f, 0.9f, 0.9f, 0.9f } },
-            { 7, new float[] { 1.1f, 1.2f, 1.1f, 1.1f, 1.2f, 1.0f, 0.8f, 0.8f, 0.8f } },
-            { 8, new float[] { 1.1f, 1.3f, 1.1f, 1.1f, 1.3f, 1.1f, 0.7f, 0.7f, 0.7f } },
-            { 9, new float[] { 1.2f, 1.4f, 1.2f, 1.2f, 1.4f, 1.1f, 0.6f, 0.6f, 0.6f } },
-            { 10, new float[] { 1.2f, 1.5f, 1.2f, 1.2f, 1.5f, 1.2f, 0.5f, 0.5f, 0.5f } },
+            { 6, new float[] { 1.0f, 1.2f, 1.1f, 1.0f, 1.1f, 1.0f, 0.9f, 0.9f, 0.9f } },
+            { 7, new float[] { 1.1f, 1.4f, 1.1f, 1.1f, 1.2f, 1.0f, 0.8f, 0.8f, 0.8f } },
+            { 8, new float[] { 1.1f, 1.6f, 1.1f, 1.1f, 1.3f, 1.1f, 0.7f, 0.7f, 0.7f } },
+            { 9, new float[] { 1.2f, 1.6f, 1.2f, 1.2f, 1.4f, 1.1f, 0.6f, 0.6f, 0.6f } },
+            { 10, new float[] { 1.2f, 1.8f, 1.2f, 1.2f, 1.5f, 1.2f, 0.5f, 0.5f, 0.5f } },
         };
         //設定レベル以上の場合の追加Rate
         public static float[] overLevelState = new float[] { 0.075f, 0.1f, 0, 0, 0.05f, 0.05f, 0, 0, 0 };

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+//using System.Reflection;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.Events;
@@ -236,12 +237,14 @@ public class PlayerStatus : Photon.MonoBehaviour {
 
             if (GameController.Instance.gameMode == GameController.GAME_MODE_VS) SetNmaeText();
 
+            StopAllBuffCoroutine();
             nowSpeedRate = 1;
-            if (RunSpeedChangeCoroutine != null) StopCoroutine(RunSpeedChangeCoroutine);
             interfareMoveTime = 0;
             runSpeed = defaultRunSpeed;
             jumpSpeed = defaultJumpSpeed;
             boostSpeed = defaultBoostSpeed;
+            isForceInvincible = false;
+            debuffDic = new Dictionary<int, float>();
 
             if (isNpc)
             {
@@ -748,7 +751,8 @@ public class PlayerStatus : Photon.MonoBehaviour {
     //##### パラメータ変更系 #####
     private float nowSpeedRate = 1;
     private float interfareMoveTime = 0;
-    private Coroutine RunSpeedChangeCoroutine;
+    //private Coroutine RunSpeedChangeCoroutine;
+    private Dictionary<string, BuffInfo> buffCoroutineList = new Dictionary<string, BuffInfo>();
 
     //初期ステータス設定
     public void SetStatus(int[] defaultStatus, float[] levelRate)
@@ -788,7 +792,8 @@ public class PlayerStatus : Photon.MonoBehaviour {
     //SP回復量
     public void AccelerateRecoverSp(float rate, float limit, GameObject effect = null, bool isSendRPC = true)
     {
-        StartCoroutine(CheckAccelerateRecoverSp(rate, limit, effect));
+        Coroutine cor = StartCoroutine(CheckAccelerateRecoverSp(rate, limit, effect));
+        SetBuffCoroutine("AccelerateRecoverSp", cor, effect);
         if (isSendRPC)
         {
             int parentViewId = (effect != null) ? GetParentViewId(effect) : - 1;
@@ -816,7 +821,9 @@ public class PlayerStatus : Photon.MonoBehaviour {
     //攻撃力
     public void ChangeAttackRate(float rate, float limit, GameObject effect = null, bool isSendRPC = true)
     {
-        StartCoroutine(ChangeAttackRateProc(rate, limit, effect));
+        Coroutine cor = StartCoroutine(ChangeAttackRateProc(rate, limit, effect));
+        SetBuffCoroutine("ChangeAttackRate", cor, effect);
+
         if (isSendRPC)
         {
             int parentViewId = (effect != null) ? GetParentViewId(effect) : -1;
@@ -845,7 +852,9 @@ public class PlayerStatus : Photon.MonoBehaviour {
     Coroutine defChange;
     public void ChangeDefRate(float rate, float limit, GameObject effect = null, bool isSendRPC = true)
     {
-        defChange = StartCoroutine(ChangeDefRateProc(rate, limit, effect));
+        Coroutine cor = defChange = StartCoroutine(ChangeDefRateProc(rate, limit, effect));
+        SetBuffCoroutine("ChangeDefRate", cor, effect);
+
         if (isSendRPC)
         {
             int parentViewId = (effect != null) ? GetParentViewId(effect) : -1;
@@ -886,8 +895,8 @@ public class PlayerStatus : Photon.MonoBehaviour {
             return false;
         }
 
-        if (RunSpeedChangeCoroutine != null) StopCoroutine(RunSpeedChangeCoroutine);
-        RunSpeedChangeCoroutine = StartCoroutine(CheckAccelerateRunSpeed(rate, limit, effect));
+        Coroutine cor = StartCoroutine(CheckAccelerateRunSpeed(rate, limit, effect));
+        SetBuffCoroutine("AccelerateRunSpeed", cor, effect);
         if (isSendRpc)
         {
             int parentViewId = (effect != null) ? GetParentViewId(effect) : -1;
@@ -948,7 +957,9 @@ public class PlayerStatus : Photon.MonoBehaviour {
             return;
         }
 
-        StartCoroutine(CheckInterfareMove(limit, effect));
+        Coroutine cor = StartCoroutine(CheckInterfareMove(limit, effect));
+        SetBuffCoroutine("InterfareMove", cor, effect);
+
         if (isSendRpc)
         {
             int parentViewId = (effect != null) ? GetParentViewId(effect) : -1;
@@ -995,7 +1006,9 @@ public class PlayerStatus : Photon.MonoBehaviour {
     //回転制限(自分専用)
     public void InterfareTurn(float rate, float limit)
     {
-        StartCoroutine(CheckInterfareTurn(rate, limit));
+        Coroutine cor = StartCoroutine(CheckInterfareTurn(rate, limit));
+        SetBuffCoroutine("InterfareTurn", cor, null);
+
     }
     IEnumerator CheckInterfareTurn(float rate, float limit)
     {
@@ -1012,7 +1025,9 @@ public class PlayerStatus : Photon.MonoBehaviour {
     //無敵時間延長
     public void AvoidBurst(float rate, float limit, GameObject effect = null, bool isSendRPC = true)
     {
-        StartCoroutine(CheckAvoidBurst(rate, limit, effect));
+        Coroutine cor = StartCoroutine(CheckAvoidBurst(rate, limit, effect));
+        SetBuffCoroutine("AvoidBurst", cor, effect);
+
         if (isSendRPC)
         {
             int parentViewId = (effect != null) ? GetParentViewId(effect) : -1;
@@ -1146,14 +1161,50 @@ public class PlayerStatus : Photon.MonoBehaviour {
         return isSet;
     }
 
+    //バフコルーチンストック
+    private void SetBuffCoroutine(string funcName, Coroutine cor, GameObject effect = null)
+    {
+        BuffInfo buff = new BuffInfo();
+        buff.cor = cor;
+        buff.effect = effect;
+
+        if (buffCoroutineList.ContainsKey(funcName))
+        {
+            buffCoroutineList[funcName] = buff;
+        }
+        else
+        {
+            buffCoroutineList.Add(funcName, buff);
+        }
+    }
+    //バフコルーチン停止
+    private void StopBuffCoroutine(string funcName, bool isStopEffect = true)
+    {
+        if (!buffCoroutineList.ContainsKey(funcName)) return;
+        BuffInfo buff = buffCoroutineList[funcName];
+        if (buff == null) return;
+        if (buff.cor != null) StopCoroutine(buff.cor);
+        if (isStopEffect && buff.effect != null) SwitchEffect(buff.effect, false, false);
+        buffCoroutineList.Remove(funcName);
+    }
+    //バフコルーチン全停止
+    private void StopAllBuffCoroutine()
+    {
+        List<string> keys = new List<string>(buffCoroutineList.Keys);
+        foreach (string funcName in keys)
+        {
+            StopBuffCoroutine(funcName);
+        }
+    }
+
     public void ResetTargetNpcStatus()
     {
         if (defChange != null) StopCoroutine(defChange);
         //attackChange;
         //spChange;
+        StopAllBuffCoroutine();
         interfareMoveTime = 0;
         nowSpeedRate = 1;
-        if (RunSpeedChangeCoroutine != null) StopCoroutine(RunSpeedChangeCoroutine);
         runSpeed = defaultRunSpeed;
         jumpSpeed = defaultJumpSpeed;
         boostSpeed = defaultBoostSpeed;
@@ -1279,4 +1330,10 @@ public class PlayerStatus : Photon.MonoBehaviour {
         battleLogArea[BATTLE_LOG_DAMAGE].gameObject.SetActive(isDispBattleLog);
         return isDispBattleLog;
     }
+}
+
+class BuffInfo
+{
+    public Coroutine cor;
+    public GameObject effect;
 }
