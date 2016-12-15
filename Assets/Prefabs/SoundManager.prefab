@@ -32,6 +32,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &122050
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 472338}
+  - 114: {fileID: 11474490}
+  m_Layer: 0
+  m_Name: BgmBattle7
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &138166
 GameObject:
   m_ObjectHideFlags: 0
@@ -108,7 +124,23 @@ GameObject:
   - 4: {fileID: 474348}
   - 114: {fileID: 11447158}
   m_Layer: 0
-  m_Name: BgmBattle7
+  m_Name: BgmBattle9
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &183038
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 464720}
+  - 114: {fileID: 11498844}
+  m_Layer: 0
+  m_Name: BgmBattle8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -181,6 +213,8 @@ Transform:
   - {fileID: 495678}
   - {fileID: 455828}
   - {fileID: 463814}
+  - {fileID: 472338}
+  - {fileID: 464720}
   - {fileID: 474348}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -262,6 +296,32 @@ Transform:
   m_Children: []
   m_Father: {fileID: 415718}
   m_RootOrder: 7
+--- !u!4 &464720
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 183038}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -73.05953, y: -46.59007, z: -24.43925}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 415718}
+  m_RootOrder: 9
+--- !u!4 &472338
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 122050}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -73.05953, y: -46.59007, z: -24.43925}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 415718}
+  m_RootOrder: 8
 --- !u!4 &474348
 Transform:
   m_ObjectHideFlags: 1
@@ -274,7 +334,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 415718}
-  m_RootOrder: 8
+  m_RootOrder: 10
 --- !u!4 &491724
 Transform:
   m_ObjectHideFlags: 1
@@ -417,7 +477,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1537abaf576ea04cb2140bee386d45e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioClip: {fileID: 8300000, guid: 2272515ef9be1b24ba079db21244b5d2, type: 3}
+  audioClip: {fileID: 8300000, guid: e9b3c22b776825c4384c4838d502da95, type: 3}
   playStartTime: 0
   loopStartTime: 0.01
   loopEndTime: 69.74
@@ -447,7 +507,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1537abaf576ea04cb2140bee386d45e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioClip: {fileID: 8300000, guid: d8bc1485967dc234594894d1a5ca909d, type: 3}
+  audioClip: {fileID: 8300000, guid: 4418449dad9a7e74bb3ea879bb48bb23, type: 3}
   playStartTime: 0
   loopStartTime: 0.01
   loopEndTime: 81.75
@@ -462,7 +522,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1537abaf576ea04cb2140bee386d45e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioClip: {fileID: 8300000, guid: 34ab08e42d37e7f4baafc531d406bb10, type: 3}
+  audioClip: {fileID: 8300000, guid: 5e92a193b2d856544813f4aba998021c, type: 3}
   playStartTime: 0
   loopStartTime: 0
   loopEndTime: 93
@@ -477,7 +537,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1537abaf576ea04cb2140bee386d45e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioClip: {fileID: 8300000, guid: e4fd7be5d254f3c45a7cbbe11b6bded7, type: 3}
+  audioClip: {fileID: 8300000, guid: bff47b42e9337ab498c0d640beea47bf, type: 3}
   playStartTime: 0
   loopStartTime: 0
   loopEndTime: 0
@@ -503,6 +563,8 @@ MonoBehaviour:
   - {fileID: 11468016}
   - {fileID: 11400296}
   - {fileID: 11450298}
+  - {fileID: 11474490}
+  - {fileID: 11498844}
   - {fileID: 11447158}
 --- !u!114 &11450298
 MonoBehaviour:
@@ -530,10 +592,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1537abaf576ea04cb2140bee386d45e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioClip: {fileID: 8300000, guid: 9e0b148e44b850d46a2c45cf3ecaeef7, type: 3}
+  audioClip: {fileID: 8300000, guid: 7ef46721ea272b44ba885ff66e42a529, type: 3}
   playStartTime: 0
   loopStartTime: 0
   loopEndTime: 83
+--- !u!114 &11474490
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 122050}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1537abaf576ea04cb2140bee386d45e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioClip: {fileID: 8300000, guid: e4fd7be5d254f3c45a7cbbe11b6bded7, type: 3}
+  playStartTime: 0
+  loopStartTime: 0
+  loopEndTime: 0
+--- !u!114 &11498844
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 183038}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1537abaf576ea04cb2140bee386d45e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioClip: {fileID: 8300000, guid: 7bff45f113383d04494fac9e5acbf550, type: 3}
+  playStartTime: 0
+  loopStartTime: 0
+  loopEndTime: 0
 --- !u!114 &11499072
 MonoBehaviour:
   m_ObjectHideFlags: 1
