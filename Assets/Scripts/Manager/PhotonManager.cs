@@ -79,7 +79,7 @@ public class PhotonManager : MonoBehaviour
             titleLogo.SetActive(true);
             Init();
             isFirstScean = false;
-            Camera.main.transform.localRotation = topCameraQuat;
+            Camera.main.transform.localRotation = otherCameraQuat;
 
             //ステータスバー
             Common.Func.SetStatusbar();

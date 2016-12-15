@@ -909,7 +909,6 @@ MonoBehaviour:
   damagePerSecond: 200
   isPhysicsBulletBreak: 1
   isEnergyBulletBreak: 1
-  ownDamageRate: 0
   isFloorEffect: 0
   startScale: {x: 0, y: 0, z: 0}
   endScale: {x: 5, y: 5, z: 5}
@@ -927,7 +926,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 125673325fb8d414bbba101f7366ea31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effectTime: 15
+  effectTime: 18
   effectTypeList: 0100000002000000030000000400000005000000
   effectRateList:
   - 1.2
@@ -1081,7 +1080,6 @@ MonoBehaviour:
   damagePerSecond: 0
   isPhysicsBulletBreak: 0
   isEnergyBulletBreak: 0
-  ownDamageRate: 0
   isFloorEffect: 0
 --- !u!124 &12429804
 Behaviour:

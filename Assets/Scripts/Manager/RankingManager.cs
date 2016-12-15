@@ -26,6 +26,8 @@ public class RankingManager : SingletonMonoBehaviour<RankingManager>
         isDontDestroyOnLoad = false;
         base.Awake();
 
+        DialogController.OpenMessage(DialogController.MESSAGE_JOIN_ROOM, DialogController.MESSAGE_POSITION_RIGHT);
+
         foreach (int id in Common.Character.characterLineUp.Keys)
         {
             defaultCharacterId = id;
@@ -78,7 +80,6 @@ public class RankingManager : SingletonMonoBehaviour<RankingManager>
             rankingTran.SetParent(rankingArea, false);
             SetArenaRank(rankingTran, ranking);
         }
-
         DialogController.CloseMessage();
     }
 

@@ -44,6 +44,8 @@ public class StoreManager : CustomCommonManager
     {
         base.Awake();
 
+        DialogController.OpenMessage(DialogController.MESSAGE_JOIN_ROOM, DialogController.MESSAGE_POSITION_RIGHT);
+
         playMovieObj = GameObject.Find("PointGetList");
         SwitchBonusText();
 
@@ -56,7 +58,7 @@ public class StoreManager : CustomCommonManager
         base.Start();
 
         //初期表示
-        GetWeaponData(DispMenu);
+        GetWeaponData(() => ModeSelect(MODE_MENU));
     }
 
     public void ModeSelect(int mode)
@@ -474,6 +476,8 @@ public class StoreManager : CustomCommonManager
 
         UnityAction buy = () =>
         {
+            DialogController.OpenMessage(DialogController.MESSAGE_LOADING, DialogController.MESSAGE_POSITION_RIGHT);
+
             //point消費
             Point.Use PointUse = new Point.Use();
             PointUse.SetApiFinishCallback(() => MusicBuyResult(musicIndex));
