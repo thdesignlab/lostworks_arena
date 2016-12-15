@@ -14,7 +14,7 @@ public class PhotonManager : MonoBehaviour
     public static bool isReadyGame = false;
 
     [SerializeField]
-    private GameObject titleLogo;
+    private Transform titleCanvas;
     [SerializeField]
     private GameObject modeSelectArea;
     [SerializeField]
@@ -72,10 +72,14 @@ public class PhotonManager : MonoBehaviour
 
     public void Awake()
     {
+        GameObject MenuFade = titleCanvas.FindChild("FadeLeft").gameObject;
+        GameObject titleLogo = titleCanvas.FindChild("TitleLogo").gameObject;
+
         //初期化
         if (isFirstScean)
         {
             isReadyGame = false;
+            MenuFade.SetActive(false);
             titleLogo.SetActive(true);
             Init();
             isFirstScean = false;
@@ -89,6 +93,7 @@ public class PhotonManager : MonoBehaviour
         }
         else
         {
+            MenuFade.SetActive(true);
             titleLogo.SetActive(false);
             ReturnModeSelect();
         }
