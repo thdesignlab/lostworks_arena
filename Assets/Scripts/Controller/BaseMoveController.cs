@@ -297,6 +297,11 @@ public abstract class BaseMoveController : Photon.MonoBehaviour
         isSpecialBoost = false;
     }
 
+    public void StopBoost(bool isSendRPC = true)
+    {
+        MoveWorld(Vector3.zero, 0, 0, true, isSendRPC);
+    }
+
     //移動の入力受付(LocalVector)
     protected void Move(Vector3 vector, float speed, float limit = 0, bool isOutForce = false)
     {

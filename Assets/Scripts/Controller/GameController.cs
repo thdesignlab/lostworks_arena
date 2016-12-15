@@ -22,7 +22,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
     private Color colorWin = Color.red;
     private Color colorLose = Color.blue;
     private Color colorReady = Color.yellow;
-    private Color colorWait = new Color(0, 255, 255);
+    private Color colorWait = new Color(0, 1, 1);
     private float baseAlpha = 0.6f;
 
     private Transform myTran;
@@ -181,7 +181,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
 
             case RuntimePlatform.IPhonePlayer:
                 statusBar.GetComponent<LayoutElement>().preferredHeight = 60;
-                statusBar.GetComponent<Image>().color = new Color(1, 1, 1, 0.5f);
+                statusBar.GetComponent<Image>().color = new Color(0, 0, 0, 0.5f);
                 break;
 
             default:
@@ -1019,13 +1019,18 @@ public class GameController : SingletonMonoBehaviour<GameController>
             foreach (GameObject obj in objs)
             {
                 //親がある場合はそのまま
-                if (obj.transform.parent != null) continue;
+                if (obj == null || obj.transform.parent != null) continue;
 
-                //ローカルのObjectは削除
-                if (obj.GetPhotonView() == null) Destroy(obj);
-
-                //自分のものなら削除
-                if (obj.GetPhotonView().isMine) PhotonNetwork.Destroy(obj);
+                if (obj.GetPhotonView() == null)
+                {
+                    //ローカルのObjectは削除
+                    Destroy(obj);
+                }
+                else
+                {
+                    //自分のものなら削除
+                    if (obj.GetPhotonView().isMine) PhotonNetwork.Destroy(obj);
+                }
             }
         }
     }

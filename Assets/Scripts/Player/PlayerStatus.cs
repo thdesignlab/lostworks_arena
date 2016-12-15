@@ -957,6 +957,8 @@ public class PlayerStatus : Photon.MonoBehaviour {
             return;
         }
 
+        moveCtrl.StopBoost();
+
         Coroutine cor = StartCoroutine(CheckInterfareMove(limit, effect));
         SetBuffCoroutine("InterfareMove", cor, effect);
 
