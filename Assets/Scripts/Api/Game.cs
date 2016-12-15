@@ -22,6 +22,16 @@ namespace Game
             foreach (GameConfig data in dataList)
             {
                 ModelManager.gameConfigList.Add(data.key, data.value);
+                switch (data.key)
+                {
+                    case "hp_url":
+                        Common.CO.HP_URL = data.value;
+                        break;
+
+                    case "hp_tutorial_url":
+                        Common.CO.HP_TUTORIAL_URL = data.value;
+                        break;
+                }
             }
         }
     }

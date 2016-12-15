@@ -122,13 +122,13 @@ public class CustomCommonManager : SingletonMonoBehaviour<CustomCommonManager>
     }
     protected void GachaErrorAction()
     {
-        if (Common.Func.IsPc())
+        if (Common.Func.IsPc() && (MyDebug.Instance.isDebugMode || UserManager.isAdmin))
         {
             AddPoint();
         }
         else
         {
-            DialogController.OpenDialog("接続Error");
+            DialogController.OpenDialog(PhotonManager.MESSAGE_CONNECT_FAILED);
         }
     }
 
