@@ -12,7 +12,7 @@ public class UnityAds : SingletonMonoBehaviour<UnityAds>
 
     //Unityの広告ID
     [SerializeField]
-    private string _unityAdsiosID;
+    private string _unityAdsIosID;
     [SerializeField]
     private string _unityAdsAndroidID;
     [SerializeField]
@@ -34,7 +34,7 @@ public class UnityAds : SingletonMonoBehaviour<UnityAds>
             //Advertisement.allowPrecache = true;
 
 #if UNITY_IOS
-      Advertisement.Initialize (_unityAdsiosID, isDebugMode);
+      Advertisement.Initialize (_unityAdsIosID, isDebugMode);
 #elif UNITY_ANDROID
             Advertisement.Initialize(_unityAdsAndroidID, isDebugMode);
 #endif

@@ -35,16 +35,16 @@ public class PhotonManager : MonoBehaviour
     // 1: Local
     // 2: Network
     // 3: Local + Network
-    const int SELECTABLE_MODE_LOCAL = 1;
-    const int SELECTABLE_MODE_NETWORK = 2;
-    const int SELECTABLE_MODE_BOTH = 3;
-    private int selectableMode = SELECTABLE_MODE_BOTH;
+    //const int SELECTABLE_MODE_LOCAL = 1;
+    //const int SELECTABLE_MODE_NETWORK = 2;
+    //const int SELECTABLE_MODE_BOTH = 3;
+    //private int selectableMode = SELECTABLE_MODE_BOTH;
 
     private int maxRoomCount = 10;
     const int MAX_ROOM_PLAYER_COUNT = 2;
     const string ROOM_NAME_PREFIX = "Room";
 
-    private bool isTapToStart = false;
+    //private bool isTapToStart = false;
     private bool isConnectFailed = false;
     private bool isDialogOpen = false;
     private bool isNetworkMode = false;
@@ -72,27 +72,27 @@ public class PhotonManager : MonoBehaviour
 
     public void Awake()
     {
+        //ステータスバー
+        Common.Func.SetStatusbar();
+
         GameObject MenuFade = titleCanvas.FindChild("FadeLeft").gameObject;
         GameObject titleLogo = titleCanvas.FindChild("TitleLogo").gameObject;
 
         //初期化
         if (isFirstScean)
         {
+            isFirstScean = false;
             isReadyGame = false;
             MenuFade.SetActive(false);
             titleLogo.SetActive(true);
             Init();
-            isFirstScean = false;
-            Camera.main.transform.localRotation = otherCameraQuat;
-
-            //ステータスバー
-            Common.Func.SetStatusbar();
 
             //ユーザー情報取得
             UserManager.SetPlayerPrefs();
         }
         else
         {
+            isReadyGame = true;
             MenuFade.SetActive(true);
             titleLogo.SetActive(false);
             ReturnModeSelect();
@@ -114,34 +114,20 @@ public class PhotonManager : MonoBehaviour
     IEnumerator Start()
     {
         if (isReadyGame) yield break;
-        DialogController.OpenMessage(DialogController.MESSAGE_LOADING, DialogController.MESSAGE_POSITION_RIGHT);
-        Coroutine initApi = StartCoroutine(InitApi());
-        yield return initApi;
+
+        //スプラッシュ終了待ち
         for (;;)
         {
-            if (!Application.isShowingSplashScreen)
-            {
-                isReadyGame = true;
-                yield break;
-            }
             yield return null;
+            if (!Application.isShowingSplashScreen) break;
         }
-    }
 
-    void Update()
-    {
-        if (!isReadyGame) return;
-
-        if (isTapToStart)
+        //TapToStart点灯
+        GameObject message = null;
+        Image messageImage = null;
+        Text messageText = null;
+        for (;;)
         {
-            GameObject message = DialogController.OpenMessage(DialogController.MESSAGE_TOP, DialogController.MESSAGE_POSITION_CENTER);
-            Image messageImage = DialogController.GetMessageImageObj();
-            Text messageText = DialogController.GetMessageTextObj();
-            if (Input.GetMouseButtonDown(0) && isReadyGame)
-            {
-                isTapToStart = false;
-                ScreenManager.Instance.Load(Common.CO.SCENE_TITLE, DialogController.MESSAGE_LOADING);
-            }
             if (message != null)
             {
                 processTime += Time.deltaTime;
@@ -156,9 +142,35 @@ public class PhotonManager : MonoBehaviour
             }
             else
             {
-                processTime = 0;
+                message = DialogController.OpenMessage(DialogController.MESSAGE_TOP, DialogController.MESSAGE_POSITION_CENTER);
+                messageImage = DialogController.GetMessageImageObj();
+                messageText = DialogController.GetMessageTextObj();
             }
+
+            //タップ判定
+            if (Input.GetMouseButtonDown(0)) break;
+            yield return null;
         }
+        messageText.color = new Color(messageText.color.r, messageText.color.g, messageText.color.b, 1);
+        messageImage.color = new Color(messageImage.color.r, messageImage.color.g, messageImage.color.b, 1);
+
+        //初期設定読み込み
+        DialogController.OpenMessage(DialogController.MESSAGE_LOADING, DialogController.MESSAGE_POSITION_RIGHT);
+        InitApi();
+        for (;;)
+        {
+            if (isReadyGame)
+            {
+                TapToStart();
+                break;
+            }
+            yield return null;
+        }
+    }
+
+    void Update()
+    {
+        if (!isReadyGame) return;
 
         if (isNetworkMode)
         {
@@ -223,17 +235,12 @@ public class PhotonManager : MonoBehaviour
         if (!isReturn)
         {
             SwitchModeSelectArea(false);
-            Camera.main.transform.localRotation = topCameraQuat;
+            Camera.main.transform.localRotation = otherCameraQuat;
         }
-        DialogController.CloseMessage();
         SwitchNetworkArea(false);
-        isTapToStart = true;
         isConnectFailed = false;
         isNetworkMode = false;
-        if (PhotonNetwork.connected)
-        {
-            PhotonNetwork.Disconnect();
-        }
+        if (PhotonNetwork.connected) PhotonNetwork.Disconnect();
     }
 
     public void ReturnModeSelect()
@@ -247,7 +254,7 @@ public class PhotonManager : MonoBehaviour
 
         UnityAction collback = () => { 
             Init(true);
-            TapToStart();
+            SwitchModeSelectArea(true, true);
             DialogController.CloseMessage();
         };
         CameraRotate(true, collback);
@@ -387,30 +394,28 @@ public class PhotonManager : MonoBehaviour
     //タイトル画面から進む
     private void TapToStart()
     {
-        isTapToStart = false;
+        ScreenManager.Instance.Load(Common.CO.SCENE_TITLE, DialogController.MESSAGE_LOADING);
 
-        SwitchModeSelectArea(true, true);
+        ////現在はBOTHのみ
+        //switch (selectableMode)
+        //{
+        //    case SELECTABLE_MODE_LOCAL:
+        //        //ローカルのみ
+        //        DialogController.CloseMessage();
+        //        break;
 
-        //現在はBOTHのみ
-        switch (selectableMode)
-        {
-            case SELECTABLE_MODE_LOCAL:
-                //ローカルのみ
-                DialogController.CloseMessage();
-                break;
+        //    case SELECTABLE_MODE_NETWORK:
+        //        //ネットワークのみ
+        //        DialogController.CloseMessage();
+        //        break;
 
-            case SELECTABLE_MODE_NETWORK:
-                //ネットワークのみ
-                DialogController.CloseMessage();
-                break;
-
-            case SELECTABLE_MODE_BOTH:
-                //ローカル+ネットワーク
-                DialogController.CloseMessage();
-                break;
-        }
+        //    case SELECTABLE_MODE_BOTH:
+        //        //ローカル+ネットワーク
+        //        DialogController.CloseMessage();
+        //        break;
+        //}
     }
-    
+
 
     // ##### モードセレクト #####
 
@@ -680,23 +685,15 @@ public class PhotonManager : MonoBehaviour
 
     //##### 登録情報取得 #####
 
-    bool isFinishInitApi = false;
-    IEnumerator InitApi()
+    //bool isFinishInitApi = false;
+    private void InitApi()
     {
-        //Action weaponDataCallback = () => GetUserData(FinishInitApi, true);
-        //Action gameConfigCallback = () => GetWeaponData(weaponDataCallback);
         Action gameConfigCallback = () => GetUserData(FinishInitApi, true);
         GetGameConfig(gameConfigCallback);
-
-        for (;;)
-        {
-            if (isFinishInitApi) break;
-            yield return null;
-        }
     }
     private void FinishInitApi()
     {
-        isFinishInitApi = true;
+        isReadyGame = true;
     }
 
     //ユーザー情報取得

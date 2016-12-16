@@ -85,6 +85,8 @@ public abstract class BaseApi
                 userCreate.SetApiFinishCallback(action);
                 if (isIgnoreError) userCreate.SetApiErrorIngnore();
                 if (apiConnectErrorCallback != null) userCreate.SetConnectErrorCallback(apiConnectErrorCallback);
+                if (apiFinishErrorCallback != null) userCreate.SetApiFinishErrorCallback(apiFinishErrorCallback);
+                if (nextAction != null) userCreate.SetNextAction(nextAction);
                 userCreate.Exe();
                 return;
             }
@@ -95,6 +97,8 @@ public abstract class BaseApi
                 authLogin.SetApiFinishCallback(action);
                 if (isIgnoreError) authLogin.SetApiErrorIngnore();
                 if (apiConnectErrorCallback != null) authLogin.SetConnectErrorCallback(apiConnectErrorCallback);
+                if (apiFinishErrorCallback != null) authLogin.SetApiFinishErrorCallback(apiFinishErrorCallback);
+                if (nextAction != null) authLogin.SetNextAction(nextAction);
                 authLogin.Exe();
                 return;
             }
