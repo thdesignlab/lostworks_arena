@@ -459,7 +459,6 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 439066}
-  - 95: {fileID: 9599878}
   m_Layer: 0
   m_Name: chara6_idle
   m_TagString: Untagged
@@ -2245,23 +2244,6 @@ Transform:
   - {fileID: 418526}
   m_Father: {fileID: 495294}
   m_RootOrder: 0
---- !u!95 &9599878
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 142556}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 94be47b476455c84ebdf62d3a5eebb9b, type: 3}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 1
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
 --- !u!114 &11415276
 MonoBehaviour:
   m_ObjectHideFlags: 1
