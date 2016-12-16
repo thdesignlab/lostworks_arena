@@ -170,7 +170,7 @@ public class CustomCommonManager : SingletonMonoBehaviour<CustomCommonManager>
         if (!string.IsNullOrEmpty(ModelManager.tipsInfo.text))
         {
             //Tipsあり
-            text = "# " + ModelManager.tipsInfo.title + " #\n";
+            text = "# " + ModelManager.tipsInfo.title + " #\n\n";
             text += ModelManager.tipsInfo.text;
             imgName = ModelManager.tipsInfo.image;
 
