@@ -149,18 +149,20 @@ public class CustomManager : CustomCommonManager
         partsNameText.text = "";
 
         //ステータスバー対策
-        switch (Application.platform)
+        if (Common.Func.IsAndroid())
         {
-            case RuntimePlatform.Android:
-            case RuntimePlatform.IPhonePlayer:
-                statusBar.GetComponent<LayoutElement>().preferredHeight = 60;
-                statusBar.GetComponent<Image>().color = new Color(0, 0, 0, 1);
-                break;
-
-            default:
-                statusBar.GetComponent<LayoutElement>().preferredHeight = 30;
-                statusBar.GetComponent<Image>().color = new Color(0, 0, 0, 0);
-                break;
+            statusBar.GetComponent<LayoutElement>().preferredHeight = 60;
+            statusBar.GetComponent<Image>().color = new Color(0, 0, 0, 1);
+        }
+        else if (Common.Func.IsIos())
+        {
+            statusBar.GetComponent<LayoutElement>().preferredHeight = 60;
+            statusBar.GetComponent<Image>().color = new Color(0, 0, 0, 1);
+        }
+        else
+        {
+            statusBar.GetComponent<LayoutElement>().preferredHeight = 30;
+            statusBar.GetComponent<Image>().color = new Color(0, 0, 0, 0);
         }
     }
 

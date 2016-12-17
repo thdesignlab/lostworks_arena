@@ -21,8 +21,6 @@ public class UserManager
 
     public static bool isCheckCustomSceneNetwork = false;      //ネットワーク接続チェックFLG
 
-    public static bool isPC = false;
-
     //ユーザー情報初期値設定
     private static void InitPlayerPrefs()
     {
@@ -38,17 +36,6 @@ public class UserManager
         isAdmin = false;
         apiToken = "";
         userPoint = -1;
-
-        switch (Application.platform)
-        {
-            case RuntimePlatform.Android:
-            case RuntimePlatform.IPhonePlayer:
-                isPC = false;
-                break;
-            default:
-                isPC = true;
-                break;
-        }
     }
 
     //ユーザー情報設定

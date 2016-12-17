@@ -208,7 +208,7 @@ MonoBehaviour:
   hitEffect: {fileID: 0}
   speed: 0
   damage: 0
-  damagePerSecond: 135
+  damagePerSecond: 120
   stuckTime: 0
   knockBackRate: 0
   isPhysicsBulletBreak: 0
@@ -246,7 +246,6 @@ MonoBehaviour:
   damagePerSecond: 0
   isPhysicsBulletBreak: 1
   isEnergyBulletBreak: 1
-  ownDamageRate: 0
   isFloorEffect: 0
 --- !u!114 &11457546
 MonoBehaviour:

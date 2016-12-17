@@ -172,22 +172,20 @@ public class GameController : SingletonMonoBehaviour<GameController>
 
         //ステータスバー対策
         Transform statusBar = screenTran.FindChild("Status/HiddenLine");
-        switch (Application.platform)
+        if (Common.Func.IsAndroid())
         {
-            case RuntimePlatform.Android:
-                statusBar.GetComponent<LayoutElement>().preferredHeight = 60;
-                statusBar.GetComponent<Image>().color = new Color(0, 0, 0, 0.5f);
-                break;
-
-            case RuntimePlatform.IPhonePlayer:
-                statusBar.GetComponent<LayoutElement>().preferredHeight = 60;
-                statusBar.GetComponent<Image>().color = new Color(0, 0, 0, 0.5f);
-                break;
-
-            default:
-                statusBar.GetComponent<LayoutElement>().preferredHeight = 30;
-                statusBar.GetComponent<Image>().color = new Color(0, 0, 0, 0);
-                break;
+            statusBar.GetComponent<LayoutElement>().preferredHeight = 60;
+            statusBar.GetComponent<Image>().color = new Color(0, 0, 0, 0.5f);
+        }
+        else if (Common.Func.IsIos())
+        {
+            statusBar.GetComponent<LayoutElement>().preferredHeight = 60;
+            statusBar.GetComponent<Image>().color = new Color(0, 0, 0, 0.5f);
+        }
+        else
+        {
+            statusBar.GetComponent<LayoutElement>().preferredHeight = 30;
+            statusBar.GetComponent<Image>().color = new Color(0, 0, 0, 0);
         }
     }
 
@@ -1245,6 +1243,11 @@ public class GameController : SingletonMonoBehaviour<GameController>
             Action onSkipped = () => ContinueMission();
             Action onFailed = () =>
             {
+                if (Common.Func.IsPc() && (MyDebug.Instance.isDebugMode || UserManager.isAdmin))
+                {
+                    ContinueMission();
+                    return;
+                }
                 string msg = PhotonManager.MESSAGE_CONNECT_FAILED;
                 List<string> btnTextList = new List<string>(){ "Retry", "Titleへ" };
                 List<UnityAction> okActionList = new List<UnityAction>() {

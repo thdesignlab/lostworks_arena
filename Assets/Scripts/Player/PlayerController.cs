@@ -34,7 +34,8 @@ public class PlayerController : MoveOfCharacter
     private Button subBtn;
     private Button extraBtn;
 
-    private bool isPC = false;
+    private bool _isPC;
+    private bool isPC { get{ return _isPC ? _isPC : _isPC = Common.Func.IsPc(); } }
 
     private Vector3 setAngleVector = new Vector3(1, 0, 1);
 
@@ -61,17 +62,6 @@ public class PlayerController : MoveOfCharacter
                 if (circleArrow != null)
                 {
                     circleArrowTran = circleArrow.transform;
-                }
-
-                switch (Application.platform)
-                {
-                    case RuntimePlatform.Android:
-                    case RuntimePlatform.IPhonePlayer:
-                        isPC = false;
-                        break;
-                    default:
-                        isPC = true;
-                        break;
                 }
             }
         }

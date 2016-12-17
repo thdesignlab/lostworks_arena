@@ -78,6 +78,7 @@ GameObject:
   - 114: {fileID: 11492832}
   - 114: {fileID: 11460734}
   - 114: {fileID: 11409956}
+  - 114: {fileID: 11443040}
   m_Layer: 0
   m_Name: ExtraGatling
   m_TagString: Weapon
@@ -497,6 +498,22 @@ MonoBehaviour:
   viewIdField: 0
   instantiationId: -1
   isRuntimeInstantiated: 0
+--- !u!114 &11443040
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 143896}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 125673325fb8d414bbba101f7366ea31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectTime: 0
+  effectTypeList: 05000000
+  effectRateList:
+  - 2
+  effect: {fileID: 0}
 --- !u!114 &11453602
 MonoBehaviour:
   m_ObjectHideFlags: 1
