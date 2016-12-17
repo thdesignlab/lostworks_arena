@@ -651,7 +651,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
                 debuffDic[key] -= deltaTime;
                 if (debuffDic[key] > 0) isDebuff = true;
             }
-            debuffEffect.SetActive(isDebuff);
+            if (debuffEffect != null) debuffEffect.SetActive(isDebuff);
         }
 
         //残り無敵時間
