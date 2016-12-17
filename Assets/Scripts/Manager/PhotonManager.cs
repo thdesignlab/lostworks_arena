@@ -766,7 +766,7 @@ public class PhotonManager : MonoBehaviour
         gameConfig.SetConnectErrorCallback(FinishInitApi);
         gameConfig.SetApiErrorIngnore();
         gameConfig.SetRetryCount(1);
-        gameConfig.CheckVersion(true);
+        //gameConfig.CheckVersion(true);
         gameConfig.Exe();
     }
     private void GameConfigCallback()

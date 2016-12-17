@@ -479,7 +479,7 @@ public class BulletController : MoveOfCharacter
     {
         //owner,target
         Transform preOwnerTran = ownerTran;
-        BulletSetting(null, preOwnerTran, weaponTran, false);
+        BulletSetting(null, preOwnerTran, weaponTran, false, false);
 
         //object reset
         if (obCtrl != null) obCtrl.Reset();

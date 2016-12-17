@@ -244,7 +244,12 @@ public class PlayerStatus : Photon.MonoBehaviour {
             jumpSpeed = defaultJumpSpeed;
             boostSpeed = defaultBoostSpeed;
             isForceInvincible = false;
-            debuffDic = new Dictionary<int, float>();
+            //debuffDic = new Dictionary<int, float>();
+            List<int> keys = new List<int>(debuffDic.Keys);
+            foreach (int key in keys)
+            {
+                if (debuffDic.ContainsKey(key)) debuffDic[key] = 0;
+            }
 
             if (isNpc)
             {
@@ -651,11 +656,20 @@ public class PlayerStatus : Photon.MonoBehaviour {
                 debuffDic[key] -= deltaTime;
                 if (debuffDic[key] > 0) isDebuff = true;
             }
-            if (debuffEffect != null) debuffEffect.SetActive(isDebuff);
+            if (debuffEffect != null)
+            {
+                debuffEffect.SetActive(isDebuff);
+                photonView.RPC("SwitchDebuffEffectRPC", PhotonTargets.Others, isDebuff);
+            }
         }
 
         //残り無敵時間
         if (leftInvincibleTime > 0) leftInvincibleTime -= deltaTime;
+    }
+    [PunRPC]
+    private void SwitchDebuffEffectRPC(bool flg)
+    {
+        if (debuffEffect != null) debuffEffect.SetActive(flg);
     }
 
     public void SetInvincible(bool flg = true, float time = 0, bool isShieldVisible = false, bool isReflection = false)
@@ -1144,7 +1158,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
     }
 
     //デバフストック
-    public bool SetDebuff(int type, float limit)
+    public bool SetDebuff(int type, float limit, bool isSendRPC = true)
     {
         bool isSet = false;
         if (debuffDic.ContainsKey(type))
