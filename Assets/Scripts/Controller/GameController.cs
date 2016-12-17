@@ -1019,12 +1019,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
                 //親がある場合はそのまま
                 if (obj == null || obj.transform.parent != null) continue;
 
-                if (obj.GetPhotonView() == null)
-                {
-                    //ローカルのObjectは削除
-                    Destroy(obj);
-                }
-                else
+                if (obj.GetPhotonView() != null)
                 {
                     //自分のものなら削除
                     if (obj.GetPhotonView().isMine) PhotonNetwork.Destroy(obj);
