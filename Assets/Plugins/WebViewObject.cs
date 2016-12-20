@@ -176,35 +176,7 @@ public class WebViewObject : MonoBehaviour
 #if UNITY_WEBPLAYER
         Application.ExternalCall("unityWebView.init", name);
 #elif UNITY_EDITOR || UNITY_STANDALONE_OSX
-        {
-            var uri = new Uri(_CWebViewPlugin_GetAppPath());
-            var info = File.ReadAllText(uri.LocalPath + "Contents/Info.plist");
-            if (Regex.IsMatch(info, @"<key>CFBundleGetInfoString</key>\s*<string>Unity version [5-9]\.[3-9]")
-                && !Regex.IsMatch(info, @"<key>NSAppTransportSecurity</key>\s*<dict>\s*<key>NSAllowsArbitraryLoads</key>\s*<true/>\s*</dict>")) {
-                Debug.LogWarning("<color=yellow>WebViewObject: NSAppTransportSecurity isn't configured to allow HTTP. If you need to allow any HTTP access, please shutdown Unity and invoke:</color>\n/usr/libexec/PlistBuddy -c \"Add NSAppTransportSecurity:NSAllowsArbitraryLoads bool true\" /Applications/Unity/Unity.app/Contents/Info.plist");
-            }
-        }
-        webView = _CWebViewPlugin_Init(
-            name,
-            transparent,
-            Screen.width,
-            Screen.height,
-            ua,
-            Application.platform == RuntimePlatform.OSXEditor);
-        // define pseudo requestAnimationFrame.
-        EvaluateJS(@"(function() {
-            var vsync = 1000 / 60;
-            var t0 = window.performance.now();
-            window.requestAnimationFrame = function(callback, element) {
-                var t1 = window.performance.now();
-                var duration = t1 - t0;
-                var d = vsync - ((duration > vsync) ? duration % vsync : duration);
-                var id = window.setTimeout(function() {t0 = window.performance.now(); callback(t1 + d);}, d);
-                return id;
-            };
-        })()");
-        rect = new Rect(0, 0, Screen.width, Screen.height);
-        OnApplicationFocus(true);
+        throw new Exception();
 #elif UNITY_IPHONE
         webView = _CWebViewPlugin_Init(name, transparent, enableWKWebView);
 #elif UNITY_ANDROID
