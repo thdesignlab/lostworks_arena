@@ -676,6 +676,8 @@ public class GameController : SingletonMonoBehaviour<GameController>
             else
             {
                 //待機中
+                SwitchRoomOpen(true);
+
                 GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
                 if (players.Length == needPlayerCount)
                 {
@@ -1266,7 +1268,6 @@ public class GameController : SingletonMonoBehaviour<GameController>
     {
         isContinue = true;
         ResetDamageSource();
-        SwitchRoomOpen(true);
     }
 
     //結果ダイアログ表示
@@ -1541,7 +1542,6 @@ public class GameController : SingletonMonoBehaviour<GameController>
         //ルーム名変更
         RoomApi.ChangeMaster roomApiChangeMaster = new RoomApi.ChangeMaster();
         roomApiChangeMaster.Exe();
-        if (!isGameStart) SwitchRoomOpen(true);
     }
 
 }

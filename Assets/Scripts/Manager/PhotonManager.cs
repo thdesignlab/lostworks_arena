@@ -464,7 +464,11 @@ public class PhotonManager : MonoBehaviour
             //roomNameIF = networkArea.transform.FindChild("Network/Room/Name").GetComponent<InputField>();
             roomStatusText = networkArea.transform.FindChild("Network/RoomStatus").GetComponent<Text>();
 
-            UnityAction uniAction = () => isNetworkMode = true;
+            UnityAction uniAction = () =>
+            {
+                preConnectedAndReady = false;
+                isNetworkMode = true;
+            };
             CameraRotate(false, uniAction);
         };
 
