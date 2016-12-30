@@ -5,8 +5,8 @@ using UnityEngine.Events;
 public class VersionManager : Singleton<VersionManager>
 {
     //Version
-    private const string IOS_VERSION = "1.0.5";
-    private const string ANDROID_VERSION = "1.0.5";
+    private const string IOS_VERSION = "1.0.6";
+    private const string ANDROID_VERSION = "1.0.6";
 
     //バージョン差異チェック
     public bool IsVersionError(string version)
