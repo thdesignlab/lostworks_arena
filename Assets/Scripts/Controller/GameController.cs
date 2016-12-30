@@ -46,6 +46,7 @@ public class GameController : SingletonMonoBehaviour<GameController>
     private bool isVsStart = false;
     [HideInInspector]
     public bool isPractice = false;
+    private float playerWaitTime = 0;
 
     private List<PlayerStatus> playerStatuses = new List<PlayerStatus>();
     //private PlayerSetting playerSetting;
@@ -677,6 +678,15 @@ public class GameController : SingletonMonoBehaviour<GameController>
             {
                 //待機中
                 SwitchRoomOpen(true);
+                if (!PhotonNetwork.room.open)
+                {
+                    playerWaitTime += Time.deltaTime;
+                    if (playerWaitTime > 15) GoToTitle();
+                }
+                else
+                {
+                    playerWaitTime = 0;
+                }
 
                 GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
                 if (players.Length == needPlayerCount)
