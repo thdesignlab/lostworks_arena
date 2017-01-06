@@ -90,7 +90,6 @@ MonoBehaviour:
   damagePerSecond: 0
   isPhysicsBulletBreak: 0
   isEnergyBulletBreak: 0
-  ownDamageRate: 0
   isFloorEffect: 0
 --- !u!135 &13565084
 SphereCollider:
@@ -668,10 +667,10 @@ ParticleSystem:
       maxGradient:
         key0:
           serializedVersion: 2
-          rgba: 4294967295
+          rgba: 520093695
         key1:
           serializedVersion: 2
-          rgba: 1111785215
+          rgba: 507805439
         key2:
           serializedVersion: 2
           rgba: 0
