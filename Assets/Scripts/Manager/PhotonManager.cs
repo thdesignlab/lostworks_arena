@@ -551,7 +551,7 @@ public class PhotonManager : MonoBehaviour
             }
 
             string roomKey = ModelManager.roomData.room_key;
-            PhotonNetwork.CreateRoom(roomKey, new RoomOptions() { maxPlayers = 2, PlayerTtl = 1000 }, null);
+            PhotonNetwork.CreateRoom(roomKey, new RoomOptions() { maxPlayers = 2 }, null);
         };
 
         RoomApi.Create roomApiCreate = new RoomApi.Create();
