@@ -51,6 +51,7 @@ GameObject:
   - 114: {fileID: 11461830}
   - 54: {fileID: 5440356}
   - 82: {fileID: 8232982}
+  - 96: {fileID: 9667880}
   m_Layer: 0
   m_Name: SearchRay
   m_TagString: EnergyBullet
@@ -264,6 +265,53 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
+--- !u!96 &9667880
+TrailRenderer:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 196994}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_Materials:
+  - {fileID: 2100000, guid: 0ed3b23339e55a04cafdc76e605b8aef, type: 2}
+  m_SubsetIndices: 
+  m_StaticBatchRoot: {fileID: 0}
+  m_UseLightProbes: 1
+  m_ReflectionProbeUsage: 1
+  m_ProbeAnchor: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_Time: 0.5
+  m_StartWidth: 1
+  m_EndWidth: 1
+  m_Colors:
+    m_Color[0]:
+      serializedVersion: 2
+      rgba: 4279894271
+    m_Color[1]:
+      serializedVersion: 2
+      rgba: 4286722559
+    m_Color[2]:
+      serializedVersion: 2
+      rgba: 4288364799
+    m_Color[3]:
+      serializedVersion: 2
+      rgba: 4289487615
+    m_Color[4]:
+      serializedVersion: 2
+      rgba: 13858559
+  m_MinVertexDistance: 0.1
+  m_Autodestruct: 0
 --- !u!114 &11429462
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -778,7 +826,7 @@ ParticleSystem:
       minMaxState: 3
     randomizeRotationDirection: 0
     gravityModifier: 0
-    maxNumParticles: 100
+    maxNumParticles: 200
     rotation3D: 0
   ShapeModule:
     serializedVersion: 2
@@ -805,7 +853,7 @@ ParticleSystem:
     serializedVersion: 2
     m_Type: 0
     rate:
-      scalar: 100
+      scalar: 200
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -991,7 +1039,7 @@ ParticleSystem:
           rgba: 4294967295
         key1:
           serializedVersion: 2
-          rgba: 16777215
+          rgba: 3640655871
         key2:
           serializedVersion: 2
           rgba: 0
@@ -1019,15 +1067,15 @@ ParticleSystem:
         ctime6: 0
         ctime7: 0
         atime0: 0
-        atime1: 65535
-        atime2: 0
+        atime1: 55319
+        atime2: 65535
         atime3: 0
         atime4: 0
         atime5: 0
         atime6: 0
         atime7: 0
         m_NumColorKeys: 2
-        m_NumAlphaKeys: 2
+        m_NumAlphaKeys: 3
       minGradient:
         key0:
           serializedVersion: 2
