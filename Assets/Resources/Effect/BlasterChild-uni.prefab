@@ -303,8 +303,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f086994b8c47ea443baf4face217f973, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effectSpawn: {fileID: 109874, guid: 45752b7016b587141a9cc7a60c12fe4b, type: 2}
-  activeLimitTime: 0.2
+  effectSpawn: {fileID: 163966, guid: 65351d6cc2acb2741b5115144056024d, type: 2}
+  activeLimitTime: 0.06
   activeLimitDistance: 0
   isNotAutoBreak: 0
 --- !u!114 &11447080
@@ -391,7 +391,8 @@ MonoBehaviour:
   childBullet: {fileID: 122234, guid: d72d7ef3aa59cd946866e9a171aacd00, type: 2}
   childeBulletCount: 1
   purgeDistance: 0
-  purgeTime: 0.1
+  purgeTime: 0.05
+  purgeDiff: 0
   isPurgeDestroy: 0
 --- !u!114 &11460158
 MonoBehaviour:
@@ -427,7 +428,8 @@ MonoBehaviour:
   childBullet: {fileID: 122234, guid: d72d7ef3aa59cd946866e9a171aacd00, type: 2}
   childeBulletCount: 1
   purgeDistance: 0
-  purgeTime: 0.1
+  purgeTime: 0.05
+  purgeDiff: 0
   isPurgeDestroy: 0
 --- !u!114 &11464436
 MonoBehaviour:
@@ -463,7 +465,8 @@ MonoBehaviour:
   childBullet: {fileID: 122234, guid: d72d7ef3aa59cd946866e9a171aacd00, type: 2}
   childeBulletCount: 1
   purgeDistance: 0
-  purgeTime: 0.1
+  purgeTime: 0.05
+  purgeDiff: 0
   isPurgeDestroy: 0
 --- !u!114 &11479824
 MonoBehaviour:
@@ -524,7 +527,8 @@ MonoBehaviour:
   childBullet: {fileID: 122234, guid: d72d7ef3aa59cd946866e9a171aacd00, type: 2}
   childeBulletCount: 1
   purgeDistance: 0
-  purgeTime: 0.1
+  purgeTime: 0.05
+  purgeDiff: 0
   isPurgeDestroy: 0
 --- !u!114 &11482382
 MonoBehaviour:
@@ -560,7 +564,8 @@ MonoBehaviour:
   childBullet: {fileID: 122234, guid: d72d7ef3aa59cd946866e9a171aacd00, type: 2}
   childeBulletCount: 1
   purgeDistance: 0
-  purgeTime: 0.1
+  purgeTime: 0.05
+  purgeDiff: 0
   isPurgeDestroy: 0
 --- !u!114 &11490340
 MonoBehaviour:
@@ -578,7 +583,6 @@ MonoBehaviour:
   damagePerSecond: 0
   isPhysicsBulletBreak: 0
   isEnergyBulletBreak: 0
-  ownDamageRate: 0
   isFloorEffect: 0
 --- !u!114 &11493848
 MonoBehaviour:
@@ -639,7 +643,8 @@ MonoBehaviour:
   childBullet: {fileID: 122234, guid: d72d7ef3aa59cd946866e9a171aacd00, type: 2}
   childeBulletCount: 1
   purgeDistance: 0
-  purgeTime: 0.1
+  purgeTime: 0.05
+  purgeDiff: 0
   isPurgeDestroy: 0
 --- !u!1001 &100100000
 Prefab:

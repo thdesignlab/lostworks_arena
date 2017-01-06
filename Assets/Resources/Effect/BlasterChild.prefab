@@ -167,7 +167,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effectSpawn: {fileID: 163966, guid: 65351d6cc2acb2741b5115144056024d, type: 2}
-  activeLimitTime: 0.2
+  activeLimitTime: 0.06
   activeLimitDistance: 0
   isNotAutoBreak: 0
 --- !u!114 &11402766
@@ -204,7 +204,7 @@ MonoBehaviour:
   childBullet: {fileID: 122234, guid: d72d7ef3aa59cd946866e9a171aacd00, type: 2}
   childeBulletCount: 1
   purgeDistance: 0
-  purgeTime: 0.1
+  purgeTime: 0.05
   purgeDiff: 0
   isPurgeDestroy: 0
 --- !u!114 &11417812
@@ -241,7 +241,7 @@ MonoBehaviour:
   childBullet: {fileID: 122234, guid: d72d7ef3aa59cd946866e9a171aacd00, type: 2}
   childeBulletCount: 1
   purgeDistance: 0
-  purgeTime: 0.1
+  purgeTime: 0.05
   purgeDiff: 0
   isPurgeDestroy: 0
 --- !u!114 &11435728
@@ -303,7 +303,7 @@ MonoBehaviour:
   childBullet: {fileID: 122234, guid: d72d7ef3aa59cd946866e9a171aacd00, type: 2}
   childeBulletCount: 1
   purgeDistance: 0
-  purgeTime: 0.1
+  purgeTime: 0.05
   purgeDiff: 0
   isPurgeDestroy: 0
 --- !u!114 &11453194
@@ -407,7 +407,7 @@ MonoBehaviour:
   childBullet: {fileID: 122234, guid: d72d7ef3aa59cd946866e9a171aacd00, type: 2}
   childeBulletCount: 1
   purgeDistance: 0
-  purgeTime: 0.1
+  purgeTime: 0.05
   purgeDiff: 0
   isPurgeDestroy: 0
 --- !u!114 &11491740
