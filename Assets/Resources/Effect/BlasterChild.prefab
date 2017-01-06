@@ -166,7 +166,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f086994b8c47ea443baf4face217f973, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effectSpawn: {fileID: 109874, guid: 45752b7016b587141a9cc7a60c12fe4b, type: 2}
+  effectSpawn: {fileID: 163966, guid: 65351d6cc2acb2741b5115144056024d, type: 2}
   activeLimitTime: 0.2
   activeLimitDistance: 0
   isNotAutoBreak: 0
@@ -185,7 +185,6 @@ MonoBehaviour:
   glideGravityRate: 1
   isLockOn: 0
   UseGravity: 0
-  GRAVITY_LIMIT_RATE: 1.5
   hitEffect: {fileID: 0}
   speed: 0
   damage: 0
@@ -206,6 +205,7 @@ MonoBehaviour:
   childeBulletCount: 1
   purgeDistance: 0
   purgeTime: 0.1
+  purgeDiff: 0
   isPurgeDestroy: 0
 --- !u!114 &11417812
 MonoBehaviour:
@@ -222,7 +222,6 @@ MonoBehaviour:
   glideGravityRate: 1
   isLockOn: 0
   UseGravity: 0
-  GRAVITY_LIMIT_RATE: 1.5
   hitEffect: {fileID: 0}
   speed: 0
   damage: 0
@@ -243,6 +242,7 @@ MonoBehaviour:
   childeBulletCount: 1
   purgeDistance: 0
   purgeTime: 0.1
+  purgeDiff: 0
   isPurgeDestroy: 0
 --- !u!114 &11435728
 MonoBehaviour:
@@ -284,7 +284,6 @@ MonoBehaviour:
   glideGravityRate: 1
   isLockOn: 0
   UseGravity: 0
-  GRAVITY_LIMIT_RATE: 1.5
   hitEffect: {fileID: 0}
   speed: 0
   damage: 0
@@ -305,6 +304,7 @@ MonoBehaviour:
   childeBulletCount: 1
   purgeDistance: 0
   purgeTime: 0.1
+  purgeDiff: 0
   isPurgeDestroy: 0
 --- !u!114 &11453194
 MonoBehaviour:
@@ -322,7 +322,6 @@ MonoBehaviour:
   damagePerSecond: 0
   isPhysicsBulletBreak: 0
   isEnergyBulletBreak: 0
-  ownDamageRate: 0
   isFloorEffect: 0
 --- !u!114 &11461542
 MonoBehaviour:
@@ -389,7 +388,6 @@ MonoBehaviour:
   glideGravityRate: 1
   isLockOn: 0
   UseGravity: 0
-  GRAVITY_LIMIT_RATE: 1.5
   hitEffect: {fileID: 0}
   speed: 0
   damage: 0
@@ -410,6 +408,7 @@ MonoBehaviour:
   childeBulletCount: 1
   purgeDistance: 0
   purgeTime: 0.1
+  purgeDiff: 0
   isPurgeDestroy: 0
 --- !u!114 &11491740
 MonoBehaviour:

@@ -121,7 +121,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effectSpawn: {fileID: 0}
-  activeLimitTime: 5
+  activeLimitTime: 6
   activeLimitDistance: 0
   isNotAutoBreak: 0
 --- !u!114 &11426338
@@ -141,7 +141,7 @@ MonoBehaviour:
   UseGravity: 0
   hitEffect: {fileID: 126864, guid: 8a2c73b0491c2704fbf21f7cd74a052e, type: 2}
   speed: 30
-  damage: 5
+  damage: 10
   damagePerSecond: 0
   stuckTime: 0
   knockBackRate: 0
