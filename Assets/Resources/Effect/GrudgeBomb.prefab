@@ -50,7 +50,6 @@ MonoBehaviour:
   damagePerSecond: 0
   isPhysicsBulletBreak: 0
   isEnergyBulletBreak: 0
-  ownDamageRate: 0
   isFloorEffect: 0
 --- !u!114 &11482974
 MonoBehaviour:
@@ -322,7 +321,7 @@ ParticleSystem:
         rgba: 4285864381
       minMaxState: 0
     startSize:
-      scalar: 7
+      scalar: 5
       maxCurve:
         serializedVersion: 2
         m_Curve:

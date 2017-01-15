@@ -357,16 +357,16 @@ public class PhotonManager : MonoBehaviour
             {
                 foreach (RoomInfo room in roomList)
                 {
-                    //string roomName = Regex.Replace(room.name, "_[0-9]*$", "");
-                    string roomName = GetRoomName(room.name);
+                    RoomInfo targetRoom = room;
+                    string roomName = GetRoomName(targetRoom.name);
                     GameObject roomBtn = roomSelectBtn;
-                    if (room.playerCount >= MAX_ROOM_PLAYER_COUNT)
+                    if (targetRoom.playerCount >= MAX_ROOM_PLAYER_COUNT)
                     {
                         roomBtn = roomFullBtn;
                     }
                     GameObject joinBtn = (GameObject)Instantiate(roomBtn);
                     joinBtn.transform.SetParent(roomListContent, false);
-                    joinBtn.GetComponent<Button>().onClick.AddListener(() => JoinRoom(room));
+                    joinBtn.GetComponent<Button>().onClick.AddListener(() => JoinRoom(targetRoom));
                     joinBtn.transform.FindChild("Text").GetComponent<Text>().text = roomName;
                     roomCnt++;
                 }
