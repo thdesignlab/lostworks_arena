@@ -78,10 +78,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damageEffect: {fileID: 0}
   damage: 0
-  damagePerSecond: 100
+  damagePerSecond: 50
   isPhysicsBulletBreak: 1
   isEnergyBulletBreak: 0
-  ownDamageRate: 0
   isFloorEffect: 0
 --- !u!114 &11453628
 MonoBehaviour:
@@ -158,8 +157,8 @@ MonoBehaviour:
   effectTime: 5
   effectTypeList: 0100000005000000
   effectRateList:
-  - -0.4
-  - -0.4
+  - -0.3
+  - -0.3
   effect: {fileID: 0}
 --- !u!114 &11479600
 MonoBehaviour:
@@ -196,9 +195,9 @@ CapsuleCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   m_Radius: 8
-  m_Height: 45
+  m_Height: 30
   m_Direction: 2
-  m_Center: {x: 0, y: 0, z: 20}
+  m_Center: {x: 0, y: 0, z: 15}
 --- !u!198 &19806228
 ParticleSystem:
   m_ObjectHideFlags: 1

@@ -135,6 +135,7 @@ public class PlayerStatus : Photon.MonoBehaviour {
     [HideInInspector]
     public bool isReadyBattle = false;
 
+    private int charaNo = -1;
 
     void Start()
     {
@@ -232,6 +233,8 @@ public class PlayerStatus : Photon.MonoBehaviour {
     {
         if (photonView.isMine)
         {
+            if (charaNo > 0) SetStatus(charaNo);
+
             SetHp(maxHp);
             SetSp(maxSp);
 
@@ -768,7 +771,19 @@ public class PlayerStatus : Photon.MonoBehaviour {
     //private Coroutine RunSpeedChangeCoroutine;
     private Dictionary<string, BuffInfo> buffCoroutineList = new Dictionary<string, BuffInfo>();
 
+
     //初期ステータス設定
+    public void SetStatus(int no)
+    {
+        charaNo = no;
+
+        //キャラステータス取得
+        int[] npcStatusArray = Common.Character.StatusDic[charaNo];
+        float[] statusLevelRate = Common.Mission.npcLevelStatusDic[0];
+
+        //ステータス設定
+        SetStatus(npcStatusArray, statusLevelRate);
+    }
     public void SetStatus(int[] defaultStatus, float[] levelRate)
     {
         if (!photonView.isMine) return;

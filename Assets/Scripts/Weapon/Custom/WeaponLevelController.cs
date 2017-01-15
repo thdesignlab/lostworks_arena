@@ -233,4 +233,8 @@ public class WeaponLevelController : Photon.MonoBehaviour
                 break;
         }
     }
+
+    public virtual void WeaponCustomEnemy()
+    {
+    }
 }

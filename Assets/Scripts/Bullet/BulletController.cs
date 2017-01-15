@@ -179,7 +179,7 @@ public class BulletController : MoveOfCharacter
                     }
 
                     //ダメージ
-                    AddDamageProccess(status, dmg);
+                    float addDmg = AddDamageProccess(status, dmg);
 
                     //デバフ
                     AddDebuff(status);
@@ -189,12 +189,12 @@ public class BulletController : MoveOfCharacter
                     {
                         status.AttackInterfareMove(stuckTime);
                     }
-                }
 
-                //ノックバック
-                if (knockBackRate != 0)
-                {
-                    TargetKnockBack(hitObj.transform, knockBackRate);
+                    //ノックバック
+                    if (knockBackRate != 0 && addDmg > 0)
+                    {
+                        TargetKnockBack(hitObj.transform, knockBackRate);
+                    }
                 }
             }
             else if (hitObj.CompareTag(Common.CO.TAG_STRUCTURE))
@@ -251,9 +251,9 @@ public class BulletController : MoveOfCharacter
         return (hitObj.transform == targetTran) ? targetStatus : hitObj.GetComponent<PlayerStatus>();
     }
 
-    protected void AddDamageProccess(PlayerStatus status, float dmg, bool isSlip = false)
+    protected float AddDamageProccess(PlayerStatus status, float dmg, bool isSlip = false)
     {
-        if (dmg <= 0) return;
+        if (dmg <= 0) return 0;
 
         //対象へダメージを与える
         float addDamage = status.AddDamage(dmg, GetWeaponName(), isSlip);
@@ -271,6 +271,8 @@ public class BulletController : MoveOfCharacter
         {
             ownerStatus.SetBattleLog(PlayerStatus.BATTLE_LOG_ATTACK, addDamage, GetWeaponName(), isSlip);
         }
+
+        return addDamage;
     }
 
     protected void AddDebuff(PlayerStatus status)

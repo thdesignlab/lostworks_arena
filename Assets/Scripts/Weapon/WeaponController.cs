@@ -81,6 +81,7 @@ public class WeaponController : Photon.MonoBehaviour
     protected bool isActiveSceane = true;
     protected bool isExtra = false;
 
+    protected WeaponLevelController wepLvCtrl;
     protected int noReloadRate = 0;
 
     protected virtual void Awake()
@@ -647,7 +648,7 @@ public class WeaponController : Photon.MonoBehaviour
     //武器カスタム設定
     public void SetWeaponCustom(int type, int level = 1)
     {
-        WeaponLevelController wepLvCtrl = GetComponent<WeaponLevelController>();
+        wepLvCtrl = GetComponent<WeaponLevelController>();
         if (wepLvCtrl != null)
         {
             WaitReadyAction(() => wepLvCtrl.Init(type, level));

@@ -61,6 +61,7 @@ public class CrossRangeWeaponController : WeaponController
     {
         base.Start();
         StartCoroutine(SetOwnerRoutine());
+        //StartCoroutine(SetCustomEnemy());
     }
 
     IEnumerator SetOwnerRoutine()
@@ -76,6 +77,22 @@ public class CrossRangeWeaponController : WeaponController
             break;
         }
     }
+
+    //IEnumerator SetCustomEnemy()
+    //{
+    //    for (;;)
+    //    {
+    //        if (myTran.parent == null)
+    //        {
+    //            yield return null;
+    //            continue;
+    //        }
+    //        Debug.Log("wepLvCtrl >> " + wepLvCtrl);
+    //        Debug.Log("photonView.isMine >> " + photonView.isMine);
+    //        if (!photonView.isMine && !isNpc && wepLvCtrl != null) wepLvCtrl.WeaponCustomEnemy();
+    //        break;
+    //    }
+    //}
 
     protected override void Action()
     {
@@ -266,14 +283,27 @@ public class CrossRangeWeaponController : WeaponController
     {
         if (photonView.isMine)
         {
-            GameObject newBlade = PhotonNetwork.Instantiate(Common.Func.GetResourceEffect(obj.name), Vector3.zero, Quaternion.identity, 0);
+            GameObject newBlade = PhotonNetwork.Instantiate(Common.Func.GetResourceEffect(obj.name), new Vector3(0, 100, 0), Quaternion.identity, 0);
             newBlade.transform.SetParent(myTran, false);
+            newBlade.transform.localPosition = Vector3.zero;
             object[] args = new object[] { photonView.viewID, newBlade.name };
             photonView.RPC("CustomChangeBladeRPC", PhotonTargets.Others, args);
             blade = newBlade;
             blade.SetActive(false);
             effectCtrl = blade.GetComponent<EffectController>();
         }
+        //else
+        //{
+        //    Debug.Log("CustomChangeBlade notIsMine");
+        //    string bladeName = obj.name + "(Clone)";
+        //    GameObject bladeObj = GameObject.Find(bladeName);
+        //    if (bladeObj == null) return;
+        //    Transform bladeTran = bladeObj.transform;
+        //    bladeTran.SetParent(myTran, false);
+        //    blade = bladeTran.gameObject;
+        //    blade.SetActive(false);
+        //    effectCtrl = blade.GetComponent<EffectController>();
+        //}
     }
     [PunRPC]
     private void CustomChangeBladeRPC(int parentViewId, string bladeName)
@@ -281,8 +311,11 @@ public class CrossRangeWeaponController : WeaponController
         PhotonView parentView = PhotonView.Find(parentViewId);
         if (parentView == null) return;
         Transform prentTran = parentView.transform;
-        Transform bladeTran = prentTran.Find(bladeName);
+        GameObject bladeObj = GameObject.Find(bladeName);
+        if (bladeObj == null) return;
+        Transform bladeTran = bladeObj.transform;
         bladeTran.SetParent(prentTran, false);
+        bladeTran.localPosition = Vector3.zero;
         blade = bladeTran.gameObject;
         blade.SetActive(false);
         effectCtrl = blade.GetComponent<EffectController>();

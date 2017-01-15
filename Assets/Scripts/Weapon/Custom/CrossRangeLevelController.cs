@@ -110,4 +110,18 @@ public class CrossRangeLevelController : EffectLevelController
                 break;
         }
     }
+
+    //public override void WeaponCustomEnemy()
+    //{
+    //    for (int i = 0; i < customSystemList.Count; i++)
+    //    {
+    //        Debug.Log("customSystemList >> "+customSystemList[i]);
+    //        switch (customSystemList[i])
+    //        {
+    //            case CUSTOM_SYSTEM_CHANGE_BLADE:
+    //                crossRangeWeaponCtrl.CustomChangeBlade(addObject);
+    //                break;
+    //        }
+    //    }
+    //}
 }

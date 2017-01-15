@@ -30,7 +30,7 @@ public class CustomCommonManager : SingletonMonoBehaviour<CustomCommonManager>
     //point >> rate
     protected Dictionary<int, int> pointTable = new Dictionary<int, int>()
     {
-        { 199, 1 },
+        { 200, 1 },
     };
 
     protected override void Awake()

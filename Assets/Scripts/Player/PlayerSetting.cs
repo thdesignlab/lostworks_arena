@@ -172,12 +172,13 @@ public class PlayerSetting : Photon.MonoBehaviour
         charaMainTran.rotation = myTran.rotation;
         //lockonCtrl.enabled = true;
 
-        //キャラステータス取得
-        int[] npcStatusArray = Common.Character.StatusDic[charaNo];
-        float[] statusLevelRate = Common.Mission.npcLevelStatusDic[0];
+        ////キャラステータス取得
+        //int[] npcStatusArray = Common.Character.StatusDic[charaNo];
+        //float[] statusLevelRate = Common.Mission.npcLevelStatusDic[0];
 
         //ステータス設定
-        playerStatus.SetStatus(npcStatusArray, statusLevelRate);
+        playerStatus.SetStatus(charaNo);
+        //playerStatus.SetStatus(npcStatusArray, statusLevelRate);
     }
 
     private void SetMainBodyParent()
